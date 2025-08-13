@@ -1,6 +1,6 @@
 // app/tasawwuf/page.tsx
 
-import React from "react";
+import Image from 'next/image';
 
 async function fetchTasawwufData() {
   const API_URL = "https://lawngreen-dragonfly-304220.hostingersite.com/api/tasawwuf";
@@ -25,7 +25,7 @@ export default async function TasawwufPage() {
             key={item.id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
-            <img
+            <Image
               src={item.image || "https://via.placeholder.com/300x200"}
               alt={item.title}
               className="w-full h-48 object-cover"

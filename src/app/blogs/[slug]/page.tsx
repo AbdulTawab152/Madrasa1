@@ -1,5 +1,5 @@
 // app/blog/[slug]/page.tsx
-import React from "react";
+import Image from 'next/image';
 
 interface BlogDetail {
   id: number;
@@ -33,7 +33,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
       <h1 className="text-4xl font-bold mb-2">{blog.title}</h1>
       <p className="text-lg text-gray-600 mb-4">{blog.name}</p>
 
-      <img
+      <Image
         src={blog.image || "https://via.placeholder.com/600x400"}
         alt={blog.title}
         className="w-full h-auto rounded-lg mb-6"

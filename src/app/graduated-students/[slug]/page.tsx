@@ -1,4 +1,4 @@
-import React from 'react';
+import Image from 'next/image';
 
 interface Graduation {
   id: number;
@@ -53,7 +53,7 @@ export default async function GraduationDetailPage({ params }: PageProps) {
   return (
     <main className="max-w-3xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
       <h1 className="text-4xl font-bold mb-4">{graduation.title}</h1>
-      <img
+      <Image
         src={graduation.image || 'https://via.placeholder.com/600x400'}
         alt={graduation.title}
         className="w-full h-auto rounded-lg mb-6"

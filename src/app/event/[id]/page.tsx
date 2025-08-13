@@ -1,6 +1,5 @@
 // app/event/[id]/page.tsx
-import React from "react";
-
+import Image from 'next/image';
 interface Event {
   id: number;
   title: string;
@@ -29,7 +28,7 @@ export default async function EventDetailPage({ params }: { params: { id: string
     <main className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-4">{event.title}</h1>
       {event.image && (
-        <img src={event.image} alt={event.title} className="w-full h-64 object-cover mb-4 rounded-lg" />
+        <Image  src={event.image} alt={event.title} className="w-full h-64 object-cover mb-4 rounded-lg" />
       )}
       <p className="text-gray-700 mb-2">{event.description}</p>
       <p className="text-gray-500 text-sm">Date: {new Date(event.date).toLocaleDateString("fa-IR")}</p>

@@ -1,4 +1,4 @@
-import React from "react";
+import Image from 'next/image';
 
 interface GalleryItem {
   id: number;
@@ -27,7 +27,7 @@ export default async function GalleryPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {gallery.map((item) => (
           <div key={item.id} className="overflow-hidden rounded-lg shadow hover:shadow-lg transition">
-            <img
+            <Image
               src={item.image}
               alt={item.title || `Gallery Image ${item.id}`}
               className="w-full h-48 object-cover"

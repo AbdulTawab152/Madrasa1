@@ -1,6 +1,6 @@
 // app/books/[id]/page.tsx
 import React from "react";
-
+import Image from 'next/image';
 interface Author {
   id: number;
   first_name: string;
@@ -40,7 +40,7 @@ export default async function BookDetailPage({ params }: { params: { id: string 
   return (
     <main className="max-w-3xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
       <h1 className="text-4xl font-bold mb-4">{book.title}</h1>
-      <img
+      <Image
         src={book.image || "https://via.placeholder.com/600x400"}
         alt={book.title}
         className="w-full h-auto rounded-lg mb-6"

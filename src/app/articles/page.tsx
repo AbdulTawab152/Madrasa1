@@ -1,4 +1,4 @@
-import React from "react";
+import Image from 'next/image';
 import Link from "next/link";
 
 async function fetchArticlesData() {
@@ -23,7 +23,7 @@ export default async function ArticlesPage() {
             <div
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
             >
-              <img
+              <Image
                 src={item.image || "https://via.placeholder.com/300x200"}
                 alt={item.title}
                 className="w-full h-48 object-cover"

@@ -1,6 +1,6 @@
 // app/event/page.tsx
 import Link from "next/link";
-import React from "react";
+import Image from 'next/image';
 
 interface Event {
   id: number;
@@ -39,7 +39,7 @@ export default async function EventsPage() {
         {events.map((event) => (
           <Link key={event.id} href={`/event/${event.slug}`}>
            
-              <img
+              <Image
                 src={event.image || "https://via.placeholder.com/300x400"}
                 alt={event.title}
                 className="w-full h-48 object-cover rounded"

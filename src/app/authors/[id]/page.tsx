@@ -1,5 +1,4 @@
-import React from "react";
-
+import Image from 'next/image';
 interface Author {
   id: number;
   first_name: string;
@@ -43,7 +42,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
       </h1>
 
       {author.image ? (
-        <img
+        <Image
           src={author.image}
           alt={`${author.first_name} ${author.last_name}`}
           className="w-64 h-64 object-cover rounded-lg mb-6"

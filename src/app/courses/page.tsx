@@ -1,6 +1,6 @@
 // app/course/page.tsx
 import Link from "next/link";
-import React from "react";
+import Image from 'next/image';
 
 interface Course {
   id: number;
@@ -39,7 +39,7 @@ export default async function CoursesPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {courses.map((course) => (
           <Link key={course.id} href={`/courses/${course.slug}`} className="block group">
-            <img
+            <Image
               src={course.image || "https://via.placeholder.com/300x400"}
               alt={course.title}
               className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"

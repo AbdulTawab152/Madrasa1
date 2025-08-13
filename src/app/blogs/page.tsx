@@ -1,6 +1,6 @@
 // app/blog/page.tsx
 import Link from "next/link";
-
+import Image from 'next/image';
 interface Blog {
   id: number;
   name: string;
@@ -36,7 +36,7 @@ export default async function BlogsPage() {
             href={`/blogs/${blog.slug}`}
             className="block group bg-white rounded-lg shadow hover:shadow-lg transition"
           >
-            <img
+            <Image
               src={blog.image || "https://via.placeholder.com/300x200"}
               alt={blog.title}
               className="w-full h-48 object-cover rounded-t-lg group-hover:opacity-80 transition"

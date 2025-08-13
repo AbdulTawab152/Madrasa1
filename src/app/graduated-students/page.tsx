@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import React from 'react';
+import Image from 'next/image';
 
 interface Graduation {
   id: number;
@@ -36,7 +36,7 @@ export default async function GraduationsPage() {
             href={`/graduated-students/${item.slug || item.id}`}
             className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
-            <img
+            <Image
               src={item.image || 'https://via.placeholder.com/300x200'}
               alt={item.title}
               className="w-full h-48 object-cover"
