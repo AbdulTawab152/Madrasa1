@@ -18,6 +18,11 @@ async function fetchGalleryData(): Promise<GalleryItem[]> {
   return res.json();
 }
 
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
+
 export default async function GalleryPage() {
   const gallery = await fetchGalleryData();
 
@@ -27,11 +32,16 @@ export default async function GalleryPage() {
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {gallery.map((item) => (
           <div key={item.id} className="overflow-hidden rounded-lg shadow hover:shadow-lg transition">
-            <Image
-              src={item.image}
-              alt={item.title || `Gallery Image ${item.id}`}
-              className="w-full h-48 object-cover"
-              loading="lazy"
+       
+
+        
+
+  <Image
+              src={getImageUrl(item.image)}
+              alt={item.title || "Gallery Image"}
+              width={300}
+              height={400}
+              className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
             />
             {item.title && <h3 className="mt-2 text-lg font-semibold">{item.title}</h3>}
             {item.description && <p className="text-gray-600 text-sm">{item.description}</p>}

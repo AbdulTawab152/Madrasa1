@@ -11,6 +11,10 @@ async function fetchTasawwufData() {
   return res.json();
 }
 
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
 
 
 export default async function TasawwufPage() {
@@ -25,11 +29,16 @@ export default async function TasawwufPage() {
             key={item.id}
             className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
+         
+
+            
             <Image
-              src={item.image || "https://via.placeholder.com/300x200"}
-              alt={item.title}
-              className="w-full h-48 object-cover"
-            />
+  src={getImageUrl(item.image) }
+  alt={item.title}
+  width={300}
+  height={400}
+  className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
+/>
             <div className="p-4">
               <h2 className="text-xl font-semibold">{item.title}</h2>
               <p className="text-gray-600 text-sm mt-1">{item.question || item.description}</p>

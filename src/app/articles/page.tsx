@@ -10,6 +10,10 @@ async function fetchArticlesData() {
   const data = await res.json();
   return data;
 }
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
 
 export default async function ArticlesPage() {
   const articlesData = await fetchArticlesData();
@@ -23,11 +27,14 @@ export default async function ArticlesPage() {
             <div
               className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer"
             >
-              <Image
-                src={item.image || "https://via.placeholder.com/300x200"}
-                alt={item.title}
-                className="w-full h-48 object-cover"
-              />
+           <Image
+          src={ getImageUrl(item.image)}
+          alt={item.title}
+          className="w-full h-48 object-cover"
+          width={300}
+          height={200}
+        />
+
               <div className="p-4">
                 <h2 className="text-xl font-semibold">{item.title}</h2>
                 <p className="text-gray-600 text-sm mt-1">{item.question || item.description}</p>

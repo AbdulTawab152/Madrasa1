@@ -7,7 +7,7 @@ interface Graduation {
   title: string;
   question?: string;
   description?: string;
-  image?: string;
+  main_image?: string;
   date?: string;
   shared_by?: string;
   category_id?: string | number;
@@ -22,6 +22,10 @@ async function fetchGraduationsData(): Promise<Graduation[]> {
   return res.json();
 }
 
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
 
 export default async function GraduationsPage() {
   const graduations = await fetchGraduationsData();
@@ -36,11 +40,15 @@ export default async function GraduationsPage() {
             href={`/graduated-students/${item.slug || item.id}`}
             className="block bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
           >
+         
+            
             <Image
-              src={item.image || 'https://via.placeholder.com/300x200'}
-              alt={item.title}
-              className="w-full h-48 object-cover"
-            />
+  src={getImageUrl(item.main_image )}
+  alt={item.title}
+  width={300}
+  height={400}
+  className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
+/>
             <div className="p-4">
               <h2 className="text-xl font-semibold">{item.title}</h2>
               <p className="text-gray-600 text-sm mt-1">{item.question || item.description}</p>

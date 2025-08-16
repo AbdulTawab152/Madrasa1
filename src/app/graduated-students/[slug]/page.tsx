@@ -31,6 +31,11 @@ async function fetchGraduationDetail(slug: string): Promise<Graduation | null> {
   }
 }
 
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
+
 interface PageProps {
   params: {
     slug: string;
@@ -54,7 +59,7 @@ export default async function GraduationDetailPage({ params }: PageProps) {
     <main className="max-w-3xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
       <h1 className="text-4xl font-bold mb-4">{graduation.title}</h1>
       <Image
-        src={graduation.image || 'https://via.placeholder.com/600x400'}
+        src={getImageUrl(graduation.image)}
         alt={graduation.title}
         className="w-full h-auto rounded-lg mb-6"
       />

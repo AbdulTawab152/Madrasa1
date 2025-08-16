@@ -1,6 +1,7 @@
 // app/books/page.tsx
 import Link from "next/link";
-import React from "react";
+
+import Image from 'next/image';
 
 interface Book {
   id: number;
@@ -27,6 +28,12 @@ async function fetchBooksData(): Promise<Book[]> {
   return res.json(); // مستقیم JSON رو برمی‌گردانیم
 }
 
+
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
+
 export default async function BooksPage() {
   const books = await fetchBooksData();
 
@@ -36,12 +43,18 @@ export default async function BooksPage() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {books.map((book) => (
           <Link key={book.id} href={`/book/${book.id}`}>
-            <img
-              src={book.image || "https://via.placeholder.com/300x400"}
-              alt={book.title}
-              className="w-full h-48 object-cover rounded"
-            />
-            <h2 className="mt-4 text-xl font-semibold">{book.title}</h2>
+
+
+            
+            <Image
+          src={getImageUrl(book.image )}
+          alt={book.title}
+          width={300}
+          height={400}
+        
+          className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
+        />
+                    <h2 className="mt-4 text-xl font-semibold">{book.title}</h2>
             <p className="text-gray-600 mt-1 text-sm line-clamp-3">{book.description}</p>
           </Link>
         ))}

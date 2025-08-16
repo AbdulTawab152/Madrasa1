@@ -1,6 +1,6 @@
 // app/event/page.tsx
 import Link from "next/link";
-import Image from 'next/image';
+import Image from "next/image";
 
 interface Event {
   id: number;
@@ -8,26 +8,24 @@ interface Event {
   slug: string;
   description: string;
   date: string;
-  duration?: string;
-  live_link?: string;
-  live_link_type?: "facebook" | "youtube" | "twitch" | string;
-  status?: "past" | "coming";
-  is_published: boolean;
   image: string;
-  location?: string;
 }
 
 async function fetchEventsData(): Promise<Event[]> {
   const API_URL = "https://lawngreen-dragonfly-304220.hostingersite.com/api/events";
   const res = await fetch(API_URL);
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch events data");
-  }
-
+  if (!res.ok) throw new Error("Failed to fetch events data");
   return res.json();
 }
 
+// Helper for image URLs
+const getImageUrl = (img?: string) => {
+  if (!img) return "/placeholder.png"; // fallback if no image
+  return img.startsWith("http")
+    ? img
+    : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
 
 export default async function EventsPage() {
   const events = await fetchEventsData();
@@ -35,18 +33,25 @@ export default async function EventsPage() {
   return (
     <main className="p-8 bg-gray-100 min-h-screen">
       <h1 className="text-3xl font-bold mb-6">Events</h1>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {events.map((event) => (
-          <Link key={event.id} href={`/event/${event.slug}`}>
-           
+          <Link key={event.slug} href={`/event/${event.slug}`} className="group">
+            <div className="overflow-hidden rounded-lg shadow-md hover:shadow-xl transition">
               <Image
-                src={event.image || "https://via.placeholder.com/300x400"}
+                src={getImageUrl(event.image)}
                 alt={event.title}
-                className="w-full h-48 object-cover rounded"
+                width={300}
+                height={400}
+                className="w-full h-48 object-cover group-hover:opacity-80 transition"
               />
-              <h2 className="mt-4 text-xl font-semibold">{event.title}</h2>
-              <p className="text-gray-600 mt-1 text-sm line-clamp-3">{event.description}</p>
-          
+              <div className="p-4">
+                <h2 className="text-xl font-semibold">{event.title}</h2>
+                <p className="text-gray-600 mt-1 text-sm line-clamp-3">
+                  {event.description}
+                </p>
+              </div>
+            </div>
           </Link>
         ))}
       </div>

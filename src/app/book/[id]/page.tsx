@@ -32,6 +32,11 @@ async function fetchBookDetail(id: string): Promise<BookDetail> {
   return res.json(); // مستقیم JSON رو می‌گیریم
 }
 
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
+
 export default async function BookDetailPage({ params }: { params: { id: string } }) {
   const book = await fetchBookDetail(params.id);
 
@@ -41,8 +46,10 @@ export default async function BookDetailPage({ params }: { params: { id: string 
     <main className="max-w-3xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
       <h1 className="text-4xl font-bold mb-4">{book.title}</h1>
       <Image
-        src={book.image || "https://via.placeholder.com/600x400"}
+        src={getImageUrl(book.image)}
         alt={book.title}
+        width={800} 
+        height={500}
         className="w-full h-auto rounded-lg mb-6"
       />
       <p className="text-gray-700 leading-relaxed">{book.description}</p>

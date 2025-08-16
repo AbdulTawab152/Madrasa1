@@ -26,6 +26,11 @@ async function fetchAuthorsData(): Promise<Author[]> {
   return res.json(); // مستقیم JSON رو می‌گیریم
 }
 
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
+
 export default async function AuthorsPage() {
   const authors = await fetchAuthorsData();
 
@@ -39,11 +44,24 @@ export default async function AuthorsPage() {
             href={`/authors/${author.id}`}
             className="block bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer"
           >
+         
+
+            
             <Image
-              src={author.image || "https://via.placeholder.com/300x200"}
-              alt={`${author.first_name} ${author.last_name}`}
-              className="w-full h-48 object-cover rounded"
-            />
+  src={getImageUrl(author.image)}
+  alt={`${author.first_name} ${author.last_name}`}
+  width={300}
+  height={400}
+  className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
+/>
+
+  {/* <Image
+              src={getImageUrl(author.image)}
+              alt={author.title}
+              width={300}
+              height={400}
+              className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
+            /> */}
             <h2 className="mt-4 text-xl font-semibold">
               {author.first_name} {author.last_name}
             </h2>
