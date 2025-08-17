@@ -1,129 +1,98 @@
 // app/event/[slug]/page.tsx
-import Image from "next/image";
+import Image from 'next/image';
+import { fetchWithCache } from '../../../lib/api';
+import { endpoints } from '../../../lib/config';
+import { Course } from '../../../lib/types';
 
-interface CourseDetail {
-  id: number;
-  title: string;
-  slug: string;
-  description: string;
-  publish_date: string;
-  created_date: string;
-  duration?: string;
-  video_quantity?: number;
-  resolution?: "hd" | string;
-  space?: number;
-  short_video?: boolean;
-  image?: string;
-  video?: string;
-  is_published: boolean;
+interface CoursePageProps {
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
-/*************  ✨ Windsurf Command ⭐  *************/
-/**
- * Fetches the details of a course by its slug.
- * 
- * @param {string} slug - The slug of the course.
- * @returns {Promise<CourseDetail>} A promise that resolves to the course's details.
- * @throws {Error} If the fetch request fails.
- */
-/*******  0d699b95-e1de-47a5-b600-4ed8a931d36b  *******/async function fetchCourseDetail(slug: string): Promise<CourseDetail> {
-  const API_URL = `https://lawngreen-dragonfly-304220.hostingersite.com/api/course/${slug}`;
-  const res = await fetch(API_URL);
-  if (!res.ok) throw new Error("Failed to fetch course detail");
-  return res.json();
+async function fetchCourse(slug: string): Promise<Course> {
+  try {
+    const data = await fetchWithCache<Course>(`${endpoints.courses}/${slug}`);
+    return data;
+  } catch (error) {
+    throw new Error("Course not found");
+  }
 }
 
-const getFileUrl = (path?: string) => {
-  if (!path) return null;
-  return path.startsWith("http")
-    ? path
-    : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${path}`;
+const getImageUrl = (img?: string) => {
+  if (img && img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
 };
 
-export default async function CourseDetailPage({ params }: { params: { slug: string } }) {
-  const course = await fetchCourseDetail(params.slug);
-  if (!course) return <div>دوره‌ای یافت نشد.</div>;
+export default async function CourseDetailPage({ params }: CoursePageProps) {
+  const { slug } = await params;
+  const course = await fetchCourse(slug);
 
   return (
-    <main className="min-h-screen relative">
-      {/* Fullscreen hero */}
-      <div className="relative h-[600px] w-full">
-        
-          <Image
-            src={getFileUrl(course.image) || "https://via.placeholder.com/1920x1080"}
-            alt={course.title}
-            fill
-            className="object-cover"
-          />
-       
-
-        {/* Overlay */}
-        <div className="absolute top-0 left-0 w-full h-full bg-black bg-opacity-50  flex-col justify-center items-center p-6">
-          <span className="absolute left-1/3 top-1/3 transform -translate-x-1/2 -translate-y-1/2">
-          <h1 className="text-xl md:text-6xl font-bold  text-white mb-4">{course.title}</h1>
-          <p className="text-lg md:text-3xl w-[400px] text-white max-w-3xl">{course.description}</p>
-          </span>
-        </div>
-      </div>
-
-      {/* Course stats (optional, below hero) */}
-      <div className="max-w-6xl absolute top-[620px] left-10 w-full  mx-auto bg-white  shadow-lg p-10 -mt-24  z-10">
-        <div className="grid grid-cols-2  md:grid-cols-4 gap-4 text-gray-700">
-          {/* <div>
-            <p className="font-semibold">Publish Date</p>
-            <p>{new Date(course.publish_date).toLocaleDateString()}</p>
+    <main className="max-w-4xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
+      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div className="md:flex">
+          <div className="md:w-1/2">
+            {course.image ? (
+              <Image
+                src={getImageUrl(course.image)}
+                alt={course.title}
+                className="w-full h-96 md:h-full object-cover"
+                width={600}
+                height={400}
+              />
+            ) : (
+              <div className="w-full h-96 md:h-full bg-gray-300 flex items-center justify-center">
+                <span className="text-gray-500">No Image</span>
+              </div>
+            )}
           </div>
-          <div>
-            <p className="font-semibold">Created Date</p>
-            <p>{new Date(course.created_date).toLocaleDateString()}</p>
-          </div> */}
-          {course.duration && (
-            <div>
-              <p className="font-semibold">Duration</p>
-              <p>{course.duration}</p>
-            </div>
-          )}
-          {course.video_quantity !== undefined && (
-            <div>
+          
+          <div className="md:w-1/2 p-8">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">{course.title}</h1>
+            
+            <div className="space-y-4 text-gray-600">
+              <p className="text-lg leading-relaxed">{course.description}</p>
               
-              <p className="font-semibold">Video Quantity</p>
-              <p>{course.video_quantity}</p>
+              <div className="grid grid-cols-2 gap-4 text-sm">
+                <div>
+                  <strong>Name:</strong> {course.name}
+                </div>
+                <div>
+                  <strong>Category ID:</strong> {course.category_id}
+                </div>
+                <div>
+                  <strong>Published:</strong> {course.is_published ? "Yes" : "No"}
+                </div>
+                <div>
+                  <strong>Top Course:</strong> {course.is_top ? "Yes" : "No"}
+                </div>
+                <div>
+                  <strong>Date:</strong> {new Date(course.date).toLocaleDateString()}
+                </div>
+                <div>
+                  <strong>Rating:</strong> {course.rating || "N/A"}
+                </div>
+                <div>
+                  <strong>Lessons:</strong> {course.lessons || "N/A"}
+                </div>
+                <div>
+                  <strong>Enrolled:</strong> {course.enrolled || "N/A"}
+                </div>
+              </div>
+              
+              {course.content && (
+                <div className="mt-6">
+                  <h3 className="text-xl font-semibold mb-2">Course Content</h3>
+                  <div className="prose max-w-none">
+                    <p className="text-gray-700">{course.content}</p>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
-          {course.resolution && (
-            <div>
-              <p className="font-semibold">Resolution</p>
-              <p>{course.resolution}</p>
-            </div>
-          )}
-          {course.space !== undefined && (
-            <div>
-              <p className="font-semibold">Space</p>
-              <p>{course.space} MB</p>
-            </div>
-          )}
-         
+          </div>
         </div>
-        
       </div>
-      <div className="p-24">
-      
-          <div>
-            <p className="font-semibold">Published</p>
-            <p>{course.is_published ? "Yes" : "No"}</p>
-              <video
-            src={getFileUrl(course.video) || ""}
-            autoPlay
-            loop
-            muted
-            className="absolute top-0 left-0 w-full h-full object-cover"
-          />
-          </div>
-
-             <p className="font-semibold">Published</p>
-            <p>{course.is_published ? "Yes" : "No"}</p>
-
-          </div>
     </main>
   );
 }

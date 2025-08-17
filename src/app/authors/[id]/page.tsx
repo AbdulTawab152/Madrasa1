@@ -1,39 +1,26 @@
 import Image from 'next/image';
-interface Author {
-  id: number;
-  first_name: string;
-  last_name: string;
-  father_name: string;
-  grandfather_name: string;
-  full_address: string;
-  dob: string;
-  image?: string | null;
-  bio: string;
-  is_published: boolean;
-  contact_no?: string | null;
-  is_alive: boolean;
-}
+import { fetchWithCache } from '../../../lib/api';
+import { endpoints } from '../../../lib/config';
+import { Author } from '../../../lib/types';
 
 interface AuthorPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
 async function fetchAuthor(id: string): Promise<Author> {
-  const API_URL = `https://lawngreen-dragonfly-304220.hostingersite.com/api/authors/${id}`;
-  const res = await fetch(API_URL);
-
-  if (!res.ok) {
+  try {
+    const data = await fetchWithCache<Author>(`${endpoints.authors}/${id}`);
+    return data;
+  } catch (error) {
     throw new Error("Author not found");
   }
-
-  const data = await res.json();
-  return data;
 }
 
 export default async function AuthorDetailPage({ params }: AuthorPageProps) {
-  const author = await fetchAuthor(params.id);
+  const { id } = await params;
+  const author = await fetchAuthor(id);
 
   return (
     <main className="max-w-3xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
@@ -46,6 +33,8 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           src={author.image}
           alt={`${author.first_name} ${author.last_name}`}
           className="w-64 h-64 object-cover rounded-lg mb-6"
+          width={256}
+          height={256}
         />
       ) : (
         <div className="w-64 h-64 bg-gray-300 flex items-center justify-center rounded-lg mb-6">

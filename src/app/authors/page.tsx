@@ -1,33 +1,23 @@
 // app/authors/page.tsx
 import Image from 'next/image';
 import Link from "next/link";
-
-interface Author {
-  id: number;
-  first_name: string;
-  last_name: string;
-  father_name: string;
-  grandfather_name: string;
-  full_address: string;
-  dob: string;
-  image?: string | null;
-  bio: string;
-  is_published: boolean;
-  contact_no?: string | null;
-  is_alive: boolean;
-}
+import { fetchWithCache } from '../../lib/api';
+import { endpoints } from '../../lib/config';
+import { Author } from '../../lib/types';
 
 async function fetchAuthorsData(): Promise<Author[]> {
-  const API_URL = "https://lawngreen-dragonfly-304220.hostingersite.com/api/authors";
-  const res = await fetch(API_URL);
-
-  if (!res.ok) throw new Error("خطا در دریافت اطلاعات نویسندگان");
-
-  return res.json(); // مستقیم JSON رو می‌گیریم
+  try {
+    const data = await fetchWithCache<Author[]>(endpoints.authors);
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Error fetching authors:', error);
+    return [];
+  }
 }
 
-const getImageUrl = (img?: string) => {
-  if (img && img.startsWith("http")) return img;
+const getImageUrl = (img?: string | null) => {
+  if (!img) return '/placeholder-author.jpg';
+  if (img.startsWith("http")) return img;
   return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
 };
 
@@ -44,24 +34,13 @@ export default async function AuthorsPage() {
             href={`/authors/${author.id}`}
             className="block bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer"
           >
-         
-
-            
             <Image
-  src={getImageUrl(author.image)}
-  alt={`${author.first_name} ${author.last_name}`}
-  width={300}
-  height={400}
-  className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
-/>
-
-  {/* <Image
               src={getImageUrl(author.image)}
-              alt={author.title}
+              alt={`${author.first_name} ${author.last_name}`}
               width={300}
               height={400}
               className="w-full h-48 object-cover rounded group-hover:opacity-80 transition"
-            /> */}
+            />
             <h2 className="mt-4 text-xl font-semibold">
               {author.first_name} {author.last_name}
             </h2>

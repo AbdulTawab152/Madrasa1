@@ -1,30 +1,22 @@
 // app/blog/[slug]/page.tsx
 import Image from "next/image";
+import { fetchWithCache } from '../../../lib/api';
+import { endpoints } from '../../../lib/config';
+import { Blog } from '../../../lib/types';
 
-interface BlogDetail {
-  id: number;
-  name: string;
-  title: string;
-  slug: string;
-  description: string;
-  ingredients_description?: string;
-  types_description?: string;
-  nutrition_description?: string;
-  instructions_description?: string;
-  image?: string;
-  date: string;
-  is_published: boolean;
-  is_top: boolean;
-  category_id: number;
+interface BlogPageProps {
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
-async function fetchBlogDetail(slug: string): Promise<BlogDetail> {
-  const API_URL = `https://lawngreen-dragonfly-304220.hostingersite.com/api/blog/${slug}`;
-  const res = await fetch(API_URL);
-
-  if (!res.ok) throw new Error("خطا در دریافت اطلاعات وبلاگ");
-
-  return res.json();
+async function fetchBlogDetail(slug: string): Promise<Blog> {
+  try {
+    const data = await fetchWithCache<Blog>(`${endpoints.blogs}/${slug}`);
+    return data;
+  } catch (error) {
+    throw new Error("خطا در دریافت اطلاعات وبلاگ");
+  }
 }
 
 const getImageUrl = (img?: string) => {
@@ -32,11 +24,12 @@ const getImageUrl = (img?: string) => {
   return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
 };
 
-export default async function BlogDetailPage({ params }: { params: { slug: string } }) {
-  let blog: BlogDetail | null = null;
+export default async function BlogDetailPage({ params }: BlogPageProps) {
+  const { slug } = await params;
+  let blog: Blog | null = null;
 
   try {
-    blog = await fetchBlogDetail(params.slug);
+    blog = await fetchBlogDetail(slug);
   } catch (error) {
     console.error(error);
   }
@@ -88,10 +81,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10">
         <main className="space-y-16">
           <Section title="Description" content={blog.description} />
-          <Section title="Ingredients" content={blog.ingredients_description} />
-          <Section title="Types" content={blog.types_description} />
-          <Section title="Nutrition" content={blog.nutrition_description} />
-          <Section title="Instructions" content={blog.instructions_description} />
+          <Section title="Content" content={blog.content} />
 
           <div className="mt-6 text-gray-600 text-sm space-y-1">
             <p>Date: {new Date(blog.date).toLocaleDateString()}</p>
