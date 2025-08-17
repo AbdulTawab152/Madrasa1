@@ -1,21 +1,22 @@
 // app/event/[slug]/page.tsx
-import Image from 'next/image';
-import { fetchWithCache } from '../../../lib/api';
-import { endpoints } from '../../../lib/config';
-import { Course } from '../../../lib/types';
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { fetchWithCache } from "../../../lib/api";
+import { endpoints } from "../../../lib/config";
+import { Course } from "../../../lib/types";
 
 interface CoursePageProps {
-  params: Promise<{
+  params: {
     slug: string;
-  }>;
+  };
 }
 
-async function fetchCourse(slug: string): Promise<Course> {
+async function fetchCourse(slug: string): Promise<Course | null> {
   try {
     const data = await fetchWithCache<Course>(`${endpoints.courses}/${slug}`);
     return data;
   } catch (error) {
-    throw new Error("Course not found");
+    return null;
   }
 }
 
@@ -25,8 +26,12 @@ const getImageUrl = (img?: string) => {
 };
 
 export default async function CourseDetailPage({ params }: CoursePageProps) {
-  const { slug } = await params;
+  const { slug } = params;
   const course = await fetchCourse(slug);
+
+  if (!course) {
+    notFound(); // ✅ show Next.js 404 page if not found
+  }
 
   return (
     <main className="max-w-4xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
@@ -47,13 +52,15 @@ export default async function CourseDetailPage({ params }: CoursePageProps) {
               </div>
             )}
           </div>
-          
+
           <div className="md:w-1/2 p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{course.title}</h1>
-            
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+              {course.title}
+            </h1>
+
             <div className="space-y-4 text-gray-600">
               <p className="text-lg leading-relaxed">{course.description}</p>
-              
+
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                   <strong>Name:</strong> {course.name}
@@ -62,13 +69,15 @@ export default async function CourseDetailPage({ params }: CoursePageProps) {
                   <strong>Category ID:</strong> {course.category_id}
                 </div>
                 <div>
-                  <strong>Published:</strong> {course.is_published ? "Yes" : "No"}
+                  <strong>Published:</strong>{" "}
+                  {course.is_published ? "Yes" : "No"}
                 </div>
                 <div>
                   <strong>Top Course:</strong> {course.is_top ? "Yes" : "No"}
                 </div>
                 <div>
-                  <strong>Date:</strong> {new Date(course.date).toLocaleDateString()}
+                  <strong>Date:</strong>{" "}
+                  {new Date(course.date).toLocaleDateString()}
                 </div>
                 <div>
                   <strong>Rating:</strong> {course.rating || "N/A"}
@@ -80,10 +89,12 @@ export default async function CourseDetailPage({ params }: CoursePageProps) {
                   <strong>Enrolled:</strong> {course.enrolled || "N/A"}
                 </div>
               </div>
-              
+
               {course.content && (
                 <div className="mt-6">
-                  <h3 className="text-xl font-semibold mb-2">Course Content</h3>
+                  <h3 className="text-xl font-semibold mb-2">
+                    Course Content
+                  </h3>
                   <div className="prose max-w-none">
                     <p className="text-gray-700">{course.content}</p>
                   </div>

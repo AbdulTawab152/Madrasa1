@@ -53,7 +53,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
           <Link
             key={course.id}
             href={`/courses/${course.slug}`}
-            className="block bg-white w-[400px] h-[540px] shadow-md overflow-hidden group hover:shadow-xl transition-shadow duration-300"
+            className="block bg-white w-[400px] h-[500px] shadow-md overflow-hidden group hover:shadow-xl transition-shadow duration-300"
           >
             {/* Course Image */}
             <div className="relative">
@@ -79,8 +79,10 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
             {/* Course Info */}
             <div className="p-4 relative flex space-y-2 flex-col justify-between h-[152px]">
               <div>
-                <p className="text-md text-gray-500 uppercase tracking-wide">Design</p>
+              
                 <h2 className="mt-1 text-2xl font-bold text-gray-800">{course.title}</h2>
+                <h2 className="mt-1 text-2xl font-bold text-gray-800">{course.name}</h2>
+                <h2 className="mt-1 text-2xl font-bold text-gray-800">{course.enrolled}</h2>
 
                 {/* Rating */}
                 <div className="flex items-center mt-2">
