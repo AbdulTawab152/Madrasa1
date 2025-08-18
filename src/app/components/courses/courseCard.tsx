@@ -52,7 +52,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
         {displayCourses.map(course => (
           <Link
             key={course.id}
-            href={`/courses/${course.slug}`}
+            href={`./courses/${course.slug}`}
             className="block bg-white w-[400px] h-[500px] shadow-md overflow-hidden group hover:shadow-xl transition-shadow duration-300"
           >
             {/* Course Image */}

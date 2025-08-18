@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { Search, Calendar, Award, ChevronDown, ChevronUp, FileText, Loader2 } from "lucide-react";
 
 type Iftah = {
   id: number;
@@ -25,117 +26,270 @@ type Mufty = {
 
 export default function IftahListPage() {
   const [iftahs, setIftahs] = useState<Iftah[]>([]);
-  const [mufties, setMufties] = useState<Mufty[]>([]);
   const [loading, setLoading] = useState(true);
-  const [openStates, setOpenStates] = useState<{ [key: number]: boolean }>({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [muftis, setMuftis] = useState<Record<number, string>>({});
+  const [selectedMufti, setSelectedMufti] = useState<number | "">("");
+  const [dateFilter, setDateFilter] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const [iftahRes, muftyRes] = await Promise.all([
-          fetch("https://lawngreen-dragonfly-304220.hostingersite.com/api/iftah"),
-          fetch("https://lawngreen-dragonfly-304220.hostingersite.com/api/mufties"),
-        ]);
+        setLoading(true);
+        setError(null);
 
-        const iftahData: Iftah[] = iftahRes.ok ? await iftahRes.json() : [];
-        const muftyData: Mufty[] = muftyRes.ok ? await muftyRes.json() : [];
-
+        // Fetch iftahs
+        const iftahRes = await fetch("https://lawngreen-dragonfly-304220.hostingersite.com/api/iftah");
+        if (!iftahRes.ok) {
+          throw new Error(`Failed to fetch iftahs: ${iftahRes.status} ${iftahRes.statusText}`);
+        }
+        const iftahData = await iftahRes.json();
         setIftahs(iftahData);
-        setMufties(muftyData);
 
-        const initialStates: { [key: number]: boolean } = {};
-        iftahData.forEach((item) => (initialStates[item.id] = false));
-        setOpenStates(initialStates);
+        // Fetch muftis
+        const muftiRes = await fetch("https://lawngreen-dragonfly-304220.hostingersite.com/api/mufties");
+        if (!muftiRes.ok) {
+          throw new Error(`Failed to fetch muftis: ${muftiRes.status} ${muftiRes.statusText}`);
+        }
+        const muftiData = await muftiRes.json();
 
-        setLoading(false);
+        console.log("Mufti Data:", muftiData); // Debug log
+
+        const muftiMap = muftiData.reduce((acc: Record<number, string>, mufti: Mufty) => {
+          acc[mufti.id] = mufti.full_name;
+          return acc;
+        }, {});
+
+        setMuftis(muftiMap);
       } catch (error) {
-        console.error(error);
+        console.error("Error fetching data:", error);
+        setError(error instanceof Error ? error.message : "An unknown error occurred");
+      } finally {
         setLoading(false);
       }
-    }
+    };
+
     fetchData();
   }, []);
 
-  const toggleOpen = (id: number) => {
-    setOpenStates((prev) => ({ ...prev, [id]: !prev[id] }));
+  const toggleExpand = (id: number) => {
+    setExpandedId(expandedId === id ? null : id);
   };
 
-  if (loading)
-    return <p className="text-center mt-20 text-lg font-medium text-gray-500">Loading...</p>;
+  const filteredIftahs = iftahs.filter(iftah => {
+    const matchesSearch = iftah.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      iftah.question.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesMufti = !selectedMufti || iftah.mufti_id === selectedMufti;
+    const matchesDate = !dateFilter || new Date(iftah.date).toISOString().split('T')[0] === dateFilter;
+
+    return matchesSearch && matchesMufti && matchesDate;
+  });
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <Loader2 className="h-8 w-8 animate-spin text-green-600" />
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center p-8 bg-white rounded-lg shadow-md max-w-md">
+          <div className="text-red-500 mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">Error Loading Data</h2>
+          <p className="text-gray-600 mb-4">We couldn't load the questions. Please try again later.</p>
+          <p className="text-sm text-gray-500 mb-6">Error: {error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
-      <h1 className="text-5xl font-extrabold mb-12 text-center bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-        Iftah Knowledge Hub
-      </h1>
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-r from-green-600 to-emerald-700 text-white py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl font-bold mb-4">Islamic Q&A</h1>
+          <p className="text-xl text-green-100 max-w-3xl mx-auto">
+            Find answers to your religious questions from qualified scholars
+          </p>
+        </div>
+      </div>
 
-      <div className="space-y-8">
-        {iftahs.map((item, index) => {
-          const mufty = mufties.find((m) => m.id === item.mufti_id);
-          const isOpen = openStates[item.id];
-          const isEven = index % 2 === 0;
+      {/* Search and Filters */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="text"
+                placeholder="Search questions..."
+                className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-          return (
-            <div
-              key={item.id}
-              className={`flex flex-col md:flex-row justify-between p-6 rounded-3xl shadow-lg transition-all duration-300 hover:shadow-2xl ${
-                isEven ? "bg-gradient-to-r from-blue-50 to-blue-100" : "bg-gradient-to-r from-purple-50 to-purple-100"
-              }`}
-            >
-              <div className="flex-1 md:pr-6">
-                <Link
-                  href={`/iftah/${item.slug}`}
-                  className="text-2xl font-bold text-gray-800 hover:text-blue-700 hover:underline transition-colors"
-                >
-                  {item.title}
-                </Link>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Award className="h-5 w-5 text-gray-400" />
+              </div>
+              <select
+                className="appearance-none block w-full pl-10 pr-10 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                value={selectedMufti}
+                onChange={(e) => setSelectedMufti(e.target.value ? Number(e.target.value) : "")}
+              >
+                <option value="">All Scholars</option>
+                {Object.entries(muftis).map(([id, name]) => (
+                  <option key={id} value={id}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-                {mufty && (
-                  <p className="mt-1 text-sm text-gray-500 italic">
-                    By <strong>{mufty.full_name}</strong>
-                  </p>
-                )}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Calendar className="h-5 w-5 text-gray-400" />
+              </div>
+              <input
+                type="date"
+                className="block w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+              />
+            </div>
+          </div>
+        </div>
 
+        {/* Questions List */}
+        <div className="space-y-4">
+          {filteredIftahs.length > 0 ? (
+            filteredIftahs.map((iftah) => (
+              <div
+                key={iftah.id}
+                className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow duration-300"
+              >
                 <button
-                  onClick={() => toggleOpen(item.id)}
-                  className="mt-4 w-full text-left px-4 py-3 bg-white border border-gray-200 rounded-xl font-semibold flex justify-between items-center shadow-sm hover:bg-gray-50 transition-colors"
+                  className="w-full text-left p-6 focus:outline-none"
+                  onClick={() => toggleExpand(iftah.id)}
                 >
-                  <span className="text-gray-700 text-lg">Q: {item.question}</span>
-                  <span className="text-blue-600 font-bold text-xl">{isOpen ? "−" : "+"}</span>
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        {iftah.title}
+                      </h3>
+                      <div className="flex items-center text-sm text-gray-500 space-x-4">
+                        <span className="flex items-center">
+                          <Award className="h-4 w-4 mr-1 text-green-600" />
+                          {muftis[iftah.mufti_id] || 'Unknown Scholar'}
+                        </span>
+                        <span className="flex items-center">
+                          <Calendar className="h-4 w-4 mr-1 text-blue-600" />
+                          {formatDate(iftah.date)}
+                        </span>
+                        {iftah.is_top && (
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            Featured
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="ml-4 flex-shrink-0">
+                      {expandedId === iftah.id ? (
+                        <ChevronUp className="h-5 w-5 text-gray-400" />
+                      ) : (
+                        <ChevronDown className="h-5 w-5 text-gray-400" />
+                      )}
+                    </div>
+                  </div>
                 </button>
 
-                <div
-                  className={`overflow-hidden transition-all duration-500 ${
-                    isOpen ? "max-h-[500px] mt-3" : "max-h-0"
-                  }`}
-                >
-                  <div className="p-4 bg-gray-50 rounded-xl shadow-inner text-gray-700">
-                    <strong>Answer:</strong> {item.answer}
-                    {item.note && (
-                      <p className="mt-2 text-sm text-gray-500">
-                        <strong>Note:</strong> {item.note}
-                      </p>
-                    )}
-                    {item.attachment && (
-                      <a
-                        href={item.attachment}
-                        target="_blank"
-                        className="mt-2 inline-block text-blue-500 hover:underline"
-                      >
-                        View Attachment
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
+                {expandedId === iftah.id && (
+                  <div className="px-6 pb-6 pt-2 border-t border-gray-100">
+                    <div className="prose max-w-none text-gray-700 mb-4">
+                      <h4 className="font-medium text-gray-900 mb-2">Question:</h4>
+                      <p className="mb-4">{iftah.question}</p>
 
-              <div className="mt-4 md:mt-0 text-gray-500 text-sm md:text-right flex flex-col gap-1">
-                <p className="px-3 py-1 bg-gray-100 rounded-full">{item.date}</p>
-                {item.is_top && <p className="px-3 py-1 bg-pink-100 text-pink-600 rounded-full font-semibold">Top Iftah</p>}
+                      <h4 className="font-medium text-gray-900 mb-2">Answer:</h4>
+                      <p className="whitespace-pre-line">{iftah.answer}</p>
+
+                      {iftah.note && (
+                        <div className="mt-4 p-3 bg-yellow-50 border-l-4 border-yellow-400 rounded-r">
+                          <p className="text-sm text-yellow-700">
+                            <strong>Note:</strong> {iftah.note}
+                          </p>
+                        </div>
+                      )}
+
+                      {iftah.attachment && (
+                        <div className="mt-4">
+                          <a
+                            href={iftah.attachment}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-sm text-green-600 hover:text-green-800"
+                          >
+                            <FileText className="h-4 w-4 mr-2" />
+                            View Attachment
+                          </a>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-gray-100 flex justify-end">
+                      <button
+                        onClick={() => toggleExpand(iftah.id)}
+                        className="text-sm font-medium text-green-600 hover:text-green-800"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
+            ))
+          ) : (
+            <div className="text-center py-12 bg-white rounded-xl shadow-sm border border-gray-200">
+              <p className="text-gray-500">No questions found matching your search criteria.</p>
+              <button
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedMufti('');
+                  setDateFilter('');
+                }}
+                className="mt-4 text-green-600 hover:text-green-800 text-sm font-medium"
+              >
+                Clear all filters
+              </button>
             </div>
-          );
-        })}
+          )}
+        </div>
       </div>
     </div>
   );

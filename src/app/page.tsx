@@ -4,6 +4,7 @@ import Hero from "../app/herosection/page";
 import About from "../app/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
+import FeaturedBooks from "../app/components/books/FeaturedBooks";
 import { fetchWithCache } from "../lib/api";
 import { endpoints } from "../lib/config";
 import { Blog, Course as CourseType } from "../lib/types";
@@ -38,6 +39,25 @@ export default async function HomePage() {
     <div className="min-h-screen bg-background-primary">
       <Hero />
       <About />
+
+        <Suspense fallback={
+        <div className="flex items-center justify-center py-12">
+          <div className="spinner w-8 h-8"></div>
+          <span className="ml-3 text-gray-600">Loading courses...</span>
+        </div>
+      }>
+        <Course courses={courses} showAll={false} />
+      </Suspense>
+      
+      <Suspense fallback={
+        <div className="flex items-center justify-center py-12">
+          <div className="spinner w-8 h-8"></div>
+          <span className="ml-3 text-gray-600">Loading books...</span>
+        </div>
+      }>
+        <FeaturedBooks showAll={false} />
+      </Suspense>
+
       <Suspense fallback={
         <div className="flex items-center justify-center py-12">
           <div className="spinner w-8 h-8"></div>
@@ -46,14 +66,8 @@ export default async function HomePage() {
       }>
         <Blogs blogs={blogs} showAll={false} />
       </Suspense>
-      <Suspense fallback={
-        <div className="flex items-center justify-center py-12">
-          <div className="spinner w-8 h-8"></div>
-          <span className="ml-3 text-gray-600">Loading courses...</span>
-        </div>
-      }>
-        <Course courses={courses} showAll={false} />
-      </Suspense>
+
+    
     </div>
   );
 }
