@@ -1,109 +1,67 @@
-// app/event/[slug]/page.tsx
+// app/courses/[slug]/page.tsx
+import { CoursesApi } from "../../../lib/api";
 import Image from "next/image";
-import { notFound } from "next/navigation";
-import { fetchWithCache } from "../../../lib/api";
-import { endpoints } from "../../../lib/config";
-import { Course } from "../../../lib/types";
 
-interface CoursePageProps {
-  params: {
-    slug: string;
-  };
+interface Course {
+  id: number;
+  name: string;
+  title: string;
+  slug: string;
+  description: string;
+  image?: string;
+  date: string;
+  is_published: boolean;
+  rating?: number;
+  lessons?: number;
+  enrolled?: string;
 }
 
-async function fetchCourse(slug: string): Promise<Course | null> {
-  try {
-    const data = await fetchWithCache<Course>(`${endpoints.courses}/${slug}`);
-    return data;
-  } catch (error) {
-    return null;
-  }
+interface Params {
+  params: { slug: string };
 }
 
-const getImageUrl = (img?: string) => {
-  if (img && img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
-
-export default async function CourseDetailPage({ params }: CoursePageProps) {
+export default async function CourseDetailsPage({ params }: Params) {
   const { slug } = params;
-  const course = await fetchCourse(slug);
+
+  // گرفتن جزئیات کورس از API
+  const res = await CoursesApi.getAll();
+  const course: Course | undefined = res.data.find(c => c.slug === slug);
 
   if (!course) {
-    notFound(); // ✅ show Next.js 404 page if not found
+    return <p className="text-center mt-20 text-xl">Course not found!</p>;
   }
 
+  const getImageUrl = (img?: string) => {
+    if (img && img.startsWith("http")) return img;
+    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+  };
+
   return (
-    <main className="max-w-4xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="md:flex">
-          <div className="md:w-1/2">
-            {course.image ? (
-              <Image
-                src={getImageUrl(course.image)}
-                alt={course.title}
-                className="w-full h-96 md:h-full object-cover"
-                width={600}
-                height={400}
-              />
-            ) : (
-              <div className="w-full h-96 md:h-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-500">No Image</span>
-              </div>
-            )}
-          </div>
+    <main className="max-w-4xl mx-auto p-8">
+      <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
+      <p className="text-gray-600 mb-6">{course.description}</p>
 
-          <div className="md:w-1/2 p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
-              {course.title}
-            </h1>
-
-            <div className="space-y-4 text-gray-600">
-              <p className="text-lg leading-relaxed">{course.description}</p>
-
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <strong>Name:</strong> {course.name}
-                </div>
-                <div>
-                  <strong>Category ID:</strong> {course.category_id}
-                </div>
-                <div>
-                  <strong>Published:</strong>{" "}
-                  {course.is_published ? "Yes" : "No"}
-                </div>
-                <div>
-                  <strong>Top Course:</strong> {course.is_top ? "Yes" : "No"}
-                </div>
-                <div>
-                  <strong>Date:</strong>{" "}
-                  {new Date(course.date).toLocaleDateString()}
-                </div>
-                <div>
-                  <strong>Rating:</strong> {course.rating || "N/A"}
-                </div>
-                <div>
-                  <strong>Lessons:</strong> {course.lessons || "N/A"}
-                </div>
-                <div>
-                  <strong>Enrolled:</strong> {course.enrolled || "N/A"}
-                </div>
-              </div>
-
-              {course.content && (
-                <div className="mt-6">
-                  <h3 className="text-xl font-semibold mb-2">
-                    Course Content
-                  </h3>
-                  <div className="prose max-w-none">
-                    <p className="text-gray-700">{course.content}</p>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+      {course.image && (
+        <div className="mb-6">
+          <Image
+            src={getImageUrl(course.image)}
+            alt={course.title}
+            width={800}
+            height={400}
+            className="w-full h-auto object-cover rounded-lg"
+          />
         </div>
+      )}
+
+      <div className="flex gap-4 text-gray-700 mb-6">
+        <span>📚 Lessons: {course.lessons || 8}</span>
+        <span>👥 Enrolled: {course.enrolled || "25k"}</span>
+        <span>⭐ Rating: {course.rating?.toFixed(1) || "5.0"}</span>
       </div>
+
+      <button className="px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition">
+        Enroll Now
+      </button>
     </main>
   );
 }

@@ -227,6 +227,7 @@ export interface SearchResult {
   description?: string;
   url: string;
   score: number;
+  course : string
 }
 
 export interface SearchFilters {
