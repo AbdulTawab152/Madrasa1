@@ -36,69 +36,95 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
   };
 
   return (
-    <section className="p-8 bg-green-50">
-      <div className="text-center mb-10">
-        <h2 className="text-3xl font-bold text-green-600 relative inline-block">
-          {showAll ? "All Courses" : "Latest Courses"}
-          <span className="block h-1 w-16 bg-green-500 mx-auto mt-2 rounded"></span>
-        </h2>
-        <p className="text-gray-500 mt-2">
-          {showAll
-            ? "Explore all courses and learning paths"
-            : "Check out our latest courses"}
-        </p>
-      </div>
+    <div className="w-full">
+      {!showAll && (
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">
+            {showAll ? "All Courses" : "Featured Courses"}
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {showAll
+              ? "Explore our comprehensive collection of Islamic education courses"
+              : "Discover our most popular and essential Islamic learning programs"}
+          </p>
+        </div>
+      )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {displayCourses.map(course => (
-          <Link key={course.id} href={`/courses/${course.slug}`}>
-           
-            {/* Course Image */}
-            <div className="relative">
-              {course.image ? (
-                <Image
-                  src={getImageUrl(course.image)}
-                  alt={course.title}
-                  width={400}
-                  height={300}
-                  className="w-full h-[300px] object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-              ) : (
-                <div className="w-full h-[300px] bg-green-100 flex items-center justify-center">
-                  <span className="text-green-600 font-bold">No Image</span>
-                </div>
-              )}
-            </div>
-
-            {/* Course Info */}
-            <div className="p-4 relative flex space-y-2 flex-col justify-between h-[152px]">
-              <div>
-                <h2 className="mt-1 text-2xl font-bold text-gray-800">{course.title}</h2>
-                <p className="text-gray-600 line-clamp-2">{course.description}</p>
-
-                {/* Rating */}
-                <div className="flex items-center mt-2">
-                  <span className="text-yellow-400 mr-2">
-                    {"★".repeat(Math.floor(course.rating || 5))}
+          <Link key={course.id} href={`/courses/${course.slug}`} className="group">
+            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100 h-[420px] flex flex-col">
+              
+              {/* Course Image */}
+              <div className="relative overflow-hidden h-48">
+                {course.image ? (
+                  <Image
+                    src={getImageUrl(course.image)}
+                    alt={course.title}
+                    width={400}
+                    height={200}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300 flex items-center justify-center">
+                    <div className="text-center">
+                      <span className="text-4xl mb-2 block">📚</span>
+                      <span className="text-amber-800 font-medium text-sm">Course Image</span>
+                    </div>
+                  </div>
+                )}
+                
+                {/* Top badge for featured courses */}
+                {course.is_top && (
+                  <div className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-md">
+                    ⭐ Featured
+                  </div>
+                )}
+                
+                {/* Rating overlay */}
+                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1 shadow-md">
+                  <span className="text-amber-500 text-xs">★</span>
+                  <span className="text-gray-800 font-semibold text-xs">
+                    {course.rating?.toFixed(1) || "5.0"}
                   </span>
-                  <span className="text-gray-500 text-sm">
-                    {course.rating?.toFixed(1) || "5.0"} ({course.enrolled || "1.2k"})
-                  </span>
-                </div>
-
-                <hr className="my-3" />
-
-                {/* Lessons & Enrolled */}
-                <div className="flex justify-between text-gray-600 text-sm">
-                  <span className="border px-3 py-1 rounded-sm">📚 {course.lessons || 8} Lessons</span>
-                  <span className="border px-3 py-1 rounded-sm">👥 {course.enrolled || "25k"} Enrolled</span>
                 </div>
               </div>
 
-              {/* Course Details Button */}
-              <div className="mt-4">
-                <button className="w-full h-12 bg-yellow-500 text-white font-semibold hover:bg-yellow-600 transition">
-                  Course Details
+              {/* Course Content */}
+              <div className="p-4 flex-1 flex flex-col">
+                {/* Course Title */}
+                <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors duration-300 line-clamp-2">
+                  {course.title}
+                </h3>
+                
+                {/* Course Description */}
+                <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2 flex-1">
+                  {course.description}
+                </p>
+
+                {/* Course Stats */}
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-1 text-gray-600">
+                      <span className="text-amber-500 text-sm">📚</span>
+                      <span className="text-xs font-medium">{course.lessons || 8}</span>
+                    </div>
+                    <div className="flex items-center gap-1 text-gray-600">
+                      <span className="text-amber-500 text-sm">👥</span>
+                      <span className="text-xs font-medium">{course.enrolled || "1.2k"}</span>
+                    </div>
+                  </div>
+                  
+                  {/* Course duration */}
+                  <div className="text-right">
+                    <div className="text-amber-500 text-sm">⏱️</div>
+                    <div className="text-xs text-gray-500">8 weeks</div>
+                  </div>
+                </div>
+
+                {/* Course Details Button */}
+                <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-md text-sm">
+                  View Course
                 </button>
               </div>
             </div>
@@ -110,12 +136,15 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
         <div className="mt-8 flex justify-center">
           <Link
             href="/courses"
-            className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold rounded-xl hover:from-green-600 hover:to-green-700 transition shadow-lg"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold text-base rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
-            See All Courses
+            Explore All Courses
+            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
           </Link>
         </div>
       )}
-    </section>
+    </div>
   );
 }

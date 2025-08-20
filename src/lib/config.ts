@@ -1,6 +1,6 @@
 // App Configuration
 export const appConfig = {
-  name: process.env.NEXT_PUBLIC_APP_NAME || 'Madsreqa',
+  name: process.env.NEXT_PUBLIC_APP_NAME || 'Anwarul Uloom',
   description: process.env.NEXT_PUBLIC_APP_DESCRIPTION || 'Islamic Learning Platform',
   url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   version: '1.0.0',
