@@ -17,15 +17,16 @@ interface Course {
 }
 
 interface Params {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function CourseDetailsPage({ params }: Params) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // گرفتن جزئیات کورس از API
   const res = await CoursesApi.getAll();
-  const course: Course | undefined = res.data.find(c => c.slug === slug);
+  const courses = Array.isArray(res.data) ? res.data as Course[] : [];
+  const course: Course | undefined = courses.find(c => c.slug === slug);
 
   if (!course) {
     return <p className="text-center mt-20 text-xl">Course not found!</p>;
