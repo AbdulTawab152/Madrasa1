@@ -4,10 +4,17 @@ import Hero from "../app/herosection/page";
 import About from "../app/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
-import FeaturedBooks from "../app/components/books/FeaturedBooks";
+import Event from "../app/components/event/eventCard"
+import ArticlesPreview from "./components/Articles";
+
+// import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
+// import ArticlesList from "./components/Articles";
+
+
 import { fetchWithCache } from "../lib/api";
 import { endpoints } from "../lib/config";
 import { Blog, Course as CourseType } from "../lib/types";
+
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -29,12 +36,29 @@ async function fetchCourseData(): Promise<CourseType[]> {
   }
 }
 
-export default async function HomePage() {
-  const [blogs, courses] = await Promise.all([
-    fetchBlogsData(),
-    fetchCourseData()
-  ]);
 
+async function fetchEventData(): Promise<Event[]> {
+  try {
+    const data = await fetchWithCache<Event[]>(endpoints.events);
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error('Error fetching blogs:', error);
+    return [];
+  }
+}
+
+
+
+
+
+
+
+export default async function HomePage() {
+const [blogs, courses, events] = await Promise.all([
+  fetchBlogsData(),
+  fetchCourseData(),
+  fetchEventData()
+]);
   return (
     <div className="min-h-screen bg-white">
       <Hero />
@@ -51,6 +75,62 @@ export default async function HomePage() {
             </div>
           }>
             <Course courses={courses} showAll={false} />
+          </Suspense>
+        </div>
+      </section>
+
+
+    <section className="mt-16 relative z-10 px-4 sm:px-6 lg:px-12">
+  {/* Background Gradient / Shape */}
+  <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-50 via-white to-green-50 rounded-3xl shadow-inner" />
+
+  <div className="max-w-7xl mx-auto text-center">
+    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4">
+      Latest Articles
+    </h2>
+    <p className="text-gray-600 text-lg sm:text-xl mb-12">
+      Stay updated with our newest articles, insights, and tips.
+    </p>
+  </div>
+
+  {/* Articles Grid */}
+  <div className="max-w-7xl mx-auto">
+    <ArticlesPreview limit={3} />
+  </div>
+
+  
+
+</section>
+
+
+
+      {/* blogs Section */}
+       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+        
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+              <span className="ml-4 text-gray-600 font-medium">Loading blogs...</span>
+            </div>
+          }>
+            <Blogs blogs={blogs} showAll={false} />
+          </Suspense>
+        </div>
+      </section>
+
+
+      {/* event Section */}
+         <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+        
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+              <span className="ml-4 text-gray-600 font-medium">Loading event...</span>
+            </div>
+          }>
+             <Event events={events} showAll={false} />
           </Suspense>
         </div>
       </section>
@@ -145,7 +225,7 @@ export default async function HomePage() {
       </section>
 
       {/* Events Section */}
-      <section className="py-24 bg-white">
+      {/* <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
             <div className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-800 text-sm font-semibold rounded-full mb-8">
@@ -191,7 +271,7 @@ export default async function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Donation Section */}
       <section className="py-24 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 relative overflow-hidden">

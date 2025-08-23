@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { div } from "motion/react-client";
 
 interface Course {
   id: number;
@@ -36,7 +37,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full ">
       {!showAll && (
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">
@@ -50,13 +51,13 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
         </div>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid w-full grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[20px]">
         {displayCourses.map(course => (
-          <Link key={course.id} href={`/courses/${course.slug}`} className="group">
-            <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100 h-[420px] flex flex-col">
+         
+            <div className="bg-white shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100 h-[500px] w-[400px] flex flex-col">
               
               {/* Course Image */}
-              <div className="relative overflow-hidden h-48">
+              <div className="relative overflow-hidden h-[300px]">
                 {course.image ? (
                   <Image
                     src={getImageUrl(course.image)}
@@ -122,21 +123,24 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
                   </div>
                 </div>
 
+<Link key={course.id} href={`/courses/${course.slug}`} className="group">
                 {/* Course Details Button */}
                 <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-md text-sm">
                   View Course
                 </button>
+                 </Link>
               </div>
             </div>
-          </Link>
+         
         ))}
-      </div>
+  
 
       {!showAll && displayCourses.length > 0 && (
-        <div className="mt-8 flex justify-center">
+        <div className="">
+        <div className="mt-8 flex justify-center ">
           <Link
             href="/courses"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold text-base rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="inline-flex  items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold text-base rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
           >
             Explore All Courses
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -144,7 +148,9 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
             </svg>
           </Link>
         </div>
+        </div>
       )}
+    </div>
     </div>
   );
 }

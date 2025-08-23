@@ -151,6 +151,13 @@ export class BooksApi {
   }
 }
 
+
+
+
+
+
+
+
 export class EventsApi {
   static async getAll() {
     return apiClient.get(endpoints.events);
@@ -165,19 +172,26 @@ export class EventsApi {
   }
 }
 
-export class FatwaApi {
+export class IftahApi {
   static async getAll() {
-    return apiClient.get(endpoints.fatwa);
+    return apiClient.get(endpoints.iftah);
   }
 
   static async getById(id: string) {
-    return apiClient.get(`${endpoints.fatwa}/${id}`);
+    return apiClient.get(`${endpoints.iftah}/${id}`);
   }
 
   static async getBySlug(slug: string) {
-    return apiClient.get(`${endpoints.fatwa}/slug/${slug}`);
+    return apiClient.get(`${endpoints.iftah}/slug/${slug}`);
+  }
+
+  static async getIftah(slug: string) {
+    return apiClient.get(`${endpoints.iftah}/${slug}`);
   }
 }
+
+
+
 
 export class ArticlesApi {
   static async getAll() {
@@ -186,6 +200,17 @@ export class ArticlesApi {
 
   static async getById(id: string) {
     return apiClient.get(`${endpoints.articles}/${id}`);
+  }
+}
+
+
+export class GraduationsApi {
+  static async getAll() {
+    return apiClient.get(endpoints.graduated);
+  }
+
+  static async getById(id: string) {
+    return apiClient.get(`${endpoints.graduated}/${id}`);
   }
 }
 

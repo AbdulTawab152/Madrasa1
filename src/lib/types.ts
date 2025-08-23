@@ -39,7 +39,7 @@ export interface Course extends BaseEntity {
   is_top: boolean;
   category_id: number;
   featuredImage?: string;
-  instructor?: Author;
+  instructor?: string;
   level?: 'beginner' | 'intermediate' | 'advanced';
   duration?: number; // in minutes
   lessons?: number;
@@ -95,7 +95,7 @@ export interface Book extends BaseEntity {
   image: string;
   is_in_library: boolean;
   // Additional fields for compatibility
-  slug?: string;
+  slug : string;
   coverImage?: string;
   author?: Author;
   publisher?: string;

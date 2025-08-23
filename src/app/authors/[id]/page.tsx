@@ -1,12 +1,11 @@
-import Image from 'next/image';
-import { fetchWithCache } from '../../../lib/api';
-import { endpoints } from '../../../lib/config';
-import { Author } from '../../../lib/types';
+import Image from "next/image";
+import { fetchWithCache } from "../../../lib/api";
+import { endpoints } from "../../../lib/config";
+import { Author } from "../../../lib/types";
+import { User, MapPin, Phone, Calendar, CheckCircle, XCircle } from "lucide-react";
 
 interface AuthorPageProps {
-  params: Promise<{
-    id: string;
-  }>;
+  params: Promise<{ id: string }>;
 }
 
 async function fetchAuthor(id: string): Promise<Author> {
@@ -18,54 +17,95 @@ async function fetchAuthor(id: string): Promise<Author> {
   }
 }
 
+const getImageUrl = (img?: string | null) => {
+  if (!img) return "/placeholder-author.jpg";
+  if (img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};
+
 export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   const { id } = await params;
   const author = await fetchAuthor(id);
 
   return (
-    <main className="max-w-3xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
-      <h1 className="text-4xl font-bold mb-6">
-        {author.first_name} {author.last_name}
-      </h1>
+    <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
+      <div className="bg-white  rounded-3xl overflow-hidden p-8">
+        {/* Profile Image */}
+        <div className="flex flex-col items-center text-center">
+          {author.image ? (
+            <Image
+              src={getImageUrl(author.image)}
+              alt={`${author.first_name} ${author.last_name}`}
+              width={200}
+              height={200}
+              className="w-40 h-40 rounded-full object-cover border-4 border-amber-500 shadow-lg"
+            />
+          ) : (
+            <div className="w-40 h-40 flex items-center justify-center rounded-full bg-gray-300 text-gray-600">
+              No Image
+            </div>
+          )}
 
-      {author.image ? (
-        <Image
-          src={author.image}
-          alt={`${author.first_name} ${author.last_name}`}
-          className="w-64 h-64 object-cover rounded-lg mb-6"
-          width={256}
-          height={256}
-        />
-      ) : (
-        <div className="w-64 h-64 bg-gray-300 flex items-center justify-center rounded-lg mb-6">
-          No Image
+          {/* Name */}
+          <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
+            {author.first_name} {author.last_name}
+          </h1>
+          <p className="text-gray-500 mt-2 max-w-xl">{author.bio}</p>
         </div>
-      )}
 
-      <p className="text-gray-700 leading-relaxed mb-4">{author.bio}</p>
-
-      <div className="text-gray-600 text-sm space-y-2">
-        <p>
-          <strong>Father's Name:</strong> {author.father_name}
-        </p>
-        <p>
-          <strong>Grandfather's Name:</strong> {author.grandfather_name}
-        </p>
-        <p>
-          <strong>Date of Birth:</strong> {author.dob}
-        </p>
-        <p>
-          <strong>Address:</strong> {author.full_address}
-        </p>
-        <p>
-          <strong>Contact No:</strong> {author.contact_no || "N/A"}
-        </p>
-        <p>
-          <strong>Is Alive:</strong> {author.is_alive ? "Yes" : "No"}
-        </p>
-        <p>
-          <strong>Published:</strong> {author.is_published ? "Yes" : "No"}
-        </p>
+        {/* Info Grid */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            <User className="text-amber-500" size={20} />
+            <p>
+              <strong>Father:</strong> {author.father_name}
+            </p>
+          </div>
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            <User className="text-amber-500" size={20} />
+            <p>
+              <strong>Grandfather:</strong> {author.grandfather_name}
+            </p>
+          </div>
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            <Calendar className="text-amber-500" size={20} />
+            <p>
+              <strong>DOB:</strong> {author.dob}
+            </p>
+          </div>
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            <MapPin className="text-amber-500" size={20} />
+            <p>
+              <strong>Address:</strong> {author.full_address}
+            </p>
+          </div>
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            <Phone className="text-amber-500" size={20} />
+            <p>
+              <strong>Contact:</strong> {author.contact_no || "N/A"}
+            </p>
+          </div>
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            {author.is_alive ? (
+              <CheckCircle className="text-green-500" size={20} />
+            ) : (
+              <XCircle className="text-red-500" size={20} />
+            )}
+            <p>
+              <strong>Alive:</strong> {author.is_alive ? "Yes" : "No"}
+            </p>
+          </div>
+          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
+            {author.is_published ? (
+              <CheckCircle className="text-green-500" size={20} />
+            ) : (
+              <XCircle className="text-red-500" size={20} />
+            )}
+            <p>
+              <strong>Published:</strong> {author.is_published ? "Yes" : "No"}
+            </p>
+          </div>
+        </div>
       </div>
     </main>
   );

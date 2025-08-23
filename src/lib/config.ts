@@ -22,8 +22,9 @@ export const endpoints = {
   authors: `${apiConfig.baseUrl}/authors`,
   books: `${apiConfig.baseUrl}/books`,
   events: `${apiConfig.baseUrl}/events`,
-  fatwa: `${apiConfig.baseUrl}/fatwa`,
+  iftah: `${apiConfig.baseUrl}/iftah`,
   articles: `${apiConfig.baseUrl}/articles`,
+  graduated: `${apiConfig.baseUrl}/graduations`,
 } as const;
 
 // Feature Flags
@@ -38,7 +39,7 @@ export const navigation = {
   main: [
     { name: 'Home', href: '/', icon: 'home' },
     { name: 'Blogs', href: '/blogs', icon: 'blog' },
-    { name: 'Fatwa', href: '/iftah', icon: 'fatwa' },
+    { name: 'iftah', href: '/iftah', icon: 'fatwa' },
     { name: 'Author', href: '/authors', icon: 'author' },
     { name: 'Book', href: '/book', icon: 'book' },
     { name: 'Courses', href: '/courses', icon: 'course' },
@@ -47,5 +48,6 @@ export const navigation = {
     { name: 'Donation', href: '/donation', icon: 'donation' },
     { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'Article', href: '/articles', icon: 'article' },
+    { name: 'test', href: '/test', icon: 'article' },
   ],
 } as const;

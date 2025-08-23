@@ -1,98 +1,172 @@
-// app/event/[slug]/page.tsx
-import Image from 'next/image';
-import { fetchWithCache } from '../../../lib/api';
-import { endpoints } from '../../../lib/config';
-import { Event } from '../../../lib/types';
+// app/events/[slug]/page.tsx
+import { EventsApi } from "../../../lib/api";
+import Image from "next/image";
+import Link from "next/link";
 
-interface EventPageProps {
-  params: Promise<{
-    slug: string;
-  }>;
+interface Event {
+  title: string;
+  slug: string;
+  description: string;
+  content?: string;
+  featuredImage?: string;
+  startDate: string;
+  endDate: string;
+  location?: string;
+  isOnline?: boolean;
+  meetingUrl?: string;
+  organizer?: string;
+  category?: string;
+  maxAttendees?: number;
+  currentAttendees?: number;
+  isFree?: boolean;
+  price?: number;
+  registrationRequired?: boolean;
+  tags?: string[];
+  date?: string;
+  is_published?: boolean;
+  image?: string;
 }
 
-async function fetchEvent(slug: string): Promise<Event> {
-  try {
-    const data = await fetchWithCache<Event>(`${endpoints.events}/${slug}`);
-    return data;
-  } catch (error) {
-    throw new Error("Event not found");
-  }
+interface Params {
+  params: Promise<{ slug: string }>;
 }
 
-const getImageUrl = (img?: string) => {
-  if (img && img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
-
-export default async function EventDetailPage({ params }: EventPageProps) {
+export default async function EventDetailsPage({ params }: Params) {
   const { slug } = await params;
-  const event = await fetchEvent(slug);
+  const res = await EventsApi.getAll();
+  const events = Array.isArray(res.data) ? (res.data as Event[]) : [];
+  const event: Event | undefined = events.find((e) => e.slug === slug);
+
+  if (!event) {
+    return <p className="text-center mt-20 text-xl">Event not found!</p>;
+  }
+
+  const getImageUrl = (img?: string) => {
+    if (img && img.startsWith("http")) return img;
+    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+  };
 
   return (
-    <main className="max-w-4xl mx-auto p-8 bg-gray-50 min-h-screen font-sans">
-      <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-        <div className="md:flex">
-          <div className="md:w-1/2">
-            {event.featuredImage ? (
-              <Image
-                src={getImageUrl(event.featuredImage)}
-                alt={event.title}
-                className="w-full h-96 md:h-full object-cover"
-                width={600}
-                height={400}
-              />
-            ) : (
-              <div className="w-full h-96 md:h-full bg-gray-300 flex items-center justify-center">
-                <span className="text-gray-500">No Image</span>
-              </div>
-            )}
-          </div>
-          
-          <div className="md:w-1/2 p-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">{event.title}</h1>
-            
-            <div className="space-y-4 text-gray-600">
-              <p className="text-lg leading-relaxed">{event.description}</p>
-              
-              <div className="grid grid-cols-2 gap-4 text-sm">
-                <div>
-                  <strong>Start Date:</strong> {new Date(event.startDate).toLocaleDateString()}
-                </div>
-                <div>
-                  <strong>End Date:</strong> {new Date(event.endDate).toLocaleDateString()}
-                </div>
-                <div>
-                  <strong>Location:</strong> {event.location || "N/A"}
-                </div>
-                <div>
-                  <strong>Online Event:</strong> {event.isOnline ? "Yes" : "No"}
-                </div>
-                <div>
-                  <strong>Free Event:</strong> {event.isFree ? "Yes" : "No"}
-                </div>
-                <div>
-                  <strong>Price:</strong> {event.price ? `$${event.price}` : "Free"}
-                </div>
-                <div>
-                  <strong>Max Attendees:</strong> {event.maxAttendees || "Unlimited"}
-                </div>
-                <div>
-                  <strong>Current Attendees:</strong> {event.currentAttendees || 0}
-                </div>
-              </div>
-              
-              {event.content && (
-                <div className="mt-6">
-                  <h3 className="text-xl font-semibold mb-2">Event Details</h3>
-                  <div className="prose max-w-none">
-                    <p className="text-gray-700">{event.content}</p>
-                  </div>
-                </div>
-              )}
+    <main className="max-w-6xl mt-32 mx-auto px-6 py-12 font-sans">
+      <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+        {/* Banner */}
+        {event.image && (
+          <div className="relative w-full h-[400px]">
+            <Image
+              src={getImageUrl(event.image)}
+              alt={event.title}
+              fill
+              className="object-cover"
+              priority
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
+              <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+                {event.title}
+              </h1>
             </div>
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="p-8 space-y-8">
+          {/* Description */}
+          <p className="text-gray-700 text-lg leading-relaxed">
+            {event.description}
+          </p>
+
+          {/* Extra content (optional rich content) */}
+          {event.content && (
+            <div className="prose prose-lg text-gray-600 max-w-none">
+              <div dangerouslySetInnerHTML={{ __html: event.content }} />
+            </div>
+          )}
+
+          {/* Event Info Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <InfoCard label="📅 Start Date" value={event.startDate} />
+            <InfoCard label="📅 End Date" value={event.endDate} />
+            <InfoCard label="📍 Location" value={event.location || "TBA"} />
+            <InfoCard
+              label="🌐 Event Type"
+              value={event.isOnline ? "Online" : "In-Person"}
+            />
+            {event.meetingUrl && (
+              <InfoCard
+                label="🔗 Meeting Link"
+                value={
+                  <a
+                    href={event.meetingUrl}
+                    target="_blank"
+                    className="text-amber-600 underline"
+                  >
+                    Join Meeting
+                  </a>
+                }
+              />
+            )}
+            <InfoCard label="👤 Organizer" value={event.organizer || "Unknown"} />
+            <InfoCard label="🏷️ Category" value={event.category || "General"} />
+            <InfoCard
+              label="👥 Attendees"
+              value={`${event.currentAttendees || 0} / ${
+                event.maxAttendees || "Unlimited"
+              }`}
+            />
+            <InfoCard
+              label="💰 Price"
+              value={event.isFree ? "Free" : `$${event.price || 0}`}
+            />
+            <InfoCard
+              label="📝 Registration"
+              value={event.registrationRequired ? "Required" : "Optional"}
+            />
+            <InfoCard
+              label="📌 Published"
+              value={event.is_published ? "Yes" : "No"}
+            />
+          </div>
+
+          {/* Tags */}
+          {event.tags && event.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2">
+              {event.tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Back button */}
+          <div className="pt-6">
+            <Link
+              href="/events"
+              className="inline-block px-6 py-3 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition shadow-md"
+            >
+              ← Back to Events
+            </Link>
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+// Small reusable card for event info
+function InfoCard({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | React.ReactNode;
+}) {
+  return (
+    <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
+      <span className="font-semibold text-gray-800">{label}:</span>
+      <span className="text-gray-600">{value}</span>
+    </div>
   );
 }
