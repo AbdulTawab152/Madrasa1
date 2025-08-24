@@ -1,7 +1,7 @@
 // app/iftah/page.tsx
 import IftahSection from "./../components/iftah/IftahSection";
 import { IftahApi } from "../../lib/api"; // مسیر درست API
-
+import Image from 'next/image';
 interface Author {
   name: string;
   bio?: string;
@@ -28,8 +28,8 @@ export default async function IftahPage() {
   const iftahItems = Array.isArray(res.data) ? (res.data as Iftah[]) : [];
 
   return (
-    <main className="max-w-6xl mt-32 mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">لیست افتاح‌ها</h1>
+    <main className="max-w-full mt-24  ">
+  
     
       <IftahSection fatwas={iftahItems} showAll={true} />
     </main>

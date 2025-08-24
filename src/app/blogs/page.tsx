@@ -24,7 +24,7 @@ export default async function BlogsPage() {
   const blogs = Array.isArray(res.data) ? (res.data as Blog[]) : [];
 
   return (
-    <main className="max-w-6xl mt-32 mx-auto p-8">
+    <main className="w-full mt- p-8">
     
       <BlogsSection blogs={blogs} showAll={true} />
     </main>
