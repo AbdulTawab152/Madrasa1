@@ -25,7 +25,7 @@ export default async function EventsPage() {
   const events = Array.isArray(res.data) ? (res.data as Event[]) : [];
 
   return (
-    <main className="max-w-6xl mt-32 mx-auto p-8">
+    <main className="w-full mx-auto ">
   
       <EventsSection events={events} showAll={true} />
     </main>

@@ -6,6 +6,7 @@ import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard"
 import ArticlesPreview from "./components/Articles";
+import GraduationsSection from "./components/graduation/graduationCard"
 
 // import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
 // import ArticlesList from "./components/Articles";
@@ -53,6 +54,7 @@ async function fetchEventData(): Promise<Event[]> {
 
 
 
+
 export default async function HomePage() {
 const [blogs, courses, events] = await Promise.all([
   fetchBlogsData(),
@@ -63,6 +65,8 @@ const [blogs, courses, events] = await Promise.all([
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
+    {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
+
 
       {/* Courses Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -80,18 +84,43 @@ const [blogs, courses, events] = await Promise.all([
       </section>
 
 
-    <section className="mt-16 relative z-10 px-4 sm:px-6 lg:px-12">
+     
+
+      {/* artical */}
+
+
+    <section className="">
   {/* Background Gradient / Shape */}
   <div className="absolute inset-0 -z-10 bg-gradient-to-r from-blue-50 via-white to-green-50 rounded-3xl shadow-inner" />
 
-  <div className="max-w-7xl mx-auto text-center">
-    <h2 className="text-3xl sm:text-4xl font-extrabold text-gray-800 mb-4">
-      Latest Articles
-    </h2>
-    <p className="text-gray-600 text-lg sm:text-xl mb-12">
-      Stay updated with our newest articles, insights, and tips.
-    </p>
+<div className="max-w-7xl mx-auto text-center px-4 relative">
+  {/* Section Label */}
+  <div className="inline-block mb-4 px-4 py-1 bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 text-white text-sm font-semibold rounded-full shadow-lg animate-pulse">
+    📰 Latest Articles
   </div>
+
+  {/* Title */}
+  <h2 className="text-3xl sm:text-5xl font-extrabold text-gray-900 mb-4 leading-tight drop-shadow-md">
+    Discover Our <span className="bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">Insights & Tips</span>
+  </h2>
+
+  {/* Subtitle */}
+  <p className="text-gray-600 text-lg sm:text-xl mb-12 max-w-2xl mx-auto animate-fade-in-up">
+    Stay updated with our newest articles, insights, and practical tips to enhance your knowledge.
+  </p>
+
+  {/* Decorative underline */}
+  <div className="flex justify-center mt-2">
+    <span className="w-28 h-1 bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 rounded-full animate-pulse"></span>
+  </div>
+
+  {/* Floating accent shapes */}
+  <div className="absolute top-0 left-10 w-4 h-4 bg-orange-300 rounded-full opacity-50 animate-bounce-slow"></div>
+  <div className="absolute top-6 right-10 w-6 h-6 bg-orange-400 rounded-full opacity-40 animate-bounce-slower"></div>
+  <div className="absolute bottom-0 left-1/3 w-3 h-3 bg-pink-300 rounded-full opacity-50 animate-bounce-slow"></div>
+</div>
+
+
 
   {/* Articles Grid */}
   <div className="max-w-7xl mx-auto">
@@ -103,6 +132,23 @@ const [blogs, courses, events] = await Promise.all([
 </section>
 
 
+
+
+{/* event */}
+
+     <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+        
+          <Suspense fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+              <span className="ml-4 text-gray-600 font-medium">Loading event...</span>
+            </div>
+          }>
+             <Event events={events} showAll={false} />
+          </Suspense>
+        </div>
+      </section>
 
       {/* blogs Section */}
        <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -121,19 +167,7 @@ const [blogs, courses, events] = await Promise.all([
 
 
       {/* event Section */}
-         <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-        
-          <Suspense fallback={
-            <div className="flex items-center justify-center py-20">
-              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-              <span className="ml-4 text-gray-600 font-medium">Loading event...</span>
-            </div>
-          }>
-             <Event events={events} showAll={false} />
-          </Suspense>
-        </div>
-      </section>
+    
 
       {/* Gallery Section */}
       <section className="py-24 bg-white">
@@ -371,6 +405,11 @@ const [blogs, courses, events] = await Promise.all([
           </div>
         </div>
       </section>
+
+
+      
     </div>
+
+    
   );
 }

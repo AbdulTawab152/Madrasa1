@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import { Calendar, MapPin, User, Clock, Users, ArrowRight } from "lucide-react";
 
 interface Event {
   id: number;
@@ -21,14 +22,24 @@ interface Event {
 interface EventsSectionProps {
   events: Event[];
   showAll?: boolean;
+  heroTitle?: string;
+  heroSubtitle?: string;
+  heroImage?: string;
 }
 
-export default function EventsSection({ events, showAll = false }: EventsSectionProps) {
+export default function EventsSection({ 
+  events, 
+  showAll = false, 
+  heroTitle = "Our Events",
+  heroSubtitle = "Join our community gatherings and experiences",
+
+}: EventsSectionProps) {
   const sortedEvents =
     events
-      ?.filter(event => event.is_published)
+      ?.filter((event) => event.is_published)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) || [];
 
+  // Show only 3 events on homepage
   const displayEvents = showAll ? sortedEvents : sortedEvents.slice(0, 3);
 
   const getImageUrl = (img?: string) => {
@@ -37,101 +48,211 @@ export default function EventsSection({ events, showAll = false }: EventsSection
   };
 
   return (
-    <section className="w-full">
-      {/* --- Hero Section --- */}
-      <div className="relative bg-gradient-to-r from-indigo-50 via-white to-indigo-50 py-16 px-6 text-center rounded-3xl mb-16 shadow-sm">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-          {showAll ? "Discover All Our Events" : "Upcoming Events That Inspire"}
-        </h2>
-        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto mb-6">
-          {showAll
-            ? "Explore all our events, past and upcoming, to stay connected with our vibrant community. From conferences to workshops, we’ve got something for everyone."
-            : "Join us for exciting events designed to bring people together, spark new ideas, and create memorable experiences."}
-        </p>
-        {!showAll && (
-          <Link
-            href="/events"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold text-base rounded-xl hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            View All Events
-            <svg
-              className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-        )}
+    <div className="min-h-screen">
+      {/* Hero Section only shows on event page */}
+    {showAll && (
+  <section className="relative w-full h-[500px] md:h-[600px] overflow-hidden mb-16">
+    {/* Background Image */}
+    <div className="absolute inset-0">
+      <Image
+        src="/1.jpg"
+        alt="Events Banner"
+        fill
+        className="object-cover scale-105 hover:scale-110 transition-transform duration-700 ease-in-out"
+        priority
+      />
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-purple-900/70 to-black/60"></div>
+    </div>
+
+    {/* Content */}
+    <div className="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center text-center">
+      <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg mb-6 animate-fade-in">
+        {heroTitle}
+      </h1>
+      <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mb-10 animate-fade-in-up">
+        {heroSubtitle}
+      </p>
+
+      {/* Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6 w-full max-w-3xl">
+        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
+          <div className="text-4xl font-bold text-orange-400">{sortedEvents.length}+</div>
+          <div className="mt-2 text-gray-100 font-medium">Total Events</div>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
+          <div className="text-4xl font-bold text-pink-400">
+            {sortedEvents.filter(e => e.is_featured).length}+
+          </div>
+          <div className="mt-2 text-gray-100 font-medium">Featured</div>
+        </div>
+
+        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
+          <div className="text-4xl font-bold text-green-400">
+            {sortedEvents.filter(e => new Date(e.date) > new Date()).length}+
+          </div>
+          <div className="mt-2 text-gray-100 font-medium">Upcoming</div>
+        </div>
       </div>
 
-      {/* --- Event Cards --- */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {displayEvents.map(event => (
-          <Link key={event.id} href={`/event/${event.slug}`} className="group">
-            <div className="bg-white/90 backdrop-blur-lg border border-gray-100 rounded-2xl shadow-sm hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 overflow-hidden flex flex-col">
-              
-              {/* Event Image with overlay */}
-              <div className="relative h-52 overflow-hidden">
-                {event.image ? (
-                  <Image
-                    src={getImageUrl(event.image)}
-                    alt={event.title}
-                    width={400}
-                    height={200}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-indigo-200 to-indigo-400 flex items-center justify-center">
-                    <span className="text-white font-medium">Event Image</span>
-                  </div>
+      {/* CTA Button */}
+      {/* <div className="mt-10">
+        <button className="px-8 py-3 text-lg font-semibold bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition">
+          Explore All Events
+        </button>
+      </div> */}
+    </div>
+
+    {/* Bottom Fade */}
+    <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent"></div>
+  </section>
+)}
+
+
+      {/* Events Section */}
+      <section className="w-full px-4 py-16 md:px-8 max-w-6xl mx-auto">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
+            {showAll ? "All Events" : "Upcoming Events"}
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Discover our curated events and join our community gatherings
+          </p>
+        </div>
+
+        <div className="relative">
+          <div className="absolute left-5 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
+
+          {displayEvents.map((event, idx) => (
+            <Link key={event.id} href={`/event/${event.slug}`}>
+              <div className="group flex flex-col md:flex-row items-start mb-12 relative pl-16 md:pl-24">
+                <div className="absolute left-5 md:left-6 top-5 w-5 h-5 rounded-full bg-white border-4 border-orange-500 transition-transform duration-300 group-hover:scale-125 group-hover:" />
+                {idx < displayEvents.length - 1 && (
+                  <span className="absolute left-5 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
                 )}
 
-                {/* Date Badge */}
-                <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-sm font-semibold text-gray-800 shadow-md">
-                  {new Date(event.date).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                  })}
-                </div>
+                <div className="flex-1 bg-white rounded-xl   overflow-hidden transition-all duration-300 flex flex-col md:flex-row">
+                  {event.image && (
+                    <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+                      <Image
+                        src={getImageUrl(event.image)}
+                        alt={event.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      {event.is_featured && (
+                        <div className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-orange-400 to-pink-500 text-white text-xs font-semibold rounded-full shadow-md">
+                          ⭐ Featured
+                        </div>
+                      )}
+                    </div>
+                  )}
 
-                {/* Featured Badge */}
-                {event.is_featured && (
-                  <div className="absolute top-3 left-3 bg-gradient-to-r from-pink-500 to-red-500 text-white px-2 py-1 rounded-full text-xs font-semibold shadow-md">
-                    ⭐ Featured
+                  <div className={`p-6 ${event.image ? 'md:w-2/3' : 'w-full'}`}>
+                    <div className="flex items-center gap-3 mb-3 flex-wrap text-sm text-gray-500">
+                      <Calendar size={18} className="text-orange-400" />
+                      {new Date(event.date).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </div>
+
+                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-500 transition-colors mb-3">
+                      {event.title}
+                    </h3>
+
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                      {event.description}
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+                      {event.location && (
+                        <div className="flex items-center gap-1">
+                          <MapPin size={16} className="text-orange-400" />
+                          <span className="truncate">{event.location}</span>
+                        </div>
+                      )}
+                      {event.organizer && (
+                        <div className="flex items-center gap-1">
+                          <User size={16} className="text-orange-400" />
+                          <span className="truncate">{event.organizer}</span>
+                        </div>
+                      )}
+                      {event.duration && (
+                        <div className="flex items-center gap-1">
+                          <Clock size={16} className="text-orange-400" />
+                          <span>{event.duration}</span>
+                        </div>
+                      )}
+                      {event.attendees && (
+                        <div className="flex items-center gap-1">
+                          <Users size={16} className="text-orange-400" />
+                          <span>{event.attendees} attendees</span>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                )}
-              </div>
-
-              {/* Event Info */}
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-indigo-600 transition-colors duration-300">
-                  {event.title}
-                </h3>
-                
-                <p className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-3 flex-1">
-                  {event.description}
-                </p>
-
-                {/* Meta Info Chips */}
-                <div className="flex flex-wrap gap-2 mb-4 text-xs">
-                  <span className="px-3 py-1 rounded-full bg-indigo-50 text-indigo-700">📍 {event.location || "TBA"}</span>
-                  <span className="px-3 py-1 rounded-full bg-pink-50 text-pink-600">👤 {event.organizer || "Organizer"}</span>
-                  <span className="px-3 py-1 rounded-full bg-blue-50 text-blue-600">🕒 {event.duration || "2h"}</span>
-                  <span className="px-3 py-1 rounded-full bg-green-50 text-green-600">👥 {event.attendees || "50+"}</span>
                 </div>
-
-                {/* CTA Button */}
-                <button className="w-full bg-gradient-to-r from-indigo-500 to-indigo-600 text-white font-semibold py-2.5 rounded-xl hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-[1.03] shadow-md text-sm">
-                  View Details
-                </button>
               </div>
-            </div>
-          </Link>
-        ))}
-      </div>
-    </section>
+            </Link>
+          ))}
+        </div>
+          {!showAll && sortedEvents.length > 3 && (
+  <div className="relative mt-28 ">
+    {/* Soft radial background */}
+    <div className="absolute inset-0 flex justify-center items-center">
+      <div className="w-full h-[600px] bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-3xl"></div>
+    </div>
+
+    <div className="relative w-full  bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-white/30 dark:border-gray-800/40 rounded-3xl  py-20 text-center overflow-hidden">
+      {/* Floating decorative sparkles */}
+      <div className="absolute top-6 left-10 text-yellow-400 animate-ping">✨</div>
+      <div className="absolute top-12 right-12 text-pink-400 animate-bounce">🎉</div>
+      <div className="absolute bottom-10 left-16 text-orange-400 animate-pulse">⭐</div>
+
+      {/* Gradient ring accent */}
+      <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-orange-400 via-pink-500 to-red-500 opacity-20 blur-xl"></div>
+
+      {/* Heading */}
+      <h2 className="relative text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent mb-6 tracking-tight">
+        Discover Every Event
+      </h2>
+
+      {/* Subtext */}
+      <p className="relative text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+        You’ve explored a glimpse of what we offer.  
+        Step into the full journey with all{" "}
+        <span className="font-semibold text-orange-500">featured highlights</span>,{" "}
+        <span className="font-semibold text-pink-500">exclusive sessions</span>, and{" "}
+        <span className="font-semibold text-purple-500">upcoming opportunities</span>.  
+      </p>
+
+      {/* CTA Button */}
+      <Link
+        href="/event"
+        className="group relative inline-flex items-center px-12 py-5 rounded-full 
+        text-lg font-bold text-white shadow-xl bg-gradient-to-r from-orange-500 via-pink-500 to-red-500 
+        hover:shadow-2xl hover:scale-105 transform transition-all duration-300"
+      >
+        <span className="relative flex items-center">
+          See All Events
+          <ArrowRight
+            size={24}
+            className="ml-3 transition-transform duration-300 group-hover:translate-x-2"
+          />
+        </span>
+
+        {/* Glow effect */}
+        <span className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 opacity-30 blur-lg animate-pulse"></span>
+      </Link>
+    </div>
+  </div>
+)}
+
+
+
+      </section>
+    </div>
   );
 }
-  

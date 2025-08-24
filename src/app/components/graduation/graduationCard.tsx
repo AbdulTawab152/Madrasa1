@@ -4,24 +4,19 @@ import Image from "next/image";
 interface Graduation {
   studentName: string;
   slug: string;
-  photo?: string;
+  img?: string;
   graduationDate: string;
   course?: string;
   grade?: string;
   certificate?: string;
   testimonial?: string;
   achievements?: string[];
-  // Extra fields you were already using
   is_published?: boolean;
   is_featured?: boolean;
-  image?: string;
-  title?: string;
   description?: string;
-  location?: string;
-  organizer?: string;
-  faculty?: string;
   degree?: string;
-  duration?: string;
+  faculty?: string;
+  location?: string;
 }
 
 interface GraduationsSectionProps {
@@ -32,128 +27,117 @@ interface GraduationsSectionProps {
 export default function GraduationsSection({ graduations, showAll = false }: GraduationsSectionProps) {
   const sortedGraduations =
     graduations
-      ?.filter(graduation => graduation.is_published)
+      ?.filter(g => g.is_published)
       .sort((a, b) => new Date(b.graduationDate).getTime() - new Date(a.graduationDate).getTime()) || [];
 
   const displayGraduations = showAll ? sortedGraduations : sortedGraduations.slice(0, 3);
+  const featuredGraduation = sortedGraduations.find(g => g.is_featured);
+
 
   const getImageUrl = (img?: string) => {
     if (img && img.startsWith("http")) return img;
     return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
   };
 
+
+
   return (
-    <div className="w-full">
+    <div className="w-full relative px-4 md:px-0 py-16 bg-gray-50">
+
+      {/* Hero Featured Graduation */}
+      {featuredGraduation && !showAll && (
+        <div className="relative w-full h-[480px] md:h-[520px] rounded-3xl overflow-hidden shadow-2xl mb-12 group">
+          <Image
+            src='/1.jpg'
+            alt={featuredGraduation.studentName}
+            fill
+            className="object-cover brightness-90 group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
+          <div className="absolute bottom-12 left-8 md:left-16 text-white max-w-2xl z-10">
+            <h1 className="text-4xl md:text-5xl font-extrabold mb-3 leading-tight animate-fade-in-up">
+              {featuredGraduation.studentName}
+            </h1>
+            <p className="text-lg md:text-xl mb-5 animate-fade-in-up delay-200">
+              🎓 {featuredGraduation.degree || "Graduated with Excellence"} in {featuredGraduation.course || "Course Name"}
+            </p>
+            <Link
+              href={`/graduated-students/${featuredGraduation.slug}`}
+              className="inline-block bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 px-6 py-3 rounded-2xl font-semibold shadow-lg hover:scale-105 transform transition-all duration-300"
+            >
+              View Profile
+            </Link>
+          </div>
+
+          {/* Floating Shapes */}
+          <div className="absolute top-10 left-10 w-6 h-6 bg-orange-400 rounded-full opacity-50 animate-bounce-slow"></div>
+          <div className="absolute bottom-20 right-20 w-10 h-10 bg-pink-400 rounded-full opacity-40 animate-bounce-slower"></div>
+          <div className="absolute top-32 right-1/3 w-4 h-4 bg-orange-300 rounded-full opacity-50 animate-bounce-slow"></div>
+        </div>
+      )}
+
+      {/* Section Header */}
       {!showAll && (
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-            🎓 {showAll ? "All Graduations" : "Featured Graduations"}
+        <div className="text-center mb-12 max-w-3xl mx-auto">
+          <div className="inline-block mb-4 px-5 py-2 bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 text-white text-sm font-semibold rounded-full shadow-lg animate-pulse">
+            🎓 Celebrating Success
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
+            Our <span className="bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">Star Graduates</span>
           </h2>
-          <p className="text-lg text-gray-600 mt-3">
-            {showAll
-              ? "Explore all graduation ceremonies and achievements"
-              : "Celebrate the success of our brightest students"}
+          <p className="text-gray-600 text-lg md:text-xl mb-6 animate-fade-in-up">
+            Meet the students who excelled and made their mark with dedication and hard work.
           </p>
         </div>
       )}
 
       {/* Graduation Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
         {displayGraduations.map(graduation => (
           <Link
             key={graduation.slug}
             href={`/graduated-students/${graduation.slug}`}
-            className="group"
+            className="group relative w-full max-w-sm mx-auto cursor-pointer"
           >
-            <div className="relative bg-white/70 backdrop-blur-md rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl hover:scale-[1.02] transition-all duration-500 overflow-hidden flex flex-col">
+            <div className="relative h-80 rounded-3xl overflow-hidden shadow-2xl hover:shadow-3xl transition-shadow duration-500">
               
-              {/* Image */}
-              <div className="relative h-52 w-full overflow-hidden">
-                {graduation.image ? (
-                  <Image
-                    src={getImageUrl(graduation.image)}
-                    alt={graduation.title || graduation.studentName}
-                    width={500}
-                    height={250}
-                    className="w-full h-full object-cover rounded-t-2xl transform group-hover:scale-110 transition-transform duration-500"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-green-100 via-green-200 to-green-300 flex items-center justify-center">
-                    <span className="text-green-800 font-medium">No Image</span>
-                  </div>
-                )}
+              {/* Student Image */}
+              <Image
+                src={getImageUrl(graduation.img)}
+                alt={graduation.studentName}
+                fill
+                className="object-cover w-full h-full rounded-3xl transition-transform duration-500 group-hover:scale-110"
+              />
 
-                {/* Featured Badge */}
-                {graduation.is_featured && (
-                  <span className="absolute top-3 left-3 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs px-3 py-1 rounded-full shadow-md font-semibold">
-                    🌟 Featured
-                  </span>
-                )}
-              </div>
-
-              {/* Content */}
-              <div className="p-5 flex-1 flex flex-col">
-                {/* Student Name */}
-                <h3 className="text-xl font-bold text-gray-900 mb-1 group-hover:text-green-600 transition-colors duration-300">
-                  {graduation.studentName}
-                </h3>
-
-                {/* Graduation Title */}
-                {graduation.title && (
-                  <p className="text-sm text-gray-700 font-medium mb-2">{graduation.title}</p>
-                )}
-
-                {/* Description */}
-                {graduation.description && (
-                  <p className="text-gray-600 text-sm leading-relaxed mb-3 line-clamp-2 flex-1">
-                    {graduation.description}
-                  </p>
-                )}
-
-                {/* Meta Info */}
-                <div className="grid grid-cols-2 gap-2 text-xs text-gray-600 mb-3">
-                  <span>📅 {graduation.graduationDate}</span>
-                  <span>📍 {graduation.location || "TBA"}</span>
-                  <span>👤 {graduation.organizer || "Organizer"}</span>
-                  <span>🏫 {graduation.faculty || "Faculty"}</span>
-                  <span>🎓 {graduation.degree || "Degree"}</span>
-                  <span>📘 {graduation.course || "Course"}</span>
-                  <span>⭐ {graduation.grade || "Grade N/A"}</span>
-                  <span>📜 {graduation.certificate || "No Certificate"}</span>
-                </div>
-
-                {/* Testimonial */}
-                {graduation.testimonial && (
-                  <blockquote className="italic text-gray-500 text-xs border-l-2 border-green-500 pl-2 mb-3">
-                    “{graduation.testimonial}”
-                  </blockquote>
-                )}
-
-                {/* Achievements */}
-                {graduation.achievements && graduation.achievements.length > 0 && (
-                  <ul className="list-disc list-inside text-xs text-gray-700 mb-3">
-                    {graduation.achievements.map((ach, idx) => (
-                      <li key={idx}>{ach}</li>
-                    ))}
-                  </ul>
-                )}
-
-                {/* CTA Button */}
-                <button className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-[1.03] shadow-md text-sm">
+              {/* Hover Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6 rounded-3xl">
+                <h3 className="text-white text-2xl font-bold mb-1">{graduation.studentName}</h3>
+                {graduation.degree && <p className="text-white/90 text-sm mb-1">🎓 {graduation.degree}</p>}
+                {graduation.course && <p className="text-white/80 text-sm mb-1">📘 {graduation.course}</p>}
+                {graduation.grade && <p className="text-yellow-400 font-semibold text-sm mb-2">⭐ {graduation.grade}</p>}
+                {graduation.description && <p className="text-white/80 text-xs line-clamp-3">{graduation.description}</p>}
+                <button className="mt-3 w-full bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 text-white font-semibold py-2 rounded-xl hover:from-orange-500 hover:to-pink-600 transition-all duration-300">
                   View Details →
                 </button>
               </div>
+
+              {/* Featured Badge */}
+              {graduation.is_featured && (
+                <span className="absolute top-3 left-3 bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 text-white px-3 py-1 rounded-full text-xs font-semibold shadow-md animate-pulse">
+                  🌟 Featured
+                </span>
+              )}
             </div>
           </Link>
         ))}
       </div>
 
-      {/* See All Button */}
+      {/* Explore All Button */}
       {!showAll && displayGraduations.length > 0 && (
-        <div className="mt-10 flex justify-center">
+        <div className="mt-12 flex justify-center">
           <Link
             href="/graduations"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white font-bold text-lg rounded-full hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-[1.05] shadow-lg"
+            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 text-white font-bold text-lg rounded-2xl shadow-lg hover:from-orange-500 hover:to-pink-600 transition-all duration-300 transform hover:scale-[1.05]"
           >
             Explore All Graduations
             <svg className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">

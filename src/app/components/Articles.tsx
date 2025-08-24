@@ -28,10 +28,10 @@ export default async function ArticlesPreview({ limit }: ArticlesPreviewProps) {
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       {displayArticles.map((item: any) => (
         <Link key={item.id} href={`/articles/${item.id}`} className="group block h-full">
-          <div className="relative flex flex-col h-full bg-white/70 backdrop-blur-md rounded-2xl shadow-sm border border-gray-200 hover:shadow-sm hover:scale-105 transition-all duration-300 cursor-pointer overflow-hidden">
+          <div className="relative flex flex-col h-full bg-white/80 backdrop-blur-md rounded-lg shadow-sm border border-orange-200 hover:shadow-md hover: transition-all duration-300 cursor-pointer overflow-hidden">
             
             {/* Image Section */}
-            <div className="relative h-56 w-full overflow-hidden rounded-t-2xl">
+            <div className="relative h-56 w-full overflow-hidden rounded-t-lg">
               <Image
                 src={getImageUrl(item.image)}
                 alt={item.title}
@@ -42,17 +42,17 @@ export default async function ArticlesPreview({ limit }: ArticlesPreviewProps) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
               
-              <span className="absolute top-4 left-4 bg-blue-500/80 text-white text-sm px-4 py-1 rounded-full font-semibold shadow">
+              <span className="absolute top-4 left-4 bg-orange-500/80 text-white text-sm px-4 py-1 rounded-full font-semibold shadow">
                 {item.category_id || "General"}
               </span>
-              <span className="absolute top-4 right-4 bg-white/80 text-blue-600 text-sm px-3 py-1 rounded-full shadow font-bold border border-blue-100">
+              {/* <span className="absolute top-4 right-4 bg-white/90 text-orange-600 text-sm px-3 py-1 rounded-full shadow font-bold border border-orange-100">
                 #{item.id}
-              </span>
+              </span> */}
             </div>
 
             {/* Content Section */}
             <div className="flex-1 flex flex-col p-5">
-              <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-blue-600 transition-colors line-clamp-2">
+              <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">
                 {item.title}
               </h2>
               <p className="text-gray-700 text-sm mb-4 line-clamp-3">
@@ -60,8 +60,8 @@ export default async function ArticlesPreview({ limit }: ArticlesPreviewProps) {
               </p>
               
               <div className="mt-auto flex items-center justify-between text-xs text-gray-500 gap-3 pt-3 border-t border-gray-200">
-                <span className="flex items-center gap-1 bg-gray-100/50 px-2 py-1 rounded-full">
-                  <svg className="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                <span className="flex items-center gap-1 bg-orange-100/50 px-2 py-1 rounded-full">
+                  <svg className="w-4 h-4 text-orange-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   {item.published_at?.split('T')[0] || item.date || "N/A"}
@@ -84,7 +84,7 @@ export default async function ArticlesPreview({ limit }: ArticlesPreviewProps) {
         <div className="col-span-full text-center mt-6">
           <Link
             href="/articles"
-            className="inline-block px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition"
+            className="inline-block px-8 py-3 bg-orange-500 text-white font-semibold rounded-lg shadow-lg hover:bg-orange-600 transition"
           >
             See All Articles
           </Link>

@@ -25,7 +25,7 @@ export default async function BlogsPage() {
 
   return (
     <main className="max-w-6xl mt-32 mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">لیست بلاگ‌ها</h1>
+    
       <BlogsSection blogs={blogs} showAll={true} />
     </main>
   );
