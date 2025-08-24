@@ -1,6 +1,7 @@
 // app/books/page.tsx
-import BooksSection from "../components/books/page"; // مسیر درست کامپوننت را بزنید
+import BooksSection from "../components/books/BooksSection";
 import { BooksApi } from "../../lib/api"; // مسیر درست API
+import { Book } from "../../lib/types";
 
 
 

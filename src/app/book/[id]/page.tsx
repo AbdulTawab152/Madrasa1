@@ -3,15 +3,15 @@ import Image from "next/image";
 import { Book } from "../../../lib/types";
 
 interface Params {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 export default async function BookDetailsPage({ params }: Params) {
-  const { id } = params;
+  const { id } = await params;
 
   // کتاب تکی از API
   const res = await BooksApi.getById(id);
-  const book: Book = res.data;
+  const book = res.data as Book;
 
   if (!book) {
     return <p className="text-center mt-20 text-xl">کتاب پیدا نشد!</p>;

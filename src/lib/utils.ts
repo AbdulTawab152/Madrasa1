@@ -191,3 +191,10 @@ export function deepClone<T>(obj: T): T {
   }
   return obj;
 }
+
+// General image URL function that can be used everywhere
+export const getImageUrl = (img?: string) => {
+  if (!img) return null;
+  if (img.startsWith("http")) return img;
+  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+};

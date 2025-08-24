@@ -1,5 +1,5 @@
 // app/iftah/page.tsx
-import IftahSection from "./../components/iftah/page"; // مسیر کامپوننت افتاح خود را درست وارد کنید
+import IftahSection from "./../components/iftah/IftahSection";
 import { IftahApi } from "../../lib/api"; // مسیر درست API
 
 interface Author {

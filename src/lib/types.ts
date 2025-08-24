@@ -26,29 +26,22 @@ export interface Blog extends BaseEntity {
   readTime?: number;
 }
 
-// Course types (matching existing API structure)
+// Course types (matching actual API structure)
 export interface Course extends BaseEntity {
-  name: string;
   title: string;
   slug: string;
+  book_id: number;
+  recorded_by_id: number;
   description: string;
-  content?: string;
-  image?: string;
-  date: string;
-  is_published: boolean;
-  is_top: boolean;
-  category_id: number;
-  featuredImage?: string;
-  instructor?: string;
-  level?: 'beginner' | 'intermediate' | 'advanced';
-  duration?: number; // in minutes
-  lessons?: number;
-  price?: number;
-  isFree?: boolean;
-  enrollmentCount?: number;
-  rating?: number;
-  enrolled?: string;
-  tags?: string[];
+  publish_date: string;
+  created_date: string;
+  is_published: number;
+  duration: string;
+  video_quantity: number;
+  resolution: string;
+  space: string;
+  short_video: string;
+  image: string;
 }
 
 // Author types (matching existing API structure)
@@ -80,7 +73,7 @@ export interface Author extends BaseEntity {
   courses?: Course[];
 }
 
-// Book types (matching existing API structure)
+// Book types (matching actual API structure)
 export interface Book extends BaseEntity {
   book_category_id: number;
   author_id: number;
@@ -90,47 +83,24 @@ export interface Book extends BaseEntity {
   description: string;
   written_year: string;
   pdf_file: string;
-  is_published: boolean;
-  downloadable: boolean;
+  is_published: number;
+  downloadable: number;
   image: string;
-  is_in_library: boolean;
-  // Additional fields for compatibility
-  slug : string;
-  coverImage?: string;
-  author?: Author;
-  publisher?: string;
-  isbn?: string;
-  language?: string;
-  category?: string;
-  price?: number;
-  isFree?: boolean;
-  downloadUrl?: string;
-  rating?: number;
-  tags?: string[];
+  is_in_library: number;
 }
 
-// Event types
+// Event types (matching actual API structure)
 export interface Event extends BaseEntity {
   title: string;
   slug: string;
   description: string;
-  content?: string;
-  featuredImage?: string;
-  startDate: string;
-  endDate: string;
-  location?: string;
-  isOnline?: boolean;
-  meetingUrl?: string;
-  organizer?: Author;
-  category?: string;
-  maxAttendees?: number;
-  currentAttendees?: number;
-  isFree?: boolean;
-  price?: number;
-  registrationRequired?: boolean;
-  tags?: string[];
-  date?: string;
-  is_published?: boolean;
+  image: string;
+  date: string;
+  duration: string;
+  live_link: string;
+  live_link_type: string;
+  status: string;
+  is_published: number;
 }
 
 // Fatwa types

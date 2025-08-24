@@ -21,8 +21,8 @@ interface Course {
   contact_no?: string | null;
 }
 
-export default async function CourseDetailsPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function CourseDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const res = await CoursesApi.getAll();
   const courses = Array.isArray(res.data) ? (res.data as Course[]) : [];
   const course = courses.find(c => c.slug === slug);

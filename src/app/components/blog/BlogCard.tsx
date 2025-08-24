@@ -59,8 +59,8 @@ export default function BlogsSection({ blogs, showAll = false }: BlogsSectionPro
       <h1 className="text-3xl md:text-5xl font-extrabold mb-3 leading-tight animate-fade-in-up">
         {featuredBlog.title}
       </h1>
-      <p className="text-lg md:text-xl mb-5 animate-fade-in-up delay-200">
-        {featuredBlog.description}
+      <p className="text-lg md:text-xl mb-5 animate-fade-in-up delay-200 line-clamp-4">
+        {featuredBlog.description.replace(/<[^>]*>/g, '')}
       </p>
       <Link
         href={`/blogs/${featuredBlog.slug}`}
@@ -140,7 +140,9 @@ export default function BlogsSection({ blogs, showAll = false }: BlogsSectionPro
                 <h3 className="text-xl font-bold mb-2 group-hover:text-orange-500 transition-colors line-clamp-2">
                   {blog.title}
                 </h3>
-                <p className="text-gray-600 text-sm flex-1 line-clamp-3">{blog.description}</p>
+                <p className="text-gray-600 text-sm flex-1 line-clamp-4">
+                  {blog.description.replace(/<[^>]*>/g, '')}
+                </p>
                 {blog.tags && blog.tags.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-2">
                     {blog.tags.map(tag => (

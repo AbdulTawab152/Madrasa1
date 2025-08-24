@@ -1,22 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Calendar, MapPin, User, Clock, Users, ArrowRight } from "lucide-react";
+import { getImageUrl } from "../../../lib/utils";
 
 interface Event {
   id: number;
-  name: string;
   title: string;
   slug: string;
   description: string;
-  image?: string;
+  image: string;
   date: string;
-  is_published: boolean;
-  is_featured: boolean;
-  category_id: number;
-  location?: string;
-  organizer?: string;
-  attendees?: string;
-  duration?: string;
+  duration: string;
+  live_link: string;
+  live_link_type: string;
+  status: string;
+  is_published: number;
 }
 
 interface EventsSectionProps {
@@ -36,16 +34,13 @@ export default function EventsSection({
 }: EventsSectionProps) {
   const sortedEvents =
     events
-      ?.filter((event) => event.is_published)
+      ?.filter((event) => event.is_published === 1)
       .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()) || [];
 
   // Show only 3 events on homepage
   const displayEvents = showAll ? sortedEvents : sortedEvents.slice(0, 3);
 
-  const getImageUrl = (img?: string) => {
-    if (img && img.startsWith("http")) return img;
-    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-  };
+
 
   return (
     <div className="min-h-screen">
@@ -82,16 +77,16 @@ export default function EventsSection({
 
         <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
           <div className="text-4xl font-bold text-pink-400">
-            {sortedEvents.filter(e => e.is_featured).length}+
+            {sortedEvents.filter(e => e.status === 'coming').length}+
           </div>
-          <div className="mt-2 text-gray-100 font-medium">Featured</div>
+          <div className="mt-2 text-gray-100 font-medium">Upcoming</div>
         </div>
 
         <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
           <div className="text-4xl font-bold text-green-400">
-            {sortedEvents.filter(e => new Date(e.date) > new Date()).length}+
+            {sortedEvents.filter(e => e.status === 'past').length}+
           </div>
-          <div className="mt-2 text-gray-100 font-medium">Upcoming</div>
+          <div className="mt-2 text-gray-100 font-medium">Past Events</div>
         </div>
       </div>
 
@@ -162,8 +157,8 @@ export default function EventsSection({
                       {event.title}
                     </h3>
 
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {event.description}
+                    <p className="text-gray-600 text-sm mb-4 line-clamp-4">
+                      {event.description.replace(/<[^>]*>/g, '')}
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">

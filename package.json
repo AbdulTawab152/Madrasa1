@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@tabler/icons-react": "^3.34.1",
+    "@tailwindcss/line-clamp": "^0.4.4",
     "clsx": "^2.1.1",
     "lucide": "^0.539.0",
     "lucide-react": "^0.539.0",

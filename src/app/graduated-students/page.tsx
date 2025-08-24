@@ -1,23 +1,7 @@
 // app/graduations/page.tsx
 import GraduationsSection from "./../components/graduation/graduationCard"; // مسیر درست کامپوننت
 import { GraduationsApi } from "../../lib/api"; // مسیر درست API
-
-interface Graduation {
-  id: number;
-  name: string;
-  title: string;
-  slug: string;
-  description: string;
-  image?: string;
-  date: string;
-  is_published: boolean;
-  is_featured: boolean;
-  faculty?: string;
-  degree?: string;
-  location?: string;
-  organizer?: string;
-  duration?: string;
-}
+import { Graduation } from "../../lib/types";
 
 export default async function GraduationsPage() {
   // گرفتن تمام graduations
