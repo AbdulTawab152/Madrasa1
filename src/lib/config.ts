@@ -21,11 +21,13 @@ export const endpoints = {
   courses: `${apiConfig.baseUrl}/courses`,
   authors: `${apiConfig.baseUrl}/authors`,
   books: `${apiConfig.baseUrl}/books`,
+  book: `${apiConfig.baseUrl}/book`,   // 👈 اضافه کنید
   events: `${apiConfig.baseUrl}/events`,
   iftah: `${apiConfig.baseUrl}/iftah`,
   articles: `${apiConfig.baseUrl}/articles`,
   graduated: `${apiConfig.baseUrl}/graduations`,
 } as const;
+
 
 // Feature Flags
 export const features = {

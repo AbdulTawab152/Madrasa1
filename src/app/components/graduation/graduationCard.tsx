@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
@@ -33,13 +35,12 @@ export default function GraduationsSection({ graduations, showAll = false }: Gra
   const displayGraduations = showAll ? sortedGraduations : sortedGraduations.slice(0, 3);
   const featuredGraduation = sortedGraduations.find(g => g.is_featured);
 
-
   const getImageUrl = (img?: string) => {
-    if (img && img.startsWith("http")) return img;
-    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+    if (!img) return '/default-student.jpg'; // Default fallback image
+    if (img.startsWith("http")) return img;
+    // Clean up the path and construct the URL
+    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img.replace(/^\/+/, '')}`;
   };
-
-
 
   return (
     <div className="w-full relative px-4 md:px-0 py-16 bg-gray-50">
@@ -48,10 +49,15 @@ export default function GraduationsSection({ graduations, showAll = false }: Gra
       {featuredGraduation && !showAll && (
         <div className="relative w-full h-[480px] md:h-[520px] rounded-3xl overflow-hidden shadow-2xl mb-12 group">
           <Image
-            src='/1.jpg'
+            src={getImageUrl(featuredGraduation.img)}
             alt={featuredGraduation.studentName}
             fill
             className="object-cover brightness-90 group-hover:scale-105 transition-transform duration-700"
+            onError={(e) => {
+              // Fallback if image fails to load
+              const target = e.target as HTMLImageElement;
+              target.src = '/default-student.jpg';
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent"></div>
           <div className="absolute bottom-12 left-8 md:left-16 text-white max-w-2xl z-10">
@@ -107,6 +113,11 @@ export default function GraduationsSection({ graduations, showAll = false }: Gra
                 alt={graduation.studentName}
                 fill
                 className="object-cover w-full h-full rounded-3xl transition-transform duration-500 group-hover:scale-110"
+                onError={(e) => {
+                  // Fallback if image fails to load
+                  const target = e.target as HTMLImageElement;
+                  target.src = '/default-student.jpg';
+                }}
               />
 
               {/* Hover Overlay */}

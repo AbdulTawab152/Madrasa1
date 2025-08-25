@@ -78,7 +78,7 @@ export default async function TasawwufPage() {
                   )}
                   
                   {/* Content Container */}
-                  <div className={`relative flex flex-col md:flex-row gap-6 p-8 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-orange-100 shadow-lg hover:shadow-xl transition-shadow ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} ${isEven ? '' : 'mr-8'}`}>
+                  <div className={`relative flex flex-col md:flex-row gap-6 p-8 bg-white/80 backdrop-blur-sm rounded-2xl border-2 border-orange-100 shadow- hover:shadow-xl transition-shadow ${isEven ? 'md:flex-row' : 'md:flex-row-reverse'} ${isEven ? '' : 'mr-8'}`}>
                     {/* Number indicator */}
                     <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg z-10">
                       <span className="text-white font-bold text-lg">{index + 1}</span>

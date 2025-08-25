@@ -146,10 +146,11 @@ export class BooksApi {
     return apiClient.get(endpoints.books);
   }
 
-  static async getById(id: string) {
-    return apiClient.get(`${endpoints.books}/${id}`);
+  static async getById(slug: string) {
+    return apiClient.get(`${endpoints.book}/${slug}`);
   }
 }
+
 
 
 

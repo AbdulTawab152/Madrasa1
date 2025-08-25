@@ -7,6 +7,7 @@ import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard";
 import ArticlesPreview from "./components/Articles";
 import GraduationsSection from "./components/graduation/graduationCard";
+import Gallery from "./gallery/page";
 
 // import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
 // import ArticlesList from "./components/Articles";
@@ -55,6 +56,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
+      <Gallery/>
       {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
 
       {/* Courses Section */}
@@ -79,7 +81,7 @@ export default async function HomePage() {
       {/* event */}
 
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="w-full  px-6">
           <Suspense
             fallback={
               <div className="flex items-center justify-center py-20">

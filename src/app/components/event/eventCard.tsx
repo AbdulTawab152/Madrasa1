@@ -106,14 +106,36 @@ export default function EventsSection({
 
       {/* Events Section */}
       <section className="w-full px-4 py-16 md:px-8 max-w-6xl mx-auto">
-        <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-3">
-            {showAll ? "All Events" : "Upcoming Events"}
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Discover our curated events and join our community gatherings
-          </p>
-        </div>
+<div className="relative text-center mb-20">
+  {/* Subtle background accent */}
+  <div className="absolute inset-0 -z-10 flex items-center justify-center">
+    <div className="w-40 h-40 md:w-60 md:h-60 rounded-full bg-gradient-to-r from-orange-200 via-pink-200 to-yellow-200 opacity-30 blur-3xl"></div>
+  </div>
+
+  {/* Title */}
+  <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
+    {showAll ? (
+      <>
+         All <span className="text-orange-500">Events</span>
+      </>
+    ) : (
+      <>
+         Upcoming <span className="text-orange-500">Events</span>
+      </>
+    )}
+  </h2>
+
+  {/* Subtitle */}
+  <p className="text-gray-600 max-w-xl mx-auto text-lg leading-relaxed">
+    Discover inspiring <span className="text-orange-500 font-semibold">events</span>, connect with like-minded people, and grow with our vibrant community.
+  </p>
+
+  {/* Decorative divider */}
+  <div className="mt-6 flex justify-center">
+    <span className="h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-500 shadow-md"></span>
+  </div>
+</div>
+
 
         <div className="relative">
           <div className="absolute left-5 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
@@ -162,30 +184,30 @@ export default function EventsSection({
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-                      {event.location && (
+                      {/* {event.location && (
                         <div className="flex items-center gap-1">
                           <MapPin size={16} className="text-orange-400" />
                           <span className="truncate">{event.location}</span>
                         </div>
-                      )}
-                      {event.organizer && (
+                      )} */}
+                      {/* {event.organizer && (
                         <div className="flex items-center gap-1">
                           <User size={16} className="text-orange-400" />
                           <span className="truncate">{event.organizer}</span>
                         </div>
-                      )}
+                      )} */}
                       {event.duration && (
                         <div className="flex items-center gap-1">
                           <Clock size={16} className="text-orange-400" />
                           <span>{event.duration}</span>
                         </div>
                       )}
-                      {event.attendees && (
+                      {/* {event.attendees && (
                         <div className="flex items-center gap-1">
                           <Users size={16} className="text-orange-400" />
                           <span>{event.attendees} attendees</span>
                         </div>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </div>
@@ -194,55 +216,63 @@ export default function EventsSection({
           ))}
         </div>
           {!showAll && sortedEvents.length > 3 && (
-  <div className="relative mt-28 ">
-    {/* Soft radial background */}
-    <div className="absolute inset-0 flex justify-center items-center">
-      <div className="w-full h-[600px] bg-gradient-to-r from-pink-400/20 to-orange-400/20 rounded-full blur-3xl"></div>
-    </div>
+        <div className="relative mt-28">
+          {/* Background with stronger orange gradient */}
+          <div className="absolute inset-0 flex justify-center items-center">
+            <div className="w-full h-[600px] bg-gradient-to-r from-amber-400/30 via-orange-500/25 to-orange-600/20 rounded-full blur-3xl"></div>
+          </div>
 
-    <div className="relative w-full  bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-white/30 dark:border-gray-800/40 rounded-3xl  py-20 text-center overflow-hidden">
-      {/* Floating decorative sparkles */}
-      <div className="absolute top-6 left-10 text-yellow-400 animate-ping">✨</div>
-      <div className="absolute top-12 right-12 text-pink-400 animate-bounce">🎉</div>
-      <div className="absolute bottom-10 left-16 text-orange-400 animate-pulse">⭐</div>
+          <div className="relative w-full bg-gradient-to-b from-white/90 to-amber-50/80 dark:from-gray-900/90 dark:to-amber-950/70 backdrop-blur-xl border border-amber-200/50 dark:border-amber-900/40 rounded-3xl py-12 text-center overflow-hidden ">
+            {/* Enhanced decorative elements with orange theme */}
+            <div className="absolute top-6 left-10 text-amber-400 animate-ping">✨</div>
+            <div className="absolute top-12 right-12 text-orange-500 animate-bounce">🎉</div>
+            <div className="absolute bottom-10 left-16 text-amber-500 animate-pulse">⭐</div>
+            <div className="absolute bottom-16 right-20 text-orange-400 animate-pulse delay-300">🔥</div>
 
-      {/* Gradient ring accent */}
-      <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-orange-400 via-pink-500 to-red-500 opacity-20 blur-xl"></div>
+            {/* Stronger gradient ring accent */}
+            <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-amber-400 via-orange-500 to-orange-600 opacity-30 blur-xl"></div>
 
-      {/* Heading */}
-      <h2 className="relative text-4xl md:text-5xl font-extrabold bg-gradient-to-r from-orange-500 to-pink-600 bg-clip-text text-transparent mb-6 tracking-tight">
-        Discover Every Event
-      </h2>
+            {/* Enhanced heading with bolder orange gradient */}
+            <h2 className="relative text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 via-orange-600 to-orange-700 bg-clip-text text-transparent mb-8 tracking-tight px-4">
+              Discover Every Event
+            </h2>
 
-      {/* Subtext */}
-      <p className="relative text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-12 max-w-2xl mx-auto leading-relaxed">
-        You’ve explored a glimpse of what we offer.  
-        Step into the full journey with all{" "}
-        <span className="font-semibold text-orange-500">featured highlights</span>,{" "}
-        <span className="font-semibold text-pink-500">exclusive sessions</span>, and{" "}
-        <span className="font-semibold text-purple-500">upcoming opportunities</span>.  
-      </p>
+            {/* Improved subtext with better orange accent */}
+            <p className="relative text-xl md:text-xl text-gray-800 dark:text-amber-100 mb-14 max-w-2xl mx-auto leading-relaxed px-6">
+              You've explored a glimpse of what we offer.  
+              Step into the full journey with all{" "}
+              <span className="font-semibold text-amber-600 dark:text-amber-400">featured highlights</span>,{" "}
+              <span className="font-semibold text-orange-600 dark:text-orange-400">exclusive sessions</span>, and{" "}
+              <span className="font-semibold text-amber-700 dark:text-amber-300">upcoming opportunities</span>.  
+            </p>
 
-      {/* CTA Button */}
-      <Link
-        href="/event"
-        className="group relative inline-flex items-center px-12 py-5 rounded-full 
-        text-lg font-bold text-white shadow-xl bg-gradient-to-r from-orange-500 via-pink-500 to-red-500 
-        hover:shadow-2xl hover:scale-105 transform transition-all duration-300"
-      >
-        <span className="relative flex items-center">
-          See All Events
-          <ArrowRight
-            size={24}
-            className="ml-3 transition-transform duration-300 group-hover:translate-x-2"
-          />
-        </span>
+            {/* Enhanced CTA Button with stronger orange presence */}
+            <div className="relative">
+              <Link
+                href="/event"
+                className="group relative inline-flex items-center px-6 py-3 rounded-full 
+                text-md font-bold text-white shadow-2xl bg-gradient-to-r from-amber-500 to-orange-600 
+                hover:shadow-2xl hover:scale-105 transform transition-all duration-300 hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-700"
+              >
+                <span className="relative flex items-center">
+                  See All Events
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    className="ml-3 transition-transform duration-300 group-hover:translate-x-2 h-6 w-6"
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
 
-        {/* Glow effect */}
-        <span className="absolute inset-0 rounded-full bg-gradient-to-r from-orange-400 to-pink-500 opacity-30 blur-lg animate-pulse"></span>
-      </Link>
-    </div>
-  </div>
+                {/* Enhanced glow effect */}
+                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 opacity-40 blur-lg group-hover:opacity-50 transition-opacity duration-300"></span>
+              </Link>
+            </div>
+          </div>
+        </div>
 )}
 
 

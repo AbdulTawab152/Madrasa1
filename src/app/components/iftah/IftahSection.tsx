@@ -74,8 +74,8 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
       {/* Hero Section */}
 
 {showAll && (
-  <div className="relative overflow-hidden min-h-[80vh] flex items-center justify-center    mb-20">
-    {/* Background Image with Overlay */}
+  <div className="relative overflow-hidden min-h-screen flex items-center justify-center mb-20">
+    {/* Background Image with Enhanced Overlay */}
     <div className="absolute inset-0 z-0">
       <Image
         src="/1.jpg" // replace with your image path
@@ -84,44 +84,51 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
         className="object-cover"
         priority
       />
-      <div className="absolute inset-0 bg-gradient-to-r from-orange-900/85 via-orange-800/80 to-amber-900/70"></div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48cGF0aCBkPSJNMTIgMTJIMTBWMTBIMTJWMTJaTTAgMEg2MFY2MEgwVjBaIiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2Utb3BhY2l0eT0iMC4xIi8+PC9zdmc+')] opacity-10"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-900/90 via-amber-900/85 to-orange-800/80"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2Utb3BhY2l0eT0iMC4xNSI+PHBhdGggZD0iTTAgMEg2MFY2MEgwVjBaIi8+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMTUiLz48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyMCIvPjwvZz48L3N2Zz4=')] opacity-15"></div>
     </div>
 
-    {/* Animated Elements */}
-    <div className="absolute top-10 left-10 w-20 h-20 bg-amber-400/10 rounded-full animate-pulse-slow"></div>
-    <div className="absolute bottom-10 right-10 w-16 h-16 bg-orange-500/15 rounded-full animate-pulse-slower"></div>
-    <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-white/10 rounded-full animate-float"></div>
+    {/* Enhanced Animated Elements */}
+    <div className="absolute top-10 left-10 w-20 h-20 bg-gradient-to-br from-amber-400/15 to-orange-500/10 rounded-full animate-pulse-slow"></div>
+    <div className="absolute bottom-10 right-10 w-16 h-16 bg-gradient-to-br from-orange-500/20 to-amber-400/15 rounded-full animate-pulse-slower"></div>
+    <div className="absolute top-1/3 right-1/4 w-12 h-12 bg-gradient-to-br from-white/15 to-amber-100/10 rounded-full animate-float"></div>
     
-    {/* Arabic Calligraphy Element */}
-    <div className="absolute top-5 right-5 md:top-10 md:right-10 opacity-20 text-5xl md:text-7xl text-white font-arabic">
+    {/* Additional floating elements for depth */}
+    <div className="absolute top-1/4 left-1/5 w-10 h-10 bg-amber-300/10 rounded-full animate-float-slow" style={{ animationDelay: "1.5s" }}></div>
+    <div className="absolute bottom-1/4 right-1/5 w-14 h-14 bg-orange-400/10 rounded-full animate-float-medium" style={{ animationDelay: "2s" }}></div>
+    
+    {/* Arabic Calligraphy Elements */}
+    <div className="absolute top-5 right-5 md:top-10 md:right-10 opacity-25 text-5xl md:text-7xl text-white font-arabic">
       ﷲ
     </div>
+    <div className="absolute bottom-5 left-5 md:bottom-10 md:left-10 opacity-20 text-4xl md:text-6xl text-amber-200 font-arabic">
+      ﷴ
+    </div>
 
-    {/* Main Content */}
+    {/* Main Content Container */}
     <motion.div
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className="relative z-10 text-center text-white max-w-4xl mx-auto"
+      className="relative z-10 text-center text-white max-w-4xl mx-auto px-6 py-12"
     >
-      {/* Icon with subtle glow */}
+      {/* Icon with enhanced glow */}
       <motion.div
         initial={{ scale: 0, rotate: -180 }}
         animate={{ scale: 1, rotate: 0 }}
         transition={{ delay: 0.3, type: "spring", stiffness: 100, damping: 10 }}
-        className="inline-flex items-center justify-center mb-8 w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/30"
+        className="inline-flex items-center justify-center mb-8 w-24 h-24 rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 shadow-lg shadow-amber-500/40 ring-2 ring-amber-300/30"
       >
-        <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       </motion.div>
 
-      {/* Subtle decorative elements */}
-      <div className="flex justify-center mb-6">
-        <div className="w-16 h-1 bg-amber-400 rounded-full"></div>
+      {/* Decorative elements */}
+      <div className="flex justify-center mb-8">
+        <div className="w-20 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
         <div className="w-3 h-3 mx-4 bg-amber-400 rounded-full animate-ping"></div>
-        <div className="w-16 h-1 bg-amber-400 rounded-full"></div>
+        <div className="w-20 h-1 bg-gradient-to-r from-transparent via-amber-400 to-transparent rounded-full"></div>
       </div>
 
       {/* Main Heading */}
@@ -129,22 +136,21 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5, duration: 0.7 }}
-        className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+        className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight tracking-tight"
       >
-        <span className="bg-gradient-to-r from-amber-300 to-orange-300 bg-clip-text text-transparent">
+        <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-orange-300 bg-clip-text text-transparent drop-shadow-md">
           Islamic Guidance
         </span>
       </motion.h1>
 
-      {/* Subheading with typewriter effect */}
+      {/* Subheading */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.8 }}
-        className="text-xl md:text-2xl text-amber-100 mb-8 font-light max-w-3xl mx-auto leading-relaxed"
+        className="text-xl md:text-2xl text-amber-100 mb-8 font-medium max-w-3xl mx-auto leading-relaxed"
       >
-        Discover answers to your questions from qualified scholars
-        <span className="typewriter"> and Islamic authorities</span>
+        Discover authentic answers from qualified scholars and Islamic authorities
       </motion.div>
 
       {/* Description */}
@@ -152,143 +158,152 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.0, duration: 0.8 }}
-        className="text-lg text-orange-100/90 mb-10 max-w-2xl mx-auto leading-relaxed"
+        className="text-lg text-orange-100/90 mb-10 max-w-2xl mx-auto leading-relaxed px-4"
       >
-        All in one clean and easy-to-read space. Find authentic fatwas and guidance 
-        for your daily life according to Quran and Sunnah.
+        Find authentic fatwas and guidance for your daily life according to Quran and Sunnah, 
+        all in one clean and easy-to-read space.
       </motion.p>
 
-      {/* CTA Buttons */}
-      {/* <motion.div
+      {/* Feature Highlights */}
+      <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1.2, duration: 0.6 }}
-        className="flex flex-col sm:flex-row justify-center gap-5 mb-12"
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 px-4"
       >
-        <motion.button
-          whileHover={{ scale: 1.05, y: -2 }}
-          whileTap={{ scale: 0.98 }}
-          className="px-8 py-4 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center gap-2 group"
-        >
-          Explore Fatwas
-          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-          </svg>
-        </motion.button>
-        
-        <motion.button
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.98 }}
-          className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-amber-400/30 text-amber-100 font-semibold rounded-xl hover:bg-white/15 transition-all"
-        >
-          Ask a Question
-        </motion.button>
-      </motion.div> */}
+        {[
+          { icon: "📖", title: "Quran & Sunnah", desc: "Based on authentic sources" },
+          { icon: "👳", title: "Qualified Scholars", desc: "Verified Islamic authorities" },
+          { icon: "🔍", title: "Easy Search", desc: "Find answers quickly" }
+        ].map((feature, index) => (
+          <div key={index} className="bg-orange-900/30 p-5 rounded-xl border border-orange-700/30 backdrop-blur-sm">
+            <div className="text-3xl mb-3">{feature.icon}</div>
+            <div className="text-amber-200 font-semibold mb-2">{feature.title}</div>
+            <div className="text-orange-100/80 text-sm">{feature.desc}</div>
+          </div>
+        ))}
+      </motion.div>
 
-      {/* Stats */}
-      <motion.div
+      {/* Stats with improved design */}
+      {/* <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.8 }}
-        className="grid grid-cols-3 gap-8 py-32 max-w-2xl mx-auto pt-8 border-t border-orange-400/20"
+        className="grid grid-cols-3 gap-8 py-8 max-w-2xl mx-auto border-t border-orange-400/20"
       >
-        <div className="text-center">
-          <div className="text-3xl font-bold text-amber-300 mb-2">500+</div>
-          <div className="text-orange-100/80 text-sm">Fatwas</div>
-        </div>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-amber-300 mb-2">50+</div>
-          <div className="text-orange-100/80 text-sm">Scholars</div>
-        </div>
-        <div className="text-center">
-          <div className="text-3xl font-bold text-amber-300 mb-2">10K+</div>
-          <div className="text-orange-100/80 text-sm">Readers</div>
-        </div>
-      </motion.div>
+        {[
+          { number: "500+", label: "Fatwas" },
+          { number: "50+", label: "Scholars" },
+          { number: "10K+", label: "Readers" }
+        ].map((stat, index) => (
+          <div key={index} className="text-center">
+            <div className="text-3xl font-bold text-amber-300 mb-2 drop-shadow-md">{stat.number}</div>
+            <div className="text-orange-100/80 text-sm uppercase tracking-wider">{stat.label}</div>
+          </div>
+        ))}
+      </motion.div> */}
     </motion.div>
 
-    {/* Scroll Indicator */}
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 2.0, duration: 1 }}
-      className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-    >
-      <span className="text-sm text-amber-200/80 mb-2">Scroll to explore</span>
-      <div className="w-6 h-10 border-2 border-amber-400/50 rounded-full flex justify-center p-1">
-        <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-          className="w-2 h-2 bg-amber-400 rounded-full"
-        />
-      </div>
-    </motion.div>
+    {/* Enhanced Scroll Indicator */}
+
   </div>
 )}
 
 
-      {!showAll && (
-        <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 py-20 px-4 rounded-3xl mb-16">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZD0iTTI1IDI1QzQwIDI1IDUwIDM1IDUwIDUwUzQwIDc1IDI1IDc1UzAgNjUgMCA1MFMxMCAyNSAyNSAyNVoiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0ZBNzQwMCIgc3Ryb2tlLXdpZHRoPSIwLjUiLz48L3N2Zz4=')]"></div>
+{!showAll && (
+  <div className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-100 py-24 px-6 rounded-3xl mb-20 shadow-2xl border border-indigo-100">
+    {/* Enhanced Background Pattern - More visible */}
+    <div className="absolute inset-0 opacity-20">
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiM1QjgwREUiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2Utb3BhY2l0eT0iMC4zIj48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIxNSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjI1Ii8+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iNSIvPjxsaW5lIHgxPSIzMCIgeTE9IjAiIHgyPSIzMCIgeTI9IjYwIi8+PGxpbmUgeDE9IjAiIHkxPSIzMCIgeDI9IjYwIiB5Mj0iMzAiLz48L2c+PC9zdmc+')]"></div>
+    </div>
+
+    {/* Floating Elements - New color scheme */}
+    <div className="absolute top-12 left-12 w-28 h-28 bg-gradient-to-br from-blue-300/30 to-indigo-300/20 rounded-full blur-2xl animate-float-slow"></div>
+    <div className="absolute bottom-12 right-16 w-20 h-20 bg-gradient-to-br from-purple-300/30 to-blue-300/20 rounded-full blur-2xl animate-float-medium" style={{ animationDelay: "1.5s" }}></div>
+    <div className="absolute top-1/3 right-1/4 w-16 h-16 bg-gradient-to-br from-indigo-300/20 to-blue-200/10 rounded-full blur-xl animate-float-slow" style={{ animationDelay: "2.5s" }}></div>
+
+    {/* Content Container with subtle border */}
+    <motion.div 
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.9, ease: "easeOut" }}
+      className="text-center relative z-10 max-w-4xl mx-auto bg-white/40 backdrop-blur-sm rounded-2xl py-12 px-8 border border-white/50 shadow-sm"
+    >
+      {/* Icon Badge - New design */}
+      <motion.div 
+        initial={{ scale: 0, rotate: -15 }}
+        animate={{ scale: 1, rotate: 0 }}
+        transition={{ delay: 0.2, type: "spring", stiffness: 120, damping: 10 }}
+        className="inline-flex items-center justify-center mb-8 w-24 h-24 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 shadow-lg shadow-blue-200/60 ring-2 ring-white ring-opacity-50"
+      >
+        <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </motion.div>
+
+      {/* Heading - New color scheme */}
+      <motion.h2 
+        initial={{ opacity: 0, y: 25 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.4 }}
+        className="text-4xl md:text-5xl font-bold mb-6 leading-tight tracking-tight"
+      >
+        <span className="bg-gradient-to-r from-indigo-700 to-blue-700 bg-clip-text text-transparent drop-shadow-sm">
+          Islamic
+        </span>
+      </motion.h2>
+
+      {/* Description - Improved readability */}
+      <motion.p 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.6 }}
+        className="text-lg md:text-xl text-indigo-900/90 max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
+      >
+        Discover trusted answers to your questions from qualified scholars and authentic Islamic sources.
+      </motion.p>
+
+      {/* Decorative separator */}
+      <motion.div 
+        initial={{ width: 0 }}
+        animate={{ width: "100px" }}
+        transition={{ delay: 0.8, duration: 0.8 }}
+        className="h-1 bg-gradient-to-r from-indigo-300 to-blue-400 mx-auto mb-10 rounded-full"
+      ></motion.div>
+
+      {/* Feature highlights */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1 }}
+        className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+      >
+        {[
+          { icon: "📚", text: "Authentic Sources" },
+          { icon: "👳", text: "Qualified Scholars" },
+          { icon: "🔍", text: "Detailed Answers" }
+        ].map((feature, index) => (
+          <div key={index} className="bg-white/70 p-4 rounded-xl border border-white/50 shadow-sm">
+            <div className="text-2xl mb-2">{feature.icon}</div>
+            <div className="text-indigo-800 font-medium">{feature.text}</div>
           </div>
-          
-          {/* Floating Elements */}
-          <div className="absolute top-10 left-10 w-20 h-20 bg-orange-200/30 rounded-full blur-xl animate-float"></div>
-          <div className="absolute bottom-10 right-10 w-16 h-16 bg-amber-300/40 rounded-full blur-xl animate-float" style={{ animationDelay: '2s' }}></div>
-          <div className="absolute top-1/2 left-1/4 w-12 h-12 bg-orange-300/20 rounded-full blur-lg animate-float" style={{ animationDelay: '1s' }}></div>
+        ))}
+      </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center relative z-10"
-          >
-            <motion.div 
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 100 }}
-              className="inline-flex items-center justify-center mb-6 w-20 h-20 rounded-2xl bg-gradient-to-br from-orange-400 to-amber-500 shadow-lg"
-            >
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </motion.div>
-
-            <motion.h2 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-4xl md:text-5xl font-bold mb-4"
-            >
-              <span className="bg-gradient-to-r from-orange-600 to-amber-700 bg-clip-text text-transparent">
-                Islamic Guidance
-              </span>
-            </motion.h2>
-
-            <motion.p 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-              className="text-xl text-orange-800/80 max-w-2xl mx-auto mb-8"
-            >
-              Discover answers to your questions from qualified scholars and Islamic authorities
-            </motion.p>
-
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8 }}
-              className="flex justify-center space-x-4"
-            >
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-              <div className="w-2 h-2 bg-orange-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-            </motion.div>
-          </motion.div>
-        </div>
-      )}
+      {/* Pulsing Dots - New color scheme */}
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1.2 }}
+        className="flex justify-center space-x-3"
+      >
+        <div className="w-3 h-3 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full animate-ping-slow"></div>
+        <div className="w-3 h-3 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full animate-ping-medium" style={{ animationDelay: "0.3s" }}></div>
+        <div className="w-3 h-3 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-full animate-ping-slow" style={{ animationDelay: "0.6s" }}></div>
+      </motion.div>
+    </motion.div>
+  </div>
+)}
 
 
 

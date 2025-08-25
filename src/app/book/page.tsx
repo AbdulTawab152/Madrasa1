@@ -11,8 +11,8 @@ export default async function BooksPage() {
   const books = Array.isArray(res.data) ? (res.data as Book[]) : [];
 
   return (
-    <main className="max-w-6xl mt-32 mx-auto p-8">
-      <h1 className="text-3xl font-bold mb-6">لیست کتاب‌ها</h1>
+    <main className="max-w-full mt-28 mx-auto p-8">
+    
      <BooksSection books ={books} showAll={true} />
 
     </main>

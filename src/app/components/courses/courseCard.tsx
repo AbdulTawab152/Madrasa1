@@ -36,34 +36,65 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
   const displayCourses = showAll ? sortedCourses : sortedCourses.slice(0, 3);
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4">
+    <div className="w-full  mx-auto px-4">
       {/* Hero Section */}
-      {showAll && (
-        <section className="relative w-full h-[500px] md:h-[600px] mb-16 overflow-hidden rounded-2xl shadow-2xl">
-          <Image
-            src="/1.jpg"
-            alt="Courses Banner"
-            fill
-            className="object-cover scale-105 hover:scale-110 transition-transform duration-1000 ease-in-out"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70"></div>
-          <div className="relative z-10 flex flex-col justify-center items-center text-center h-full px-6">
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-4 drop-shadow-lg">
-              Expand Your{" "}
-              <span className="bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 bg-clip-text text-transparent">
-                Knowledge
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-3xl drop-shadow-md">
-              Explore our curated Islamic courses and start your journey toward learning and growth.
-            </p>
-            <div className="mt-6 flex justify-center">
-              <span className="w-32 h-1 bg-gradient-to-r from-amber-400 via-orange-500 to-pink-500 rounded-full"></span>
-            </div>
+{showAll && (
+  <section className="relative w-full mt-6 md:mt-12 mb-16 md:mb-20 overflow-hidden">
+    {/* Background gradient */}
+    <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-pink-50 z-0"></div>
+
+    <div className="relative z-10 py-16 md:py-24 px-6 flex flex-col items-center text-center">
+      
+      {/* Badge */}
+      <div className="inline-flex items-center gap-2 mb-6 px-5 py-2 bg-white shadow-md border border-orange-100 text-orange-600 text-sm font-medium rounded-full">
+        <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
+        Our Courses
+      </div>
+
+      {/* Main headline with gradient text + underline */}
+      <div
+        className={`transition-all duration-1000 transform 
+         "translate-y-0 opacity-100" : "translate-y-10 opacity-0"
+        }`}
+      >
+        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-gray-900 leading-tight">
+          Discover{" "}
+          <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+            Courses
+          </span>{" "}
+          <br className="hidden md:block" />
+          That{" "}
+          <span className="relative inline-block">
+            Inspire
+            <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-pink-500 rounded-full animate-pulse"></span>
+          </span>
+        </h1>
+
+        {/* Subtitle */}
+        <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+          Explore our curated collection of Islamic courses and tutorials. Learn, grow, and advance your knowledge at your own pace.
+        </p>
+      </div>
+
+      {/* Decorative minimal floating dots */}
+      <div className="absolute top-24 left-10 w-4 h-4 bg-orange-300 rounded-full opacity-50 animate-float-1"></div>
+      <div className="absolute top-1/3 right-16 w-5 h-5 bg-pink-300 rounded-full opacity-50 animate-float-2"></div>
+      <div className="absolute bottom-28 left-1/3 w-3 h-3 bg-amber-200 rounded-full opacity-60 animate-float-3"></div>
+
+      {/* Scroll indicator */}
+      {/* <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+        <div className="flex flex-col items-center">
+          <span className="text-sm text-gray-400 mb-2">Scroll</span>
+          <div className="w-6 h-10 border-2 border-gray-300 rounded-full flex justify-center">
+            <div className="w-1 h-3 bg-orange-500 rounded-full mt-2 animate-bounce"></div>
           </div>
-        </section>
-      )}
+        </div>
+      </div> */}
+    </div>
+  </section>
+)}
+
+
 
       {/* Featured Section Header */}
       {!showAll && (
