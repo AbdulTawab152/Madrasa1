@@ -221,7 +221,7 @@ export default function BlogsSection({ blogs, showAll = false }: BlogsSectionPro
       {!showAll && (
         <div className="text-center mb-12 relative px-4 max-w-3xl mx-auto">
           <div className="inline-block mb-4 px-4 py-1 bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 text-white text-sm font-semibold rounded-full shadow-lg animate-pulse">
-            📝 Latest Blogs
+           Latest Blogs
           </div>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 leading-tight">
             Explore Our <span className="bg-gradient-to-r from-orange-400 via-orange-500 to-pink-500 bg-clip-text text-transparent">Newest Insights</span>

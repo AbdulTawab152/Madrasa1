@@ -157,11 +157,11 @@ export default function EventsSection({
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      {event.is_featured && (
+                      {/* {event.is_featured && (
                         <div className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-orange-400 to-pink-500 text-white text-xs font-semibold rounded-full shadow-md">
                           ⭐ Featured
                         </div>
-                      )}
+                      )} */}
                     </div>
                   )}
 

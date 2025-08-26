@@ -50,5 +50,6 @@ export const navigation = {
     { name: 'Donation', href: '/donation', icon: 'donation' },
     { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'Article', href: '/articles', icon: 'article' },
+    { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

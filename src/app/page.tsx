@@ -7,14 +7,26 @@ import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard";
 import ArticlesPreview from "./components/Articles";
 import GraduationsSection from "./components/graduation/graduationCard";
-import Gallery from "./gallery/page";
+import Gallery from "./components/gallery/page";
+import Book from "./components/books/BooksSection";
 
 // import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
 // import ArticlesList from "./components/Articles";
 
+
+async function getImages() {
+  const res = await fetch(
+    "https://lawngreen-dragonfly-304220.hostingersite.com/api/gallery",
+    { cache: "no-store" }
+  );
+  if (!res.ok) throw new Error("Failed to fetch gallery");
+  return res.json();
+}
+
 import { fetchWithCache } from "../lib/api";
 import { endpoints } from "../lib/config";
 import { Blog, Course as CourseType, Event as EventType } from "../lib/types";
+import Books from "./components/Books";
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -25,6 +37,18 @@ async function fetchBlogsData(): Promise<Blog[]> {
     return [];
   }
 }
+
+
+
+// async function fetchBooksData(): Promise<Book[]> {
+//   try {
+//     const data = await fetchWithCache<Book[]>(endpoints.books);
+//     return Array.isArray(data) ? data : [];
+//   } catch (error) {
+//     console.error("Error fetching books:", error);
+//     return [];
+//   }
+// }
 
 async function fetchCourseData(): Promise<CourseType[]> {
   try {
@@ -46,17 +70,23 @@ async function fetchEventData(): Promise<EventType[]> {
   }
 }
 
+
 export default async function HomePage() {
   const [blogs, courses, events] = await Promise.all([
     fetchBlogsData(),
     fetchCourseData(),
     fetchEventData(),
   ]);
+
+    const images = await getImages();
   return (
+
+    
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
-      <Gallery/>
+     
+   
       {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
 
       {/* Courses Section */}
@@ -73,6 +103,24 @@ export default async function HomePage() {
             }
           >
             <Course courses={courses} showAll={false} />
+          </Suspense>
+        </div>
+      </section>
+
+
+            <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center py-20">
+                <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                <span className="ml-4 text-gray-600 font-medium">
+                  Loading books...
+                </span>
+              </div>
+            }
+          >
+            {/* <Book book={Books} showAll={false} /> */}
           </Suspense>
         </div>
       </section>
@@ -96,6 +144,9 @@ export default async function HomePage() {
           </Suspense>
         </div>
       </section>
+
+{/* Gallery */}
+       <Gallery initialImages={images} />
 
       {/* blogs Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -136,133 +187,10 @@ export default async function HomePage() {
         </div>
       </section>
       
-      {/* Gallery Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full mb-4">
-              🏛️ Campus Life
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Our Beautiful Campus
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Experience our vibrant Islamic learning environment and spiritual atmosphere
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Main Prayer Hall",
-                desc: "Sacred space for worship",
-                icon: "🕌",
-              },
-              { title: "Library", desc: "Knowledge and wisdom", icon: "📚" },
-              {
-                title: "Garden",
-                desc: "Peaceful learning environment",
-                icon: "🌿",
-              },
-              {
-                title: "Classrooms",
-                desc: "Modern learning spaces",
-                icon: "🏫",
-              },
-              {
-                title: "Courtyard",
-                desc: "Community gathering area",
-                icon: "🏛️",
-              },
-              {
-                title: "Study Rooms",
-                desc: "Quiet reflection spaces",
-                icon: "📖",
-              },
-            ].map((item, index) => (
-              <div key={index} className="group">
-                <div className="aspect-square bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300 rounded-lg overflow-hidden hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                  <div className="w-full h-full flex items-center justify-center">
-                    <span className="text-4xl group-hover:scale-110 transition-transform duration-300">
-                      {item.icon}
-                    </span>
-                  </div>
-                </div>
-                <div className="mt-4 text-center">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{item.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+  
 
       {/* Testimonials Section */}
-      <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full mb-4">
-              💬 Student Voices
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              What Our Students Say
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Hear from our community about their transformative learning experience
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                name: "Ahmed Hassan",
-                role: "Graduate",
-                text: "Anwarul Uloom provided me with authentic Islamic knowledge and a strong moral foundation that guides me in every aspect of life.",
-                avatar: "AH",
-              },
-              {
-                name: "Fatima Ali",
-                role: "Current Student",
-                text: "The teachers here are incredibly knowledgeable and caring. I've grown both spiritually and academically in ways I never imagined.",
-                avatar: "FA",
-              },
-              {
-                name: "Omar Khan",
-                role: "Parent",
-                text: "My children have flourished here. The Islamic values and education they receive are exceptional and truly life-changing.",
-                avatar: "OK",
-              },
-            ].map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
-              >
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center mr-3 shadow-md">
-                    <span className="text-white font-bold text-sm">
-                      {testimonial.avatar}
-                    </span>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-gray-900">
-                      {testimonial.name}
-                    </h4>
-                    <p className="text-amber-600 font-medium text-sm">
-                      {testimonial.role}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-gray-700 leading-relaxed text-sm">
-                  "{testimonial.text}"
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+  
 
       {/* Events Section */}
       {/* <section className="py-24 bg-white">
