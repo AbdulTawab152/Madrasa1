@@ -170,9 +170,9 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-10 p-4 bg-white rounded-2xl shadow-md">
           {/* Category Filters */}
           <div className="flex flex-wrap gap-2">
-            {categories.map(category => (
+            {categories.map((category, index) => (
               <button
-                key={category}
+                key={`category-${category}-${index}`}
                 onClick={() => setActiveCategory(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
                   activeCategory === category
@@ -221,7 +221,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
     {/* First three regular image items */}
     {filteredImages.slice(0, 3).map((img, index) => (
       <div
-        key={img.id}
+        key={`grid-item-${img.id}-${index}`}
         className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl "
         onClick={() => openLightbox(index)}
       >
@@ -282,7 +282,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
 
   return (
     <div
-      key={img.id}
+      key={`grid-item-${img.id}-${index + 4}`}
       className={`relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl 
         ${isBig ? "md:col-span-2 md:row-span-2 h-[255px]" : "h-64"}
       `}
@@ -337,7 +337,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
     {/* Final images (8-10) */}
     {filteredImages.slice(8, 11).map((img, index) => (
       <div
-        key={img.id}
+        key={`grid-item-${img.id}-${index + 8}`}
         className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-64"
         onClick={() => openLightbox(index + 8)}
       >
@@ -363,7 +363,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
         {viewMode === "slider" && (
           <div className="space-y-6">
             {sliderGroups.map((group, groupIndex) => (
-              <div key={groupIndex} className="rounded-2xl overflow-hidden shadow-lg">
+              <div key={`slider-group-${groupIndex}`} className="rounded-2xl overflow-hidden shadow-lg">
                 <MiniSlider 
                   images={group} 
                   title={`Collection ${groupIndex + 1}`} 
@@ -465,7 +465,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
             <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-full overflow-x-auto py-2">
               {filteredImages.map((img, index) => (
                 <button
-                  key={img.id}
+                  key={`thumbnail-${img.id}-${index}`}
                   onClick={() => setCurrentIndex(index)}
                   className={`w-16 h-16 rounded-lg overflow-hidden flex-shrink-0 border-2 transition-all ${
                     currentIndex === index ? "border-orange-500" : "border-transparent"
