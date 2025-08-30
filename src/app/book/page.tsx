@@ -11,9 +11,9 @@ export default async function BooksPage() {
   const books = Array.isArray(res.data) ? (res.data as Book[]) : [];
 
   return (
-    <main className="max-w-full mt-28 mx-auto p-8">
+    <main className="max-w-full mt-32 mx-auto ">
     
-     <BooksSection books ={books} showAll={true} />
+     <BooksSection books ={books} showHero={true} showAll={true} />
 
     </main>
   );

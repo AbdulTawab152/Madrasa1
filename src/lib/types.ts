@@ -76,7 +76,7 @@ export interface Author extends BaseEntity {
 // Book types (matching actual API structure)
 export interface Book extends BaseEntity {
   book_category_id: number;
-  author_id: number;
+  author: Author;
   title: string;
   edition: string;
   pages: number;
@@ -93,14 +93,17 @@ export interface Book extends BaseEntity {
 export interface Event extends BaseEntity {
   title: string;
   slug: string;
-  description: string;
   image: string;
-  date: string;
-  duration: string;
-  live_link: string;
-  live_link_type: string;
-  status: string;
-  is_published: number;
+   id: number;
+  branch_name: string;
+  address: string;
+  contact: string;
+  description: string;
+  email: string;
+  whatsapp: string;
+  country: string;
+  created_at: string;
+  updated_at: string;
 }
 
 // Fatwa types
