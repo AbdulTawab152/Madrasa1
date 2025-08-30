@@ -1,3 +1,4 @@
+// app/authors/[id]/page.tsx
 import Image from "next/image";
 import { fetchWithCache } from "../../../lib/api";
 import { endpoints } from "../../../lib/config";
@@ -27,11 +28,13 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   const { id } = await params;
   const author = await fetchAuthor(id);
 
+
+
   return (
     <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
-      <div className="bg-white  rounded-3xl overflow-hidden p-8">
+      <div className="bg-white rounded-3xl overflow-hidden p-8">
         {/* Profile Image */}
-        <div className="flex flex-col items-center text-center">
+        <div className="flex flex-col items-center text-center relative">
           {author.image ? (
             <Image
               src={getImageUrl(author.image)}
@@ -46,11 +49,14 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
             </div>
           )}
 
+          {/* Alive / Dead Dot on Image */}
+      
+
           {/* Name */}
           <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
             {author.first_name} {author.last_name}
           </h1>
-          <p className="text-gray-500 mt-2 max-w-xl">{author.bio}</p>
+          <p className="text-gray-500 mt-2 max-w-xl">{author.bio || "No bio available."}</p>
         </div>
 
         {/* Info Grid */}
@@ -58,53 +64,43 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <User className="text-amber-500" size={20} />
             <p>
-              <strong>Father:</strong> {author.father_name}
+              <strong>Father:</strong> {author.father_name || "N/A"}
             </p>
           </div>
+
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <User className="text-amber-500" size={20} />
             <p>
-              <strong>Grandfather:</strong> {author.grandfather_name}
+              <strong>Grandfather:</strong> {author.grandfather_name || "N/A"}
             </p>
           </div>
+
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <Calendar className="text-amber-500" size={20} />
             <p>
-              <strong>DOB:</strong> {author.dob}
+              <strong>DOB:</strong> {author.dob || "N/A"}
             </p>
           </div>
+
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <MapPin className="text-amber-500" size={20} />
             <p>
-              <strong>Address:</strong> {author.full_address}
+              <strong>Address:</strong> {author.full_address || "N/A"}
             </p>
           </div>
+
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <Phone className="text-amber-500" size={20} />
             <p>
               <strong>Contact:</strong> {author.contact_no || "N/A"}
             </p>
           </div>
-          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
-            {author.is_alive ? (
-              <CheckCircle className="text-green-500" size={20} />
-            ) : (
-              <XCircle className="text-red-500" size={20} />
-            )}
-            <p>
-              <strong>Alive:</strong> {author.is_alive ? "Yes" : "No"}
-            </p>
-          </div>
-          <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
-            {author.is_published ? (
-              <CheckCircle className="text-green-500" size={20} />
-            ) : (
-              <XCircle className="text-red-500" size={20} />
-            )}
-            <p>
-              <strong>Published:</strong> {author.is_published ? "Yes" : "No"}
-            </p>
-          </div>
+
+          {/* Alive Status */}
+         
+
+          {/* Published Status */}
+         
         </div>
       </div>
     </main>

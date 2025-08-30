@@ -146,8 +146,8 @@ export class BooksApi {
     return apiClient.get(endpoints.books);
   }
 
-  static async getById(slug: string) {
-    return apiClient.get(`${endpoints.book}/${slug}`);
+  static async getById(id: string) {
+    return apiClient.get(`${endpoints.book}/${id}`);
   }
 }
 

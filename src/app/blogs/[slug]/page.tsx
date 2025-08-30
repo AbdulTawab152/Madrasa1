@@ -250,7 +250,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                     <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                   </div>
                   <div className="p-5 flex-1 flex flex-col">
-                    <h3 className="font-semibold text-gray-900 group-hover:text-amber-600 transition-colors line-clamp-2 mb-2">
+                    <h3 className="font-semibold text-lg text-gray-900 group-hover:text-amber-600 transition-colors line-clamp-2 mb-2">
                       {rb.title}
                     </h3>
                     <p className="text-gray-600 text-sm line-clamp-2 mb-4 flex-1">
@@ -269,23 +269,7 @@ export default async function BlogDetailsPage({ params }: Params) {
         )}
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-amber-500 to-orange-600 rounded-2xl p-8 md:p-12 text-center text-white mb-12 shadow-xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Enjoyed this article?</h2>
-          <p className="text-amber-100 mb-6 max-w-md mx-auto text-lg">
-            Subscribe to our newsletter to receive more insightful content directly in your inbox.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <input 
-              type="email" 
-              placeholder="Your email address" 
-              className="px-5 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-amber-300 w-full sm:max-w-xs"
-            />
-            <button className="px-6 py-3 bg-white text-amber-700 font-semibold rounded-full shadow-sm hover:shadow-md transition-all whitespace-nowrap">
-              Subscribe Now
-            </button>
-          </div>
-          <p className="text-amber-200 text-xs mt-4">No spam, unsubscribe at any time</p>
-        </div>
+     
 
         {/* Navigation
         <div className="flex justify-between border-t border-gray-200 pt-8">

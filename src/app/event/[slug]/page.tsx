@@ -2,171 +2,253 @@
 import { EventsApi } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface Event {
+  id: number;
   title: string;
   slug: string;
   description: string;
-  content?: string;
-  featuredImage?: string;
-  startDate: string;
-  endDate: string;
-  location?: string;
-  isOnline?: boolean;
-  meetingUrl?: string;
-  organizer?: string;
-  category?: string;
-  maxAttendees?: number;
-  currentAttendees?: number;
-  isFree?: boolean;
-  price?: number;
-  registrationRequired?: boolean;
-  tags?: string[];
-  date?: string;
-  is_published?: boolean;
-  image?: string;
+  image: string;
+  date: string;
+  duration: string;
+  live_link: string;
+  live_link_type: string;
+  status: string; // "past", "upcoming", etc.
+  is_published: number; // 0 or 1
+  created_at: string;
+  updated_at: string;
 }
 
 interface Params {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
 
 export default async function EventDetailsPage({ params }: Params) {
-  const { slug } = await params;
+  const { slug } = params;
+
+  // Fetch events
   const res = await EventsApi.getAll();
-  const events = Array.isArray(res.data) ? (res.data as Event[]) : [];
-  const event: Event | undefined = events.find((e) => e.slug === slug);
+  const events: Event[] = Array.isArray(res.data) ? res.data : [];
+  const event = events.find((e) => e.slug === slug);
+  if (!event) notFound();
 
-  if (!event) {
-    return <p className="text-center mt-20 text-xl">Event not found!</p>;
-  }
+  const relatedEvents = events.filter((e) => e.slug !== slug).slice(0, 3);
 
-  const getImageUrl = (img?: string) => {
-    if (img && img.startsWith("http")) return img;
-    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+  const getImageUrl = (img?: string) =>
+    img ? (img.startsWith("http") ? img : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`) : "/placeholder.jpg";
+
+  // Format date for better display
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  };
+
+  // Get status badge color
+  const getStatusColor = (status: string) => {
+    switch(status.toLowerCase()) {
+      case 'upcoming': return 'bg-green-100 text-green-800';
+      case 'past': return 'bg-gray-100 text-gray-800';
+      case 'ongoing': return 'bg-blue-100 text-blue-800';
+      default: return 'bg-amber-100 text-amber-800';
+    }
   };
 
   return (
-    <main className="max-w-6xl mt-32 mx-auto px-6 py-12 font-sans">
-      <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
-        {/* Banner */}
-        {event.image && (
-          <div className="relative w-full h-[400px]">
-            <Image
-              src={getImageUrl(event.image)}
-              alt={event.title}
-              fill
-              className="object-cover"
-              priority
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-8">
-              <h1 className="text-4xl md:text-5xl font-bold text-white drop-shadow-lg">
+    <main className="min-h-screen my-[60] bg-gradient-to-b from-amber-50/20 to-white pt-28 pb-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Breadcrumb */}
+        <nav className="flex mb-8">
+          <ol className="flex items-center space-x-2 text-sm">
+            <li>
+              <Link href="/" className="text-amber-600 hover:text-amber-700 transition-colors">
+                Home
+              </Link>
+            </li>
+            <li className="flex items-center">
+              <span className="mx-2 text-amber-400">/</span>
+              <Link href="/events" className="text-amber-600 hover:text-amber-700 transition-colors">
+                Events
+              </Link>
+            </li>
+            <li className="flex items-center">
+              <span className="mx-2 text-amber-400">/</span>
+              <span className="text-gray-500 truncate max-w-xs md:max-w-md">
                 {event.title}
-              </h1>
-            </div>
+              </span>
+            </li>
+          </ol>
+        </nav>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-2">
+            {/* Event Header */}
+            <article className="bg-white rounded-2xl shadow-sm border border-amber-100 overflow-hidden mb-8">
+              {/* Featured Image */}
+              {event.image && (
+                <div className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden">
+                  <Image
+                    src={getImageUrl(event.image)}
+                    alt={event.title}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                  <div className="absolute top-4 right-4">
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(event.status)}`}>
+                      {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              <div className="p-6 md:p-8">
+                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                  {event.title}
+                </h1>
+
+                {/* Event Details Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-6 border-y border-gray-100">
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-amber-100 p-2 rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Date</p>
+                      <p className="font-medium">{formatDate(event.date)}</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start space-x-3">
+                    <div className="bg-amber-100 p-2 rounded-lg">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Duration</p>
+                      <p className="font-medium">{event.duration}</p>
+                    </div>
+                  </div>
+
+                  {event.live_link && (
+                    <div className="flex items-start space-x-3 md:col-span-2">
+                      <div className="bg-amber-100 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500">Live Stream</p>
+                        <a 
+                          href={event.live_link} 
+                          target="_blank" 
+                          rel="noopener noreferrer" 
+                          className="font-medium text-amber-600 hover:text-amber-700 inline-flex items-center mt-1"
+                        >
+                          {event.live_link_type || "Watch Live"}
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Description */}
+                {event.description && (
+                  <div className="mt-6">
+                    <h2 className="text-xl font-semibold mb-4 text-gray-900">About This Event</h2>
+                    <div className="prose max-w-none text-gray-700">
+                      <p className="whitespace-pre-line">{event.description}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </article>
           </div>
-        )}
 
-        {/* Content */}
-        <div className="p-8 space-y-8">
-          {/* Description */}
-          <p className="text-gray-700 text-lg leading-relaxed">
-            {event.description}
-          </p>
-
-          {/* Extra content (optional rich content) */}
-          {event.content && (
-            <div className="prose prose-lg text-gray-600 max-w-none">
-              <div dangerouslySetInnerHTML={{ __html: event.content }} />
-            </div>
-          )}
-
-          {/* Event Info Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <InfoCard label="📅 Start Date" value={event.startDate} />
-            <InfoCard label="📅 End Date" value={event.endDate} />
-            <InfoCard label="📍 Location" value={event.location || "TBA"} />
-            <InfoCard
-              label="🌐 Event Type"
-              value={event.isOnline ? "Online" : "In-Person"}
-            />
-            {event.meetingUrl && (
-              <InfoCard
-                label="🔗 Meeting Link"
-                value={
-                  <a
-                    href={event.meetingUrl}
-                    target="_blank"
-                    className="text-amber-600 underline"
-                  >
-                    Join Meeting
-                  </a>
-                }
-              />
+          {/* Sidebar */}
+          <div className="lg:col-span-1">
+            {/* Related Events */}
+            {relatedEvents.length > 0 && (
+              <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-8">
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">Related Events</h3>
+                <div className="space-y-4">
+                  {relatedEvents.map((relatedEvent) => (
+                    <Link 
+                      key={relatedEvent.id} 
+                      href={`/event/${relatedEvent.slug}`}
+                      className="block group"
+                    >
+                      <div className="flex space-x-3">
+                        <div className="flex-shrink-0 relative h-16 w-16 rounded-lg overflow-hidden">
+                          <Image
+                            src={getImageUrl(relatedEvent.image)}
+                            alt={relatedEvent.title}
+                            fill
+                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-gray-900 truncate group-hover:text-amber-600 transition-colors">
+                            {relatedEvent.title}
+                          </p>
+                          <p className="text-xs text-gray-500">
+                            {formatDate(relatedEvent.date)}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
             )}
-            <InfoCard label="👤 Organizer" value={event.organizer || "Unknown"} />
-            <InfoCard label="🏷️ Category" value={event.category || "General"} />
-            <InfoCard
-              label="👥 Attendees"
-              value={`${event.currentAttendees || 0} / ${
-                event.maxAttendees || "Unlimited"
-              }`}
-            />
-            <InfoCard
-              label="💰 Price"
-              value={event.isFree ? "Free" : `$${event.price || 0}`}
-            />
-            <InfoCard
-              label="📝 Registration"
-              value={event.registrationRequired ? "Required" : "Optional"}
-            />
-            <InfoCard
-              label="📌 Published"
-              value={event.is_published ? "Yes" : "No"}
-            />
-          </div>
 
-          {/* Tags */}
-          {event.tags && event.tags.length > 0 && (
-            <div className="flex flex-wrap gap-2">
-              {event.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="px-3 py-1 bg-amber-100 text-amber-700 text-sm rounded-full"
+            {/* Event Actions */}
+            <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 sticky top-24">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Event Actions</h3>
+              
+              {event.live_link && (
+                <a
+                  href={event.live_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-amber-600 hover:bg-amber-700 mb-4 transition-colors"
                 >
-                  #{tag}
-                </span>
-              ))}
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Join Live Stream
+                </a>
+              )}
+              
+              <button className="w-full flex items-center justify-center px-4 py-3 border border-amber-300 rounded-xl shadow-sm text-base font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 mb-4 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+                </svg>
+                Share Event
+              </button>
+              
+              <button className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+                Save for Later
+              </button>
             </div>
-          )}
-
-          {/* Back button */}
-          <div className="pt-6">
-            <Link
-              href="/events"
-              className="inline-block px-6 py-3 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition shadow-md"
-            >
-              ← Back to Events
-            </Link>
           </div>
         </div>
       </div>
     </main>
-  );
-}
-
-// Small reusable card for event info
-function InfoCard({
-  label,
-  value,
-}: {
-  label: string;
-  value: string | React.ReactNode;
-}) {
-  return (
-    <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl border border-gray-100 shadow-sm">
-      <span className="font-semibold text-gray-800">{label}:</span>
-      <span className="text-gray-600">{value}</span>
-    </div>
   );
 }

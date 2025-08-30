@@ -5,12 +5,13 @@ import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard";
 import ArticlesPreview from "./components/Articles";
+import GraduationsSection from "./components/graduation/graduationCard";
 import Gallery from "./components/gallery/page";
-import BooksSection from "./components/books/BooksSection";
-import RegistrationCTA from "./components/RegistrationCTA";
-import { fetchWithCache } from "../lib/api";
-import { endpoints } from "../lib/config";
-import { Blog, Course as CourseType, Event as EventType, Book } from "../lib/types";
+import Book from "./components/books/BooksSection";
+
+// import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
+// import ArticlesList from "./components/Articles";
+
 
 async function getImages() {
   const res = await fetch(
@@ -20,6 +21,11 @@ async function getImages() {
   if (!res.ok) throw new Error("Failed to fetch gallery");
   return res.json();
 }
+
+import { fetchWithCache } from "../lib/api";
+import { endpoints } from "../lib/config";
+import { Blog, Course as CourseType, Event as EventType } from "../lib/types";
+import Books from "./components/Books";
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -74,14 +80,17 @@ export default async function HomePage() {
 
   const images = await getImages();
   return (
+
+    
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
-      
-      <RegistrationCTA />
+     
+   
+      {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
 
       {/* Courses Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-6 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
@@ -99,9 +108,7 @@ export default async function HomePage() {
       </section>
 
 
-      {/* Books Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-        
+            <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
@@ -113,7 +120,7 @@ export default async function HomePage() {
               </div>
             }
           >
-            <BooksSection books={books} showAll={false} />
+            {/* <Book book={Books} showAll={false} /> */}
           </Suspense>
         </div>
       </section>
@@ -137,10 +144,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <Gallery initialImages={images} />
+{/* Gallery */}
+       <Gallery initialImages={images} />
 
-      {/* Blogs Section */}
+      {/* blogs Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
@@ -153,7 +160,8 @@ export default async function HomePage() {
               </div>
             }
           >
-            <Blogs blogs={blogs as any} showAll={false} />
+
+            <Blogs limit={3} homePage={true} />
           </Suspense>
         </div>
       </section>
@@ -171,10 +179,65 @@ export default async function HomePage() {
               </div>
             }
           >
-            <ArticlesPreview limit={3} />
+            <ArticlesPreview limit={3} homePage={true} />
+
           </Suspense>
         </div>
       </section>
+      
+  
+
+      {/* Testimonials Section */}
+  
+
+      {/* Events Section */}
+      {/* <section className="py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-800 text-sm font-semibold rounded-full mb-8">
+              📅 Upcoming Events
+            </div>
+            <h2 className="text-5xl font-bold text-gray-900 mb-6">Join Our Community</h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              Participate in spiritual gatherings and educational programs
+            </p>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Annual Islamic Conference",
+                date: "December 15, 2024",
+                time: "9:00 AM - 6:00 PM",
+                description: "Join scholars and students for a day of learning and spiritual growth",
+                icon: "🎓"
+              },
+              {
+                title: "Weekly Quran Recitation",
+                date: "Every Friday",
+                time: "After Asr Prayer",
+                description: "Beautiful Quran recitation and tafseer sessions for all ages",
+                icon: "📖"
+              },
+              {
+                title: "Youth Leadership Program",
+                date: "Monthly",
+                time: "2:00 PM - 5:00 PM",
+                description: "Special programs designed to develop young Muslim leaders",
+                icon: "🌟"
+              }
+            ].map((event, index) => (
+              <div key={index} className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+                <div className="text-4xl mb-4">{event.icon}</div>
+                <div className="text-amber-600 font-bold mb-2">{event.date}</div>
+                <div className="text-gray-500 text-sm mb-4">{event.time}</div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">{event.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{event.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section> */}
 
       {/* Donation Section */}
       <section className="py-16 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 relative overflow-hidden">
@@ -206,9 +269,9 @@ export default async function HomePage() {
                 period: "Quarterly Donation",
                 desc: "Support our programs",
               },
-                              {
-                  amount: "$500",
-                  period: "Annual Contribution",
+              {
+                amount: "$500",
+                period: "Annual Contribution",
                 desc: "Transform lives yearly",
               },
             ].map((tier, index) => (

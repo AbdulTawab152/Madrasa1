@@ -1,8 +1,9 @@
 import TraditionalContentSection from './TraditionalContentSection';
 
+// Fetch articles from API
 async function fetchArticlesData() {
   const API_URL = "https://lawngreen-dragonfly-304220.hostingersite.com/api/articles";
-  const res = await fetch(API_URL);
+  const res = await fetch(API_URL, { cache: "no-store" });
 
   if (!res.ok) throw new Error("Error fetching data");
 

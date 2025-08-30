@@ -153,10 +153,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
      <div className="text-center mb-12">
-  <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-100 to-amber-100 rounded-full mb-5 border border-orange-200 shadow-sm">
-    <Sparkles size={16} className="text-orange-600" />
-    <span className="text-sm font-medium text-orange-700">Premium Madrasa</span>
-  </div>
+
   <h2 className="text-4xl font-bold text-gray-900 mb-4">
     Madrasa <span className="text-orange-600">Collection</span>
   </h2>
@@ -359,7 +356,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
   </div>
 )}
 
-        {/* Slider View */}
+        {/* Slider View
         {viewMode === "slider" && (
           <div className="space-y-6">
             {sliderGroups.map((group, groupIndex) => (
@@ -371,10 +368,10 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
               </div>
             ))}
           </div>
-        )}
+        )} */}
 
         {/* Empty state */}
-        {filteredImages.length === 0 && (
+        {/* {filteredImages.length === 0 && (
           <div className="text-center py-16">
             <div className="text-orange-500 mb-4">
               <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -384,7 +381,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
             <h3 className="text-xl font-semibold text-gray-700 mb-2">No images found</h3>
             <p className="text-gray-500">Try selecting a different category</p>
           </div>
-        )}
+        )} */}
 
         {/* Lightbox */}
         {currentIndex !== null && (
@@ -462,7 +459,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
             </div>
 
             {/* Thumbnail navigation */}
-            <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-full overflow-x-auto py-2">
+            {/* <div className="absolute bottom-5 left-1/2 transform -translate-x-1/2 flex gap-2 max-w-full overflow-x-auto py-2">
               {filteredImages.map((img, index) => (
                 <button
                   key={`thumbnail-${img.id}-${index}`}
@@ -478,7 +475,7 @@ export default function Gallery({ initialImages }: { initialImages: GalleryItem[
                   />
                 </button>
               ))}
-            </div>
+            </div> */}
 
             {/* Image counter */}
             <div className="absolute top-5 left-5 text-white/80 text-sm">
