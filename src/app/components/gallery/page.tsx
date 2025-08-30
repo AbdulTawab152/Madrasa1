@@ -68,9 +68,9 @@ const MiniSlider = ({ images, title }: { images: GalleryItem[], title: string })
       </button>
 
       <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-        {images.map((_, i) => (
+        {images.map((img, i) => (
           <div
-            key={i}
+            key={`dot-${img.id}-${i}`}
             className={`w-1.5 h-1.5 rounded-full transition-all ${
               currentSlide === i ? "bg-white" : "bg-white/50"
             }`}

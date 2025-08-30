@@ -1,18 +1,16 @@
 import { Suspense } from "react";
-import Image from "next/image";
 import Hero from "../app/herosection/page";
 import About from "../app/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard";
 import ArticlesPreview from "./components/Articles";
-import GraduationsSection from "./components/graduation/graduationCard";
 import Gallery from "./components/gallery/page";
-import Book from "./components/books/BooksSection";
-
-// import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
-// import ArticlesList from "./components/Articles";
-
+import BooksSection from "./components/books/BooksSection";
+import RegistrationCTA from "./components/RegistrationCTA";
+import { fetchWithCache } from "../lib/api";
+import { endpoints } from "../lib/config";
+import { Blog, Course as CourseType, Event as EventType, Book } from "../lib/types";
 
 async function getImages() {
   const res = await fetch(
@@ -22,11 +20,6 @@ async function getImages() {
   if (!res.ok) throw new Error("Failed to fetch gallery");
   return res.json();
 }
-
-import { fetchWithCache } from "../lib/api";
-import { endpoints } from "../lib/config";
-import { Blog, Course as CourseType, Event as EventType } from "../lib/types";
-import Books from "./components/Books";
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -40,15 +33,15 @@ async function fetchBlogsData(): Promise<Blog[]> {
 
 
 
-// async function fetchBooksData(): Promise<Book[]> {
-//   try {
-//     const data = await fetchWithCache<Book[]>(endpoints.books);
-//     return Array.isArray(data) ? data : [];
-//   } catch (error) {
-//     console.error("Error fetching books:", error);
-//     return [];
-//   }
-// }
+async function fetchBooksData(): Promise<Book[]> {
+  try {
+    const data = await fetchWithCache<Book[]>(endpoints.books);
+    return Array.isArray(data) ? data : [];
+  } catch (error) {
+    console.error("Error fetching books:", error);
+    return [];
+  }
+}
 
 async function fetchCourseData(): Promise<CourseType[]> {
   try {
@@ -72,22 +65,20 @@ async function fetchEventData(): Promise<EventType[]> {
 
 
 export default async function HomePage() {
-  const [blogs, courses, events] = await Promise.all([
+  const [blogs, courses, events, books] = await Promise.all([
     fetchBlogsData(),
     fetchCourseData(),
     fetchEventData(),
+    fetchBooksData(),
   ]);
 
-    const images = await getImages();
+  const images = await getImages();
   return (
-
-    
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
-     
-   
-      {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
+      
+      <RegistrationCTA />
 
       {/* Courses Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -108,7 +99,9 @@ export default async function HomePage() {
       </section>
 
 
-            <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      {/* Books Section */}
+      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+        
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
@@ -120,16 +113,15 @@ export default async function HomePage() {
               </div>
             }
           >
-            {/* <Book book={Books} showAll={false} /> */}
+            <BooksSection books={books} showAll={false} />
           </Suspense>
         </div>
       </section>
 
 
-      {/* event */}
-
+      {/* Events Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="w-full  px-6">
+        <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
               <div className="flex items-center justify-center py-20">
@@ -145,10 +137,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-{/* Gallery */}
-       <Gallery initialImages={images} />
+      {/* Gallery Section */}
+      <Gallery initialImages={images} />
 
-      {/* blogs Section */}
+      {/* Blogs Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
@@ -165,9 +157,6 @@ export default async function HomePage() {
           </Suspense>
         </div>
       </section>
-
-      {/* event Section */}
-
 
       {/* Articles Section */}
       <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -186,60 +175,6 @@ export default async function HomePage() {
           </Suspense>
         </div>
       </section>
-      
-  
-
-      {/* Testimonials Section */}
-  
-
-      {/* Events Section */}
-      {/* <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-800 text-sm font-semibold rounded-full mb-8">
-              📅 Upcoming Events
-            </div>
-            <h2 className="text-5xl font-bold text-gray-900 mb-6">Join Our Community</h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Participate in spiritual gatherings and educational programs
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Annual Islamic Conference",
-                date: "December 15, 2024",
-                time: "9:00 AM - 6:00 PM",
-                description: "Join scholars and students for a day of learning and spiritual growth",
-                icon: "🎓"
-              },
-              {
-                title: "Weekly Quran Recitation",
-                date: "Every Friday",
-                time: "After Asr Prayer",
-                description: "Beautiful Quran recitation and tafseer sessions for all ages",
-                icon: "📖"
-              },
-              {
-                title: "Youth Leadership Program",
-                date: "Monthly",
-                time: "2:00 PM - 5:00 PM",
-                description: "Special programs designed to develop young Muslim leaders",
-                icon: "🌟"
-              }
-            ].map((event, index) => (
-              <div key={index} className="bg-gradient-to-br from-gray-50 to-white p-8 rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                <div className="text-4xl mb-4">{event.icon}</div>
-                <div className="text-amber-600 font-bold mb-2">{event.date}</div>
-                <div className="text-gray-500 text-sm mb-4">{event.time}</div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">{event.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{event.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* Donation Section */}
       <section className="py-16 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 relative overflow-hidden">
@@ -278,7 +213,7 @@ export default async function HomePage() {
               },
             ].map((tier, index) => (
               <div
-                key={index}
+                key={`tier-${tier.amount}-${index}`}
                 className="bg-white/10 p-6 rounded-lg backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300"
               >
                 <div className="text-4xl font-bold text-white mb-2">
@@ -297,6 +232,7 @@ export default async function HomePage() {
           </button>
         </div>
       </section>
+
 
       {/* Contact Section */}
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
@@ -337,7 +273,7 @@ export default async function HomePage() {
                     info: "Mon-Fri: 8AM-6PM, Sat: 9AM-3PM",
                   },
                 ].map((contact, index) => (
-                  <div key={index} className="flex items-center">
+                  <div key={`contact-${contact.title}-${index}`} className="flex items-center">
                     <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mr-6 shadow-lg">
                       <span className="text-2xl">{contact.icon}</span>
                     </div>
