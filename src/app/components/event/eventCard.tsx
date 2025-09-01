@@ -152,7 +152,7 @@ export default function EventsSection({
                   {event.image && (
                     <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
                       <Image
-                        src={getImageUrl(event.image)}
+                        src ={getImageUrl(event.image)}
                         alt={event.title}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
@@ -184,30 +184,14 @@ export default function EventsSection({
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-                      {/* {event.location && (
-                        <div className="flex items-center gap-1">
-                          <MapPin size={16} className="text-orange-400" />
-                          <span className="truncate">{event.location}</span>
-                        </div>
-                      )} */}
-                      {/* {event.organizer && (
-                        <div className="flex items-center gap-1">
-                          <User size={16} className="text-orange-400" />
-                          <span className="truncate">{event.organizer}</span>
-                        </div>
-                      )} */}
+                  
                       {event.duration && (
                         <div className="flex items-center gap-1">
                           <Clock size={16} className="text-orange-400" />
                           <span>{event.duration}</span>
                         </div>
                       )}
-                      {/* {event.attendees && (
-                        <div className="flex items-center gap-1">
-                          <Users size={16} className="text-orange-400" />
-                          <span>{event.attendees} attendees</span>
-                        </div>
-                      )} */}
+                   
                     </div>
                   </div>
                 </div>

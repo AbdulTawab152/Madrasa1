@@ -148,7 +148,7 @@ export default async function HomePage() {
        <Gallery initialImages={images} />
 
       {/* blogs Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py- bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={

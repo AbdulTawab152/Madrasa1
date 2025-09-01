@@ -103,12 +103,7 @@ export default async function AuthorsPage() {
                     {author.bio || "No bio available."}
                   </p>
 
-                  {/* Socials */}
-                  <div className="flex justify-center gap-5 mt-5">
-                    <FaTwitter className="text-gray-400 hover:text-sky-500 cursor-pointer text-lg transition" />
-                    <FaLinkedin className="text-gray-400 hover:text-blue-700 cursor-pointer text-lg transition" />
-                    <FaFacebook className="text-gray-400 hover:text-blue-600 cursor-pointer text-lg transition" />
-                  </div>
+            
 
                   {/* Button */}
                   <div className="mt-6">
