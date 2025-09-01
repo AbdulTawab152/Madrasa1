@@ -26,7 +26,7 @@ const Navbar = () => {
   const dropdownNavItems = navigation.main.slice(6);
 
   return (
-    <div className="fixed w-full z-20 top-0 start-0">
+    <div className="fixed w-full z-50 top-0 start-0">
       {/* Top Bar - Amber */}
       <div className="bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 text-white py-3 px-4">
         <div className="max-w-screen-xl mx-auto">
