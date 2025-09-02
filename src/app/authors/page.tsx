@@ -86,11 +86,11 @@ export default async function AuthorsPage() {
 
                   {/* Alive / Dead Dot */}
                <span
-  className={`absolute top-2 right-32 w-5 h-5 rounded-full border-2 border-white ${
-    alive ? "bg-green-500 animate-pulse" : "bg-red-500 animate-pulse"
-  }`}
-  title={alive ? "Alive" : "Deceased"}
-></span>
+                    className={`absolute -top-2 md:top-2 right-32 w-5 h-5 rounded-full border-2 border-white ${
+                      alive ? "bg-green-500 animate-pulse" : "bg-red-500 animate-pulse"
+                    }`}
+                    title={alive ? "Alive" : "Deceased"}
+                  ></span>
 
                 </div>
 

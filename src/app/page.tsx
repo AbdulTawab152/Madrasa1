@@ -4,8 +4,9 @@ import About from "../app/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard";
-import ArticlesPreview from "./components/Articles";
-import GraduationsSection from "./components/graduation/graduationCard";
+import GraduationsSection from "./components/graduation/TopGraduations.tsx";
+// import ArticlesPreview from "./components/Articles";
+// import GraduationsSection from "./components/graduation/graduationCard";
 import Gallery from "./components/gallery/page";
 import Book from "./components/books/BooksSection";
 
@@ -25,7 +26,7 @@ async function getImages() {
 import { fetchWithCache } from "../lib/api";
 import { endpoints } from "../lib/config";
 import { Blog, Course as CourseType, Event as EventType } from "../lib/types";
-import Books from "./components/Books";
+import Books from "../app/components/books/BooksSection";
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -107,27 +108,52 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Books */}
 
-            <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <Suspense
-            fallback={
-              <div className="flex items-center justify-center py-20">
-                <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-                <span className="ml-4 text-gray-600 font-medium">
-                  Loading books...
-                </span>
-              </div>
-            }
-          >
-            {/* <Book book={Books} showAll={false} /> */}
-          </Suspense>
-        </div>
-      </section>
+<section className="relative py-16 bg-gradient-to-b from-gray-50 to-white">
+  <div className="max-w-7xl mx-auto px-6 text-center">
+    {/* Hero Text */}
+    <p className="inline-block px-4 py-1 rounded-full bg-amber-100 text-amber-600 text-sm font-medium shadow-sm mb-4">
+      Explore Knowledge
+    </p>
+    <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-gray-900">
+       Our <span className="text-amber-600">Islamic Courses</span>
+    </h2>
+    <p className="mt-4 text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
+      Rooted in the <span className="font-semibold text-amber-700">Qur'an</span> and 
+      <span className="font-semibold text-amber-700"> Sunnah</span>, our books 
+      and courses ensure authentic Islamic knowledge for every learner.
+    </p>
+
+    {/* Books Section */}
+    <div className="mt-12">
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+            <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+            <span className="ml-4 text-gray-600 font-medium">
+              Loading courses...
+            </span>
+          </div>
+        }
+      >
+        <Books book={books} showAll={false} />
+      </Suspense>
+    </div>
+  </div>
+</section>
+
+
+{/* gragurtion */}
+
+
+
+
+     
 
 
       {/* Events Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      <section className="py-10 ">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
@@ -146,6 +172,14 @@ export default async function HomePage() {
 
 {/* Gallery */}
        <Gallery initialImages={images} />
+
+
+       
+      {/* gragutaion */}
+
+      <section>
+       <GraduationsSection showAll={false} />
+</section>
 
       {/* blogs Section */}
       <section className="py- bg-gradient-to-b from-gray-50 to-white">
@@ -166,8 +200,10 @@ export default async function HomePage() {
         </div>
       </section>
 
+
+
       {/* Articles Section */}
-      <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
+      {/* <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
@@ -183,7 +219,7 @@ export default async function HomePage() {
 
           </Suspense>
         </div>
-      </section>
+      </section> */}
       
   
 
