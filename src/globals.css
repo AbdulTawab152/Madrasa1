@@ -338,5 +338,18 @@
   .backdrop-blur-3xl {
     backdrop-filter: blur(64px);
   }
+  
+  /* Animation delays for staggered loading effects */
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+  
+  .animation-delay-300 {
+    animation-delay: 300ms;
+  }
+  
+  .animation-delay-500 {
+    animation-delay: 500ms;
+  }
 }
 

@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BookOpen, Award, Heart, Users, Sparkles, Clock, GraduationCap } from "lucide-react";
+import { BookOpen, Award, Heart, Users, Sparkles, Clock, GraduationCap, Target, Lightbulb, Star, CheckCircle, Quote } from "lucide-react";
 import img from "../../../public/1.jpg";
 
-const About = () => {
+const AboutPage = () => {
   const values = [
     {
       icon: BookOpen,
@@ -36,143 +36,272 @@ const About = () => {
     { icon: Award, value: "50+", label: "Scholars" }
   ];
 
+  const timeline = [
+    {
+      year: "1961",
+      title: "Foundation",
+      description: "Established by Maulana Abdul Qadir Sahib"
+    },
+    {
+      year: "1970s",
+      title: "Growth",
+      description: "First graduates and facility expansion"
+    },
+    {
+      year: "1980s",
+      title: "Community Hub",
+      description: "Central Islamic education center"
+    },
+    {
+      year: "2000s",
+      title: "Modern Era",
+      description: "Traditional and contemporary integration"
+    },
+    {
+      year: "2024",
+      title: "Future",
+      description: "Continuing legacy with innovation"
+    }
+  ];
+
   return (
-  <section className="py-20 bg-white">
-  <div className="max-w-7xl mx-auto px-6 lg:px-8">
-
-    {/* Header */}
-    <div className="text-center mb-16">
-      <div className="inline-flex items-center px-5 py-2 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-6">
-        Our Legacy
-      </div>
-      <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-        About <span className="text-amber-600">Anwarul Uloom</span>
-      </h2>
-      <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
-        For over six decades, we've been committed to spreading authentic Islamic knowledge 
-        and nurturing hearts and minds.
-      </p>
-    </div>
-
-    {/* Stats */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mb-20">
-      {stats.map((stat, index) => (
-        <div
-          key={index}
-          className="text-center p-4 rounded-xl hover:bg-amber-50 transition"
-        >
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-2xl mb-4">
-            <stat.icon className="h-8 w-8 text-amber-600" />
+    <div className="bg-white mt-[100px]">
+      {/* Hero Section */}
+      <section className="py-16 bg-gradient-to-b from-amber-50 to-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
+              <Star className="h-4 w-4 mr-2" />
+              Our Legacy Since 1961
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-black mb-6">
+              About <span className="text-amber-600">Anwarul Uloom</span>
+            </h1>
+            <p className="text-lg text-black max-w-3xl mx-auto">
+              For over six decades, we've been committed to spreading authentic Islamic knowledge 
+              and nurturing hearts and minds.
+            </p>
           </div>
-          <div className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-            {stat.value}
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12">
+            {stats.map((stat, index) => (
+              <div
+                key={index}
+                className="text-center p-4 bg-white rounded-xl shadow-sm border border-amber-100"
+              >
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-amber-100 rounded-xl mb-3">
+                  <stat.icon className="h-6 w-6 text-amber-600" />
+                </div>
+                <div className="text-2xl font-bold text-black mb-1">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-black">{stat.label}</div>
+              </div>
+            ))}
           </div>
-          <div className="text-sm text-gray-600">{stat.label}</div>
         </div>
-      ))}
-    </div>
+      </section>
 
-    {/* Story */}
-    <div className="flex flex-col lg:grid lg:grid-cols-2 gap-12 lg:gap-16 items-center mb-20">
-      {/* Text */}
-      <div className="space-y-8">
-        <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-snug">
-          Our <span className="text-amber-600">Heritage</span>
-        </h3>
-        <div className="space-y-6 text-gray-600 text-base sm:text-lg leading-relaxed">
-          <p>
-            Founded in 1961, Anwarul Uloom has been a beacon of Islamic education for 
-            over six decades. We focus on both scholarly excellence and moral upbringing, 
-            creating generations of knowledgeable Muslims.
-          </p>
-          <p>
-            We believe education is the foundation of a strong society, and we strive to 
-            empower our students with both knowledge and character, preparing them to be 
-            leaders in their communities.
-          </p>
+      {/* Mission & Vision */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Mission */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
+                <Target className="h-4 w-4 mr-2" />
+                Our Mission
+              </div>
+              <h2 className="text-3xl font-bold text-black">
+                Spreading <span className="text-amber-600">Authentic Knowledge</span>
+              </h2>
+              <p className="text-black leading-relaxed">
+                Our mission is to provide authentic Islamic education rooted in the Qur'an and Sunnah, 
+                fostering spiritual growth, moral character, and intellectual excellence.
+              </p>
+              <div className="space-y-2">
+                {["Qur'an & Hadith Studies", "Islamic Jurisprudence", "Arabic Language", "Character Building"].map((feature, index) => (
+                  <div key={index} className="flex items-center space-x-2">
+                    <CheckCircle className="h-4 w-4 text-amber-600" />
+                    <span className="text-black text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Vision */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
+                <Lightbulb className="h-4 w-4 mr-2" />
+                Our Vision
+              </div>
+              <h3 className="text-3xl font-bold text-black">
+                Building <span className="text-amber-600">Future Leaders</span>
+              </h3>
+              <p className="text-black leading-relaxed">
+                We envision a world where Islamic knowledge is accessible to all, creating generations 
+                of scholars, leaders, and community builders who embody Islamic values.
+              </p>
+              <div className="grid grid-cols-2 gap-3">
+                {["Global Reach", "Digital Learning", "Community Service", "Interfaith Dialogue"].map((goal, index) => (
+                  <div key={index} className="bg-amber-50 p-3 rounded-lg border border-amber-200">
+                    <div className="text-amber-700 font-medium text-center text-sm">{goal}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
+      </section>
 
-        {/* Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4">
-          <Link
-            href="/about"
-            className="inline-flex items-center justify-center px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors shadow-sm"
-          >
-            Learn More
-            <svg
-              className="ml-2 h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+      {/* History & Founder */}
+      <section className="py-16 bg-amber-50">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">
+              Our <span className="text-amber-600">History</span> & <span className="text-amber-600">Founder</span>
+            </h2>
+            <p className="text-black max-w-2xl mx-auto">
+              A journey of faith, knowledge, and community building spanning over six decades
+            </p>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 items-center mb-12">
+            {/* Founder Info */}
+            <div className="space-y-6">
+              <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
+                <Star className="h-4 w-4 mr-2" />
+                Our Founder
+              </div>
+              <h3 className="text-2xl font-bold text-black">
+                Maulana <span className="text-amber-600">Abdul Qadir Sahib</span>
+              </h3>
+              <p className="text-black leading-relaxed">
+                A visionary scholar and dedicated educator, Maulana Abdul Qadir Sahib established 
+                Anwarul Uloom in 1961 with a clear vision of providing authentic Islamic education.
+              </p>
+              <p className="text-black leading-relaxed">
+                His deep knowledge of Islamic sciences, combined with his commitment to community 
+                service, laid the foundation for what has become one of the region's most respected 
+                Islamic educational institutions.
+              </p>
+            </div>
+
+            {/* Image */}
+            <div className="relative">
+              <div className="relative w-full h-[300px] rounded-xl overflow-hidden shadow-lg">
+                <Image
+                  src={img}
+                  alt="Anwarul Uloom building"
+                  className="object-cover"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  priority
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Timeline */}
+          <div className="space-y-8">
+            <h3 className="text-2xl font-bold text-black text-center mb-8">
+              Our <span className="text-amber-600">Journey</span> Through Time
+            </h3>
+            <div className="relative">
+              <div className="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-amber-200"></div>
+              <div className="space-y-8">
+                {timeline.map((item, index) => (
+                  <div key={index} className={`relative flex items-center ${index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'}`}>
+                    <div className={`flex-1 ${index % 2 === 0 ? 'lg:pr-8 lg:text-right' : 'lg:pl-8 lg:text-left'}`}>
+                      <div className="bg-white p-6 rounded-xl shadow-sm border border-amber-100">
+                        <div className="text-xl font-bold text-amber-600 mb-2">{item.year}</div>
+                        <h4 className="text-lg font-bold text-black mb-2">{item.title}</h4>
+                        <p className="text-black text-sm">{item.description}</p>
+                      </div>
+                    </div>
+                    <div className="absolute left-1/2 transform -translate-x-1/2 w-3 h-3 bg-amber-600 rounded-full border-2 border-white shadow-sm"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values */}
+      <section className="py-16 bg-white">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl sm:text-4xl font-bold text-black mb-4">
+              Our <span className="text-amber-600">Core Values</span>
+            </h2>
+            <p className="text-black max-w-2xl mx-auto">
+              These fundamental principles guide our approach to Islamic education
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((value, index) => (
+              <div
+                key={index}
+                className="text-center p-6 bg-amber-50 rounded-xl hover:bg-amber-100 transition-colors border border-amber-200"
+              >
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-xl mb-4">
+                  <value.icon className="h-8 w-8 text-amber-600" />
+                </div>
+                <h4 className="text-lg font-bold text-black mb-2">
+                  {value.title}
+                </h4>
+                <p className="text-black text-sm leading-relaxed">
+                  {value.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-16 bg-amber-600">
+        <div className="max-w-6xl mx-auto px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+            Join Our <span className="text-amber-200">Community</span>
+          </h2>
+          <p className="text-lg text-amber-100 mb-8 max-w-2xl mx-auto">
+            Be part of our legacy of Islamic education and spiritual growth.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link
+              href="/courses"
+              className="inline-flex items-center justify-center px-4 py-2 bg-white text-amber-600 font-medium rounded-md hover:bg-amber-50 transition-colors shadow-sm text-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </Link>
-          <Link
-            href="/courses"
-            className="inline-flex items-center justify-center px-6 py-3 border border-amber-600 text-amber-600 font-medium rounded-lg hover:bg-amber-50 transition-colors"
-          >
-            Our Courses
-          </Link>
-        </div>
-      </div>
-
-      {/* Image */}
-      <div className="relative w-full">
-        <div className="relative w-full h-[280px] sm:h-[350px] md:h-[450px] lg:h-[500px]">
-          <Image
-            src={img}
-            alt="Anwarul Uloom building"
-            className="rounded-2xl object-cover shadow-lg"
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
-            priority
-          />
-        </div>
-
-        {/* Decorative Circles */}
-        <div className="absolute -top-6 -right-6 w-16 h-16 sm:w-20 sm:h-20 bg-amber-200 rounded-full opacity-60 blur-md"></div>
-        <div className="absolute -bottom-6 -left-6 w-24 h-24 sm:w-28 sm:h-28 bg-amber-100 rounded-full opacity-40 blur-sm"></div>
-      </div>
-    </div>
-
-    {/* Values */}
-    <div className="text-center mb-16">
-      <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
-        Our <span className="text-amber-600">Values</span>
-      </h3>
-      <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-        These principles guide our approach to Islamic education
-      </p>
-    </div>
-
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-      {values.map((value, index) => (
-        <div
-          key={index}
-          className="text-center p-6 sm:p-8 bg-gray-50 rounded-2xl hover:bg-amber-50 transition-colors shadow-sm"
-        >
-          <div className="inline-flex items-center justify-center w-14 h-14 sm:w-16 sm:h-16 bg-amber-100 rounded-2xl mb-6">
-            <value.icon className="h-7 w-7 sm:h-8 sm:w-8 text-amber-600" />
+              Explore Courses
+              <svg
+                className="ml-2 h-3 w-3"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </Link>
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center px-4 py-2 border border-white text-white font-medium rounded-md hover:bg-white hover:text-amber-600 transition-colors text-sm"
+            >
+              Contact Us
+            </Link>
           </div>
-          <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-3">
-            {value.title}
-          </h4>
-          <p className="text-gray-600 text-sm sm:text-base leading-relaxed">
-            {value.description}
-          </p>
         </div>
-      ))}
+      </section>
     </div>
-  </div>
-</section>
-
   );
 };
 
-export default About;
+export default AboutPage;

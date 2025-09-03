@@ -79,7 +79,7 @@ export default function EventsSection({
           <div className="text-4xl font-bold text-pink-400">
             {sortedEvents.filter(e => e.status === 'coming').length}+
           </div>
-          <div className="mt-2 text-gray-100 font-medium">Upcoming</div>
+          <div className="mt-2 text-gray-100 font-medium">Our</div>
         </div>
 
         <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
@@ -120,7 +120,7 @@ export default function EventsSection({
       </>
     ) : (
       <>
-         Upcoming <span className="text-orange-500">Events</span>
+         Our <span className="text-orange-500">Events</span>
       </>
     )}
   </h2>
@@ -200,62 +200,18 @@ export default function EventsSection({
           ))}
         </div>
           {!showAll && sortedEvents.length > 3 && (
-        <div className="relative mt-28">
-          {/* Background with stronger orange gradient */}
-          <div className="absolute inset-0 flex justify-center items-center">
-            <div className="w-full h-[600px] bg-gradient-to-r from-amber-400/30 via-orange-500/25 to-orange-600/20 rounded-full blur-3xl"></div>
-          </div>
-
-          <div className="relative w-full bg-gradient-to-b from-white/90 to-amber-50/80 dark:from-gray-900/90 dark:to-amber-950/70 backdrop-blur-xl border border-amber-200/50 dark:border-amber-900/40 rounded-3xl py-12 text-center overflow-hidden ">
-            {/* Enhanced decorative elements with orange theme */}
-            <div className="absolute top-6 left-10 text-amber-400 animate-ping">✨</div>
-            <div className="absolute top-12 right-12 text-orange-500 animate-bounce">🎉</div>
-            <div className="absolute bottom-10 left-16 text-amber-500 animate-pulse">⭐</div>
-            <div className="absolute bottom-16 right-20 text-orange-400 animate-pulse delay-300">🔥</div>
-
-            {/* Stronger gradient ring accent */}
-            <div className="absolute inset-0 rounded-3xl border-2 border-transparent bg-gradient-to-r from-amber-400 via-orange-500 to-orange-600 opacity-30 blur-xl"></div>
-
-            {/* Enhanced heading with bolder orange gradient */}
-            <h2 className="relative text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-amber-500 via-orange-600 to-orange-700 bg-clip-text text-transparent mb-8 tracking-tight px-4">
-              Discover Every Event
-            </h2>
-
-            {/* Improved subtext with better orange accent */}
-            <p className="relative text-xl md:text-xl text-gray-800 dark:text-amber-100 mb-14 max-w-2xl mx-auto leading-relaxed px-6">
-              You've explored a glimpse of what we offer.  
-              Step into the full journey with all{" "}
-              <span className="font-semibold text-amber-600 dark:text-amber-400">featured highlights</span>,{" "}
-              <span className="font-semibold text-orange-600 dark:text-orange-400">exclusive sessions</span>, and{" "}
-              <span className="font-semibold text-amber-700 dark:text-amber-300">upcoming opportunities</span>.  
-            </p>
-
-            {/* Enhanced CTA Button with stronger orange presence */}
-            <div className="relative">
-              <Link
-                href="/event"
-                className="group relative inline-flex items-center px-6 py-3 rounded-full 
-                text-md font-bold text-white shadow-2xl bg-gradient-to-r from-amber-500 to-orange-600 
-                hover:shadow-2xl hover:scale-105 transform transition-all duration-300 hover:bg-gradient-to-r hover:from-amber-600 hover:to-orange-700"
-              >
-                <span className="relative flex items-center">
-                  See All Events
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    className="ml-3 transition-transform duration-300 group-hover:translate-x-2 h-6 w-6"
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                  </svg>
-                </span>
-
-                {/* Enhanced glow effect */}
-                <span className="absolute inset-0 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 opacity-40 blur-lg group-hover:opacity-50 transition-opacity duration-300"></span>
-              </Link>
-            </div>
-          </div>
+        <div className="mt-12 text-center">
+          <Link href="/event" className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors shadow-sm hover:shadow-md">
+            <span>View All Events</span>
+            <svg 
+              className="w-4 h-4" 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
 )}
 

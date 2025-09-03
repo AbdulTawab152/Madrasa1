@@ -195,7 +195,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
           <div className="col-span-full text-center mt-16">
             <Link
               href="/blogs"
-              className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+              className="inline-flex items-center px-8 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
             >
               View All Blogs
               <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

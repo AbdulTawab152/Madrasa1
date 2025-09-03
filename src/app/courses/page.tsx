@@ -1,6 +1,6 @@
 // app/courses/page.tsx
 import CoursesSection from "./../components/courses/courseCard";
-import { CoursesApi } from "../../lib/api"; // مسیر درست API
+import { CoursesApi } from "../../lib/api";
 
 interface Course {
   id: number;
@@ -24,9 +24,11 @@ export default async function CoursesPage() {
   const courses = Array.isArray(res.data) ? res.data as Course[] : [];
 
   return (
-    <main className="w-full mt-10  p-8">
-      {/* @ts-expect-error: Type mismatch between Course types */}
-      <CoursesSection courses={courses} showAll={true} />
+    <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white pt-24">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
+        {/* @ts-expect-error: Type mismatch between Course types */}
+        <CoursesSection courses={courses} showAll={true} />
+      </div>
     </main>
   );
 }

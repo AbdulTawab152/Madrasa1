@@ -2,6 +2,7 @@ import { BooksApi } from "../../../lib/api";
 import Image from "next/image";
 import { Book } from "../../../lib/types";
 import Link from "next/link";
+import { FaBook, FaCalendar, FaUser, FaArrowLeft, FaEye, FaHeart } from 'react-icons/fa';
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -10,154 +11,220 @@ interface Params {
 export default async function BookDetailsPage({ params }: Params) {
   const { id } = await params;
 
-  const res = await BooksApi.getById(id);
-  const book = res.data as Book;
+  try {
+    const res = await BooksApi.getById(id);
+    const book = res.data as Book;
 
-  if (!book) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="text-center p-8 bg-white rounded-2xl shadow-lg max-w-md mx-4">
-          <div className="text-5xl mb-4">📚</div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-4">کتاب پیدا نشد!</h1>
-          <p className="text-gray-600 mb-6">متأسفیم، کتاب مورد نظر شما یافت نشد.</p>
-          <Link
-            href="/book"
-            className="inline-block px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-md hover:shadow-lg"
-          >
-            بازگشت به لیست کتاب‌ها
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
-  const getImageUrl = (img?: string) => {
-    if (img && img.startsWith("http")) return img;
-    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-  };
-
-  return (
-    <main className="min-h-screen mt-32 bg-gradient-to-br from-amber-50 to-orange-50 py-12 px-4">
-      <div className="max-w-5xl mx-auto bg-white rounded-2xl overflow-hidden shadow-lg">
-        {/* Header */}
-        <div className="relative bg-gradient-to-r from-amber-500 to-orange-500 text-white p-8">
-          <div className="absolute top-4 right-4 opacity-20 text-5xl font-arabic">﷽</div>
-          <div className="relative z-10">
+    if (!book) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-amber-50 to-white">
+          <div className="text-center p-8 bg-white rounded-2xl shadow-lg max-w-md mx-4 border border-amber-100">
+            <div className="text-6xl mb-4">📚</div>
+            <h1 className="text-2xl font-bold text-black mb-4">Book Not Found</h1>
+            <p className="text-gray-600 mb-6">Sorry, the book you're looking for doesn't exist.</p>
             <Link
               href="/book"
-              className="inline-flex items-center text-amber-100 hover:text-white transition-colors mb-6"
+              className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors shadow-md"
             >
-              <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              book
+              Back to Books
             </Link>
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">{book.title}</h1>
-            <p className="text-amber-100 text-lg max-w-3xl">{book.description?.substring(0, 120)}...</p>
+          </div>
+        </div>
+      );
+    }
+
+    const getImageUrl = (img?: string | null) => {
+      if (!img) return null;
+      if (img.startsWith("http")) return img;
+      return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+    };
+
+    return (
+      <div className="min-h-screen mt-[100px] bg-white">
+        {/* Enhanced White Header */}
+        <div className="bg-white border-b border-gray-100 py-10 shadow-sm relative overflow-hidden">
+          {/* Background decorative elements */}
+          <div className="absolute inset-0">
+            <div className="absolute top-3 left-3 w-20 h-20 bg-amber-100 rounded-full opacity-60"></div>
+            <div className="absolute bottom-3 right-3 w-24 h-24 bg-orange-100 rounded-full opacity-60"></div>
+            <div className="absolute top-1/2 left-1/3 w-12 h-12 bg-yellow-100 rounded-full opacity-40"></div>
+          </div>
+          
+          <div className="max-w-6xl mx-auto px-4 relative z-10">
+            {/* Navigation */}
+            <div className="flex items-center justify-between mb-6">
+              <Link 
+                href="/book" 
+                className="inline-flex items-center text-amber-600 hover:text-amber-700 transition-all duration-300 group bg-amber-50 hover:bg-amber-100 px-3 py-2 rounded-lg"
+              >
+                <FaArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+                <span className="font-medium">Back to Books</span>
+              </Link>
+              
+              <div className="text-gray-500 text-sm font-medium bg-gray-50 px-3 py-1 rounded-full">
+                Book Details
+              </div>
+            </div>
+            
+            {/* Main Title */}
+            <div className="text-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-4 border border-amber-200">
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+                Islamic Literature
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-pulse"></span>
+              </div>
+              
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 text-gray-900">
+                {book.title}
+              </h1>
+              
+              {/* Decorative line */}
+              <div className="w-20 h-0.5 bg-gradient-to-r from-amber-400 to-orange-400 rounded-full mx-auto"></div>
+            </div>
           </div>
         </div>
 
         {/* Main Content */}
-        <div className="p-8 space-y-12">
-          {/* Book Details Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            {/* Book Image */}
-            <div className="rounded-2xl overflow-hidden shadow-lg">
-              {book.image ? (
-                <Image
-                  src={getImageUrl(book.image)}
-                  alt={book.title}
-                  width={600}
-                  height={400}
-                  className="w-full h-auto object-cover"
-                />
-              ) : (
-                <div className="w-full h-64 bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-6xl text-amber-300">
-                  📚
-                </div>
-              )}
-            </div>
-
-            {/* Book Info */}
-            <div className="flex flex-col justify-between space-y-6">
-              {/* Description */}
-              <div>
-                <h2 className="text-xl font-semibold text-gray-800 mb-3 flex items-center">
-                  <svg className="w-5 h-5 ml-2 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  درباره کتاب
-                </h2>
-                <p className="text-gray-600 leading-relaxed text-justify">{book.description}</p>
-              </div>
-
-              {/* Book Metadata */}
-              <div className="bg-amber-50 rounded-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="bg-amber-100 p-2 rounded-lg">
-                    <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">تعداد صفحات</p>
-                    <p className="font-medium">{book.pages || "نامشخص"}</p>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="bg-amber-100 p-2 rounded-lg">
-                    <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm text-gray-500">سال انتشار</p>
-                    <p className="font-medium">{book.written_year || "نامشخص"}</p>
-                  </div>
+        <div className="max-w-6xl mx-auto px-4 py-8">
+          {/* Book Overview */}
+          <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Book Image */}
+              <div className="md:col-span-1">
+                <div className="rounded-lg overflow-hidden shadow-md">
+                  {book.image ? (
+                    <Image
+                      src={getImageUrl(book.image) || ""}
+                      alt={book.title}
+                      width={400}
+                      height={500}
+                      className="w-full h-auto object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-96 bg-gray-100 flex items-center justify-center">
+                      <div className="text-center text-gray-400">
+                        <div className="text-6xl mb-2">📚</div>
+                        <div className="text-sm">No Image</div>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="flex flex-wrap gap-4 w-full">
-                <button className="flex-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 px-6 rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all shadow-md flex items-center justify-center">
-                  مطالعه کتاب
-                </button>
-                <button className="flex-1 border border-amber-500 text-amber-600 py-3 px-6 rounded-lg hover:bg-amber-50 transition-all flex items-center justify-center">
-                  افزودن به علاقه‌مندی‌ها
-                </button>
+              {/* Book Info */}
+              <div className="md:col-span-2 space-y-6">
+                {/* Description */}
+                {book.description && (
+                  <div>
+                    <h2 className="text-xl font-semibold text-gray-900 mb-3">Description</h2>
+                    <div 
+                      className="text-gray-700 leading-relaxed"
+                      dangerouslySetInnerHTML={{ __html: book.description }}
+                    />
+                  </div>
+                )}
+
+                {/* Book Details */}
+                <div className="grid grid-cols-2 gap-4">
+                  {book.pages && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">Pages</div>
+                      <div className="text-lg font-semibold text-gray-900">{book.pages}</div>
+                    </div>
+                  )}
+                  {book.written_year && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">Year</div>
+                      <div className="text-lg font-semibold text-gray-900">{book.written_year}</div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3 pt-4">
+                  <button className="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors font-medium">
+                    Read Book
+                  </button>
+                  <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium">
+                    Download
+                  </button>
+                </div>
               </div>
             </div>
           </div>
 
           {/* Author Section */}
-          {book.author && (
-            <div className="bg-amber-50 rounded-2xl p-6">
-              <h2 className="text-xl font-semibold text-gray-800 mb-4">درباره نویسنده</h2>
-              <div className="flex flex-col md:flex-row items-center gap-6">
-                <div className="w-32 h-32 rounded-full overflow-hidden shadow-lg flex-shrink-0">
-                  <Image
-                    src={getImageUrl(book.author.image)}
-                    alt={`${book.author.first_name} ${book.author.last_name}`}
-                    width={128}
-                    height={128}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div className="flex-1 space-y-2 text-gray-700">
-                  <p className="text-lg font-semibold">{book.author.first_name} {book.author.last_name}</p>
+          {book.author && book.author.first_name && (
+            <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
+              <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                <FaUser className="text-amber-600 w-4 h-4" />
+                Author
+              </h2>
+              <div className="flex items-center gap-4">
+                {book.author.image && (
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-amber-100">
+                    <Image
+                      src={getImageUrl(book.author.image) || ""}
+                      alt={`${book.author.first_name} ${book.author.last_name || ''}`}
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                    {book.author.first_name} {book.author.last_name || ''}
+                  </h3>
                   {book.author.bio && (
-                    <p className="text-sm leading-relaxed text-justify" dangerouslySetInnerHTML={{ __html: book.author.bio }} />
+                    <div 
+                      className="text-gray-600 text-sm leading-relaxed mb-3"
+                      dangerouslySetInnerHTML={{ __html: book.author.bio }}
+                    />
                   )}
-                  {book.author.contact_no && <p className="text-sm text-gray-500">شماره تماس: {book.author.contact_no}</p>}
-                  <p className="text-sm text-gray-500">آدرس: {book.author.full_address}</p>
-                  <p className="text-sm text-gray-500">تاریخ تولد: {book.author.dob}</p>
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-500">
+                    {book.author.contact_no && (
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
+                        {book.author.contact_no}
+                      </span>
+                    )}
+                    {book.author.full_address && (
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
+                        {book.author.full_address}
+                      </span>
+                    )}
+                    {book.author.dob && (
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 bg-amber-400 rounded-full"></span>
+                        {book.author.dob}
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
           )}
         </div>
       </div>
-    </main>
-  );
+    );
+  } catch (error) {
+    console.error('Error fetching book:', error);
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-amber-50 to-white">
+        <div className="text-center p-8 bg-white rounded-2xl shadow-lg max-w-md mx-4 border border-amber-100">
+          <div className="text-6xl mb-4">❌</div>
+          <h1 className="text-2xl font-bold text-black mb-4">Error Loading Book</h1>
+          <p className="text-gray-600 mb-6">Sorry, there was an error loading the book details.</p>
+          <Link
+            href="/book"
+            className="inline-block px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors shadow-md"
+          >
+            Back to Books
+          </Link>
+        </div>
+      </div>
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import { Suspense } from "react";
 import Hero from "../app/herosection/page";
-import About from "../app/about/page";
+import About from "./components/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Event from "../app/components/event/eventCard";
@@ -8,11 +8,10 @@ import GraduationsSection from "./components/graduation/TopGraduations.tsx";
 // import ArticlesPreview from "./components/Articles";
 // import GraduationsSection from "./components/graduation/graduationCard";
 import Gallery from "./components/gallery/page";
-import Book from "./components/books/BooksSection";
+import Link from "next/link";
 
 // import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
 // import ArticlesList from "./components/Articles";
-
 
 async function getImages() {
   const res = await fetch(
@@ -25,8 +24,8 @@ async function getImages() {
 
 import { fetchWithCache } from "../lib/api";
 import { endpoints } from "../lib/config";
-import { Blog, Course as CourseType, Event as EventType } from "../lib/types";
-import Books from "../app/components/books/BooksSection";
+import { Blog, Course as CourseType, Event as EventType, Book } from "../lib/types";
+import BooksSection from "./components/books/BooksSection";
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -37,8 +36,6 @@ async function fetchBlogsData(): Promise<Blog[]> {
     return [];
   }
 }
-
-
 
 async function fetchBooksData(): Promise<Book[]> {
   try {
@@ -70,7 +67,6 @@ async function fetchEventData(): Promise<EventType[]> {
   }
 }
 
-
 export default async function HomePage() {
   const [blogs, courses, events, books] = await Promise.all([
     fetchBlogsData(),
@@ -81,13 +77,10 @@ export default async function HomePage() {
 
   const images = await getImages();
   return (
-
-    
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
-     
-   
+
       {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
 
       {/* Courses Section */}
@@ -108,49 +101,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Books */}
 
-<section className="relative py-16 bg-gradient-to-b from-gray-50 to-white">
-  <div className="max-w-7xl mx-auto px-6 text-center">
-    {/* Hero Text */}
-    <p className="inline-block px-4 py-1 rounded-full bg-amber-100 text-amber-600 text-sm font-medium shadow-sm mb-4">
-      Explore Knowledge
-    </p>
-    <h2 className="text-3xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-gray-900">
-       Our <span className="text-amber-600">Islamic Courses</span>
-    </h2>
-    <p className="mt-4 text-gray-600 text-base sm:text-lg max-w-2xl mx-auto">
-      Rooted in the <span className="font-semibold text-amber-700">Qur'an</span> and 
-      <span className="font-semibold text-amber-700"> Sunnah</span>, our books 
-      and courses ensure authentic Islamic knowledge for every learner.
-    </p>
-
-    {/* Books Section */}
-    <div className="mt-12">
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-20">
-            <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-            <span className="ml-4 text-gray-600 font-medium">
-              Loading courses...
-            </span>
-          </div>
-        }
-      >
-        <Books book={books} showAll={false} />
-      </Suspense>
-    </div>
-  </div>
-</section>
-
-
-{/* gragurtion */}
-
-
-
-
-     
-
+      {/* gragurtion */}
 
       {/* Events Section */}
       <section className="py-10 ">
@@ -170,16 +122,65 @@ export default async function HomePage() {
         </div>
       </section>
 
-{/* Gallery */}
-       <Gallery initialImages={images} />
+      {/* Books */}
 
+      <section className="relative py-12 bg-gradient-to-b from-amber-50 to-white">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          {/* Simple Hero Text */}
+          <div className="mb-8">
+            <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
+              Explore Knowledge
+            </p>
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
+              Our <span className="text-amber-600">Books</span>
+            </h2>
+            
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Rooted in the <span className="font-semibold text-amber-700">Qur'an</span> and{" "}
+              <span className="font-semibold text-amber-700">Sunnah</span>, our books provide authentic Islamic knowledge.
+            </p>
+          </div>
 
-       
+          {/* Simple Books Section */}
+          <div className="mt-8">
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                  <span className="ml-3 text-gray-600">Loading books...</span>
+                </div>
+              }
+            >
+              <div className="relative">
+                <BooksSection showAll={false} />
+                
+                {/* Simple Call to Action */}
+                <div className="mt-8 text-center">
+                  <Link 
+                    href="/book" 
+                    className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                  >
+                    <span>View All Books</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </Suspense>
+          </div>
+        </div>
+      </section>
+
+      {/* Gallery */}
+      <Gallery initialImages={images} />
+
       {/* gragutaion */}
 
       <section>
-       <GraduationsSection showAll={false} />
-</section>
+        <GraduationsSection showAll={false} />
+      </section>
 
       {/* blogs Section */}
       <section className="py- bg-gradient-to-b from-gray-50 to-white">
@@ -194,13 +195,10 @@ export default async function HomePage() {
               </div>
             }
           >
-
             <Blogs limit={3} homePage={true} />
           </Suspense>
         </div>
       </section>
-
-
 
       {/* Articles Section */}
       {/* <section className="py-24 bg-gradient-to-b from-gray-50 to-white">
@@ -220,18 +218,15 @@ export default async function HomePage() {
           </Suspense>
         </div>
       </section> */}
-      
-  
 
       {/* Testimonials Section */}
-  
 
       {/* Events Section */}
       {/* <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center mb-20">
             <div className="inline-flex items-center px-6 py-3 bg-amber-100 text-amber-800 text-sm font-semibold rounded-full mb-8">
-              📅 Upcoming Events
+              📅 Events
             </div>
             <h2 className="text-5xl font-bold text-gray-900 mb-6">Join Our Community</h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -290,7 +285,8 @@ export default async function HomePage() {
             Help Us Continue Our Work
           </h2>
           <p className="text-gray-100 mb-8 max-w-2xl mx-auto">
-            Your generous support helps us provide authentic Islamic education to future generations and maintain our beautiful campus
+            Your generous support helps us provide authentic Islamic education
+            to future generations and maintain our beautiful campus
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
@@ -332,7 +328,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-
       {/* Contact Section */}
       <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-6">
@@ -344,7 +339,8 @@ export default async function HomePage() {
               Contact Us
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              We'd love to hear from you. Reach out for more information about our programs
+              We'd love to hear from you. Reach out for more information about
+              our programs
             </p>
           </div>
 
@@ -372,7 +368,10 @@ export default async function HomePage() {
                     info: "Mon-Fri: 8AM-6PM, Sat: 9AM-3PM",
                   },
                 ].map((contact, index) => (
-                  <div key={`contact-${contact.title}-${index}`} className="flex items-center">
+                  <div
+                    key={`contact-${contact.title}-${index}`}
+                    className="flex items-center"
+                  >
                     <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mr-6 shadow-lg">
                       <span className="text-2xl">{contact.icon}</span>
                     </div>
