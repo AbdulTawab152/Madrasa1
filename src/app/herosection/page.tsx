@@ -9,7 +9,7 @@ import img from "../../../public/1.jpg"
 const images = ["/1.jpg", "/2.jpg", "/3.jpg", "/4.jpg", "/05.jpg",];
 
 const ScrollingRow = ({ direction = "left", delay = 0 }: { direction?: "left" | "right"; delay?: number }) => {
-  const scrollX = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
+  const scrollX = direction === "left" ? ["0%", "-0%"] : ["-50%", "0%"];
   const scrollY = direction === "left" ? ["0px", "15px"] : ["15px", "0px"];
 
   const repeatedImages = [...images, ...images, ...images, ...images];
@@ -17,7 +17,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }: { direction?: "left" | 
   return (
     <motion.div
       className="flex mt-32 gap-3  w-max "
-      animate={{ x: scrollX, y: scrollY, rotateX: [10, 50, 30] }}
+      animate={{ x: scrollX, y: scrollY, }}
       transition={{
         repeat: Infinity,
         repeatType: "loop",

@@ -17,7 +17,7 @@ export default async function BookDetailsPage({ params }: Params) {
 
     if (!book) {
       return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-amber-50 to-white">
+        <div className="min-h-screen  flex items-center justify-center bg-gradient-to-b from-amber-50 to-white">
           <div className="text-center p-8 bg-white rounded-2xl shadow-lg max-w-md mx-4 border border-amber-100">
             <div className="text-6xl mb-4">📚</div>
             <h1 className="text-2xl font-bold text-black mb-4">Book Not Found</h1>

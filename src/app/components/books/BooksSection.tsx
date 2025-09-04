@@ -36,7 +36,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   }, []);
 
   const sortedBooks = books.filter((book) => book.is_published === 1);
-  const displayBooks = showAll ? sortedBooks : sortedBooks.slice(0, 3);
+  const displayBooks = showAll ? sortedBooks : sortedBooks.slice(0, 4);
 
   if (loading) {
     return (
@@ -75,6 +75,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
             <Link href={`/book/${book.id}`} className="block h-full">
               <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-amber-100 overflow-hidden relative h-full flex flex-col">
                 {/* Book Image Container */}
+                
                 <div className="relative h-64 overflow-hidden flex-shrink-0">
                   {book.image ? (
                     <Image

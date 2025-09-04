@@ -178,9 +178,63 @@ export default async function HomePage() {
 
       {/* gragutaion */}
 
-      <section>
+   
+
+      <section className="relative py-12 bg-orange-50">
+  <div className="max-w-7xl mx-auto px-6 text-center">
+    {/* Hero Text */}
+    <div className="mb-8">
+   
+
+      <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
+        Our <span className="text-orange-600">Graduates</span>
+      </h2>
+
+      <p className="text-gray-600 max-w-2xl mx-auto">
+        Highlighting the achievements and journeys of students who have successfully completed their courses 🌟
+      </p>
+    </div>
+
+    {/* Graduates Section */}
+    <div className="mt-8 relative">
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-12">
+            <div className="w-8 h-8 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
+            <span className="ml-3 text-gray-600">Loading graduates...</span>
+          </div>
+        }
+      >
+        {/* Your GraduationsSection Component */}
         <GraduationsSection showAll={false} />
-      </section>
+
+        {/* Call to Action */}
+        <div className="mt-2 text-center">
+          <Link
+            href="/graduated-students"
+            className="inline-flex items-center bg-orange-600 gap-2 px-6 py-2 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors"
+          >
+            <span>View All Graduates</span>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              />
+            </svg>
+          </Link>
+        </div>
+      </Suspense>
+    </div>
+  </div>
+</section>
+
 
       {/* blogs Section */}
       <section className="py- bg-gradient-to-b from-gray-50 to-white">

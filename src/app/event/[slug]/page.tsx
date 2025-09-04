@@ -76,12 +76,8 @@ export default async function EventDetailsPage({ params }: Params) {
                 Events
               </Link>
             </li>
-            <li className="flex items-center">
-              <span className="mx-2 text-amber-400">/</span>
-              <span className="text-gray-500 truncate max-w-xs md:max-w-md">
-                {event.title}
-              </span>
-            </li>
+            
+          
           </ol>
         </nav>
 
@@ -215,37 +211,7 @@ export default async function EventDetailsPage({ params }: Params) {
             )}
 
             {/* Event Actions */}
-            <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 sticky top-24">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Event Actions</h3>
-              
-              {event.live_link && (
-                <a
-                  href={event.live_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center px-4 py-3 border border-transparent rounded-xl shadow-sm text-base font-medium text-white bg-amber-600 hover:bg-amber-700 mb-4 transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                  </svg>
-                  Join Live Stream
-                </a>
-              )}
-              
-              <button className="w-full flex items-center justify-center px-4 py-3 border border-amber-300 rounded-xl shadow-sm text-base font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 mb-4 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-                </svg>
-                Share Event
-              </button>
-              
-              <button className="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-xl shadow-sm text-base font-medium text-gray-700 bg-white hover:bg-gray-50 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                Save for Later
-              </button>
-            </div>
+         
           </div>
         </div>
       </div>
