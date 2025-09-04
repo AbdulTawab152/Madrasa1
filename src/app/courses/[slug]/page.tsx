@@ -81,35 +81,32 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Hero Section */}
-      <div className="relative h-[28rem] lg:h-[32rem] bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 overflow-hidden rounded-b-3xl shadow-xl flex items-center justify-center">
+      <div className="relative h-80 lg:h-96 bg-gradient-to-r from-amber-600 to-amber-700 overflow-hidden rounded-b-3xl shadow-xl">
         {course.image && (
           <Image
             src={getImageUrl(course.image)}
             alt={course.title}
             fill
-            className="object-cover object-center opacity-30"
+            className="object-cover opacity-30"
           />
         )}
-        <div className="absolute inset-0 bg-black/50"></div>
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="max-w-4xl mx-auto">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4 leading-tight drop-shadow-lg">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="container mx-auto px-4 h-full flex items-center relative z-10">
+          <div className="max-w-4xl">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
               {course.title}
             </h1>
-            <p className="text-white text-lg sm:text-xl mb-6 opacity-90">
-              Learn from <span className="font-semibold">{course.first_name} {course.last_name}</span>
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 mt-6">
-              <div className="flex items-center text-white text-lg bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
-                <FaStar className="mr-2 text-yellow-300" />
-                {course.rating?.toFixed(1) || '5.0'} ({course.enrolled || '25k'} students)
-              </div>
-              <div className="flex items-center text-white text-lg bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
+            <div className="flex flex-wrap gap-3 mt-6">
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
                 <FaBook className="mr-2" />
                 <span className="font-medium">Published</span>
                 <span className="ml-1 text-sm">({course.publish_date ? new Date(course.publish_date).getFullYear() : 'New'})</span>
               </div>
-              <div className="flex items-center text-white text-lg bg-white/20 px-4 py-2 rounded-full backdrop-blur-sm">
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
+                <FaBook className="mr-2" />
+                <span className="font-medium">{course.video_quantity || 0} Videos</span>
+              </div>
+              <div className="flex items-center text-white bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
                 <FaVideo className="mr-2" />
                 <span className="font-medium">{course.duration || 'Flexible'}</span>
               </div>
@@ -119,39 +116,84 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 py-12 lg:py-16 relative flex flex-col md:flex-row gap-8">
+      <div className="max-w-7xl mx-auto px-4 py-12 lg:mt-8 relative flex flex-col lg:flex-row gap-8">
         
         {/* Course Info */}
-        <div className="flex-[2] bg-white rounded-3xl shadow-lg p-8 space-y-8">
-          <h2 className="text-3xl font-extrabold text-gray-800 border-b-2 border-orange-500 pb-4 mb-6">About This Course</h2>
-          <p className="text-gray-700 leading-relaxed text-lg">{course.description || "This course provides comprehensive knowledge and practical skills in a clear and engaging manner. Designed for students of all levels, it covers essential concepts and advanced topics, ensuring a thorough understanding of the subject matter. Through interactive lessons and practical exercises, you will gain valuable insights and develop the expertise needed to excel."}</p>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-8">
-            <div className="flex items-center gap-4 text-gray-800 font-semibold text-lg bg-orange-50 p-4 rounded-xl shadow-sm">
-              <FaClock className="text-orange-500 text-2xl" />
-              Duration: <span className="text-orange-600">{course.duration || "Lifetime Access"}</span>
+        <div className="flex-1 bg-white rounded-2xl shadow-lg p-8 space-y-8 border border-amber-100">
+          <div className="border-b border-amber-100 pb-6">
+            <h2 className="text-2xl font-bold text-black mb-4 flex items-center">
+              <FaGraduationCap className="mr-3 text-amber-600" />
+              About this Course
+            </h2>
+            {course.description ? (
+              <div 
+                className="text-gray-700 leading-relaxed prose prose-amber max-w-none"
+                dangerouslySetInnerHTML={{ __html: course.description }}
+              />
+            ) : (
+              <p className="text-gray-700 leading-relaxed">
+                This course provides comprehensive knowledge and practical skills in Islamic education. 
+                Designed to help you deepen your understanding and strengthen your faith through structured learning.
+              </p>
+            )}
+          </div>
+
+          {/* Course Features */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
+              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                <FaClock className="text-amber-600 text-xl" />
+              </div>
+              <div>
+                <div className="font-semibold text-black">Duration</div>
+                <div className="text-gray-600">{course.duration || "Lifetime Access"}</div>
+              </div>
             </div>
-            <div className="flex items-center gap-4 text-gray-800 font-semibold text-lg bg-orange-50 p-4 rounded-xl shadow-sm">
-              <FaVideo className="text-orange-500 text-2xl" />
-              Videos: <span className="text-orange-600">{course.video_quantity || 0} Lessons</span>
+
+            <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
+              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                <FaVideo className="text-amber-600 text-xl" />
+              </div>
+              <div>
+                <div className="font-semibold text-black">Video Lessons</div>
+                <div className="text-gray-600">{course.video_quantity || 0} Videos</div>
+              </div>
             </div>
-            <div className="flex items-center gap-4 text-gray-800 font-semibold text-lg bg-orange-50 p-4 rounded-xl shadow-sm">
-              <FaBook className="text-orange-500 text-2xl" />
-              Total Lessons: <span className="text-orange-600">{course.lessons || 8}</span>
+
+            <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
+              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                <FaBook className="text-amber-600 text-xl" />
+              </div>
+              <div>
+                <div className="font-semibold text-black">Published Date</div>
+                <div className="text-gray-600">{course.publish_date ? new Date(course.publish_date).toLocaleDateString() : 'Recently'}</div>
+              </div>
             </div>
-            <div className="flex items-center gap-4 text-gray-800 font-semibold text-lg bg-orange-50 p-4 rounded-xl shadow-sm">
-              <FaUsers className="text-orange-500 text-2xl" />
-              Enrolled: <span className="text-orange-600">{course.enrolled || '25k'} Students</span>
+
+            <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
+              <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                <FaUsers className="text-amber-600 text-xl" />
+              </div>
+              <div>
+                <div className="font-semibold text-black">Resolution</div>
+                <div className="text-gray-600">{course.resolution || 'HD'}</div>
+              </div>
             </div>
           </div>
         </div>
 
         {/* Sidebar */}
-        <div className="md:w-1/3 bg-white p-8 rounded-3xl shadow-lg space-y-8 sticky top-8 h-fit">
-          <div className="bg-gradient-to-br from-indigo-600 to-purple-600 text-white p-8 rounded-2xl shadow-xl text-center">
-            <div className="text-4xl font-extrabold mb-3">Free</div>
-            <p className="mb-7 text-lg opacity-90">Unlock your potential. Start learning today!</p>
-            <button className="w-full bg-white text-indigo-700 font-bold py-4 rounded-xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-md">
+        <div className="lg:w-96 bg-white p-6 rounded-2xl shadow-lg border border-amber-100 sticky top-8 space-y-6">
+          <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-6 rounded-xl shadow-lg text-center">
+            <div className="text-2xl font-bold mb-2">Get Course Info</div>
+            <p className="mb-6 text-amber-100">Contact us for enrollment details</p>
+            <a 
+              href={`https://wa.me/+1234567890?text=${encodeURIComponent(`Hi! I'm interested in the course: ${course.title}. Can you provide me with more information about enrollment, pricing, and course details?`)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block w-full bg-white text-amber-600 font-semibold py-3 rounded-lg hover:bg-amber-50 transition flex items-center justify-center gap-2"
+            >
+              <FaPlay className="text-sm" />
               Enroll Now
             </a>
           </div>
@@ -159,81 +201,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           {/* Course Details from API */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-black mb-4">Course Details</h3>
-            <div className="space-y-3">
-              {course.duration && (
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Duration</span>
-                  <span className="font-medium text-black">{course.duration}</span>
-                </div>
-              )}
-              {course.video_quantity && (
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Videos</span>
-                  <span className="font-medium text-black">{course.video_quantity}</span>
-                </div>
-              )}
-              {course.publish_date && (
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Published</span>
-                  <span className="font-medium text-black">{new Date(course.publish_date).toLocaleDateString()}</span>
-                </div>
-              )}
-              {course.resolution && (
-                <div className="flex justify-between items-center py-2 border-b border-gray-100">
-                  <span className="text-gray-600">Quality</span>
-                  <span className="font-medium text-black">{course.resolution}</span>
-                </div>
-              )}
-              {course.space && (
-                <div className="flex justify-between items-center py-2">
-                  <span className="text-gray-600">Size</span>
-                  <span className="font-medium text-black">{course.space}</span>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  );
-}
-fundamentals</li>
-                <li>• Practical skills with real examples</li>
-                <li>• Tips, shortcuts, and best practices</li>
-              </ul>
-            </div>
-            <div className="rounded-2xl p-4 border border-gray-100 bg-white">
-              <h3 className="font-semibold text-black mb-2">Prerequisites</h3>
-              <ul className="text-sm text-gray-600 space-y-2">
-                <li>• Basic familiarity with the topic</li>
-                <li>• Willingness to learn</li>
-                <li>• Internet connection for resources</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Sidebar */}
-        <div className="md:w-1/3 space-y-6">
-          <div className="bg-white/90 backdrop-blur p-6 rounded-3xl shadow-lg border border-amber-100">
-            <div className="bg-gradient-to-r from-amber-400 to-pink-500 text-white p-6 rounded-2xl shadow-md text-center">
-              <div className="text-3xl font-extrabold mb-1">Free</div>
-              <p className="text-white/90 mb-6">Start learning today</p>
-              <button className="w-full bg-white text-amber-600 font-semibold py-3 rounded-xl hover:opacity-95 active:opacity-90 transition shadow">
-                Start Course
-              </button>
-              {course.short_video && (
-                <button className="mt-3 w-full inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/30 font-medium py-2.5 rounded-xl hover:bg-white/15 transition">
-                  <FaPlay className="text-white" /> Preview
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Course Details from API */}
-          <div className="bg-white/90 backdrop-blur rounded-3xl shadow-lg p-6 border border-amber-100">
-            <h3 className="text-lg font-semibold text-black mb-4">Course details</h3>
             <div className="space-y-3">
               {course.duration && (
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
