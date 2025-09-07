@@ -40,7 +40,7 @@ export default async function BookDetailsPage({ params }: Params) {
     };
 
     return (
-      <div className="min-h-screen mt-[100px] bg-white">
+      <div className="min-h-screen mt-36 md:mt-[100px] bg-white">
         {/* Enhanced White Header */}
         <div className="bg-white border-b border-gray-100 py-10 shadow-sm relative overflow-hidden">
           {/* Background decorative elements */}
@@ -160,9 +160,9 @@ export default async function BookDetailsPage({ params }: Params) {
                 <FaUser className="text-amber-600 w-4 h-4" />
                 Author
               </h2>
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col md:flex-row gap-10 items-center justify-center">
                 {book.author.image && (
-                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-amber-100">
+                  <div className="w-32  h-32 md:w-20 h-20 rounded-full overflow-hidden border-2 border-amber-100">
                     <Image
                       src={getImageUrl(book.author.image) || ""}
                       alt={`${book.author.first_name} ${book.author.last_name || ''}`}
@@ -173,12 +173,12 @@ export default async function BookDetailsPage({ params }: Params) {
                   </div>
                 )}
                 <div className="flex-1">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-[20px] font-semibold text-gray-900 mb-2">
                     {book.author.first_name} {book.author.last_name || ''}
                   </h3>
                   {book.author.bio && (
                     <div 
-                      className="text-gray-600 text-sm leading-relaxed mb-3"
+                      className="text-gray-600 text-[20px] leading-relaxed mb-3"
                       dangerouslySetInnerHTML={{ __html: book.author.bio }}
                     />
                   )}

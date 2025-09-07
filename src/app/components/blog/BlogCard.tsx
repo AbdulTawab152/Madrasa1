@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 // Fetch blogs from API
 async function fetchBlogsData() {
@@ -54,157 +55,269 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
 
   return (
     <section id="blogs" className="bg-gradient-to-b from-gray-50 to-white py-16">
-      {/* Home Page Hero / Title */}
+      {/* Enhanced Home Page Hero / Title */}
         {!homePage && (
-        <section className="relative w-full  md:mt-12 mb-16 md:mb-20 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-pink-50 z-0"></div>
-          <div className="relative z-10 py-16 md:py-24 px-6 flex flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 mb-6 px-5 py-2 bg-white shadow-md border border-orange-100 text-orange-600 text-sm font-medium rounded-full">
-              <span className="w-2 h-2 bg-orange-500 rounded-full animate-pulse"></span>
-              Our Blogs
-            </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold mb-6 text-gray-900 leading-tight">
+        <section className="relative w-full md:mt- mb-16 md:mb-20 overflow-hidden">
+          {/* Multi-layered Background */}
+          <div className="absolute inset-0 pointer-events-none">
+            {/* Enhanced multi-layered gradient background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-pink-50" />
+            {/* Subtle SVG pattern overlay for extra texture */}
+            <div
+              className="absolute inset-0 opacity-10"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fbbf24' fill-opacity='0.08'%3E%3Ccircle cx='50' cy='50' r='40'/%3E%3C/g%3E%3Cg fill='%23f472b6' fill-opacity='0.06'%3E%3Crect x='10' y='10' width='20' height='20' rx='5'/%3E%3C/g%3E%3C/svg%3E")`,
+                backgroundSize: "80px 80px",
+                backgroundRepeat: "repeat",
+              }}
+            />
+            {/* Animated gradient orbs */}
+            <motion.div
+              className="absolute top-16 left-16 w-80 h-80 bg-gradient-to-r from-orange-200/40 via-pink-100/30 to-pink-200/40 rounded-full blur-3xl shadow-2xl"
+              animate={{
+                x: [0, 140, 0],
+                y: [0, -80, 0],
+                scale: [1, 1.35, 1],
+                rotate: [0, 15, 0],
+              }}
+              transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-16 right-16 w-[28rem] h-[28rem] bg-gradient-to-r from-pink-200/30 via-orange-100/30 to-orange-200/30 rounded-full blur-3xl shadow-xl"
+              animate={{
+                x: [0, -120, 0],
+                y: [0, 100, 0],
+                scale: [1, 0.95, 1],
+                rotate: [0, -10, 0],
+              }}
+              transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Extra animated orb for depth */}
+            <motion.div
+              className="absolute top-1/2 left-1/2 w-40 h-40 bg-gradient-to-br from-orange-100/60 to-pink-100/60 rounded-full blur-2xl"
+              style={{ translate: "-50% -50%" }}
+              animate={{
+                x: [0, 40, -40, 0],
+                y: [0, -30, 30, 0],
+                scale: [1, 1.1, 0.95, 1],
+                opacity: [0.7, 1, 0.8, 0.7],
+              }}
+              transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Geometric accent dots with more variety and animation */}
+            <motion.div
+              className="absolute top-1/4 left-1/3 w-2 h-2 bg-orange-400/70 rounded-full"
+              animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 2.5, repeat: Infinity, delay: 0.2 }}
+            />
+            <motion.div
+              className="absolute bottom-1/3 right-1/3 w-1.5 h-1.5 bg-pink-400/80 rounded-full"
+              animate={{ scale: [1, 1.2, 1], opacity: [1, 0.8, 1] }}
+              transition={{ duration: 2.2, repeat: Infinity, delay: 1.1 }}
+            />
+            <motion.div
+              className="absolute top-2/3 left-1/4 w-2 h-2 bg-orange-300/80 rounded-full"
+              animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }}
+              transition={{ duration: 2.8, repeat: Infinity, delay: 2.1 }}
+            />
+            {/* New accent: animated star */}
+            <motion.div
+              className="absolute top-1/2 right-1/4 text-yellow-400"
+              style={{ fontSize: "1.25rem" }}
+              animate={{ rotate: [0, 20, -20, 0], scale: [1, 1.2, 1] }}
+              transition={{ duration: 3.5, repeat: Infinity, delay: 1.5 }}
+            >
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" />
+              </svg>
+            </motion.div>
+          </div>
+          
+          <div className="relative z-10 py-24 md:py-24 px-6 flex flex-col items-center text-center">
+            <motion.div 
+              className="inline-flex items-center gap-3 mb-8 px-6 py-3 bg-white/80 backdrop-blur-md border border-orange-200/50 text-orange-600 text-sm font-medium rounded-full shadow-lg"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+              </motion.div>
+              <span>Our Blogs</span>
+              <motion.div
+                className="w-1.5 h-1.5 bg-orange-500 rounded-full"
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
+            
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-gray-900 leading-tight"
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               Discover{" "}
-              <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
-                Blogs
-              </span>{" "}
+              <span className="relative">
+                <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+                  Blogs
+                </span>
+                <motion.div
+                  className="absolute -bottom-1 left-0 right-0 h-2 bg-gradient-to-r from-orange-200/50 to-pink-200/50 rounded-full -z-10"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
+                />
+              </span>
               <br className="hidden md:block" />
               That{" "}
               <span className="relative inline-block">
-                Inspire
-                <span className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-orange-400 to-pink-500 rounded-full animate-pulse"></span>
+                <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+                  Inspire
+                </span>
+                <motion.div
+                  className="absolute -bottom-1 left-0 right-0 h-1.5 bg-gradient-to-r from-pink-300/60 to-orange-300/60 rounded-full"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
+                />
               </span>
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed">
+            </motion.h1>
+            
+            <motion.p 
+              className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed font-normal"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
               Explore our curated collection of Islamic courses and tutorials. Learn, grow, and advance your knowledge at your own pace.
-            </p>
+            </motion.p>
           </div>
         </section>
       )}
-      {homePage && (
-        <div className="max-w-7xl mt-32  mx-auto px-6 text-center mb-12">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-gray-900 mb-4 leading-tight">
-            Our <span className="text-orange-500">Latest Blogs</span>
-          </h2>
-          <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-            Explore curated tips, insights, and stories about saffron cultivation, health, and lifestyle.
-          </p>
-        </div>
-      )}
+    {homePage && (
+ <motion.div 
+ className="max-w-4xl mt- space-y-8 mx-auto px-6 text-center mb-20"
+ initial={{ opacity: 0, y: 30 }}
+ animate={{ opacity: 1, y: 0 }}
+ transition={{ duration: 0.8 }}
+>
+ {/* Subtitle */}
+ <motion.p 
+   className="text-base sm:text-lg uppercase tracking-wider font-semibold text-orange-500/90 mb-2"
+   initial={{ opacity: 0, y: 10 }}
+   animate={{ opacity: 1, y: 0 }}
+   transition={{ duration: 0.8, delay: 0.2 }}
+ >
+   Knowledge & Guidance
+ </motion.p>
+
+ {/* Title */}
+ <motion.h2 
+   className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight"
+   initial={{ opacity: 0, y: 20 }}
+   animate={{ opacity: 1, y: 0 }}
+   transition={{ duration: 0.8, delay: 0.4 }}
+ >
+   Our <span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-sm">
+     Latest Blogs
+   </span>
+ </motion.h2>
+
+ {/* Description */}
+ <motion.p 
+   className="text-md sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto font-medium leading-relaxed"
+   initial={{ opacity: 0, y: 20 }}
+   animate={{ opacity: 1, y: 0 }}
+   transition={{ duration: 0.8, delay: 0.6 }}
+ >
+   Explore articles, insights, and stories about{" "}
+   <span className="font-semibold text-orange-600">Islamic education</span>,{" "}
+   <span className="font-semibold text-orange-600">spiritual growth</span>, and{" "}
+   <span className="font-semibold text-orange-600">community guidance</span>.
+ </motion.p>
+</motion.div>
+
+
+)}
+
 
       {/* Blogs Grid */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Category Filter */}
-     <div className="flex flex-wrap justify-center gap-3 mb-12">
-  {!homePage &&
-    categories.map((cat) => (
-      <button
-        key={cat}
-        onClick={() => setSelectedCategory(cat)}
-        className={`px-6 py-3 rounded-full text-sm font-medium transition-all duration-300 ${
-          selectedCategory === cat
-            ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg transform -translate-y-1"
-            : "bg-white text-gray-700 border border-gray-200 hover:border-orange-300 hover:shadow-md"
-        }`}
-      >
-        {cat}
-      </button>
-    ))}
+{/* Blog Grid */}
+{/* Blog Grid */}
+<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+  {displayBlogs.map((item: any, index: number) => (
+    <motion.div
+      key={item.slug}
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+      className="h-full"
+    >
+     
+        <motion.div
+          className="relative flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-gray-100/50 transition-all duration-300"
+          whileHover={{ y: -4, boxShadow: "0 20px 25px rgba(0,0,0,0.1)" }}
+          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+        >
+          {/* Image */}
+          <div className="relative h-56 w-full overflow-hidden">
+            <Image
+              src={getImageUrl(item.image)}
+              alt={item.title}
+              className="object-cover w-full h-full transition-transform duration-300 ease-out group-hover:scale-105"
+              width={500}
+              height={300}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+            <span className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs px-4 py-2 rounded-full font-semibold shadow-xl backdrop-blur-sm">
+              {item.category?.name || "General"}
+            </span>
+            <div className="absolute bottom-4 left-4 right-4">
+              <h2 className="text-white font-bold text-xl line-clamp-2 drop-shadow-2xl">
+                {item.title}
+              </h2>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="flex-1 flex flex-col p-6">
+            <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+              {item.description?.replace(/<[^>]*>/g, "")}
+            </p>
+
+            {/* Footer */}
+            <div className="mt-auto flex items-center justify-between border-t border-gray-100/50 pt-4">
+            <div className="flex items-center gap-2 text-xs text-gray-500">
+                <span>{item.date?.split("T")[0] || "Unknown date"}</span>
+              
+              </div>
+              {/* Left Button */}
+              <Link href={`/blogs/${item.slug}`} className="group block h-full ">
+              
+              
+              
+               <span className="text-orange-500">See More →</span> 
+                </Link>
+
+              {/* Right Side Info */}
+            
+            </div>
+          </div>
+        </motion.div>
+     
+    </motion.div>
+  ))}
 </div>
 
 
-        {isLoading ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(limit || 6)].map((_, i) => (
-              <div key={i} className="flex flex-col h-full bg-white rounded-2xl shadow-md overflow-hidden animate-pulse">
-                <div className="h-56 w-full bg-gray-200"></div>
-                <div className="p-6 flex-1">
-                  <div className="h-6 bg-gray-200 rounded mb-4"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-2/3 mb-6"></div>
-                  <div className="flex justify-between mt-auto">
-                    <div className="h-4 bg-gray-200 rounded w-1/3"></div>
-                    <div className="h-6 bg-gray-200 rounded w-1/3"></div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : displayBlogs.length === 0 ? (
-          <div className="text-center py-16">
-            <div className="mx-auto w-24 h-24 bg-amber-100 rounded-full flex items-center justify-center mb-6">
-              <svg className="w-12 h-12 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-              </svg>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No blogs found</h3>
-            <p className="text-gray-500">We couldn't find any blogs in this category.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayBlogs.map((item: any) => (
-              <Link key={item.slug} href={`/blogs/${item.slug}`} className="group block h-full">
-                <div className="relative flex flex-col h-full bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 transform hover:-translate-y-2">
-                  {/* Image */}
-                  <div className="relative h-56 w-full overflow-hidden">
-                    <Image
-                      src={getImageUrl(item.image)}
-                      alt={item.title}
-                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-700 ease-out"
-                      width={500}
-                      height={300}
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-                    <span className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs px-3 py-1.5 rounded-full font-semibold shadow-lg">
-                      {item.category?.name || "General"}
-                    </span>
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <h2 className="text-white font-bold text-xl line-clamp-2 drop-shadow-lg">{item.title}</h2>
-                    </div>
-                  </div>
+{/* See More Button */}
 
-                  {/* Content */}
-                  <div className="flex-1 flex flex-col p-6">
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                      {item.description?.replace(/<[^>]*>/g, "")}
-                    </p>
-                    <div className="mt-auto flex items-center justify-between text-xs text-gray-500 gap-3 pt-4 border-t border-gray-100">
-                      <span className="flex items-center">
-                        <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        {item.date?.split("T")[0] || "Unknown date"}
-                      </span>
-                      <span className="flex items-center gap-1.5 bg-amber-50 px-3 py-1.5 rounded-full text-amber-700">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M5.121 17.804A13.937 13.937 0 0112 15c2.5 0 4.847.655 6.879 1.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                        </svg>
-                        {item.author || "Admin"}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
-        )}
 
-        {/* View All Blogs button */}
-        {homePage && displayBlogs.length > 0 && (
-          <div className="col-span-full text-center mt-16">
-            <Link
-              href="/blogs"
-              className="inline-flex items-center px-8 py-2 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-            >
-              View All Blogs
-              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
-              </svg>
-            </Link>
-          </div>
-        )}
-      </div>
+
     </section>
   );
 }

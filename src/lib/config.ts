@@ -47,9 +47,9 @@ export const navigation = {
     { name: 'Courses', href: '/courses', icon: 'course' },
     { name: 'Event', href: '/event', icon: 'event' },
     { name: 'Tasawof', href: '/tasawwuf', icon: 'tasawwuf' },
-    { name: 'Donation', href: '/donation', icon: 'donation' },
+    // { name: 'Donation', href: '/donation', icon: 'donation' },
     { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'Article', href: '/articles', icon: 'article' },
-    { name: 'Gallery', href: '/gallery', icon: '' },
+    // { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

@@ -1,4 +1,7 @@
+"use client";
+
 import { getImageUrl } from "@/lib/utils";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 
 const API = "https://lawngreen-dragonfly-304220.hostingersite.com/api/graduations";
@@ -9,118 +12,267 @@ async function getGraduation(slug: string) {
   return await res.json();
 }
 
-interface Graduation {
-  id: number;
-  title: string;
-  slug: string;
-  main_image?: string | null;
-  date: string;
-  start_time: string;
-  end_time: string;
-  description: string;
-  status: string;
-  is_published: boolean;
-  graduation_year?: string | number;
-  created_at: string;
-  updated_at: string;
-  graduated_students: any[];
-}
+export default function GraduationDetailPage({ params }: { params: { slug: string } }) {
+  const [graduation, setGraduation] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
-export default async function GraduationDetailPage({ params }: { params: { slug: string } }) {
-  const graduation = await getGraduation(params.slug);
-  if (!graduation) return <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8"><div className="p-10 text-center text-gray-700 font-medium bg-white rounded-lg shadow-md">Graduation not found</div></div>;
+  useEffect(() => {
+    async function fetchGraduation() {
+      try {
+        setLoading(true);
+        const data = await getGraduation(params.slug);
+        if (data) {
+          setGraduation(data);
+          if (data.graduation_images && data.graduation_images.length > 0) {
+            setSelectedImageIndex(0);
+          } else if (data.main_image) {
+            setSelectedImageIndex(-1); // main_image selected
+          }
+        } else {
+          setError("Graduation not found");
+        }
+      } catch (err) {
+        setError("Failed to fetch graduation details");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchGraduation();
+  }, [params.slug]);
+
+  const currentImageUrl = useMemo(() => {
+    if (graduation) {
+      if (selectedImageIndex !== -1 && graduation.graduation_images && graduation.graduation_images.length > selectedImageIndex) {
+        return getImageUrl(graduation.graduation_images[selectedImageIndex].image);
+      } else if (graduation.main_image && selectedImageIndex === -1) {
+        return getImageUrl(graduation.main_image);
+      }
+    }
+    return "";
+  }, [selectedImageIndex, graduation]);
+
+  const goToNextImage = () => {
+    if (graduation?.graduation_images?.length) {
+      setSelectedImageIndex((prevIndex) => (prevIndex + 1) % graduation.graduation_images.length);
+    }
+  };
+
+  const goToPreviousImage = () => {
+    if (graduation?.graduation_images?.length) {
+      setSelectedImageIndex((prevIndex) => (prevIndex - 1 + graduation.graduation_images.length) % graduation.graduation_images.length);
+    }
+  };
+
+  if (loading) return <Loading />;
+  if (error) return <ErrorMessage message={error} />;
+  if (!graduation) return <ErrorMessage message="Graduation not found" />;
 
   return (
-    <main className="mx-auto mt-24 max-w-7xl px-4 font-sans">
-      {/* Graduation Header */}
-      <div className="relative mb-20">
-  {/* Hero Image with Overlay */}
-  {graduation.main_image && (
-    <div className="relative h-[32rem] w-full overflow-hidden rounded-3xl shadow-2xl ring-4 ring-white/20">
-      <img
-        src={getImageUrl(graduation.main_image) || ""}
-        alt={graduation.title}
-        className="h-full w-full object-cover transition-transform duration-[4000ms] hover:scale-110"
+    <main className="mx-auto mt-24 sm:mt-10 max-w-7xl px-4 font-sans">
+      {/* 🎓 Hero Section */}
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="mb-24 relative overflow-hidden rounded-3xl  p-6 md:p-8 lg:p-12 flex flex-col lg:flex-row gap-8 bg-gradient-to-r from-white to-gray-50"
+      >
+        {/* Cinematic Gradient Overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-tr from-orange-50 via-transparent to-yellow-50 opacity-30 pointer-events-none"
+          animate={{ opacity: [0.2, 0.35, 0.2] }}
+          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
+        />
+
+        {/* Left Column - Main Image + Thumbnails */}
+        <div className="lg:w-1/2 flex flex-col gap-4 relative">
+  <motion.div
+    className="relative w-full aspect-[16/9] md:aspect-[4/3] overflow-hidden rounded-2xl cursor-pointer"
+    layout
+  >
+    {currentImageUrl && (
+      <motion.img
+        src={currentImageUrl}
+        alt="Main Graduation Image"
+        className="w-full h-full object-cover rounded-2xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
       />
-      {/* Gradient Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent rounded-3xl"></div>
-      <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40 rounded-3xl"></div>
+    )}
+
+    {/* Navigation Buttons */}
+    {graduation.graduation_images?.length > 1 && (
+      <>
+        <motion.button
+          onClick={goToPreviousImage}
+          className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 md:p-3 text-white hover:bg-black/75 focus:outline-none"
+        >
+          &lt;
+        </motion.button>
+        <motion.button
+          onClick={goToNextImage}
+          className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 md:p-3 text-white hover:bg-black/75 focus:outline-none"
+        >
+          &gt;
+        </motion.button>
+      </>
+    )}
+  </motion.div>
+
+  {/* Thumbnails */}
+  {graduation.graduation_images?.length > 0 && (
+    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
+      {graduation.graduation_images.map((img: any, index: number) => (
+        <motion.div
+          key={img.id}
+          className={`relative h-20 w-full cursor-pointer overflow-hidden rounded-lg shadow-md duration-300 ${selectedImageIndex === index ? "ring-2 ring-orange-100" : ""}`}
+          onClick={() => setSelectedImageIndex(index)}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+          layout
+        >
+          <img
+            src={getImageUrl(img.image) || ""}
+            alt="Thumbnail"
+            className="h-full w-full object-cover rounded-lg"
+          />
+        </motion.div>
+      ))}
     </div>
   )}
-
-  {/* Content Overlay */}
-  <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6 sm:px-12">
-    <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold text-white drop-shadow-2xl animate-fade-in-up">
-      {graduation.title}
-      <span className="block h-1.5 w-28 bg-gradient-to-r from-orange-400 to-yellow-500 mt-4 rounded-full shadow-lg animate-pulse mx-auto"></span>
-    </h1>
-
-    <p className="mt-5 text-lg sm:text-xl md:text-2xl text-white max-w-2xl mx-auto drop-shadow-md opacity-90 animate-fade-in-up delay-200">
-      {graduation.description}
-    </p>
-
-    {/* Date & Time Badges */}
-    <div className="mt-10 flex flex-wrap justify-center gap-4 animate-fade-in-up delay-400">
-      <span className="flex items-center gap-2 text-sm bg-white/15 text-white px-6 py-3 rounded-full backdrop-blur-md shadow-xl hover:bg-white/25 transition">
-        <span className="flex items-center justify-center w-6 h-6 bg-white/20 rounded-full">📅</span>
-        {new Date(graduation.date).toLocaleDateString()}
-      </span>
-      <span className="flex items-center gap-2 text-sm bg-white/15 text-white px-6 py-3 rounded-full backdrop-blur-md shadow-xl hover:bg-white/25 transition">
-        <span className="flex items-center justify-center w-6 h-6 bg-white/20 rounded-full">⏰</span>
-        {new Date(graduation.start_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} -{" "}
-        {new Date(graduation.end_time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-      </span>
-      {graduation.graduation_year && (
-        <span className="flex items-center gap-2 text-sm bg-white/15 text-white px-6 py-3 rounded-full backdrop-blur-md shadow-xl hover:bg-white/25 transition">
-          <span className="flex items-center justify-center w-6 h-6 bg-white/20 rounded-full">🎓</span>
-          {graduation.graduation_year}
-        </span>
-      )}
-    </div>
-  </div>
 </div>
 
 
+        {/* Right Column - Hero Text + Info */}
+        <div className="relative z-10 lg:w-1/2 flex flex-col items-start justify-center px-2 md:px-6 py-6 md:py-12 text-left">
+          <motion.h1
+            className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black drop-shadow-xl mb-4 md:mb-6"
+            initial={{ opacity: 0, x: -40, scale: 0.95 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            {graduation.title}
+            <span className="mt-3 block h-1 w-1 sm:w-28 rounded-full bg-gradient-to-r from-orange-600 to-yellow-500 shadow-lg"></span>
+          </motion.h1>
 
+          <motion.p
+            className="text-gray-700 text-sm sm:text-base md:text-md leading-relaxed mb-6 md:mb-8"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.8 }}
+          >
+            {graduation.description}
+          </motion.p>
 
-      {/* Graduated Students Section */}
-      <section className="py-10">
-        <h2 className="text-4xl font-extrabold mb-10 text-gray-800 text-center relative">
-          <span className="relative inline-block">
-            🎓 Our Esteemed Graduated Students
-            <span className="absolute inset-x-0 bottom-[-10px] h-1.5 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full w-1/3 mx-auto"></span>
-          </span>
-        </h2>
-        {graduation.graduated_students?.length > 0 ? (
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            {graduation.graduated_students.map((s: any) => (
-              <div
-                key={s.id}
-                className="group rounded-3xl border border-gray-200 bg-white shadow-sm hover:shadow- transition-all duration-300 p-7 flex flex-col items-center text-center transform hover:-translate-y-2 hover:scale-[1.02] hover:border-orange-300"
-              >
-                {s.image && (
-                  <img
-                    src={getImageUrl(s.image) || ""}
-                    alt={s.first_name}
-                    className="h-32 w-32 object-cover rounded-full border-4 border-orange-200 shadow-md mb-6 transition-transform duration-300 group-hover:scale-110 "
-                  />
-                )}
-                <h3 className="mt-2 text-xl font-bold text-gray-900">
-                  {s.first_name} {s.last_name}
+          <motion.div
+            className="grid grid-cols-1 gap-3"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            <span className="flex"> Date : <InfoCard label="Date" value={new Date(graduation.date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })} /></span> 
+            <span className="flex"> Time :<InfoCard label="Time" value={`${new Date(graduation.start_time).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })} – ${new Date(graduation.end_time).toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true })}`} /></span>
+            <span className="flex"> Year : {graduation.graduation_year && <InfoCard label="Graduation Year" value={graduation.graduation_year} />}</span>
+          </motion.div>
+        </div>
+      </motion.div>
+
+      {/* Graduates Section */}
+      <section className="py-12 px-4 sm:px-6 md:px-8 lg:px-12">
+  <motion.h2
+    className="text-3xl sm:text-4xl font-extrabold mb-12 text-center text-gray-800"
+    initial={{ opacity: 0, y: 30 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.8 }}
+  >
+    Our Esteemed Graduates
+    <span className="block h-1.5 w-24 sm:w-28 bg-gradient-to-r from-orange-400 to-yellow-500 mt-3 mx-auto rounded-full"></span>
+  </motion.h2>
+
+  {graduation.graduated_students?.length > 0 ? (
+    <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      {graduation.graduated_students.map((s: any, index: number) => (
+        <motion.div
+          key={s.id}
+          className="group relative overflow-hidden rounded-3xl shadow-md transition-transform duration-300 hover:scale-105"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.1 }}
+        >
+          {/* Full Background Image */}
+          {s.image && (
+            <div
+              className="h-72 md:h-80 w-full bg-center bg-cover rounded-3xl relative"
+              style={{ backgroundImage: `url(${getImageUrl(s.image)})` }}
+            >
+              {/* Gradient overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl" />
+
+              {/* Badge */}
+              {s.graduation_type?.name && (
+                <span className="absolute top-4 text-white right-4 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 px-3 py-1 text-xs md:text-sm font-semibold text-white shadow-md">
+                  {s.graduation_type.name}
+                </span>
+              )}
+
+              {/* Name & Info */}
+              <div className="absolute bottom-4 left-4 text-left">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
+                  <span className="text-white">{s.first_name}</span>{" "}
+                  <span className="text-gray-200">{s.last_name}</span>
                 </h3>
-                <p className="text-base text-gray-500 mt-1">{s.father_name} - {s.grandfather_name}</p>
-                <p className="text-sm text-gray-400 mt-1">{s.full_address}</p>
-                <p className="text-sm text-gray-500 mt-3 italic">{s.description}</p>
-                <p className="mt-4 px-4 py-1.5 rounded-full bg-orange-100 text-orange-800 text-sm font-medium shadow-sm">
-                  {s.graduation_type?.name}
+                <p className="text-xs sm:text-sm text-gray-200">
+                  <span className="font-medium">Father:</span> {s.father_name}
+                </p>
+                <p className="text-xs sm:text-sm text-gray-200">
+                  <span className="font-medium">Grandfather:</span> {s.grandfather_name}
                 </p>
               </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500 mt-8 text-lg text-center">No students listed for this graduation.</p>
-        )}
-      </section>
+            </div>
+          )}
+        </motion.div>
+      ))}
+    </div>
+  ) : (
+    <p className="text-gray-500 mt-8 text-center text-base sm:text-lg">No students listed for this graduation.</p>
+  )}
+</section>
+
+
     </main>
+  );
+}
+
+// Helper Components
+function Loading() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8">
+      <div className="p-10 text-center text-gray-700 font-medium bg-white rounded-2xl shadow-lg">
+        Loading graduation details...
+      </div>
+    </div>
+  );
+}
+
+function ErrorMessage({ message }: { message: string }) {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8">
+      <div className="p-10 text-center text-red-700 font-medium bg-white rounded-2xl shadow-lg">
+        Error: {message}
+      </div>
+    </div>
+  );
+}
+
+function InfoCard({ icon, label, value }: { icon: string; label: string; value: string }) {
+  return (
+    <div className="flex items-center gap-2 text-black text-sm">
+      <span className="text-lg">{icon}</span>
+      <span title={label} className="font-medium">{value}</span>
+    </div>
   );
 }

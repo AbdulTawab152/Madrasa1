@@ -1,7 +1,11 @@
+"use client"
 import Link from "next/link";
+
 import Image from "next/image";
 import { Calendar, MapPin, User, Clock, Users, ArrowRight } from "lucide-react";
 import { getImageUrl } from "../../../lib/utils";
+import { motion } from "framer-motion";
+
 
 interface Event {
   id: number;
@@ -45,67 +49,111 @@ export default function EventsSection({
   return (
     <div className="min-h-screen">
       {/* Hero Section only shows on event page */}
-    {showAll && (
-  <section className="relative w-full h-[500px] md:h-[600px] overflow-hidden mb-16">
-    {/* Background Image */}
-    <div className="absolute inset-0">
-      <Image
-        src="/1.jpg"
-        alt="Events Banner"
-        fill
-        className="object-cover scale-105 hover:scale-110 transition-transform duration-700 ease-in-out"
-        priority
-      />
-      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-purple-900/70 to-black/60"></div>
-    </div>
-
-    {/* Content */}
-    <div className="relative z-10 container mx-auto px-6 lg:px-12 h-full flex flex-col justify-center items-center text-center">
-      <h1 className="text-4xl md:text-6xl font-extrabold text-white drop-shadow-lg mb-6 animate-fade-in">
-        {heroTitle}
-      </h1>
-      <p className="text-lg md:text-2xl text-gray-200 max-w-2xl mb-10 animate-fade-in-up">
-        {heroSubtitle}
-      </p>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mt-6 w-full max-w-3xl">
-        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
-          <div className="text-4xl font-bold text-orange-400">{sortedEvents.length}+</div>
-          <div className="mt-2 text-gray-100 font-medium">Total Events</div>
-        </div>
-
-        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
-          <div className="text-4xl font-bold text-pink-400">
-            {sortedEvents.filter(e => e.status === 'coming').length}+
+      {showAll && (
+        <section className="relative w-full py-24 md:py-40 overflow-hidden">
+          {/* Background Decorative Orbs */}
+          <div className="absolute inset-0 pointer-events-none z-0 w-full h-full">
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/95 via-white/85 to-yellow-100/90 w-full h-full" />
+            <div className="absolute top-10 left-10 w-44 h-44 bg-gradient-to-br from-orange-200/50 to-yellow-200/50 rounded-full blur-3xl animate-[float1_16s_ease-in-out_infinite]" />
+            <div className="absolute bottom-10 right-10 w-64 h-64 bg-gradient-to-br from-yellow-200/40 to-orange-200/40 rounded-full blur-3xl animate-[float2_22s_ease-in-out_infinite]" />
+            <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-orange-100/60 to-yellow-100/60 rounded-full blur-2xl animate-[float3_18s_ease-in-out_infinite]" />
           </div>
-          <div className="mt-2 text-gray-100 font-medium">Our</div>
-        </div>
 
-        <div className="p-6 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-center shadow-lg hover:scale-105 transition">
-          <div className="text-4xl font-bold text-green-400">
-            {sortedEvents.filter(e => e.status === 'past').length}+
-          </div>
-          <div className="mt-2 text-gray-100 font-medium">Past Events</div>
-        </div>
-      </div>
+          {/* Text Content */}
+          <div className="container mx-auto px-6 lg:px-16 flex flex-col items-center text-center relative z-10">
+  {/* Badge */}
+  <motion.div
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1 }}
+    className="inline-flex items-center gap-3 mb-8 px-8 py-3 bg-white/85 backdrop-blur-lg border border-orange-200/70 text-orange-600 text-base font-semibold rounded-full shadow-2xl ring-2 ring-orange-100/80"
+  >
+    <span className="w-2.5 h-2.5 bg-orange-500 rounded-full shadow-md animate-pulse"></span>
+    <span className="tracking-wide uppercase font-bold">Events</span>
+    <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse delay-1000"></span>
+  </motion.div>
 
-      {/* CTA Button */}
-      {/* <div className="mt-10">
-        <button className="px-8 py-3 text-lg font-semibold bg-gradient-to-r from-orange-500 to-pink-600 text-white rounded-full shadow-lg hover:shadow-2xl hover:scale-105 transition">
-          Explore All Events
-        </button>
-      </div> */}
-    </div>
+  {/* Animated Headline (staggered words) */}
+  <motion.h1
+    className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight text-gray-900 drop-shadow-2xl"
+    initial="hidden"
+    animate="visible"
+    variants={{
+      hidden: {},
+      visible: {
+        transition: {
+          staggerChildren: 0.15
+        }
+      }
+    }}
+  >
+    {heroTitle.split(" ").map((word, index) => (
+      <motion.span
+        key={index}
+        className={`inline-block ${
+          index === 0 ? "text-orange-500 drop-shadow-lg" : "text-gray-800 drop-shadow-lg relative"
+        } mr-2`}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: index * 0.1 }}
+      >
+        {word}
+        {index !== 0 && (
+          <span className="absolute -bottom-2 left-0 right-0 h-3 bg-orange-100/90 rounded-full -z-10 blur-[3px]"></span>
+        )}
+      </motion.span>
+    ))}
+  </motion.h1>
 
-    {/* Bottom Fade */}
-    <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent"></div>
-  </section>
-)}
+  {/* Subtitle */}
+  <motion.p
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, delay: 0.8 }}
+    className="text-lg md:text-2xl text-gray-700 max-w-2xl mb-6 font-light drop-shadow"
+  >
+    <span className="inline-block bg-white/85 px-5 py-3 rounded-2xl shadow-md border border-orange-100/80 backdrop-blur-md">
+      {heroSubtitle}
+    </span>
+  </motion.p>
+
+  {/* Additional Description */}
+  <motion.p
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 1, delay: 1.0 }}
+    className="text-md md:text-lg text-gray-600 max-w-3xl mb-12 font-normal leading-relaxed"
+  >
+    Discover amazing events happening around you and stay updated with our latest gatherings. 
+    <span className="text-orange-500 font-semibold"> Join now</span> to explore exciting opportunities.
+  </motion.p>
+
+  {/* CTA Button */}
+
+</div>
+
+          {/* Keyframes */}
+          <style jsx>{`
+            @keyframes float1 {
+              0%, 100% { transform: translateY(0) scale(1);}
+              50% { transform: translateY(-30px) scale(1.08);}
+            }
+            @keyframes float2 {
+              0%, 100% { transform: translateY(0) scale(1);}
+              50% { transform: translateY(40px) scale(0.97);}
+            }
+            @keyframes float3 {
+              0%, 100% { transform: translateY(0) scale(1);}
+              50% { transform: translateY(-20px) scale(1.12);}
+            }
+          `}</style>
+        </section>
+      )}
+
 
 
       {/* Events Section */}
-      <section className="w-full px-4 py-16 md:px-8 max-w-6xl mx-auto">
+      <section className="w-full px-4 md:px-8 max-w-6xl mx-auto">
 <div className="relative text-center mb-20">
   {/* Subtle background accent */}
   <div className="absolute inset-0 -z-10 flex items-center justify-center">
@@ -116,7 +164,7 @@ export default function EventsSection({
   <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
     {showAll ? (
       <>
-         All <span className="text-orange-500">Events</span>
+     
       </>
     ) : (
       <>
@@ -125,15 +173,9 @@ export default function EventsSection({
     )}
   </h2>
 
-  {/* Subtitle */}
-  <p className="text-gray-600 max-w-xl mx-auto text-lg leading-relaxed">
-    Discover inspiring <span className="text-orange-500 font-semibold">events</span>, connect with like-minded people, and grow with our vibrant community.
-  </p>
 
-  {/* Decorative divider */}
-  <div className="mt-6 flex justify-center">
-    <span className="h-1 w-24 rounded-full bg-gradient-to-r from-orange-500 via-pink-500 to-yellow-500 shadow-md"></span>
-  </div>
+
+
 </div>
 
 

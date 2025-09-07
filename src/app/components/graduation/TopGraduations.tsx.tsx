@@ -1,22 +1,22 @@
-// components/GraduationsSection.tsx
 "use client";
 
 import Image from "next/image";
 import Link from "next/link";
 import { GraduationsApi } from "../../../lib/api";
-import { FaStar } from "react-icons/fa";
+import { FaCalendarAlt, FaStar, FaArrowRight } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 
 interface Graduation {
   id: number;
   title: string;
   slug: string;
+  description: string;
   main_image?: string | null;
   graduation_year?: string | number;
   is_top?: boolean;
 }
 
-// Utility to get image URL
 const getImageUrl = (img?: string | null) => {
   if (!img) return "/placeholder-graduation.jpg";
   if (img.startsWith("http")) return img;
@@ -24,7 +24,7 @@ const getImageUrl = (img?: string | null) => {
 };
 
 interface GraduationsSectionProps {
-  showAll?: boolean; // true => show all, false => home page (3 only)
+  showAll?: boolean;
 }
 
 export default function GraduationsSection({ showAll = false }: GraduationsSectionProps) {
@@ -36,7 +36,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
       try {
         const res = await GraduationsApi.getAll();
         let data: Graduation[] = Array.isArray(res?.data) ? res.data : [];
-        if (!showAll) data = data.slice(0, 4); // only 4 for home page
+        if (!showAll) data = data.slice(0, 4);
         setGraduations(data);
       } catch (err) {
         console.error(err);
@@ -50,126 +50,227 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-        <span className="ml-4 text-gray-600 font-medium">Loading...</span>
-      </div>
+      <motion.div 
+        className="flex items-center justify-center py-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
+        <span className="ml-4 text-gray-600 font-medium">Loading graduations...</span>
+      </motion.div>
     );
   }
 
   if (!graduations.length) {
     return (
-      <div className="text-center py-20">
-        <h2 className="text-3xl font-bold text-gray-700">
-          No graduations found 😢
+      <motion.div 
+        className="text-center py-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="text-6xl mb-4">🎓</div>
+        <h2 className="text-3xl font-bold text-gray-700 mb-2">
+          No graduations found
         </h2>
-      </div>
+        <p className="text-gray-500">Check back later for upcoming graduation events</p>
+      </motion.div>
     );
   }
 
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
-      {/* Hero */}
-      {showAll && (
-  <div className="relative overflow-hidden py-24 lg:py-32 text-center">
-    {/* Background gradients */}
-    <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-yellow-50 to-orange-100 -z-20 opacity-75"></div>
-    <div className="absolute inset-0 bg-radial-gradient-circle opacity-15 -z-10"></div>
-
-    {/* Floating blobs */}
-    <div className="absolute -top-32 -left-32 w-80 h-80 bg-orange-200 rounded-full opacity-20 blur-3xl animate-blob"></div>
-    <div className="absolute -bottom-32 right-0 w-96 h-96 bg-yellow-200 rounded-full opacity-15 blur-3xl animate-blob animation-delay-2000"></div>
-    <div className="absolute top-16 right-20 w-64 h-64 bg-orange-100 rounded-full opacity-10 blur-2xl animate-blob animation-delay-4000"></div>
-
-    {/* Hero Heading */}
-    <div className="relative z-10">
-      <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold leading-tight tracking-tight text-gray-900 mb-6 drop-shadow-sm">
-        All{" "}
-        <span className="bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-600 bg-clip-text text-transparent animate-gradient-x">
-          Graduates
-        </span>
-      </h1>
-
-      <p className="mt-8 text-orange-700 text-xl sm:text-xl md:text-2xl max-w-3xl mx-auto leading-relaxed px-4 drop-shadow-md opacity-95">
-        Highlighting the achievements and journeys of students who have successfully completed their studies 🌟
-      </p>
-
-      {/* Glow accent line */}
-      <div className="mt-10 w-48 h-1.5 mx-auto rounded-full bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-500 opacity-80 shadow-md relative">
-        <div className="absolute inset-0 bg-orange-500 rounded-full opacity-40 blur-md animate-pulse"></div>
-      </div>
-    </div>
-
-    {/* Small particle dots */}
-    <div className="absolute top-10 left-10 w-2 h-2 bg-orange-300 rounded-full opacity-30 animate-pulse"></div>
-    <div className="absolute bottom-20 right-24 w-3 h-3 bg-yellow-300 rounded-full opacity-20 animate-pulse animation-delay-1500"></div>
-    <div className="absolute top-1/2 right-1/3 w-1.5 h-1.5 bg-orange-200 rounded-full opacity-15 animate-pulse animation-delay-2500"></div>
-    <div className="absolute top-1/10 right-1/4 w-2.5 h-2.5 bg-yellow-300 rounded-full opacity-25 animate-pulse animation-delay-500"></div>
-    <div className="absolute bottom-1/10 left-1/3 w-2 h-2 bg-orange-200 rounded-full opacity-15 animate-pulse animation-delay-3500"></div>
-  </div>
-)}
-
-
-
-
-      {/* Grid */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12 max-w-7xl mx-auto px-4 md:px-6">
-  {graduations.map((grad) => (
-    <div
-      key={grad.id}
-      className="relative group bg-white rounded-3xl shadow-sm overflow-hidden  border border-gray-100 hover:shadow-md transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] hover:border-orange-300"
-    >
-      {/* Floating shapes */}
-      <div className="absolute -top-6 -left-6 w-24 h-24 bg-orange-100 opacity-15 rounded-full blur-3xl animate-pulse mix-blend-multiply group-hover:scale-125 transition-transform duration-500"></div>
-      <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-yellow-100 opacity-15 rounded-full blur-3xl animate-pulse mix-blend-multiply animation-delay-2000 group-hover:scale-125 transition-transform duration-500"></div>
-
-      {/* Profile Image */}
-      <div className="relative w-48 h-48 mx-auto rounded-full overflow-hidden shadow-xl ring-4 ring-white/70 group-hover:ring-orange-400 transition-all duration-500 flex items-center justify-center">
-        <Image
-          src={getImageUrl(grad.main_image)}
-          alt={grad.title}
-          width={192}
-          height={192}
-          className="object-cover w-full h-full transition-transform duration-700 group-hover:scale-115 group-hover:rotate-3"
+    <section className="relative  overflow-hidden">
+      {/* Sophisticated Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-orange-50/30"></div>
+      
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-orange-200/20 to-yellow-200/20 rounded-full blur-3xl"
+          animate={{ 
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.1, 1]
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
         />
-        {grad.is_top && (
-          <span className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-md flex items-center gap-1 animate-pulse">
-            <FaStar className="text-white" /> Top
-          </span>
+        <motion.div
+          className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-tr from-yellow-200/20 to-orange-200/20 rounded-full blur-3xl"
+          animate={{ 
+            x: [0, -100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+        />
+      </div>
+
+      {/* Subtle Pattern Overlay */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div className="absolute inset-0" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Cpath d='M50 0L60 40L100 50L60 60L50 100L40 60L0 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E")`,
+        }} />
+      </div>
+
+      <div className="relative max-w-7xl  px-4 sm:px-6 lg:px-8">
+        {/* Enhanced Section Header */}
+        {/* <motion.div 
+          className="text-center mb-20"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+        >
+          <motion.div
+            className="inline-block mb-6"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            transition={{ delay: 0.2, duration: 0.6, type: "spring", stiffness: 200 }}
+          >
+            <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-full mx-auto"></div>
+          </motion.div>
+          
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-gray-900 mb-6 leading-tight">
+            Our{" "}
+            <span className="relative">
+              <span className="bg-gradient-to-r from-orange-500 via-yellow-500 to-orange-600 bg-clip-text text-transparent">
+                Graduations
+              </span>
+              <motion.div
+                className="absolute -bottom-2 left-0 right-0 h-3 bg-gradient-to-r from-orange-200/50 to-yellow-200/50 rounded-full -z-10"
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.8, duration: 0.8, ease: "easeOut" }}
+              />
+            </span>
+          </h2>
+          
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+          >
+            Celebrating the remarkable achievements and unforgettable milestones of our esteemed graduates
+          </motion.p>
+        </motion.div> */}
+
+        {/* Clean Graduations Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          {graduations.map((grad, idx) => (
+            <motion.div
+              key={grad.id}
+              className="group relative"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: idx * 0.1,
+                ease: "easeOut"
+              }}
+              whileHover={{ 
+                y: -4,
+                transition: { duration: 0.2, ease: "easeOut" }
+              }}
+            >
+              {/* Clean Card Container */}
+              <div className="relative bg-white rounded-2xl border border-gray-100 hover:border-orange-200 transition-all duration-300 overflow-hidden group-hover:bg-gray-50/50">
+                {/* Image Section */}
+                <div className="relative h-48 md:h-56 overflow-hidden">
+                  <Image
+                    src={getImageUrl(grad.main_image)}
+                    alt={grad.title}
+                    width={400}
+                    height={250}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  
+                  {/* Subtle Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
+                  {/* Year Badge */}
+                  <motion.div 
+                    className="absolute bottom-3 left-3 px-3 py-1.5 bg-white/90 text-xs font-semibold text-gray-900 rounded-lg flex items-center gap-2"
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ type: "spring", stiffness: 400 }}
+                  >
+                    <FaCalendarAlt className="text-orange-600 text-xs" />
+                    <span>{grad.graduation_year || "N/A"}</span>
+                  </motion.div>
+
+                  {/* Featured Badge */}
+                  {grad.is_top && (
+                    <motion.div 
+                      className="absolute top-3 right-3 px-3 py-1.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-white rounded-lg text-xs font-bold flex items-center gap-1"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ 
+                        delay: 0.3 + idx * 0.1,
+                        type: "spring",
+                        stiffness: 200
+                      }}
+                    >
+                      <FaStar className="text-yellow-200" /> 
+                      <span>Featured</span>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Content Section */}
+                <div className="p-5 md:p-6">
+                  <motion.h3 
+                    className="text-lg md:text-xl font-bold text-gray-900 mb-3 group-hover:text-orange-600 transition-colors duration-300 line-clamp-2"
+                    whileHover={{ x: 2 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    {grad.title}
+                  </motion.h3>
+                  
+                  <motion.p 
+                    className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2"
+                    initial={{ opacity: 0.8 }}
+                    whileHover={{ opacity: 1 }}
+                  >
+                    {grad.description}
+                  </motion.p>
+
+                  {/* Action Button */}
+                  <Link href={`/graduated-students/${grad.slug}`}>
+                    <motion.div
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-lg transition-all duration-300 text-sm"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span>View Details</span>
+                      <FaArrowRight className="text-xs" />
+                    </motion.div>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Clean View All Button */}
+        {!showAll && graduations.length >= 4 && (
+          <motion.div 
+            className="text-center mt-12"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.8, duration: 0.6 }}
+          >
+            <Link href="/graduated-students">
+              <motion.button
+                className="px-8 py-3 bg-white border-2 border-orange-500 text-orange-600 font-semibold rounded-lg hover:bg-orange-500 hover:text-white transition-all duration-300"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                View All Graduations
+              </motion.button>
+            </Link>
+          </motion.div>
         )}
       </div>
-
-      {/* Card Content */}
-      <div className="p-8 text-center mt-4">
-        <h3 className="text-lg sm:text-xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-gray-700 to-gray-800 group-hover:from-orange-500 group-hover:to-yellow-500 transition-all duration-500">
-          {grad.title}
-        </h3>
-        <p className="text-gray-600 text-xs mt-2 leading-relaxed">
-          Graduation Year: <span className="font-semibold text-gray-700">{grad.graduation_year || "N/A"}</span>
-        </p>
-
-        <Link href={`/graduated-students/${grad.slug}`}>
-          <span className="inline-block px-8 py-2 mt-6 text-sm font-semibold rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-            View Details →
-          </span>
-        </Link>
-      </div>
-    </div>
-  ))}
-</div>
-
-
-
-      {/* See All button only for home page */}
-      {/* {!showAll && (
-        <div className="mt-16 text-center">
-          <Link
-            href="/graduated-students"
-            className="inline-block px-6 py-2 rounded-full bg-gradient-to-r from-orange-600 to-yellow-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
-            View All Graduates →
-          </Link>
-        </div>
-      )} */}
     </section>
   );
 }

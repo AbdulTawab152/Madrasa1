@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState } from "react";
+import { motion } from "framer-motion";
 import { getImageUrl } from "../../../lib/utils";
 
 interface Course {
@@ -42,56 +43,185 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
   };
 
   return (
-    <div className="w-full mx-auto px-4">
-      {/* Hero Section */}
+    <div className="w-full  ">
+      {/* Enhanced Hero Section */}
       {showAll && (
-        <section className="relative w-full mt-0 mb-16 overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-orange-50 z-0"></div>
-          <div className="relative z-10 py-10 md:py-10 px-6 flex flex-col items-center text-center">
-            <div className="inline-flex items-center gap-2 mb-6 px-4 py-2 bg-amber-600 text-white text-sm font-medium rounded-full">
-              <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-              Our Courses
-            </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-black leading-tight">
-              Discover{" "}
-              <span className="text-amber-600">
-                Courses
+        <section className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 mt-0 overflow-hidden">
+          {/* Enhanced Background Layer */}
+          <div className="absolute inset-0 pointer-events-none z-0 w-full h-full">
+            {/* Main background image with a soft blur and color overlay */}
+            <Image
+              src="/1.jpg"
+              alt="Courses background"
+              fill
+              priority
+              className="object-cover object-center w-full h-full opacity-90"
+              style={{ filter: "blur(1.5px) brightness(0.93) saturate(1.15)" }}
+            />
+            {/* Gradient overlay for depth */}
+            <div className="absolute inset-0 bg-gradient-to-br from-amber-50/90 via-white/70 to-orange-100/80 w-full h-full" />
+            {/* Subtle SVG pattern overlay */}
+            <div
+              className="absolute inset-0 opacity-15 w-full h-full"
+              style={{
+                backgroundImage:
+                  "url(\"data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='2' y='2' width='76' height='76' rx='18' stroke='%23fbbf24' stroke-width='2' stroke-dasharray='8 8'/%3E%3Ccircle cx='40' cy='40' r='10' stroke='%23f59e42' stroke-width='2' fill='none' opacity='0.15'/%3E%3C/svg%3E\")",
+                backgroundSize: "100px 100px",
+              }}
+            />
+            {/* Animated floating orbs for extra visual interest */}
+            <motion.div
+              className="absolute top-10 left-10 w-40 h-40 bg-gradient-to-br from-orange-200/40 to-yellow-200/40 rounded-full blur-3xl"
+              animate={{
+                x: [0, 60, 0],
+                y: [0, -30, 0],
+                scale: [1, 1.15, 1],
+              }}
+              transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+            />
+            <motion.div
+              className="absolute bottom-10 right-10 w-56 h-56 bg-gradient-to-br from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl"
+              animate={{
+                x: [0, -50, 0],
+                y: [0, 40, 0],
+                scale: [1, 0.95, 1],
+              }}
+              transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Decorative accent dots */}
+            <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-orange-400/60 rounded-full animate-pulse"></div>
+            <div className="absolute bottom-1/3 right-1/3 w-1.5 h-1.5 bg-yellow-400/80 rounded-full animate-pulse delay-1000"></div>
+            <div className="absolute top-2/3 left-1/4 w-1.5 h-1.5 bg-orange-300/70 rounded-full animate-pulse delay-2000"></div>
+          </div>
+
+          <div className="relative z-10 py-20 md:py-32 px-6 flex flex-col items-center text-center">
+            {/* Animated badge */}
+            <motion.div 
+              className="inline-flex items-center gap-3 mb-10 px-7 py-3 bg-white/80 backdrop-blur-md border border-amber-200/60 text-amber-600 text-base font-semibold rounded-full shadow-xl ring-2 ring-amber-100"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+              >
+                <span className="w-2.5 h-2.5 bg-amber-500 rounded-full shadow-md"></span>
+              </motion.div>
+              <span className="tracking-wide">Our Courses</span>
+              <motion.div
+                className="w-2 h-2 bg-amber-500 rounded-full"
+                animate={{ scale: [1, 1.3, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </motion.div>
+            
+            {/* Animated headline */}
+            <motion.h1 
+              className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight drop-shadow-2xl"
+              style={{
+                textShadow: "0 2px 8px rgba(0,0,0,0.18), 0 1px 0 #fff"
+              }}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              <span className="text-orange-600 drop-shadow-lg">
+                Discover
               </span>{" "}
-              <br className="hidden md:block" />
-              That{" "}
-              <span className="relative inline-block">
-                Inspire
-                <span className="absolute -bottom-2 left-0 w-full h-1 bg-amber-500 rounded-full"></span>
+              <span className="relative">
+                <span className="text-orange-500 drop-shadow-lg">
+                  Courses
+                </span>
+                <motion.div
+                  className="absolute -bottom-2 left-0 right-0 h-3 bg-orange-200/80 rounded-full -z-10 blur-[2px]"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
+                />
               </span>
-            </h1>
-            <p className="text-lg md:text-xl text-black max-w-2xl mx-auto mb-12 leading-relaxed">
-              Explore our curated collection of Islamic courses and tutorials. Learn, grow, and advance your knowledge at your own pace.
-            </p>
+              <br className="hidden md:block" />
+              <span className="text-gray-700 drop-shadow-lg">
+                That
+              </span>{" "}
+              <span className="relative inline-block">
+                <span className="text-orange-400 drop-shadow-lg">
+                  Inspire
+                </span>
+                <motion.div
+                  className="absolute -bottom-1 left-0 right-0 h-2 bg-orange-100/90 rounded-full blur-[1px]"
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
+                />
+              </span>
+            </motion.h1>
+            
+            {/* Animated description */}
+            <motion.p 
+              className="text-lg md:text-xl text-gray-700 max-w-2xl mx-auto mb-14 leading-relaxed font-light drop-shadow"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.8 }}
+            >
+              <span className="inline-block bg-white/70 px-4 py-2 rounded-xl shadow-sm backdrop-blur-sm">
+                Explore our curated collection of Islamic courses and tutorials.<br className="hidden md:inline" />
+                <span className="text-amber-600 font-semibold"> Learn</span>, <span className="text-orange-500 font-semibold">grow</span>, and <span className="text-yellow-600 font-semibold">advance</span> your knowledge at your own pace.
+              </span>
+            </motion.p>
+            {/* Decorative divider */}
+            <motion.div
+              className="w-32 h-1.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 mx-auto mb-2 shadow-lg"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1.5, duration: 0.7, ease: "easeOut" }}
+              style={{ transformOrigin: "left" }}
+            />
           </div>
         </section>
       )}
 
-      {/* Featured Section Header */}
+      {/* Enhanced Featured Section Header */}
       {!showAll && (
-        <div className="text-center mb-12">
-          <div className="inline-block mb-4 px-3 py-1 bg-amber-600 text-white text-xs font-medium rounded-full shadow-sm">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.div 
+            className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-medium rounded-full shadow-lg"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+          >
             🌟 Featured
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
+          </motion.div>
+          <motion.h2 
+            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
             Discover Our{" "}
-            <span className="text-amber-600">
+            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
               Most Popular
             </span>{" "}
             Programs
-          </h2>
-          <p className="text-black max-w-2xl mx-auto">
+          </motion.h2>
+          <motion.p 
+            className="text-gray-600 max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+          >
             Carefully selected Islamic learning programs that guide you on a journey of knowledge, faith, and growth.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       )}
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 mt-20 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {displayCourses.map(course => {
           if (!course.is_published) return null;
 
@@ -119,16 +249,34 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
                   </div>
                 )}
                 
-                {/* Video Count Badge */}
-                <div className="absolute top-3 left-3 bg-amber-600 text-white px-3 py-1 rounded-full text-xs font-medium shadow-sm">
-                  📹 {course.video_quantity} Videos
-                </div>
+                {/* Enhanced Video Count Badge with Icon */}
+                <motion.div 
+                  className="absolute top-3 left-3 bg-orange/500/2 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-xl backdrop-blur-sm flex items-center gap-1.5"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z"/>
+                  </svg>
+                  {course.video_quantity}
+                </motion.div>
                 
-                {/* Duration Badge */}
-                <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                  <span className="text-amber-500 text-xs">⏱️</span>
-                  <span className="text-black font-medium text-xs">{course.duration}</span>
-                </div>
+                {/* Enhanced Duration Badge */}
+                <motion.div 
+                  className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg border border-white/30"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                >
+                  <svg className="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
+                  </svg>
+                  <span className="text-gray-800 font-semibold text-xs">{course.duration}</span>
+                </motion.div>
+                
+           
+                
+                {/* Resolution Badge */}
+             
               </div>
 
               {/* Content */}

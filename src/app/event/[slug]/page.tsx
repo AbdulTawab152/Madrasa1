@@ -72,7 +72,7 @@ export default async function EventDetailsPage({ params }: Params) {
             </li>
             <li className="flex items-center">
               <span className="mx-2 text-amber-400">/</span>
-              <Link href="/events" className="text-amber-600 hover:text-amber-700 transition-colors">
+              <Link href="/event" className="text-amber-600 hover:text-amber-700 transition-colors">
                 Events
               </Link>
             </li>
@@ -105,7 +105,7 @@ export default async function EventDetailsPage({ params }: Params) {
               )}
 
               <div className="p-6 md:p-8">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                <h1 className="text-xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
                   {event.title}
                 </h1>
 
@@ -118,8 +118,8 @@ export default async function EventDetailsPage({ params }: Params) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Date</p>
-                      <p className="font-medium">{formatDate(event.date)}</p>
+                      <p className="text-md font-medium text-gray-500">Date</p>
+                      <p className=" text-[14px] md:font-medium ">{formatDate(event.date)}</p>
                     </div>
                   </div>
 
@@ -130,8 +130,8 @@ export default async function EventDetailsPage({ params }: Params) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-sm text-gray-500">Duration</p>
-                      <p className="font-medium">{event.duration}</p>
+                      <p className="text-md font-medium   text-gray-500">Duration</p>
+                      <p className="text-[14px]  md:font-medium">{event.duration}</p>
                     </div>
                   </div>
 
@@ -180,27 +180,27 @@ export default async function EventDetailsPage({ params }: Params) {
               <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-8">
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">Related Events</h3>
                 <div className="space-y-4">
-                  {relatedEvents.map((relatedEvent) => (
+                  {relatedEvents.map((event) => (
                     <Link 
-                      key={relatedEvent.id} 
-                      href={`/event/${relatedEvent.slug}`}
+                      key={event.id} 
+                      href={`/event/${event.slug}`}
                       className="block group"
                     >
                       <div className="flex space-x-3">
                         <div className="flex-shrink-0 relative h-16 w-16 rounded-lg overflow-hidden">
                           <Image
-                            src={getImageUrl(relatedEvent.image)}
-                            alt={relatedEvent.title}
+                            src={getImageUrl(event.image)}
+                            alt={event.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-gray-900 truncate group-hover:text-amber-600 transition-colors">
-                            {relatedEvent.title}
+                            {event.title}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {formatDate(relatedEvent.date)}
+                            {formatDate(event.date)}
                           </p>
                         </div>
                       </div>

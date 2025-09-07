@@ -180,60 +180,71 @@ export default async function HomePage() {
 
    
 
-      <section className="relative py-12 bg-orange-50">
-  <div className="max-w-7xl mx-auto px-6 text-center">
-    {/* Hero Text */}
-    <div className="mb-8">
-   
-
-      <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
-        Our <span className="text-orange-600">Graduates</span>
-      </h2>
-
-      <p className="text-gray-600 max-w-2xl mx-auto">
-        Highlighting the achievements and journeys of students who have successfully completed their courses 🌟
-      </p>
-    </div>
-
-    {/* Graduates Section */}
-    <div className="mt-8 relative">
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-12">
-            <div className="w-8 h-8 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
-            <span className="ml-3 text-gray-600">Loading graduates...</span>
-          </div>
-        }
-      >
-        {/* Your GraduationsSection Component */}
-        <GraduationsSection showAll={false} />
-
-        {/* Call to Action */}
-        <div className="mt-2 text-center">
-          <Link
-            href="/graduated-students"
-            className="inline-flex items-center bg-orange-600 gap-2 px-6 py-2 text-white font-medium rounded-lg hover:bg-orange-700 transition-colors"
-          >
-            <span>View All Graduates</span>
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </Link>
+      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50">
+        {/* Animated Gradient Blobs */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full blur-3xl animate-pulse z-0" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse z-0" />
+        {/* Subtle Pattern Overlay */}
+        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f59e42' fill-opacity='0.08'%3E%3Cpath d='M50 0L60 40L100 50L60 60L50 100L40 60L0 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
         </div>
-      </Suspense>
-    </div>
-  </div>
-</section>
+        <div className="relative max-w-7xl mx-auto px-6 text-center z-10">
+          {/* Hero Text */}
+          <div className="mb-14">
+            <div className="inline-flex items-center px-5 py-2 bg-orange-100 text-orange-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
+              🎓 Celebrating Success
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
+              Our <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">Graduates</span>
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
+              Highlighting the achievements and journeys of students who have successfully completed their courses <span className="inline-block animate-bounce">🌟</span>
+            </p>
+          </div>
+          {/* Graduates Section */}
+          <div className="mt-12 relative">
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center py-16">
+                  <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
+                  <span className="ml-4 text-gray-600 font-medium">Loading graduates...</span>
+                </div>
+              }
+            >
+              <div className="animate-fade-in-up">
+                <GraduationsSection showAll={false} />
+              </div>
+              {/* Call to Action */}
+              <div className="mt-14 md:mt-20 text-center animate-fade-in-up delay-200">
+                <Link
+                  href="/graduated-students"
+                  className="inline-flex items-center gap-2 px-7 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-xl shadow-lg hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
+                >
+                  <span>View All Graduates</span>
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            </Suspense>
+          </div>
+        </div>
+      </section>
 
 
       {/* blogs Section */}

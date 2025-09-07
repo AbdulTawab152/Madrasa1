@@ -64,7 +64,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   return (
     <div className="w-full">
       {/* Enhanced Books Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 px-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {displayBooks.map((book) => (
           <div
             key={book.id}

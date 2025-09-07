@@ -1,6 +1,15 @@
-// app/donation/page.tsx
-import Image from 'next/image';
-import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaWhatsapp, FaDonate, FaHandHoldingHeart, FaRegCreditCard } from 'react-icons/fa';
+"use client";
+
+import { motion } from "framer-motion";
+import {
+  FaMapMarkerAlt,
+  FaPhone,
+  FaEnvelope,
+  FaWhatsapp,
+  FaDonate,
+  FaHandHoldingHeart,
+  FaRegCreditCard,
+} from "react-icons/fa";
 
 interface DonationInfo {
   id: number;
@@ -13,185 +22,172 @@ interface DonationInfo {
   country: string;
 }
 
-async function fetchDonationData(): Promise<DonationInfo[]> {
-  const API_URL = "https://lawngreen-dragonfly-304220.hostingersite.com/api/donate-info-for-web";
-  const res = await fetch(API_URL, { next: { revalidate: 3600 } });
-  if (!res.ok) {
-    throw new Error("Failed to fetch donation data");
+export default function DonationClient({ donations }: { donations: DonationInfo[] }) {
+  if (!donations || donations.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 text-gray-600">
+        No donation information available.
+      </div>
+    );
   }
-  return res.json();
-}
 
-export default async function DonationPage() {
-  const donations = await fetchDonationData();
   const [firstDonation, ...otherDonations] = donations;
 
   return (
-    <main className="min-h-screen mt-32 bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Hero Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
-            <span className="block">Support Our Cause</span>
-            <span className="block text-green-600 mt-2">Make a Difference</span>
-          </h1>
-          <p className="mt-5 max-w-2xl mx-auto text-xl text-gray-500">
-            Your generous donation helps us continue our mission and make a lasting impact.
-          </p>
+    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-gradient-to-r from-orange-500 to-orange-600 text-white">
+        {/* Optional pattern.svg – safe fallback */}
+        <div className="absolute inset-0 opacity-10 bg-[url('/pattern.svg')] bg-repeat pointer-events-none" />
+        <div className="max-w-7xl mx-auto px-6 py-24 sm:py-32 lg:flex lg:items-center lg:gap-12 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="lg:w-1/2"
+          >
+            <h1 className="text-4xl sm:text-6xl font-extrabold leading-tight">
+              Together, We Can{" "}
+              <span className="text-yellow-300">Change Lives</span>
+            </h1>
+            <p className="mt-6 text-lg sm:text-xl text-orange-50 max-w-lg">
+              Your support helps us provide essential aid, resources, and hope
+              to those who need it most.
+            </p>
+          </motion.div>
         </div>
+      </section>
 
-        {/* Featured Donation Card */}
-        {firstDonation && (
-          <div className="mb-16 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl shadow-xl overflow-hidden">
-            <div className="p-8 md:p-12 lg:flex lg:items-center">
-              <div className="lg:w-2/3">
-                <div className="flex items-center mb-4">
-                  <div className="p-3 bg-white bg-opacity-20 rounded-full">
-                    <FaHandHoldingHeart className="h-8 w-8 text-white" />
-                  </div>
-                  <h2 className="ml-4 text-2xl font-bold text-white">Featured Donation Center</h2>
-                </div>
-                <h3 className="text-3xl font-bold text-white mb-4">{firstDonation.name}</h3>
-                <p className="text-green-100 mb-6">{firstDonation.description}</p>
-                <div className="flex flex-wrap gap-4">
-                  <a
-                    href={`tel:${firstDonation.contact}`}
-                    className="flex items-center px-6 py-3 bg-white text-green-700 font-medium rounded-lg hover:bg-green-50 transition-colors"
-                  >
-                    <FaPhone className="mr-2" /> Call Now
-                  </a>
-                  <a
-                    href={`https://wa.me/${firstDonation.whatsapp.replace(/[^0-9]/g, '')}?text=Hi, I would like to make a donation`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center px-6 py-3 bg-green-800 text-white font-medium rounded-lg hover:bg-green-900 transition-colors"
-                  >
-                    <FaWhatsapp className="mr-2" /> WhatsApp Donation
-                  </a>
-                </div>
-              </div>
-              <div className="mt-8 lg:mt-0 lg:ml-8 lg:w-1/3">
-                <div className="bg-white bg-opacity-20 p-6 rounded-xl backdrop-blur-sm">
-                  <h4 className="text-white font-semibold mb-4">Contact Information</h4>
-                  <div className="space-y-3">
-                    <div className="flex items-start">
-                      <FaMapMarkerAlt className="h-5 w-5 text-white mt-0.5 flex-shrink-0" />
-                      <p className="ml-3 text-sm text-green-100">{firstDonation.address}, {firstDonation.country}</p>
-                    </div>
-                    <div className="flex items-center">
-                      <FaEnvelope className="h-5 w-5 text-white" />
-                      <a href={`mailto:${firstDonation.email}`} className="ml-3 text-sm text-green-100 hover:text-white">
-                        {firstDonation.email}
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+      {/* Featured Donation */}
+      <section className="max-w-7xl mx-auto px-6 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="bg-white shadow-lg rounded-2xl p-8 lg:flex lg:gap-8"
+        >
+          <div className="lg:w-2/3">
+            <h2 className="text-2xl font-bold text-gray-800">{firstDonation.name}</h2>
+            <p className="mt-3 text-gray-600">{firstDonation.description}</p>
+
+            <ul className="mt-6 space-y-3 text-gray-600">
+              <li className="flex items-center gap-2">
+                <FaMapMarkerAlt className="text-orange-500" />
+                {firstDonation.address}, {firstDonation.country}
+              </li>
+              <li className="flex items-center gap-2">
+                <FaPhone className="text-orange-500" />
+                {firstDonation.contact}
+              </li>
+              <li className="flex items-center gap-2">
+                <FaEnvelope className="text-orange-500" />
+                {firstDonation.email}
+              </li>
+              <li className="flex items-center gap-2">
+                <FaWhatsapp className="text-green-500" />
+                {firstDonation.whatsapp}
+              </li>
+            </ul>
           </div>
-        )}
+        </motion.div>
+      </section>
 
-        {/* Other Donation Cards */}
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-2">
-          {otherDonations.map((donation, index) => (
-            <div
-              key={donation.id}
-              className={`group relative overflow-hidden rounded-2xl shadow-lg ${index % 3 === 0 ? 'bg-gradient-to-br from-blue-600 to-blue-800' : 'bg-white'}`}
-            >
-              <div className="p-8">
-                <div className={`flex items-center mb-6 ${index % 3 === 0 ? 'text-white' : 'text-gray-900'}`}>
-                  <div className={`p-3 rounded-full ${index % 3 === 0 ? 'bg-blue-500' : 'bg-blue-100'}`}>
-                    <FaDonate className={`h-6 w-6 ${index % 3 === 0 ? 'text-white' : 'text-blue-600'}`} />
-                  </div>
-                  <h3 className="ml-4 text-2xl font-bold">{donation.name}</h3>
-                </div>
-
-                <p className={`mb-6 ${index % 3 === 0 ? 'text-blue-100' : 'text-gray-600'}`}>
+      {/* Other Donations */}
+      {otherDonations.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 py-16">
+          <h2 className="text-2xl font-bold text-gray-800 mb-8">
+            Other Donation Centers
+          </h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {otherDonations.map((donation) => (
+              <motion.div
+                key={donation.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+                viewport={{ once: true }}
+                className="bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition-shadow"
+              >
+                <h3 className="text-xl font-semibold text-gray-800">
+                  {donation.name}
+                </h3>
+                <p className="mt-2 text-gray-600 line-clamp-3">
                   {donation.description}
                 </p>
+                <ul className="mt-4 space-y-2 text-gray-600 text-sm">
+                  <li className="flex items-center gap-2">
+                    <FaMapMarkerAlt className="text-orange-500" />
+                    {donation.address}, {donation.country}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaPhone className="text-orange-500" />
+                    {donation.contact}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <FaEnvelope className="text-orange-500" />
+                    {donation.email}
+                  </li>
+                </ul>
+              </motion.div>
+            ))}
+          </div>
+        </section>
+      )}
 
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-start">
-                    <FaMapMarkerAlt className={`h-5 w-5 mt-0.5 flex-shrink-0 ${index % 3 === 0 ? 'text-blue-200' : 'text-gray-400'}`} />
-                    <p className={`ml-3 text-sm ${index % 3 === 0 ? 'text-blue-100' : 'text-gray-600'}`}>
-                      {donation.address}, {donation.country}
-                    </p>
-                  </div>
-                </div>
+      {/* Other Ways to Help */}
+      <section className="bg-gradient-to-r from-gray-800 to-gray-900 text-white py-20">
+        <div className="max-w-7xl mx-auto px-6">
+          <h2 className="text-3xl font-bold text-center">
+            Other Ways You Can Help
+          </h2>
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="bg-gray-700/50 p-8 rounded-xl text-center"
+            >
+              <FaHandHoldingHeart className="mx-auto text-4xl text-orange-400" />
+              <h3 className="mt-4 font-semibold text-lg">Volunteer</h3>
+              <p className="mt-2 text-gray-300">
+                Join our team of volunteers and make a direct impact in your
+                community.
+              </p>
+            </motion.div>
 
-                <div className="flex flex-wrap gap-3">
-                  <a
-                    href={`tel:${donation.contact}`}
-                    className={`flex-1 flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors ${index % 3 === 0
-                        ? 'bg-white text-blue-700 hover:bg-blue-50'
-                        : 'bg-blue-50 text-blue-700 hover:bg-blue-100'
-                      }`}
-                  >
-                    <FaPhone className="mr-2" /> Call
-                  </a>
-                  <a
-                    href={`https://wa.me/${donation.whatsapp.replace(/[^0-9]/g, '')}?text=Hi, I would like to make a donation`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`flex-1 flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium text-white ${index % 3 === 0 ? 'bg-blue-400 hover:bg-blue-500' : 'bg-blue-600 hover:bg-blue-700'
-                      } transition-colors`}
-                  >
-                    <FaWhatsapp className="mr-2" /> WhatsApp
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="bg-gray-700/50 p-8 rounded-xl text-center"
+            >
+              <FaRegCreditCard className="mx-auto text-4xl text-orange-400" />
+              <h3 className="mt-4 font-semibold text-lg">One-Time Donation</h3>
+              <p className="mt-2 text-gray-300">
+                Every contribution, big or small, helps us continue our mission.
+              </p>
+            </motion.div>
 
-        {/* Alternative Donation Methods */}
-        <div className="mt-20 max-w-5xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">Other Ways to Donate</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {/* Bank Transfer Card */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="p-6">
-                <div className="bg-green-100 p-4 rounded-xl inline-block mb-4">
-                  <FaRegCreditCard className="h-8 w-8 text-green-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Bank Transfer</h3>
-                <p className="text-gray-600 mb-6">Make a direct bank transfer to our account. Contact us for banking details.</p>
-                <button className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors">
-                  Request Bank Details
-                </button>
-              </div>
-            </div>
-
-            {/* In-Kind Donations */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="p-6">
-                <div className="bg-blue-100 p-4 rounded-xl inline-block mb-4">
-                  <FaHandHoldingHeart className="h-8 w-8 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">In-Kind Donations</h3>
-                <p className="text-gray-600 mb-6">Donate books, equipment, or other resources that can help our cause.</p>
-                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
-                  Learn More
-                </button>
-              </div>
-            </div>
-
-            {/* Volunteer */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-              <div className="p-6">
-                <div className="bg-purple-100 p-4 rounded-xl inline-block mb-4">
-                  <FaDonate className="h-8 w-8 text-purple-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">Become a Volunteer</h3>
-                <p className="text-gray-600 mb-6">Your time and skills can make a difference. Join our team of volunteers.</p>
-                <button className="w-full py-3 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors">
-                  Volunteer Now
-                </button>
-              </div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+              className="bg-gray-700/50 p-8 rounded-xl text-center"
+            >
+              <FaDonate className="mx-auto text-4xl text-orange-400" />
+              <h3 className="mt-4 font-semibold text-lg">Monthly Giving</h3>
+              <p className="mt-2 text-gray-300">
+                Become a monthly donor and provide sustainable support to our
+                programs.
+              </p>
+            </motion.div>
           </div>
         </div>
-      </div>
+      </section>
     </main>
   );
 }
