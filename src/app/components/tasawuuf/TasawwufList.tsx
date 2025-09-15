@@ -99,7 +99,6 @@ export default function TasawwufList({ limit, homePage }: Props) {
         </p>
       </div>
     );
-
   return (
     <div className="space-y-12">
       {/* Category filter buttons */}

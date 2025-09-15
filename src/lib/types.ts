@@ -151,6 +151,37 @@ export interface Graduation extends BaseEntity {
   achievements?: string[];
 }
 
+
+// types/awlyaa.ts
+
+export interface Awlyaa extends BaseEntity {
+  id: number;
+  name: string;
+  title: string;
+  nickname: string;
+  birth_date: string;
+  birth_place: string;
+  birth_city: string;
+  birth_country: string;
+  death_date: string | null;
+  death_place: string | null;
+  death_city: string | null;
+  death_country: string | null;
+  age_at_death: number | null;
+  father_name: string | null;
+  number_of_children: string | null;
+  education: string | null;
+  teachers: string | null;
+  students: string | null;
+  books_written: string | null;
+  famous_works: string | null;
+  profile_image: string | null;
+  extra_information: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+
 // API Response types
 export interface ApiResponse<T> {
   data: T;

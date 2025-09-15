@@ -43,7 +43,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
   };
 
   return (
-    <div className="w-full  ">
+    <div className="w-full">
       {/* Enhanced Hero Section */}
       {showAll && (
         <section className="relative w-screen left-1/2 right-1/2 -translate-x-1/2 mt-0 overflow-hidden">
@@ -94,10 +94,10 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
             <div className="absolute top-2/3 left-1/4 w-1.5 h-1.5 bg-orange-300/70 rounded-full animate-pulse delay-2000"></div>
           </div>
 
-          <div className="relative z-10 py-20 md:py-32 px-6 flex flex-col items-center text-center">
+          <div className="relative z-10 py-20 md:py-16 px-6 flex flex-col items-center text-center">
             {/* Animated badge */}
-            <motion.div 
-              className="inline-flex items-center gap-3 mb-10 px-7 py-3 bg-white/80 backdrop-blur-md border border-amber-200/60 text-amber-600 text-base font-semibold rounded-full shadow-xl ring-2 ring-amber-100"
+            {/* <motion.div 
+              className="inline-flex items-center gap-3 mb-10 px-7 py-3  text-amber-600 text-base font-semibold  "
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -108,13 +108,13 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
               >
                 <span className="w-2.5 h-2.5 bg-amber-500 rounded-full shadow-md"></span>
               </motion.div>
-              <span className="tracking-wide">Our Courses</span>
+              <span className="">Our Courses</span>
               <motion.div
                 className="w-2 h-2 bg-amber-500 rounded-full"
                 animate={{ scale: [1, 1.3, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
               />
-            </motion.div>
+            </motion.div> */}
             
             {/* Animated headline */}
             <motion.h1 
@@ -207,7 +207,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
             <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
               Most Popular
             </span>{" "}
-            Programs
+            Courses
           </motion.h2>
           <motion.p 
             className="text-gray-600 max-w-2xl mx-auto"
@@ -215,7 +215,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            Carefully selected Islamic learning programs that guide you on a journey of knowledge, faith, and growth.
+            Carefully selected Islamic learning courses that guide you on a journey of knowledge, faith, and growth.
           </motion.p>
         </motion.div>
       )}
@@ -270,7 +270,7 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
                   <svg className="w-3 h-3 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd"/>
                   </svg>
-                  <span className="text-gray-800 font-semibold text-xs">{course.duration}</span>
+                  <span className="text-gray-800 font-semibold text-xs "> Hours : {course.duration}</span>
                 </motion.div>
                 
            
@@ -286,9 +286,12 @@ export default function CoursesSection({ courses, showAll = false }: CoursesSect
                 </h3>
                 
                 <div
-                  className="text-black text-sm mb-4 flex-1 line-clamp-3 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: course.description }}
+                  className="text-black text-[10px] mb-4 flex-1 line-clamp-3 leading-relaxed"
+                 dangerouslySetInnerHTML={{ __html: course.description }}
                 />
+
+            
+                
                 
                 <Link href={`/courses/${course.slug}`} className="mt-auto">
                   <button className="w-full bg-amber-600 text-white font-medium py-2 px-3 rounded-md hover:bg-amber-700 transition-all duration-300 text-sm shadow-sm">

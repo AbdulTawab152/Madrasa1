@@ -56,8 +56,8 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
   return (
     <section id="blogs" className="bg-gradient-to-b from-gray-50 to-white py-16">
       {/* Enhanced Home Page Hero / Title */}
-        {!homePage && (
-        <section className="relative w-full md:mt- mb-16 md:mb-20 overflow-hidden">
+      {!homePage && (
+        <section className="relative w-full overflow-hidden">
           {/* Multi-layered Background */}
           <div className="absolute inset-0 pointer-events-none">
             {/* Enhanced multi-layered gradient background */}
@@ -198,126 +198,142 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
           </div>
         </section>
       )}
-    {homePage && (
- <motion.div 
- className="max-w-4xl mt- space-y-8 mx-auto px-6 text-center mb-20"
- initial={{ opacity: 0, y: 30 }}
- animate={{ opacity: 1, y: 0 }}
- transition={{ duration: 0.8 }}
->
- {/* Subtitle */}
- <motion.p 
-   className="text-base sm:text-lg uppercase tracking-wider font-semibold text-orange-500/90 mb-2"
-   initial={{ opacity: 0, y: 10 }}
-   animate={{ opacity: 1, y: 0 }}
-   transition={{ duration: 0.8, delay: 0.2 }}
- >
-   Knowledge & Guidance
- </motion.p>
-
- {/* Title */}
- <motion.h2 
-   className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight"
-   initial={{ opacity: 0, y: 20 }}
-   animate={{ opacity: 1, y: 0 }}
-   transition={{ duration: 0.8, delay: 0.4 }}
- >
-   Our <span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-sm">
-     Latest Blogs
-   </span>
- </motion.h2>
-
- {/* Description */}
- <motion.p 
-   className="text-md sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto font-medium leading-relaxed"
-   initial={{ opacity: 0, y: 20 }}
-   animate={{ opacity: 1, y: 0 }}
-   transition={{ duration: 0.8, delay: 0.6 }}
- >
-   Explore articles, insights, and stories about{" "}
-   <span className="font-semibold text-orange-600">Islamic education</span>,{" "}
-   <span className="font-semibold text-orange-600">spiritual growth</span>, and{" "}
-   <span className="font-semibold text-orange-600">community guidance</span>.
- </motion.p>
-</motion.div>
-
-
-)}
-
-
-      {/* Blogs Grid */}
-{/* Blog Grid */}
-{/* Blog Grid */}
-<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-  {displayBlogs.map((item: any, index: number) => (
-    <motion.div
-      key={item.slug}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
-      className="h-full"
-    >
-     
-        <motion.div
-          className="relative flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-gray-100/50 transition-all duration-300"
-          whileHover={{ y: -4, boxShadow: "0 20px 25px rgba(0,0,0,0.1)" }}
-          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+      
+      {homePage && (
+        <motion.div 
+          className="max-w-4xl mt- space-y-8 mx-auto px-6 text-center mb-20"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          {/* Image */}
-          <div className="relative h-56 w-full overflow-hidden">
-            <Image
-              src={getImageUrl(item.image)}
-              alt={item.title}
-              className="object-cover w-full h-full transition-transform duration-300 ease-out group-hover:scale-105"
-              width={500}
-              height={300}
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-            <span className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs px-4 py-2 rounded-full font-semibold shadow-xl backdrop-blur-sm">
-              {item.category?.name || "General"}
+          {/* Subtitle */}
+          <motion.p 
+            className="text-base sm:text-lg uppercase tracking-wider font-semibold text-orange-500/90 mb-2"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            Knowledge & Guidance
+          </motion.p>
+
+          {/* Title */}
+          <motion.h2 
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            Our <span className="bg-gradient-to-r from-orange-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-sm">
+              Latest Blogs
             </span>
-            <div className="absolute bottom-4 left-4 right-4">
-              <h2 className="text-white font-bold text-xl line-clamp-2 drop-shadow-2xl">
-                {item.title}
-              </h2>
-            </div>
-          </div>
+          </motion.h2>
 
-          {/* Content */}
-          <div className="flex-1 flex flex-col p-6">
-            <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-              {item.description?.replace(/<[^>]*>/g, "")}
-            </p>
-
-            {/* Footer */}
-            <div className="mt-auto flex items-center justify-between border-t border-gray-100/50 pt-4">
-            <div className="flex items-center gap-2 text-xs text-gray-500">
-                <span>{item.date?.split("T")[0] || "Unknown date"}</span>
-              
-              </div>
-              {/* Left Button */}
-              <Link href={`/blogs/${item.slug}`} className="group block h-full ">
-              
-              
-              
-               <span className="text-orange-500">See More →</span> 
-                </Link>
-
-              {/* Right Side Info */}
-            
-            </div>
-          </div>
+          {/* Description */}
+          <motion.p 
+            className="text-md sm:text-lg md:text-xl text-gray-700 max-w-2xl mx-auto font-medium leading-relaxed"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            Explore articles, insights, and stories about{" "}
+            <span className="font-semibold text-orange-600">Islamic education</span>,{" "}
+            <span className="font-semibold text-orange-600">spiritual growth</span>, and{" "}
+            <span className="font-semibold text-orange-600">community guidance</span>.
+          </motion.p>
         </motion.div>
-     
-    </motion.div>
-  ))}
-</div>
+      )}
 
+      {/* Category Filter */}
+      <div className="max-w-7xl mt-10 mx-auto px-6 mb-12">
+        <div className="flex flex-wrap justify-center gap-3">
+          {categories.map((category) => (
+            <motion.button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-lg"
+                  : "bg-white text-gray-700 border border-gray-200 hover:border-orange-200 hover:bg-orange-50"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              {category}
+            </motion.button>
+          ))}
+        </div>
+      </div>
 
-{/* See More Button */}
+      {/* Blog Grid */}
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {displayBlogs.map((item: any, index: number) => (
+          <motion.div
+            key={item.slug}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            // transition={{ duration: 0.5, delay: index * 0.1 }}
+            className="h-full"
+          >
+            <motion.div
+              className="relative flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg overflow-hidden border border-gray-100/50 transition-all duration-300"
+              whileHover={{ y: -4, boxShadow: "0 20px 25px rgba(0,0,0,0.1)" }}
+            
+            >
+              {/* Image */}
+              <div className="relative h-56 w-full overflow-hidden">
+                <Image
+                  src={getImageUrl(item.image)}
+                  alt={item.title}
+                  className="object-cover w-full h-full transition-transform duration-300 ease-out group-hover:scale-105"
+                  width={500}
+                  height={300}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <span className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs px-4 py-2 rounded-full font-semibold shadow-xl backdrop-blur-sm">
+                  {item.category?.name || "General"}
+                </span>
+                <div className="absolute bottom-4 left-4 right-4">
+                  <h2 className="text-white font-bold text-xl line-clamp-2 drop-shadow-2xl">
+                    {item.title}
+                  </h2>
+                </div>
+              </div>
 
+              {/* Content */}
+              <div className="flex-1 flex flex-col p-6">
+                <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  {item.description?.replace(/<[^>]*>/g, "")}
+                </p>
 
+                {/* Footer */}
+                <div className="mt-auto flex items-center justify-between border-t border-gray-100/50 pt-4">
+                  <div className="flex items-center gap-2 text-xs text-gray-500">
+                    <span>{item.date?.split("T")[0] || "Unknown date"}</span>
+                  </div>
+                  <Link href={`/blogs/${item.slug}`} className="group block h-full">
+                    <span className="text-orange-500 group-hover:text-orange-600 transition-colors">See More →</span>
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        ))}
+      </div>
 
+      {/* View All Button for Home Page */}
+      {homePage && displayBlogs.length > 0 && (
+        <div className="max-w-7xl mx-auto px-6 mt-12 text-center">
+          <Link href="/blogs">
+            <motion.button 
+              className="px-8 py-3 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-all"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              View All Blogs
+            </motion.button>
+          </Link>
+        </div>
+      )}
     </section>
   );
 }

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Book } from "../../../lib/types";
 import Link from "next/link";
 import { FaBook, FaCalendar, FaUser, FaArrowLeft, FaEye, FaHeart } from 'react-icons/fa';
+import { FaDownload, FaDownLong } from "react-icons/fa6";
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -125,30 +126,77 @@ export default async function BookDetailsPage({ params }: Params) {
                 )}
 
                 {/* Book Details */}
-                <div className="grid grid-cols-2 gap-4">
-                  {book.pages && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="text-sm text-gray-500 mb-1">Pages</div>
-                      <div className="text-lg font-semibold text-gray-900">{book.pages}</div>
-                    </div>
-                  )}
-                  {book.written_year && (
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <div className="text-sm text-gray-500 mb-1">Year</div>
-                      <div className="text-lg font-semibold text-gray-900">{book.written_year}</div>
-                    </div>
-                  )}
-                </div>
+              {/* Book Details */}
+<div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+  {book.pages && (
+    <div className="bg-gray-50 p-4 rounded-lg">
+      <div className="text-sm text-gray-500 mb-1">Pages</div>
+      <div className="text-lg font-semibold text-gray-900">{book.pages}</div>
+    </div>
+  )}
+  {book.written_year && (
+    <div className="bg-gray-50 p-4 rounded-lg">
+      <div className="text-sm text-gray-500 mb-1">Year</div>
+      <div className="text-lg font-semibold text-gray-900">{book.written_year}</div>
+    </div>
+  )}
+  {/* {typeof book.is_published !== "undefined" && (
+    <div className="bg-gray-50 p-4 rounded-lg">
+      <div className="text-sm text-gray-500 mb-1">Published</div>
+      <div className="text-lg font-semibold text-gray-900">
+        {book.is_published ? "Yes" : "No"}
+      </div>
+    </div>
+  )} */}
+  {typeof book.is_in_library !== "undefined" && (
+    <div className="bg-gray-50 p-4 rounded-lg">
+      <div className="text-sm text-gray-500 mb-1">In Library</div>
+      <div className="text-lg font-semibold text-gray-900">
+        {book.is_in_library ? "Yes" : "No"}
+      </div>
+    </div>
+  )}
+{typeof book.downloadable !== "undefined" && (
+  <div className="bg-gray-50 p-4 rounded-lg">
+    <div className="text-sm text-gray-500 mb-2">Downloadable</div>
+    {book.downloadable ? (
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700 border border-green-200">
+        ✅ Yes
+      </span>
+    ) : (
+      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-700 border border-red-200">
+        ❌ No
+      </span>
+    )}
+  </div>
+)}
 
-                {/* Action Buttons */}
-                <div className="flex gap-3 pt-4">
-                  <button className="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700 transition-colors font-medium">
-                    Read Book
-                  </button>
-                  <button className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors font-medium">
-                    Download
-                  </button>
-                </div>
+</div>
+
+{/* Action Buttons */}
+<div className="flex gap-3 pt-4">
+  {book.downloadable && book.pdf_file ? (
+    <a
+      href={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${book.pdf_file}`}
+      download
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 border border-gray-300 text-gray-700 px-6 py-3 rounded-xl font-medium shadow-sm hover:shadow-md hover:bg-gray-100 transition-all duration-300"
+    >
+      <FaDownload/> <span>Download PDF</span>
+    </a>
+  ) : (
+    <button
+      disabled
+      className="flex items-center gap-2 border border-gray-200 text-gray-400 px-6 py-3 rounded-xl cursor-not-allowed bg-gray-50 font-medium"
+    >
+      🚫 <span>Not Available</span>
+    </button>
+  )}
+</div>
+
+
+               
               </div>
             </div>
           </div>
@@ -162,7 +210,7 @@ export default async function BookDetailsPage({ params }: Params) {
               </h2>
               <div className="flex flex-col md:flex-row gap-10 items-center justify-center">
                 {book.author.image && (
-                  <div className="w-32  h-32 md:w-20 h-20 rounded-full overflow-hidden border-2 border-amber-100">
+                  <div className="w-32  h-32 rounded-full overflow-hidden border-2 border-amber-100">
                     <Image
                       src={getImageUrl(book.author.image) || ""}
                       alt={`${book.author.first_name} ${book.author.last_name || ''}`}

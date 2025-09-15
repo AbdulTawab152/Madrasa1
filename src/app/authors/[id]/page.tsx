@@ -3,7 +3,7 @@ import Image from "next/image";
 import { fetchWithCache } from "../../../lib/api";
 import { endpoints } from "../../../lib/config";
 import { Author } from "../../../lib/types";
-import { User, MapPin, Phone, Calendar, CheckCircle, XCircle } from "lucide-react";
+
 
 interface AuthorPageProps {
   params: Promise<{ id: string }>;

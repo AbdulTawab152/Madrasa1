@@ -50,115 +50,160 @@ export default function EventsSection({
     <div className="min-h-screen">
       {/* Hero Section only shows on event page */}
       {showAll && (
-        <section className="relative w-full py-24 md:py-40 overflow-hidden">
-          {/* Background Decorative Orbs */}
-          <div className="absolute inset-0 pointer-events-none z-0 w-full h-full">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/95 via-white/85 to-yellow-100/90 w-full h-full" />
-            <div className="absolute top-10 left-10 w-44 h-44 bg-gradient-to-br from-orange-200/50 to-yellow-200/50 rounded-full blur-3xl animate-[float1_16s_ease-in-out_infinite]" />
-            <div className="absolute bottom-10 right-10 w-64 h-64 bg-gradient-to-br from-yellow-200/40 to-orange-200/40 rounded-full blur-3xl animate-[float2_22s_ease-in-out_infinite]" />
-            <div className="absolute top-1/2 left-1/4 w-24 h-24 bg-gradient-to-br from-orange-100/60 to-yellow-100/60 rounded-full blur-2xl animate-[float3_18s_ease-in-out_infinite]" />
-          </div>
-
-          {/* Text Content */}
-          <div className="container mx-auto px-6 lg:px-16 flex flex-col items-center text-center relative z-10">
-  {/* Badge */}
-  <motion.div
-    initial={{ opacity: 0, y: -20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1 }}
-    className="inline-flex items-center gap-3 mb-8 px-8 py-3 bg-white/85 backdrop-blur-lg border border-orange-200/70 text-orange-600 text-base font-semibold rounded-full shadow-2xl ring-2 ring-orange-100/80"
-  >
-    <span className="w-2.5 h-2.5 bg-orange-500 rounded-full shadow-md animate-pulse"></span>
-    <span className="tracking-wide uppercase font-bold">Events</span>
-    <span className="w-2 h-2 bg-orange-400 rounded-full animate-pulse delay-1000"></span>
-  </motion.div>
-
-  {/* Animated Headline (staggered words) */}
-  <motion.h1
-    className="text-4xl md:text-6xl font-extrabold mb-6 leading-tight text-gray-900 drop-shadow-2xl"
-    initial="hidden"
-    animate="visible"
-    variants={{
-      hidden: {},
-      visible: {
-        transition: {
-          staggerChildren: 0.15
-        }
-      }
-    }}
-  >
-    {heroTitle.split(" ").map((word, index) => (
-      <motion.span
-        key={index}
-        className={`inline-block ${
-          index === 0 ? "text-orange-500 drop-shadow-lg" : "text-gray-800 drop-shadow-lg relative"
-        } mr-2`}
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: index * 0.1 }}
-      >
-        {word}
-        {index !== 0 && (
-          <span className="absolute -bottom-2 left-0 right-0 h-3 bg-orange-100/90 rounded-full -z-10 blur-[3px]"></span>
-        )}
-      </motion.span>
-    ))}
-  </motion.h1>
-
-  {/* Subtitle */}
-  <motion.p
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, delay: 0.8 }}
-    className="text-lg md:text-2xl text-gray-700 max-w-2xl mb-6 font-light drop-shadow"
-  >
-    <span className="inline-block bg-white/85 px-5 py-3 rounded-2xl shadow-md border border-orange-100/80 backdrop-blur-md">
-      {heroSubtitle}
-    </span>
-  </motion.p>
-
-  {/* Additional Description */}
-  <motion.p
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 1, delay: 1.0 }}
-    className="text-md md:text-lg text-gray-600 max-w-3xl mb-12 font-normal leading-relaxed"
-  >
-    Discover amazing events happening around you and stay updated with our latest gatherings. 
-    <span className="text-orange-500 font-semibold"> Join now</span> to explore exciting opportunities.
-  </motion.p>
-
-  {/* CTA Button */}
-
-</div>
-
-          {/* Keyframes */}
-          <style jsx>{`
-            @keyframes float1 {
-              0%, 100% { transform: translateY(0) scale(1);}
-              50% { transform: translateY(-30px) scale(1.08);}
-            }
-            @keyframes float2 {
-              0%, 100% { transform: translateY(0) scale(1);}
-              50% { transform: translateY(40px) scale(0.97);}
-            }
-            @keyframes float3 {
-              0%, 100% { transform: translateY(0) scale(1);}
-              50% { transform: translateY(-20px) scale(1.12);}
-            }
-          `}</style>
-        </section>
+      <section className="relative mt-20 w-full overflow-hidden">
+      {/* Multi-layered Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {/* Enhanced multi-layered gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-white to-pink-50" />
+        {/* Subtle SVG pattern overlay for extra texture */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23fbbf24' fill-opacity='0.08'%3E%3Ccircle cx='50' cy='50' r='40'/%3E%3C/g%3E%3Cg fill='%23f472b6' fill-opacity='0.06'%3E%3Crect x='10' y='10' width='20' height='20' rx='5'/%3E%3C/g%3E%3C/svg%3E")`,
+            backgroundSize: "80px 80px",
+            backgroundRepeat: "repeat",
+          }}
+        />
+        {/* Animated gradient orbs */}
+        <motion.div
+          className="absolute top-16 left-16 w-80 h-80 bg-gradient-to-r from-orange-200/40 via-pink-100/30 to-pink-200/40 rounded-full blur-3xl shadow-2xl"
+          animate={{
+            x: [0, 140, 0],
+            y: [0, -80, 0],
+            scale: [1, 1.35, 1],
+            rotate: [0, 15, 0],
+          }}
+          transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.div
+          className="absolute bottom-16 right-16 w-[28rem] h-[28rem] bg-gradient-to-r from-pink-200/30 via-orange-100/30 to-orange-200/30 rounded-full blur-3xl shadow-xl"
+          animate={{
+            x: [0, -120, 0],
+            y: [0, 100, 0],
+            scale: [1, 0.95, 1],
+            rotate: [0, -10, 0],
+          }}
+          transition={{ duration: 32, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Extra animated orb */}
+        <motion.div
+          className="absolute top-1/2 left-1/2 w-40 h-40 bg-gradient-to-br from-orange-100/60 to-pink-100/60 rounded-full blur-2xl"
+          style={{ translate: "-50% -50%" }}
+          animate={{
+            x: [0, 40, -40, 0],
+            y: [0, -30, 30, 0],
+            scale: [1, 1.1, 0.95, 1],
+            opacity: [0.7, 1, 0.8, 0.7],
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+        />
+        {/* Accent dots */}
+        <motion.div
+          className="absolute top-1/4 left-1/3 w-2 h-2 bg-orange-400/70 rounded-full"
+          animate={{ scale: [1, 1.3, 1], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 2.5, repeat: Infinity, delay: 0.2 }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 right-1/3 w-1.5 h-1.5 bg-pink-400/80 rounded-full"
+          animate={{ scale: [1, 1.2, 1], opacity: [1, 0.8, 1] }}
+          transition={{ duration: 2.2, repeat: Infinity, delay: 1.1 }}
+        />
+        <motion.div
+          className="absolute top-2/3 left-1/4 w-2 h-2 bg-orange-300/80 rounded-full"
+          animate={{ scale: [1, 1.15, 1], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 2.8, repeat: Infinity, delay: 2.1 }}
+        />
+        {/* Animated star */}
+        <motion.div
+          className="absolute top-1/2 right-1/4 text-yellow-400"
+          style={{ fontSize: "1.25rem" }}
+          animate={{ rotate: [0, 20, -20, 0], scale: [1, 1.2, 1] }}
+          transition={{ duration: 3.5, repeat: Infinity, delay: 1.5 }}
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+            <polygon points="10,2 12,8 18,8 13,12 15,18 10,14 5,18 7,12 2,8 8,8" />
+          </svg>
+        </motion.div>
+      </div>
+    
+      <div className="relative z-10 py-24 md:py-24 px-6 flex flex-col items-center text-center">
+        <motion.div 
+          className="inline-flex items-center gap-3 mb-8 px-6 py-3 bg-white/80 backdrop-blur-md border border-orange-200/50 text-orange-600 text-sm font-medium rounded-full shadow-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div
+            animate={{ rotate: 360 }}
+            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+          >
+            <span className="w-2 h-2 bg-orange-500 rounded-full"></span>
+          </motion.div>
+          <span>Our Event</span>
+          <motion.div
+            className="w-1.5 h-1.5 bg-orange-500 rounded-full"
+            animate={{ scale: [1, 1.3, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+          />
+        </motion.div>
+        
+        <motion.h1 
+          className="text-4xl md:text-5xl lg:text-6xl font-bold mb-8 text-gray-900 leading-tight"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+        >
+          Experience{" "}
+          <span className="relative">
+            <span className="bg-gradient-to-r from-orange-500 to-pink-500 bg-clip-text text-transparent">
+              Events
+            </span>
+            <motion.div
+              className="absolute -bottom-1 left-0 right-0 h-2 bg-gradient-to-r from-orange-200/50 to-pink-200/50 rounded-full -z-10"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
+            />
+          </span>
+          <br className="hidden md:block" />
+          That{" "}
+          <span className="relative inline-block">
+            <span className="bg-gradient-to-r from-pink-500 to-orange-500 bg-clip-text text-transparent">
+              Connect
+            </span>
+            <motion.div
+              className="absolute -bottom-1 left-0 right-0 h-1.5 bg-gradient-to-r from-pink-300/60 to-orange-300/60 rounded-full"
+              initial={{ scaleX: 0 }}
+              animate={{ scaleX: 1 }}
+              transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
+            />
+          </span>
+        </motion.h1>
+        
+        <motion.p 
+          className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-12 leading-relaxed font-normal"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+        >
+          Join us for inspiring gatherings that bring people together. 
+          Discover meaningful experiences, celebrate community, 
+          and create lasting memories at our events.
+        </motion.p>
+      </div>
+    </section>
+    
       )}
 
 
 
       {/* Events Section */}
       <section className="w-full px-4 md:px-8 max-w-6xl mx-auto">
-<div className="relative text-center mb-20">
+<div className="relative text-center mb-10">
   {/* Subtle background accent */}
-  <div className="absolute inset-0 -z-10 flex items-center justify-center">
+  {/* <div className="absolute inset-0 -z-10 flex items-center justify-center">
     <div className="w-40 h-40 md:w-60 md:h-60 rounded-full bg-gradient-to-r from-orange-200 via-pink-200 to-yellow-200 opacity-30 blur-3xl"></div>
-  </div>
+  </div> */}
 
   {/* Title */}
   <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">

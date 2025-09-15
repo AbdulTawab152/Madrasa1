@@ -131,6 +131,16 @@ export class CoursesApi {
   }
 }
 
+export class AwlyaaApi {
+  static async getAll() {
+    return apiClient.get(endpoints.awlyaa);
+  }
+
+  static async getById(id: string) {
+    return apiClient.get(`${endpoints.awlyaa}/${id}`);
+  }
+}
+
 export class AuthorsApi {
   static async getAll() {
     return apiClient.get(endpoints.authors);

@@ -80,7 +80,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
   }
 
   return (
-    <section className="relative  overflow-hidden">
+    <section className="relative overflow-hidden">
       {/* Sophisticated Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-white to-orange-50/30"></div>
       

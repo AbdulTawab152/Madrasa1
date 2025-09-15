@@ -119,7 +119,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
       <div className="max-w-7xl mx-auto px-4 py-12 lg:mt-8 relative flex flex-col lg:flex-row gap-8">
         
         {/* Course Info */}
-        <div className="flex-1 bg-white rounded-2xl shadow-lg p-8 space-y-8 border border-amber-100">
+        <div className="flex-1 bg-white rounded-2xl shadow-sm p-8 space-y-8 border border-amber-100">
           <div className="border-b border-amber-100 pb-6">
             <h2 className="text-2xl font-bold text-black mb-4 flex items-center">
               <FaGraduationCap className="mr-3 text-amber-600" />
@@ -183,7 +183,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         </div>
 
         {/* Sidebar */}
-        <div className="lg:w-96 bg-white p-6 rounded-2xl shadow-lg border border-amber-100 sticky top-8 space-y-6">
+        <div className="lg:w-96 bg-white p-6 rounded-2xl shadow-sm border border-amber-100 sticky top-8 space-y-6">
           <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-6 rounded-xl shadow-lg text-center">
             <div className="text-2xl font-bold mb-2">Get Course Info</div>
             <p className="mb-6 text-amber-100">Contact us for enrollment details</p>

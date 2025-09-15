@@ -26,6 +26,7 @@ export const endpoints = {
   iftah: `${apiConfig.baseUrl}/iftah`,
   articles: `${apiConfig.baseUrl}/articles`,
   graduated: `${apiConfig.baseUrl}/graduations`,
+  awlyaa: `${apiConfig.baseUrl}/awlyaa`,
 } as const;
 
 
@@ -40,16 +41,20 @@ export const features = {
 export const navigation = {
   main: [
     { name: 'Home', href: '/', icon: 'home' },
+    { name: 'Courses', href: '/courses', icon: 'course' },
     { name: 'Blogs', href: '/blogs', icon: 'blog' },
+    { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'iftah', href: '/iftah', icon: 'fatwa' },
+  
+    { name: 'Book', href: '/book', icon: 'book' },
     { name: 'Author', href: '/authors', icon: 'author' },
     { name: 'Book', href: '/book', icon: 'book' },
-    { name: 'Courses', href: '/courses', icon: 'course' },
     { name: 'Event', href: '/event', icon: 'event' },
     { name: 'Tasawof', href: '/tasawwuf', icon: 'tasawwuf' },
-    // { name: 'Donation', href: '/donation', icon: 'donation' },
-    { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
+    { name: 'Donation', href: '/donation', icon: 'donation' },
+  
     { name: 'Article', href: '/articles', icon: 'article' },
+    { name: 'Awalyaa', href: '/awlayaa', icon: 'article' },
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

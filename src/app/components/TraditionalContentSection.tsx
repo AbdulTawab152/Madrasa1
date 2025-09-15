@@ -209,7 +209,7 @@ export default function TraditionalContentSection({
                         
                         <div className="flex-shrink-0">
                       
-                          <Link className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover:from-amber-200 group-hover:to-orange-200 transition-all duration-300 shadow-sm group-hover:shadow-md"  href={item.type === 'article' ? `/articles/${item.id}` : `/iftah/${item.slug}`}>
+                          <Link className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover:from-amber-200 group-hover:to-orange-200 transition-all duration-300 shadow-sm group-hover:shadow-md"  href={item.type === 'article' ? `/articles/${item.slug}` : `/iftah/${item.slug}`}>
                           
                             <svg className="w-6 h-6 text-amber-600 group-hover:text-orange-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />

@@ -40,7 +40,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center py-16">
+      <div className="flex flex-col  items-center justify-center py-16">
         <div className="relative">
           <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
           <div className="absolute inset-0 w-12 h-12 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin animation-delay-150"></div>
@@ -64,7 +64,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   return (
     <div className="w-full">
       {/* Enhanced Books Grid */}
-      <div className="grid grid-cols-1 px-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 mb-20 px-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {displayBooks.map((book) => (
           <div
             key={book.id}
@@ -114,7 +114,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   
                   {/* View Details Button */}
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                    <div className="bg-white/95 text-amber-600 px-4 py-2 rounded-full text-sm font-medium shadow-lg flex items-center gap-2">
+                    <div className="bg-black/60 text-white hover:text-orange-500 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2">
                       <FaEye className="w-4 h-4" />
                       View Details
                     </div>

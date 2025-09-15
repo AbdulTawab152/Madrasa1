@@ -220,27 +220,7 @@ export default async function HomePage() {
                 <GraduationsSection showAll={false} />
               </div>
               {/* Call to Action */}
-              <div className="mt-14 md:mt-20 text-center animate-fade-in-up delay-200">
-                <Link
-                  href="/graduated-students"
-                  className="inline-flex items-center gap-2 px-7 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-xl shadow-lg hover:from-orange-600 hover:to-yellow-600 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-orange-400"
-                >
-                  <span>View All Graduates</span>
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M17 8l4 4m0 0l-4 4m4-4H3"
-                    />
-                  </svg>
-                </Link>
-              </div>
+            
             </Suspense>
           </div>
         </div>

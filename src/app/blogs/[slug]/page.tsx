@@ -128,14 +128,18 @@ export default async function BlogDetailsPage({ params }: Params) {
           {(blog.excerpt || blog.description) && (
             <div className="relative mb-10">
               <div className="absolute -left-4 top-0 h-full w-1 bg-gradient-to-b from-orange-400 to-yellow-500 rounded-full"></div>
-              <p className="text-xl  text-gray-700 italic pl-6 font-light leading-relaxed">
-                {blog.excerpt || blog.description}
-              </p>
+              <div
+  className="prose prose-lg prose-red pl-6"
+  dangerouslySetInnerHTML={{ __html: blog.description }}
+/>
+
+
+              
             </div>
           )}
 
           {/* Blog Content */}
-          {blog.content && (
+          {/* {blog.content && (
             <div className="prose prose-xl max-w-none 
                           prose-headings:font-extrabold prose-headings:text-gray-900 
                           prose-p:text-gray-800 prose-p:leading-relaxed
@@ -147,9 +151,9 @@ export default async function BlogDetailsPage({ params }: Params) {
                           first-letter:text-7xl first-letter:font-extrabold first-letter:text-orange-500 first-letter:mr-3 first-letter:float-left first-letter:mt-2
                           prose-pre:bg-gray-800 prose-pre:rounded-xl
                           prose-hr:border-gray-300"
-              dangerouslySetInnerHTML={{ __html: blog.content }}
+              
             />
-          )}
+          )} */}
 
           {/* Tags */}
           {blog.tags && blog.tags.length > 0 && (
