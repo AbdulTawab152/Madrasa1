@@ -10,8 +10,8 @@ export const appConfig = {
 export const apiConfig = {
   baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lawngreen-dragonfly-304220.hostingersite.com/api',
   cache: {
-    duration: parseInt(process.env.NEXT_PUBLIC_CACHE_DURATION || '3600'),
-    revalidate: parseInt(process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL || '3600'),
+    duration: parseInt(process.env.NEXT_PUBLIC_CACHE_DURATION || '300'), // 5 minutes for better performance
+    revalidate: parseInt(process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL || '300'), // 5 minutes
   },
 } as const;
 
@@ -21,12 +21,13 @@ export const endpoints = {
   courses: `${apiConfig.baseUrl}/courses`,
   authors: `${apiConfig.baseUrl}/authors`,
   books: `${apiConfig.baseUrl}/books`,
-  book: `${apiConfig.baseUrl}/book`,   // 👈 اضافه کنید
+  book: `${apiConfig.baseUrl}/book`,
   events: `${apiConfig.baseUrl}/events`,
   iftah: `${apiConfig.baseUrl}/iftah`,
   articles: `${apiConfig.baseUrl}/articles`,
   graduated: `${apiConfig.baseUrl}/graduations`,
   awlyaa: `${apiConfig.baseUrl}/awlyaa`,
+  gallery: `${apiConfig.baseUrl}/gallery`,
 } as const;
 
 

@@ -24,13 +24,13 @@ interface Article {
 
 // ✅ PageProps درست
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function ArticleDetailsPage({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // گرفتن لیست مقالات
   const res = await ArticlesApi.getAll();
@@ -121,8 +121,11 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
 }
 
 // ✅ اگر متادیتا خواستی:
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
   return {
-    title: `Article: ${params.slug}`,
+    title: `Article: ${slug}`,
   };
 }

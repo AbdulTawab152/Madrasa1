@@ -1,31 +1,28 @@
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
 import Hero from "../app/herosection/page";
 import About from "./components/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
-import Event from "../app/components/event/eventCard";
-import GraduationsSection from "./components/graduation/TopGraduations.tsx";
-// import ArticlesPreview from "./components/Articles";
-// import GraduationsSection from "./components/graduation/graduationCard";
-import Gallery from "./components/gallery/page";
 import Link from "next/link";
+
+// Lazy load heavy components
+const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
+const GraduationsSection = lazy(
+  () => import("./components/graduation/TopGraduations.tsx")
+);
+const LazyGallerySection = lazy(
+  () => import("./components/LazyGallerySection")
+);
+const BooksSection = lazy(() => import("./components/books/BooksSection"));
 
 // import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
 // import ArticlesList from "./components/Articles";
 
-async function getImages() {
-  const res = await fetch(
-    "https://lawngreen-dragonfly-304220.hostingersite.com/api/gallery",
-    { cache: "no-store" }
-  );
-  if (!res.ok) throw new Error("Failed to fetch gallery");
-  return res.json();
-}
+// Removed getImages function - now handled by LazyGallerySection
 
 import { fetchWithCache } from "../lib/api";
 import { endpoints } from "../lib/config";
-import { Blog, Course as CourseType, Event as EventType, Book } from "../lib/types";
-import BooksSection from "./components/books/BooksSection";
+import { Blog, Course as CourseType } from "../lib/types";
 
 async function fetchBlogsData(): Promise<Blog[]> {
   try {
@@ -33,16 +30,6 @@ async function fetchBlogsData(): Promise<Blog[]> {
     return Array.isArray(data) ? data : [];
   } catch (error) {
     console.error("Error fetching blogs:", error);
-    return [];
-  }
-}
-
-async function fetchBooksData(): Promise<Book[]> {
-  try {
-    const data = await fetchWithCache<Book[]>(endpoints.books);
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error("Error fetching books:", error);
     return [];
   }
 }
@@ -57,25 +44,12 @@ async function fetchCourseData(): Promise<CourseType[]> {
   }
 }
 
-async function fetchEventData(): Promise<EventType[]> {
-  try {
-    const data = await fetchWithCache<EventType[]>(endpoints.events);
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error("Error fetching blogs:", error);
-    return [];
-  }
-}
-
 export default async function HomePage() {
-  const [blogs, courses, events, books] = await Promise.all([
+  // Only fetch essential data for initial page load
+  const [blogs, courses] = await Promise.all([
     fetchBlogsData(),
     fetchCourseData(),
-    fetchEventData(),
-    fetchBooksData(),
   ]);
-
-  const images = await getImages();
   return (
     <div className="min-h-screen bg-white">
       <Hero />
@@ -101,10 +75,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-
       {/* gragurtion */}
 
-      {/* Events Section */}
+      {/* Events Section - Lazy Loaded */}
       <section className="py-10 ">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
@@ -112,12 +85,12 @@ export default async function HomePage() {
               <div className="flex items-center justify-center py-20">
                 <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
                 <span className="ml-4 text-gray-600 font-medium">
-                  Loading event...
+                  Loading events...
                 </span>
               </div>
             }
           >
-            <Event events={events as any} showAll={false} />
+            <LazyEventSection />
           </Suspense>
         </div>
       </section>
@@ -131,14 +104,16 @@ export default async function HomePage() {
             <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
               Explore Knowledge
             </p>
-            
+
             <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
               Our <span className="text-amber-600">Books</span>
             </h2>
-            
+
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Rooted in the <span className="font-semibold text-amber-700">Qur'an</span> and{" "}
-              <span className="font-semibold text-amber-700">Sunnah</span>, our books provide authentic Islamic knowledge.
+              Rooted in the{" "}
+              <span className="font-semibold text-amber-700">Qur'an</span> and{" "}
+              <span className="font-semibold text-amber-700">Sunnah</span>, our
+              books provide authentic Islamic knowledge.
             </p>
           </div>
 
@@ -154,16 +129,26 @@ export default async function HomePage() {
             >
               <div className="relative">
                 <BooksSection showAll={false} />
-                
+
                 {/* Simple Call to Action */}
                 <div className="mt-8 text-center">
-                  <Link 
-                    href="/book" 
+                  <Link
+                    href="/book"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
                     <span>View All Books</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
                     </svg>
                   </Link>
                 </div>
@@ -173,12 +158,21 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Gallery */}
-      <Gallery initialImages={images} />
+      {/* Gallery - Lazy Loaded */}
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+            <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+            <span className="ml-4 text-gray-600 font-medium">
+              Loading gallery...
+            </span>
+          </div>
+        }
+      >
+        <LazyGallerySection />
+      </Suspense>
 
       {/* gragutaion */}
-
-   
 
       <section className="relative py-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50">
         {/* Animated Gradient Blobs */}
@@ -200,10 +194,15 @@ export default async function HomePage() {
               🎓 Celebrating Success
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-              Our <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">Graduates</span>
+              Our{" "}
+              <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">
+                Graduates
+              </span>
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
-              Highlighting the achievements and journeys of students who have successfully completed their courses <span className="inline-block animate-bounce">🌟</span>
+              Highlighting the achievements and journeys of students who have
+              successfully completed their courses{" "}
+              <span className="inline-block animate-bounce">🌟</span>
             </p>
           </div>
           {/* Graduates Section */}
@@ -212,7 +211,9 @@ export default async function HomePage() {
               fallback={
                 <div className="flex items-center justify-center py-16">
                   <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
-                  <span className="ml-4 text-gray-600 font-medium">Loading graduates...</span>
+                  <span className="ml-4 text-gray-600 font-medium">
+                    Loading graduates...
+                  </span>
                 </div>
               }
             >
@@ -220,12 +221,10 @@ export default async function HomePage() {
                 <GraduationsSection showAll={false} />
               </div>
               {/* Call to Action */}
-            
             </Suspense>
           </div>
         </div>
       </section>
-
 
       {/* blogs Section */}
       <section className="py- bg-gradient-to-b from-gray-50 to-white">

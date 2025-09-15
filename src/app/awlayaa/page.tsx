@@ -5,17 +5,17 @@ import { useEffect, useState } from "react";
 import { Awlyaa } from "../../lib/types";
 import { AwlyaaApi } from "../../lib/api";
 import { motion } from "framer-motion";
-import { 
-  FaUser, 
-  FaAward, 
-  FaSearch, 
-  FaHeart, 
-  FaStar, 
+import {
+  FaUser,
+  FaAward,
+  FaSearch,
+  FaHeart,
+  FaStar,
   FaUsers,
   FaGlobe,
   FaRibbon,
   FaQuoteLeft,
-  FaArrowRight
+  FaArrowRight,
 } from "react-icons/fa";
 
 export default function AwlyaaListPage() {
@@ -28,7 +28,7 @@ export default function AwlyaaListPage() {
     const fetchData = async () => {
       try {
         const res = await AwlyaaApi.getAll();
-        setAwlyaa(res.data);
+        setAwlyaa(res.data as Awlyaa[]);
       } catch (err: any) {
         setError(err.message || "Failed to fetch Awlyaa");
       } finally {
@@ -82,7 +82,9 @@ export default function AwlyaaListPage() {
       <div className="min-h-screen flex items-center justify-center mt-32">
         <div className="text-center p-6 bg-red-50 rounded-lg max-w-md mx-auto">
           <div className="text-red-500 text-4xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Error Loading Data</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">
+            Error Loading Data
+          </h2>
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={() => window.location.reload()}
@@ -104,9 +106,9 @@ export default function AwlyaaListPage() {
           <div className="absolute top-60% left-80% w-96 h-96 bg-amber-300 rounded-full"></div>
           <div className="absolute top-20% left-70% w-64 h-64 bg-white rounded-full"></div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -114,17 +116,20 @@ export default function AwlyaaListPage() {
           >
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
               <FaRibbon className="text-amber-200" />
-              <span className="text-amber-100 text-sm">Distinguished Community</span>
+              <span className="text-amber-100 text-sm">
+                Distinguished Community
+              </span>
             </div>
-            
+
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Meet Our <span className="text-amber-200">Awlyaa</span>
             </h1>
-            
+
             <p className="text-xl text-orange-100 max-w-3xl mx-auto mb-10">
-              Discover the exceptional individuals who shape our community with their expertise, passion, and dedication to making a difference.
+              Discover the exceptional individuals who shape our community with
+              their expertise, passion, and dedication to making a difference.
             </p>
-            
+
             {/* <div className="flex flex-wrap justify-center gap-4">
               <motion.button
                 whileHover={{ scale: 1.05 }}
@@ -143,9 +148,9 @@ export default function AwlyaaListPage() {
               </motion.button>
             </div> */}
           </motion.div>
-          
+
           {/* Stats Section */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
@@ -155,20 +160,33 @@ export default function AwlyaaListPage() {
               { value: "100+", label: "Awlyaa Members" },
               { value: "25+", label: "Countries" },
               { value: "15+", label: "Expertise Fields" },
-              { value: "98%", label: "Satisfaction Rate" }
+              { value: "98%", label: "Satisfaction Rate" },
             ].map((stat, index) => (
-              <div key={index} className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl text-center border border-white/20">
-                <div className="text-2xl md:text-3xl font-bold text-amber-200">{stat.value}</div>
+              <div
+                key={index}
+                className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl text-center border border-white/20"
+              >
+                <div className="text-2xl md:text-3xl font-bold text-amber-200">
+                  {stat.value}
+                </div>
                 <div className="text-orange-100 text-sm mt-1">{stat.label}</div>
               </div>
             ))}
           </motion.div>
         </div>
-        
+
         {/* Decorative wave */}
         <div className="absolute bottom-0 left-0 w-full">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 120" className="w-full">
-            <path fill="#f9fafb" fillOpacity="1" d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,74.7C1120,75,1280,53,1360,42.7L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"></path>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1440 120"
+            className="w-full"
+          >
+            <path
+              fill="#f9fafb"
+              fillOpacity="1"
+              d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,74.7C1120,75,1280,53,1360,42.7L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
+            ></path>
           </svg>
         </div>
       </section>
@@ -184,10 +202,14 @@ export default function AwlyaaListPage() {
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">Find Your Expert</h2>
-              <p className="text-gray-600">Browse our community of distinguished Awlyaa</p>
+              <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                Find Your Expert
+              </h2>
+              <p className="text-gray-600">
+                Browse our community of distinguished Awlyaa
+              </p>
             </div>
-            
+
             <div className="relative w-full md:w-auto">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <FaSearch className="text-gray-400" />
@@ -236,7 +258,7 @@ export default function AwlyaaListPage() {
                       <div className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
                         <FaHeart className="text-orange-500" />
                       </div>
-                      
+
                       {/* Category Badge */}
                       <div className="absolute bottom-4 left-4">
                         <span className="px-3 py-1 bg-orange-500 text-white text-sm font-medium rounded-full">
@@ -250,23 +272,26 @@ export default function AwlyaaListPage() {
                       <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
                         {item.name}
                       </h2>
-                      
+
                       {item.title && (
                         <div className="flex items-center gap-2 mb-4">
                           <FaAward className="text-orange-500 flex-shrink-0" />
-                          <p className="text-gray-600 line-clamp-2">{item.title}</p>
+                          <p className="text-gray-600 line-clamp-2">
+                            {item.title}
+                          </p>
                         </div>
                       )}
 
-<p>
-              <strong>Death:</strong>{" "}
-              {item.death_date
-                ? `${new Date(item.death_date).toDateString()} – ${item.death_place}, ${item.death_city}, ${item.death_country}`
-                : "Still Alive"}
-            </p>
+                      <p>
+                        <strong>Death:</strong>{" "}
+                        {item.death_date
+                          ? `${new Date(item.death_date).toDateString()} – ${
+                              item.death_place
+                            }, ${item.death_city}, ${item.death_country}`
+                          : "Still Alive"}
+                      </p>
 
                       {/* Mock Expertise Tags */}
-                    
 
                       <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
                         <span className="inline-flex items-center text-orange-600 text-sm font-medium">
@@ -290,9 +315,13 @@ export default function AwlyaaListPage() {
             className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100"
           >
             <div className="text-gray-300 text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">No Awlyaa Found</h3>
-            <p className="text-gray-500">Try adjusting your search terms or browse all members</p>
-            <button 
+            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+              No Awlyaa Found
+            </h3>
+            <p className="text-gray-500">
+              Try adjusting your search terms or browse all members
+            </p>
+            <button
               onClick={() => setSearchTerm("")}
               className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
             >

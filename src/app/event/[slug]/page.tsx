@@ -21,11 +21,11 @@ interface Event {
 }
 
 interface Params {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default async function EventDetailsPage({ params }: Params) {
-  const { slug } = params;
+  const { slug } = await params;
 
   // Fetch events
   const res = await EventsApi.getAll();
@@ -36,26 +36,34 @@ export default async function EventDetailsPage({ params }: Params) {
   const relatedEvents = events.filter((e) => e.slug !== slug).slice(0, 3);
 
   const getImageUrl = (img?: string) =>
-    img ? (img.startsWith("http") ? img : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`) : "/placeholder.jpg";
+    img
+      ? img.startsWith("http")
+        ? img
+        : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`
+      : "/placeholder.jpg";
 
   // Format date for better display
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   // Get status badge color
   const getStatusColor = (status: string) => {
-    switch(status.toLowerCase()) {
-      case 'upcoming': return 'bg-green-100 text-green-800';
-      case 'past': return 'bg-gray-100 text-gray-800';
-      case 'ongoing': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-amber-100 text-amber-800';
+    switch (status.toLowerCase()) {
+      case "upcoming":
+        return "bg-green-100 text-green-800";
+      case "past":
+        return "bg-gray-100 text-gray-800";
+      case "ongoing":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "bg-amber-100 text-amber-800";
     }
   };
 
@@ -66,18 +74,22 @@ export default async function EventDetailsPage({ params }: Params) {
         <nav className="flex mb-8">
           <ol className="flex items-center space-x-2 text-sm">
             <li>
-              <Link href="/" className="text-amber-600 hover:text-amber-700 transition-colors">
+              <Link
+                href="/"
+                className="text-amber-600 hover:text-amber-700 transition-colors"
+              >
                 Home
               </Link>
             </li>
             <li className="flex items-center">
               <span className="mx-2 text-amber-400">/</span>
-              <Link href="/event" className="text-amber-600 hover:text-amber-700 transition-colors">
+              <Link
+                href="/event"
+                className="text-amber-600 hover:text-amber-700 transition-colors"
+              >
                 Events
               </Link>
             </li>
-            
-          
           </ol>
         </nav>
 
@@ -97,8 +109,13 @@ export default async function EventDetailsPage({ params }: Params) {
                     priority
                   />
                   <div className="absolute top-4 right-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(event.status)}`}>
-                      {event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                    <span
+                      className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(
+                        event.status
+                      )}`}
+                    >
+                      {event.status.charAt(0).toUpperCase() +
+                        event.status.slice(1)}
                     </span>
                   </div>
                 </div>
@@ -113,46 +130,96 @@ export default async function EventDetailsPage({ params }: Params) {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-6 border-y border-gray-100">
                   <div className="flex items-start space-x-3">
                     <div className="bg-amber-100 p-2 rounded-lg">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-amber-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
                       </svg>
                     </div>
                     <div>
                       <p className="text-md font-medium text-gray-500">Date</p>
-                      <p className=" text-[14px] md:font-medium ">{formatDate(event.date)}</p>
+                      <p className=" text-[14px] md:font-medium ">
+                        {formatDate(event.date)}
+                      </p>
                     </div>
                   </div>
 
                   <div className="flex items-start space-x-3">
                     <div className="bg-amber-100 p-2 rounded-lg">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5 text-amber-600"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                        />
                       </svg>
                     </div>
                     <div>
-                      <p className="text-md font-medium   text-gray-500">Duration</p>
-                      <p className="text-[14px]  md:font-medium">{event.duration}</p>
+                      <p className="text-md font-medium   text-gray-500">
+                        Duration
+                      </p>
+                      <p className="text-[14px]  md:font-medium">
+                        {event.duration}
+                      </p>
                     </div>
                   </div>
 
                   {event.live_link && (
                     <div className="flex items-start space-x-3 md:col-span-2">
                       <div className="bg-amber-100 p-2 rounded-lg">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-5 w-5 text-amber-600"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
+                          />
                         </svg>
                       </div>
                       <div>
                         <p className="text-sm text-gray-500">Live Stream</p>
-                        <a 
-                          href={event.live_link} 
-                          target="_blank" 
-                          rel="noopener noreferrer" 
+                        <a
+                          href={event.live_link}
+                          target="_blank"
+                          rel="noopener noreferrer"
                           className="font-medium text-amber-600 hover:text-amber-700 inline-flex items-center mt-1"
                         >
                           {event.live_link_type || "Watch Live"}
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 ml-1"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                            />
                           </svg>
                         </a>
                       </div>
@@ -163,7 +230,9 @@ export default async function EventDetailsPage({ params }: Params) {
                 {/* Description */}
                 {event.description && (
                   <div className="mt-6">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-900">About This Event</h2>
+                    <h2 className="text-xl font-semibold mb-4 text-gray-900">
+                      About This Event
+                    </h2>
                     <div className="prose max-w-none text-gray-700">
                       <p className="whitespace-pre-line">{event.description}</p>
                     </div>
@@ -178,11 +247,13 @@ export default async function EventDetailsPage({ params }: Params) {
             {/* Related Events */}
             {relatedEvents.length > 0 && (
               <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">Related Events</h3>
+                <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                  Related Events
+                </h3>
                 <div className="space-y-4">
                   {relatedEvents.map((event) => (
-                    <Link 
-                      key={event.id} 
+                    <Link
+                      key={event.id}
                       href={`/event/${event.slug}`}
                       className="block group"
                     >
@@ -211,7 +282,6 @@ export default async function EventDetailsPage({ params }: Params) {
             )}
 
             {/* Event Actions */}
-         
           </div>
         </div>
       </div>

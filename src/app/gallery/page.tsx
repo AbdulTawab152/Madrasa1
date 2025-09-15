@@ -1,5 +1,5 @@
 // src/app/gallery/page.tsx
-import Gallery from "./../components/gallery/page";
+import Gallery from "./../components/gallery/Gallery";
 
 async function getImages() {
   const res = await fetch(

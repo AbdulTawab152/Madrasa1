@@ -3,7 +3,20 @@ import Image from "next/image";
 import { fetchWithCache } from "../../../lib/api";
 import { endpoints } from "../../../lib/config";
 import { Author } from "../../../lib/types";
-
+import {
+  User,
+  Calendar,
+  BookOpen,
+  GraduationCap,
+  Users,
+  Heart,
+  Quote,
+  Star,
+  Award,
+  MapPin,
+  BookText,
+  Phone,
+} from "lucide-react";
 
 interface AuthorPageProps {
   params: Promise<{ id: string }>;
@@ -28,8 +41,6 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   const { id } = await params;
   const author = await fetchAuthor(id);
 
-
-
   return (
     <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
       <div className="bg-white rounded-3xl overflow-hidden p-8">
@@ -50,13 +61,14 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           )}
 
           {/* Alive / Dead Dot on Image */}
-      
 
           {/* Name */}
           <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
             {author.first_name} {author.last_name}
           </h1>
-          <p className="text-gray-500 mt-2 max-w-xl">{author.bio || "No bio available."}</p>
+          <p className="text-gray-500 mt-2 max-w-xl">
+            {author.bio || "No bio available."}
+          </p>
         </div>
 
         {/* Info Grid */}
@@ -97,10 +109,8 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           </div>
 
           {/* Alive Status */}
-         
 
           {/* Published Status */}
-         
         </div>
       </div>
     </main>
