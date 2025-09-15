@@ -9,6 +9,9 @@ export default function LazyGallerySection() {
   useEffect(() => {
     async function fetchImages() {
       try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
         const res = await fetch(
           "https://lawngreen-dragonfly-304220.hostingersite.com/api/gallery",
           {
@@ -16,13 +19,25 @@ export default function LazyGallerySection() {
             headers: {
               "Content-Type": "application/json",
             },
+            signal: controller.signal,
           }
         );
+
+        clearTimeout(timeoutId);
+
         if (!res.ok) throw new Error("Failed to fetch gallery");
         const data = await res.json();
         setImages(Array.isArray(data) ? data : data?.data || []);
       } catch (error) {
         console.error("Error fetching gallery:", error);
+        // Use fallback images
+        setImages([
+          {
+            id: 1,
+            image: "/placeholder-gallery.jpg",
+            title: "Gallery temporarily unavailable",
+          },
+        ]);
       } finally {
         setLoading(false);
       }

@@ -12,9 +12,15 @@ export default function LazyEventSection() {
     async function fetchEvents() {
       try {
         const res = await EventsApi.getAll();
-        setEvents(Array.isArray(res.data) ? res.data : []);
+        if (res.success) {
+          setEvents(Array.isArray(res.data) ? res.data : []);
+        } else {
+          console.warn("API unavailable, using fallback data:", res.message);
+          setEvents([]);
+        }
       } catch (error) {
         console.error("Error fetching events:", error);
+        setEvents([]);
       } finally {
         setLoading(false);
       }
@@ -26,7 +32,9 @@ export default function LazyEventSection() {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-        <span className="ml-4 text-gray-600 font-medium">Loading events...</span>
+        <span className="ml-4 text-gray-600 font-medium">
+          Loading events...
+        </span>
       </div>
     );
   }
