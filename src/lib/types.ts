@@ -107,18 +107,43 @@ export interface Event extends BaseEntity {
 }
 
 // Fatwa types
-export interface Fatwa extends BaseEntity {
+export interface Iftah {
+  id: number;
   title: string;
   slug: string;
   question: string;
   answer: string;
-  mufti?: Author;
-  category?: string;
-  tags?: string[];
-  references?: string[];
-  isPublished?: boolean;
-  viewCount?: number;
-  is_published?: boolean;
+  date?: string;
+  note?: string;
+  is_published?: number | boolean;
+  is_top?: number | boolean;
+  attachment?: string | null;
+  mufti_id?: number;
+  tag_id?: number;
+  created_at?: string;
+  updated_at?: string;
+
+  mufti?: {
+    id: number;
+    full_name: string;
+    father_name?: string | null;
+    email?: string | null;
+    phone?: string | null;
+    address?: string | null;
+    image?: string | null;
+    dob?: string | null;
+    biography?: string | null;
+    created_at?: string;
+    updated_at?: string;
+  };
+  
+
+  tag?: {
+    id: number;
+    name: string;
+    created_at?: string | null;
+    updated_at?: string;
+  };
 }
 
 // Article types

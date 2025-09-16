@@ -114,7 +114,7 @@ export default function TraditionalContentSection({
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        <div className="flex flex-col-reverse lg:grid-cols-4 gap-8">
           {/* Main Content Area */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-2xl shadow-xl border border-amber-100 overflow-hidden">
@@ -169,12 +169,12 @@ export default function TraditionalContentSection({
                            
                             className="text-lg font-semibold text-amber-900 hover:text-orange-700 transition-colors leading-relaxed block mb-2"
                           >
-                            {item.title}
+                            {item.title  ?.replace(/<[^>]*>/g, "")}
                           </h1>
                           
                           {item.question && (
                             <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-3">
-                              {item.question}
+                              {item.question  ?.replace(/<[^>]*>/g, "")}
                             </p>
                           )}
                           
@@ -223,7 +223,7 @@ export default function TraditionalContentSection({
               </div>
 
               {/* Enhanced Ask Question Section */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-t border-amber-200">
+              {/* <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-t border-amber-200">
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -254,13 +254,13 @@ export default function TraditionalContentSection({
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                   </svg>
                 </Link>
-              </div>
+              </div> */}
             </div>
           </div>
 
           {/* Enhanced Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-xl border border-amber-100 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm   border border-amber-100 overflow-hidden">
               {/* Search Section Header */}
               <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-4">
                 <div className="flex items-center">
@@ -296,21 +296,21 @@ export default function TraditionalContentSection({
                   </div>
 
                   {/* Fatwa Number (for Q&A) */}
-                  {fatwas.length > 0 && (
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Fatwa Number
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Enter fatwa number..."
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                      />
-                    </div>
-                  )}
+                    {/* {fatwas.length > 0 && (
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                          Fatwa Number
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Enter fatwa number..."
+                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
+                        />
+                      </div>
+                    )} */}
 
                   {/* Category Selection */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Select Category
                     </label>
@@ -324,10 +324,10 @@ export default function TraditionalContentSection({
                         <option key={category} value={category}>{category}</option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
 
                   {/* Book Selection */}
-                  <div>
+                  {/* <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">
                       Select Book
                     </label>
@@ -341,64 +341,19 @@ export default function TraditionalContentSection({
                         <option key={book} value={book}>{book}</option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
 
                   {/* Search Button */}
-                  <button className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center">
+                  {/* <button className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center">
                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                     Search
-                  </button>
+                  </button> */}
                 </div>
               </div>
 
-              {/* Enhanced Quick Stats */}
-              <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-6 py-4 border-t border-amber-200">
-                <h5 className="text-lg font-semibold text-amber-900 mb-4 flex items-center">
-                  <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                  Quick Stats
-                </h5>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-700 font-medium">Articles</span>
-                    </div>
-                    <span className="font-bold text-amber-900 text-lg">{articles.length}</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-700 font-medium">Q&A</span>
-                    </div>
-                    <span className="font-bold text-amber-900 text-lg">{fatwas.length}</span>
-                  </div>
-                  
-                  <div className="flex items-center justify-between p-3 bg-white rounded-lg shadow-sm">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                        <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                      </div>
-                      <span className="text-gray-700 font-medium">Categories</span>
-                    </div>
-                    <span className="font-bold text-amber-900 text-lg">{categories.length}</span>
-                  </div>
-                </div>
-              </div>
+          
             </div>
           </div>
         </div>

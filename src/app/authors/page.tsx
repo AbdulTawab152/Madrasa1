@@ -101,7 +101,7 @@ export default async function AuthorsPage() {
                     {author.first_name || "Unknown"} {author.last_name || ""}
                   </h2>
                   <p className="text-sm text-gray-500 mt-2 line-clamp-3">
-                    {author.bio || "No bio available."}
+                    {author.bio?.replace(/<[^>]*>/g, "")}
                   </p>
 
                   {/* Button */}

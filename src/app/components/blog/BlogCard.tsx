@@ -303,7 +303,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
               <div className="flex-1 flex flex-col p-6">
                 <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
                   {item.description?.replace(/<[^>]*>/g, "")}
-                </p>
+                </p>  
 
                 {/* Footer */}
                 <div className="mt-auto flex items-center justify-between border-t border-gray-100/50 pt-4">

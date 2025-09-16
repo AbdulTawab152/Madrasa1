@@ -47,7 +47,7 @@ export const navigation = {
     { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'iftah', href: '/iftah', icon: 'fatwa' },
   
-    { name: 'Book', href: '/book', icon: 'book' },
+   
     { name: 'Author', href: '/authors', icon: 'author' },
     { name: 'Book', href: '/book', icon: 'book' },
     { name: 'Event', href: '/event', icon: 'event' },
@@ -55,7 +55,7 @@ export const navigation = {
     { name: 'Donation', href: '/donation', icon: 'donation' },
   
     { name: 'Article', href: '/articles', icon: 'article' },
-    { name: 'Awalyaa', href: '/awlayaa', icon: 'article' },
+    { name: 'Awalyaa', href: '/awlayaa', icon: 'awlayaa' },
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

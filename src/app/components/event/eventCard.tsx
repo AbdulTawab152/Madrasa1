@@ -119,7 +119,7 @@ export default function EventsSection({
 
           <div className="relative z-10 py-24 md:py-24 px-6 flex flex-col items-center text-center">
             <motion.div
-              className="inline-flex items-center gap-3 mb-8 px-6 py-3 bg-white/80 backdrop-blur-md border border-orange-200/50 text-orange-600 text-sm font-medium rounded-full shadow-lg"
+              className="inline-flex items-center gap-3 mb-8 px- py-3 bg-white/80 backdrop-blur-md border border-orange-200/50 text-orange-600 text-sm font-medium rounded-full shadow-lg"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -206,14 +206,14 @@ export default function EventsSection({
         </div>
 
         <div className="relative">
-          <div className="absolute left-5 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
+          <div className="absolute -left-4 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
 
           {displayEvents.map((event, idx) => (
             <Link key={event.id} href={`/event/${event.slug}`}>
-              <div className="group flex flex-col md:flex-row items-start mb-12 relative pl-16 md:pl-24">
-                <div className="absolute left-5 md:left-6 top-5 w-5 h-5 rounded-full bg-white border-4 border-orange-500 transition-transform duration-300 group-hover:scale-125 group-hover:" />
+              <div className="group flex flex-col md:flex-row items-start mb-12 relative pl-4 md:pl-24">
+                <div className="absolute -left-4 md:left-6 top-5 w-5 h-5 rounded-full bg-white border-4 border-orange-500 transition-transform duration-300 group-hover:scale-125 group-hover:" />
                 {idx < displayEvents.length - 1 && (
-                  <span className="absolute left-5 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
+                  <span className="absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
                 )}
 
                 <div className="flex-1 bg-white rounded-xl   overflow-hidden transition-all duration-300 flex flex-col md:flex-row">

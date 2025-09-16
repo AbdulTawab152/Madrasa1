@@ -9,7 +9,7 @@ const API =
 
 // Fetch graduation details from API
 async function getGraduation(slug: string) {
-  const res = await fetch(`${API}/${slug}`, { next: { revalidate: 60 } });
+  const res = await fetch(`${API}/${slug}`,{ next: { revalidate: 60 } });
   if (!res.ok) return null;
   return await res.json();
 }
@@ -197,7 +197,7 @@ export default function GraduationDetailPage({
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.2, duration: 0.8 }}
           >
-            {graduation.description}
+            {graduation.description  ?.replace(/<[^>]*>/g, "")}
           </motion.p>
 
           <motion.div
@@ -502,7 +502,7 @@ export default function GraduationDetailPage({
                     Description
                   </h3>
                   <p className="text-gray-700 bg-gray-50 p-4 rounded-lg text-sm md:text-base">
-                    {selectedStudent.description}
+                    {selectedStudent.description  ?.replace(/<[^>]*>/g, "")}
                   </p>
                 </div>
               )}

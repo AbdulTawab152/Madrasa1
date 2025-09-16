@@ -103,13 +103,7 @@ export default async function BlogDetailsPage({ params }: Params) {
 
           {/* Metadata */}
           <div className="flex flex-wrap items-center gap-4 mb-8 text-sm text-gray-500">
-            <div className="flex items-center">
-              <div className="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center mr-2">
-                <span className="text-gray-600 font-medium text-base">
-                  {(blog.author || "A")[0]}
-                </span>
-              </div>
-            </div>
+          
             <div className="h-5 w-px bg-gray-300"></div>
             <div className="flex items-center">
               <svg
@@ -173,22 +167,7 @@ export default async function BlogDetailsPage({ params }: Params) {
             </div>
           )}
 
-          {/* Blog Content */}
-          {/* {blog.content && (
-            <div className="prose prose-xl max-w-none 
-                          prose-headings:font-extrabold prose-headings:text-gray-900 
-                          prose-p:text-gray-800 prose-p:leading-relaxed
-                          prose-a:text-amber-600 prose-a:no-underline hover:prose-a:underline 
-                          prose-blockquote:border-amber-400 prose-blockquote:bg-amber-50 prose-blockquote:px-8 prose-blockquote:py-4 prose-blockquote:rounded-xl
-                          prose-strong:text-gray-900 
-                          prose-ol:list-decimal prose-ul:list-disc
-                          prose-img:rounded-xl prose-img:shadow-lg
-                          first-letter:text-7xl first-letter:font-extrabold first-letter:text-orange-500 first-letter:mr-3 first-letter:float-left first-letter:mt-2
-                          prose-pre:bg-gray-800 prose-pre:rounded-xl
-                          prose-hr:border-gray-300"
-              
-            />
-          )} */}
+       
 
           {/* Tags */}
           {blog.tags && blog.tags.length > 0 && (
@@ -210,64 +189,11 @@ export default async function BlogDetailsPage({ params }: Params) {
             </div>
           )}
 
-          {/* Social Sharing */}
-          {/* <div className="mt-10 pt-8 border-t border-gray-200">
-            <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">Share this article</h3>
-            <div className="flex space-x-4">
-              <button className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-600 text-white hover:bg-blue-700 transition-colors duration-300 shadow-md">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
-                </svg>
-              </button>
-              <button className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-400 text-white hover:bg-blue-500 transition-colors duration-300 shadow-md">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
-                </svg>
-              </button>
-              <button className="flex items-center justify-center w-10 h-10 rounded-full bg-red-600 text-white hover:bg-red-700 transition-colors duration-300 shadow-md">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.441 16.892c-2.102.144-6.784.144-8.883 0C5.282 16.736 5.017 15.622 5 12c.017-3.629.285-4.736 2.558-4.892 2.099-.144 6.782-.144 8.883 0C18.718 7.264 18.982 8.378 19 12c-.018 3.629-.285 4.736-2.559 4.892zM10 9.658l4.917 2.338L10 14.342V9.658z" />
-                </svg>
-              </button>
-              <button className="flex items-center justify-center w-10 h-10 rounded-full bg-blue-800 text-white hover:bg-blue-900 transition-colors duration-300 shadow-md">
-                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                </svg>
-              </button>
-            </div>
-          </div> */}
+  
         </article>
 
         {/* Author Bio (if available) */}
-        {blog.author && (
-          <div className="bg-white rounded-2xl p-6 mb-12 border border-gray-200 shadow-md">
-            <div className="flex items-start">
-              <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mr-5 shadow-sm">
-                <span className="text-gray-700 font-bold text-2xl">
-                  {(blog.author || "A")[0]}
-                </span>
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">
-                  About the Author
-                </h3>
-                <p className="text-gray-700 mt-2 leading-relaxed">
-                  {blog.author} is a passionate contributor to our blog, sharing
-                  insightful perspectives and deep expertise in their field.
-                  Their articles aim to inspire and inform our readers.
-                </p>
-                <div className="flex space-x-3 mt-4">
-                  <button className="px-4 py-2 rounded-full bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-sm font-medium shadow-md hover:shadow-lg transition-all duration-300 transform hover:scale-105">
-                    View all articles
-                  </button>
-                  <button className="px-4 py-2 rounded-full bg-gray-100 text-gray-700 text-sm font-medium shadow-md hover:shadow-lg hover:bg-gray-200 transition-all duration-300 transform hover:scale-105">
-                    Follow
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+   
 
         {/* Related Blogs */}
         {relatedBlogs.length > 0 && (
@@ -317,8 +243,13 @@ export default async function BlogDetailsPage({ params }: Params) {
                       {rb.title}
                     </h3>
                     <p className="text-gray-700 text-sm line-clamp-3 mb-4 flex-1">
-                      {rb.excerpt || rb.description}
+                      { rb.description ?.replace(/<[^>]*>/g, "")}
                     </p>
+
+
+                    {/* <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  {item.description?.replace(/<[^>]*>/g, "")}
+                </p>   */}
                     <div className="flex items-center text-xs text-gray-500 mt-auto">
                       <span>
                         {new Date(
@@ -334,39 +265,7 @@ export default async function BlogDetailsPage({ params }: Params) {
           </section>
         )}
 
-        {/* CTA Section */}
-        {/* <div className="mt-16 bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl p-10 text-center shadow-lg">
-          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Ready to learn more?</h2>
-          <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">Explore our wide range of courses and start your learning journey today.</p>
-          <Link 
-            href="/courses"
-            className="inline-block px-8 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105"
-          >
-            Browse Courses →
-          </Link>
-        </div> */}
-
-        {/* Navigation */}
-        {/* <div className="flex justify-between border-t border-gray-200 pt-8">
-          <Link 
-            href="/blogs" 
-            className="flex items-center text-amber-600 hover:text-amber-800 font-medium transition-colors"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            All Blogs
-          </Link>
-          <Link 
-            href="/" 
-            className="flex items-center text-amber-600 hover:text-amber-800 font-medium transition-colors"
-          >
-            Homepage
-            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-            </svg>
-          </Link>
-        </div> */}
+ 
       </div>
     </main>
   );

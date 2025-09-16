@@ -226,13 +226,14 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                     {grad.title}
                   </motion.h3>
                   
-                  <motion.p 
-                    className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2"
-                    initial={{ opacity: 0.8 }}
-                    whileHover={{ opacity: 1 }}
-                  >
-                    {grad.description}
-                  </motion.p>
+                    <motion.p 
+                      className="text-gray-600 text-sm leading-relaxed mb-4 line-clamp-2"
+                      initial={{ opacity: 0.8 }}
+                      whileHover={{ opacity: 1 }}
+                    >
+                      {grad.description ?.replace(/<[^>]*>/g, "")}
+                    </motion.p>
+                
 
                   {/* Action Button */}
                   <Link href={`/graduated-students/${grad.slug}`}>

@@ -198,17 +198,10 @@ export default function AwlyaaListPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="mb-12 bg-white rounded-2xl shadow-md p-6 border border-gray-100"
+          className="mb-12 bg-white rounded-2xl  p-6 border border-gray-100"
         >
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Find Your Expert
-              </h2>
-              <p className="text-gray-600">
-                Browse our community of distinguished Awlyaa
-              </p>
-            </div>
+          
 
             <div className="relative w-full md:w-auto">
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

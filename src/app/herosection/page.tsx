@@ -15,7 +15,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
 
   return (
     <motion.div
-      className="flex gap-6 w-max rotate-[-4deg]"
+      className="flex gap-6 w-max rotate-20deg"
       animate={{ x: scrollX, y: scrollY }}
       transition={{
         repeat: Infinity,
@@ -41,7 +41,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
 
 const Hero = () => {
   return (
-    <div className="relative  mt-10 md:mt-20 bg-black overflow-hidden mt-[-60px] md:mt-[-100px] space-y-6">
+    <div className="relative  bg-black overflow-hidden mt-[-40px] md:mt-[0px] space-y-6">
       <div className="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black via-black/10 to-transparent z-10 pointer-events-none blur-lg" />
 
       <div className="space-y-4 relative z-20">
@@ -50,7 +50,7 @@ const Hero = () => {
         <ScrollingRow direction="left" delay={2} />
         <ScrollingRow direction="right" delay={3} />
       </div>
-<div className="absolute top-1/4 mt-10 sm:top-1/3  left-4 sm:left-10 lg:left-40 max-w-[90%] sm:max-w-[600px] space-y-4 z-30">
+<div className="absolute  top-1/3 mt-10 sm:top-1/3  left-4 sm:left-10 lg:left-40 max-w-[90%] sm:max-w-[600px] space-y-4 z-30">
   {/* Tagline */}
   <p className="text-sm sm:text-base md:text-lg text-orange-400 font-semibold uppercase tracking-wider bg-orange-500/10 px-3 py-1.5 rounded-full w-fit shadow-md animate-pulse">
     ✦ Knowledge • Faith • Leadership ✦

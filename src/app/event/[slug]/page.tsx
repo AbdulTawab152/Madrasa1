@@ -234,7 +234,7 @@ export default async function EventDetailsPage({ params }: Params) {
                       About This Event
                     </h2>
                     <div className="prose max-w-none text-gray-700">
-                      <p className="whitespace-pre-line">{event.description}</p>
+                      <p className="whitespace-pre-line">{event.description ?.replace(/<[^>]*>/g, "")}</p>
                     </div>
                   </div>
                 )}

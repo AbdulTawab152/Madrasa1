@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect, useMemo, memo } from "react";
 import { navigation } from "../lib/config";
+import { FaList } from "react-icons/fa6";
 
 const Navbar = memo(() => {
   const pathname = usePathname();
@@ -228,149 +229,128 @@ const Navbar = memo(() => {
             </div>
 
             {/* Right - Mobile Menu Button */}
-            <div className="flex items-center flex-shrink-0">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="lg:hidden inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-amber-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-amber-200 transition-all duration-300"
-              >
-                <svg
-                  className={`w-5 h-5 transition-transform duration-300 ${
-                    isOpen ? "rotate-90" : ""
-                  }`}
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-              </button>
-            </div>
+           
+
           </div>
 
-          {/* Mobile Navigation */}
+          <div className="lg:hidden">
+  {/* Hamburger Button */}
+  <div className="flex items-center left-0 flex-shrink-0">
+    <button
+      onClick={() => setIsOpen(!isOpen)}
+      className="inline-flex items-center absolute right-0 top-[90px] justify-center p-2 rounded-lg text-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-200 transition-all duration-300"
+      aria-label="Toggle menu"
+      aria-expanded={isOpen}
+    >
+    <FaList size={20}/>
+    </button>
+  </div>
 
-          {/* Mobile Navigation */}
-          <div
-            className={`lg:hidden transition-all duration-300 ease-in-out ${
-              isOpen ? "block" : "hidden"
-            }`}
-          >
-            <div className="px-3 pt-3 pb-4 space-y-1 mt-4 backdrop-blur-sm">
-              {/* Show first 4 items */}
-              {navigation.main.slice(0, 4).map((item) => {
-                const isActive = pathname === item.href;
+  {/* Mobile Navigation Menu */}
+  <div className={`fixed inset-0 z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}>
+    <div className="absolute inset-0 bg-black/20" onClick={() => setIsOpen(false)}></div>
+    <div className="relative w-4/5 max-w-sm h-full bg-gradient-to-b from-amber-50 to-amber-100 shadow-xl">
+    
+
+      {/* Navigation Items */}
+      <nav className="pt-16 px-6 overflow-y-auto h-full">
+        <div className="space-y-2">
+          {/* Main navigation items */}
+          {navigation.main.slice(0, 4).map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`flex items-center p-4 rounded-xl text-lg font-medium transition-all duration-200 ${
+                  isActive
+                    ? "text-amber-900 bg-gradient-to-r from-amber-400/30 to-amber-300/30 shadow-sm border-l-4 border-amber-600"
+                    : "text-amber-800 hover:text-amber-700 hover:bg-amber-200/40"
+                }`}
+                onClick={() => setIsOpen(false)}
+              >
+                <span className="flex-1">{item.name}</span>
+                {isActive && (
+                  <div className="ml-2 bg-amber-600 text-amber-50 text-xs px-2 py-1 rounded-full">
+                    Active
+                  </div>
+                )}
+              </Link>
+            );
+          })}
+
+          {/* More dropdown section */}
+          <div className="pt-4 mt-4 border-t border-amber-200/60">
+            <button
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              className="w-full flex justify-between items-center p-4 rounded-xl text-lg font-medium text-amber-800 bg-amber-200/30 hover:bg-amber-200/50 transition-all duration-200"
+              aria-expanded={isDropdownOpen}
+            >
+              <span className="flex items-center">
+                <svg className="w-5 h-5 mr-3 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+                More Options
+              </span>
+              <svg
+                className={`w-4 h-4 transition-transform duration-200 ${
+                  isDropdownOpen ? "rotate-180" : ""
+                } text-amber-600`}
+                fill="currentColor"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
+
+            {/* Dropdown items */}
+            <div
+              className={`mt-2 ml-6 space-y-1 rounded-lg overflow-hidden transition-all duration-300 ${
+                isDropdownOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+              }`}
+            >
+              {[
+                { href: "/author", name: "Author" },
+                { href: "/articles", name: "Articles" },
+                { href: "/iftah", name: "Iftah" },
+                { href: "/donation", name: "Donation" },
+                { href: "/tasawwuf", name: "Tasawwuf" },
+              ].map(({ href, name }) => {
+                const isActive = pathname === href;
                 return (
                   <Link
-                    key={item.href}
-                    href={item.href}
-                    className={`group relative flex items-center px-4 py-3.5 rounded-xl text-base font-medium transition-all duration-200 ${
+                    key={href}
+                    href={href}
+                    className={`flex items-center p-3 rounded-lg text-base font-medium transition-all duration-200 ${
                       isActive
-                        ? "text-amber-900 bg-gradient-to-r from-amber-400/20 to-amber-300/20 shadow-inner border-l-4 border-amber-600"
-                        : "text-amber-800 hover:text-amber-700 hover:bg-amber-200/50"
+                        ? "text-amber-900 bg-amber-200/50"
+                        : "text-amber-700 hover:text-amber-800 hover:bg-amber-200/30"
                     }`}
-                    onClick={() => setIsOpen(false)}
+                    onClick={() => {
+                      setIsOpen(false);
+                      setIsDropdownOpen(false);
+                    }}
                   >
-                    {isActive && (
-                      <div className="absolute left-0 top-1/2 w-1 h-6 bg-amber-600 rounded-r-full -translate-y-1/2"></div>
-                    )}
-                    <span className="relative z-10">{item.name}</span>
-                    {isActive && (
-                      <div className="ml-auto bg-amber-600 text-amber-100 text-xs px-2 py-1 rounded-full">
-                        Active
-                      </div>
-                    )}
+                    <span>{name}</span>
                   </Link>
                 );
               })}
-
-              {/* Dropdown for Author, Articles, Iftah */}
-              <div className="relative">
-                <button
-                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="w-full flex justify-between items-center px-4 py-3.5 rounded-xl text-base font-medium text-amber-800 bg-amber-200/30 hover:bg-amber-200/50 transition-all duration-200 group"
-                  aria-expanded={isDropdownOpen}
-                  aria-controls="more-menu-dropdown"
-                >
-                  <span className="flex items-center">
-                    <svg
-                      className="w-5 h-5 mr-2 text-amber-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4 6h16M4 12h16m-7 6h7"
-                      />
-                    </svg>
-                    More
-                  </span>
-                  <svg
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      isDropdownOpen ? "rotate-180" : ""
-                    } text-amber-600`}
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </button>
-
-                {/* Dropdown Items: Author, Articles, Iftah */}
-                <div
-                  id="more-menu-dropdown"
-                  className={`mt-2 space-y-1 rounded-xl bg-amber-50/90 border border-amber-200/50 shadow-lg transition-all duration-300 overflow-hidden ${
-                    isDropdownOpen
-                      ? "max-h-96 opacity-100"
-                      : "max-h-0 opacity-0"
-                  }`}
-                >
-                  {useMemo(() => {
-                    const dropdownItems = [
-                      { href: "/author", name: "Author" },
-                      { href: "/articles", name: "Articles" },
-                      { href: "/iftah", name: "Iftah" },
-                    ];
-
-                    return dropdownItems.map(({ href, name }) => {
-                      const isActive = pathname === href;
-                      return (
-                        <Link
-                          key={href}
-                          href={href}
-                          className={`group relative flex items-center px-4 py-3.5 text-base font-medium transition-all duration-200 ${
-                            isActive
-                              ? "text-amber-900 bg-gradient-to-r from-amber-400/20 to-amber-300/20 border-l-4 border-amber-600"
-                              : "text-amber-800 hover:text-amber-700 hover:bg-amber-200/30"
-                          }`}
-                          onClick={() => {
-                            setIsOpen(false);
-                            setIsDropdownOpen(false);
-                          }}
-                        >
-                          {isActive && (
-                            <div className="absolute left-0 top-1/2 w-1 h-6 bg-amber-600 rounded-r-full -translate-y-1/2"></div>
-                          )}
-                          <span className="relative z-10">{name}</span>
-                        </Link>
-                      );
-                    });
-                  }, [pathname])}
-                </div>
-              </div>
             </div>
           </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+
+          {/* Mobile Navigation */}
+
+          {/* Mobile Navigation */}
+         
         </div>
       </nav>
     </div>

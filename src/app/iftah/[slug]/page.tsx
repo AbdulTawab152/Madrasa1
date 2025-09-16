@@ -1,260 +1,266 @@
-// app/iftah/[slug]/page.tsx
-import { IftahApi } from "../../../lib/api";
+"use client";
+
+import { useEffect, useState } from "react";
+import {
+  User,
+  Calendar,
+  Tag as TagIcon,
+  FileText,
+  CheckCircle2,
+  XCircle,
+  Star,
+  Phone,
+  MapPin,
+  Download,
+  ChevronLeft,
+  Share2,
+  BookOpen,
+  Lightbulb,
+} from "lucide-react";
 import Link from "next/link";
 
-interface Author {
-  name: string;
-  bio?: string;
+interface Mufti {
+  id: number;
+  full_name: string;
+  father_name?: string | null;
+  email?: string | null;
+  phone?: string | null;
+  address?: string | null;
+  dob?: string | null;
+  biography?: string | null;
 }
 
-export interface Iftah {
+interface Tag {
+  id: number;
+  name: string;
+}
+
+interface Iftah {
   id: number;
   title: string;
   slug: string;
   question: string;
   answer: string;
-  mufti?: Author;
-  category?: string;
-  tags?: string[];
-  references?: string[];
-  isPublished?: boolean;
-  viewCount?: number;
-  is_published?: boolean;
+  date?: string;
+  note?: string;
+  is_published?: number | boolean;
+  is_top?: number | boolean;
+  attachment?: string | null;
+  mufti?: Mufti;
+  tag?: Tag;
 }
 
-interface Params {
-  params: Promise<{ slug: string }>;
-}
+export default function IftahDetailsPage({ params }: { params: { slug: string } }) {
+  const [iftah, setIftah] = useState<Iftah | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-export default async function IftahDetailsPage({ params }: Params) {
-  const { slug } = await params;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const res = await fetch(
+          `https://lawngreen-dragonfly-304220.hostingersite.com/api/iftah/${params.slug}`,
+          { cache: "no-store" }
+        );
+        const data = await res.json();
+        setIftah(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [params.slug]);
 
-  // Fetch iftah details from API
-  const res = await IftahApi.getAll();
-  const iftahItems = Array.isArray(res.data) ? (res.data as Iftah[]) : [];
-  const iftah: Iftah | undefined = iftahItems.find(f => f.slug === slug);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-25 flex items-center justify-center p-4">
+        <div className="text-center">
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <BookOpen className="w-6 h-6 text-amber-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+          </div>
+          <p className="text-gray-600 font-medium mt-2">Loading divine wisdom...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!iftah) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-amber-50/30 to-white flex items-center justify-center px-4">
-        <div className="max-w-md text-center">
-          <div className="w-20 h-20 mx-auto bg-amber-100 rounded-full flex items-center justify-center mb-6">
-            <svg className="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-25 flex items-center justify-center p-4">
+        <div className="text-center p-8 bg-white rounded-2xl shadow-sm max-w-md mx-auto border border-amber-100">
+          <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <Lightbulb className="w-8 h-8 text-amber-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Fatwa Not Found</h1>
-          <p className="text-gray-600 mb-6">The requested fatwa could not be found.</p>
-          <Link
-            href="/iftah"
-            className="inline-flex items-center px-6 py-3 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+          <h1 className="text-2xl font-bold text-gray-900 mb-3">Content Not Found</h1>
+          <p className="text-gray-600 mb-6">The requested question and answer could not be found.</p>
+          <Link 
+            href="/"
+            className="inline-flex items-center px-5 py-2.5 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition-colors shadow-md hover:shadow-sm"
           >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to Fatwas
+            <ChevronLeft className="w-5 h-5 mr-2" />
+            Back to Home
           </Link>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="min-h-screen mt-32 bg-gradient-to-b from-amber-50/30 to-white">
-      {/* Breadcrumb Navigation */}
-    {/* Enhanced Breadcrumb Navigation */}
-<nav className="bg-gradient-to-r from-amber-50 to-orange-100 border-b border-amber-200 py-4">
-  <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div className="flex items-center space-x-2">
-      <Link 
-        href="/" 
-        className="inline-flex items-center text-orange-700 hover:text-orange-900 transition-colors group font-medium"
-      >
-        <svg className="w-5 h-5 mr-2 text-orange-500 group-hover:text-orange-700 transition-colors" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-        </svg>
-        Home
-      </Link>
-      
-      <svg className="w-4 h-4 text-orange-400" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-      </svg>
-      
-      <Link 
-        href="/iftah" 
-        className="inline-flex items-center text-orange-700 hover:text-orange-900 transition-colors font-medium"
-      >
-        <svg className="w-5 h-5 mr-2 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Fatwas
-      </Link>
-      
-      <svg className="w-4 h-4 text-orange-400" fill="currentColor" viewBox="0 0 20 20">
-        <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-      </svg>
-      
-      <span className="text-orange-900 font-semibold truncate max-w-xs md:max-w-sm lg:max-w-md" title={iftah.title}>
-        {iftah.title}
-      </span>
-    </div>
-  </div>
-</nav>
+  // Format date if available
+  const formattedDate = iftah.date 
+    ? new Date(iftah.date).toLocaleDateString('en-US', { 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric' 
+      })
+    : "N/A";
 
-      <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header Section */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-100 to-orange-100 shadow-sm mb-4">
-            <svg className="w-8 h-8 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
+  return (
+    <div className="min-h-screen  mt-40 md:mt-32   bg-gradient-to-br from-amber-50 via-white to-amber-25">
+      {/* Header */}
+      <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b border-amber-100 z-10">
+        <div className="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+          <Link 
+            href="/iftah"
+            className="inline-flex items-center text-amber-700 hover:text-amber-800 font-medium transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5 mr-1" />
+           iftah
+          </Link>
+        
+        </div>
+      </header>
+
+      <main className="max-w-5xl mx-auto px-5 py-8">
+        {/* Title and Metadata */}
+        <div className="mb-10 text-center">
+          <div className="inline-flex items-center bg-gradient-to-r from-amber-500 to-amber-600 text-white px-8 py-2 rounded-full text-sm font-medium mb-5 shadow-md">
+            <TagIcon className="w-4 h-4 mr-2" />
+            {iftah.tag?.name || "General"}
           </div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-tight font-serif">
             {iftah.title}
           </h1>
-        </div>
-
-        {/* Metadata */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-amber-100 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
-                <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-gray-500">Mufti</p>
-                <p className="font-medium text-gray-900">{iftah.mufti?.name || "Unknown"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
-                <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M2 6a2 2 0 012-2h12a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm3.5 1a.5.5 0 000 1h9a.5.5 0 000-1h-9zm0 2a.5.5 0 000 1h9a.5.5 0 000-1h-9zm0 2a.5.5 0 000 1h5a.5.5 0 000-1h-5z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-gray-500">Category</p>
-                <p className="font-medium text-gray-900">{iftah.category || "General"}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
-                <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-gray-500">Views</p>
-                <p className="font-medium text-gray-900">{iftah.viewCount || 0}</p>
-              </div>
-            </div>
-
-            <div className="flex items-center">
-              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mr-3">
-                <svg className="w-5 h-5 text-amber-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div>
-                <p className="text-gray-500">Status</p>
-                <p className="font-medium text-gray-900">
-                  {iftah.is_published ? (
-                    <span className="text-green-600">Published</span>
-                  ) : (
-                    <span className="text-amber-600">Draft</span>
-                  )}
-                </p>
-              </div>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-5 text-gray-600">
+            <span className="flex items-center bg-white py-1.5 px-3 rounded-lg shadow-sm border border-amber-100">
+              <Calendar className="w-4 h-4 mr-1.5 text-amber-600" />
+              {formattedDate}
+            </span>
+            {iftah.mufti && (
+              <span className="flex items-center bg-white py-1.5 px-3 rounded-lg shadow-sm border border-amber-100">
+                <User className="w-4 h-4 mr-1.5 text-amber-600" />
+                By {iftah.mufti.full_name}
+              </span>
+            )}
           </div>
         </div>
 
-        {/* Question Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-amber-100 mb-6">
-          <div className="flex items-start mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-amber-100 to-orange-100 flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-              <span className="text-amber-700 font-bold text-lg">Q</span>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Question</h2>
-              <p className="text-gray-700 text-lg leading-relaxed">{iftah.question}</p>
-            </div>
-          </div>
+        {/* Main Content Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+
+        {/* Main Content */}
+        <div className="px-0 sm:px-4 lg:col-span-2 max-w-3xl mx-auto lg:px-4 py-10 space-y-8 text-gray-800">
+{/* Question */}
+          <section className="space-y-2">
+            <h2 className="text-lg font-semibold text-amber-600 flex items-center">
+              <FileText className="w-5 h-5 mr-2" /> Question
+            </h2>
+            <div className="text-gray-700 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: iftah.question }} />
+          </section>
+
+          {/* Answer */}
+          <section className="space-y-2">
+            <h2 className="text-lg font-semibold text-amber-700 flex items-center">
+              <CheckCircle2 className="w-5 h-5 mr-2" /> Answer
+            </h2>
+            <div className="text-gray-800 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: iftah.answer }} />
+          </section>
+
+          {/* Note */}
+          {iftah.note && (
+            <section className="space-y-2">
+              <h2 className="text-lg font-semibold text-amber-800 flex items-center">
+                <Lightbulb className="w-5 h-5 mr-2" /> Additional Note
+              </h2>
+              <div className="text-gray-700 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: iftah.note }} />
+            </section>
+          )}
+
+          {/* Attachment */}
+          {iftah.attachment && (
+            <section className="space-y-2">
+              <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                <FileText className="w-5 h-5 mr-2" /> Attachment
+              </h2>
+              <a
+                href={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${iftah.attachment}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow-sm hover:shadow-md"
+              >
+                <Download className="w-4 h-4 mr-2" /> Download
+              </a>
+              <p className="text-xs text-gray-500 mt-1">{iftah.attachment.split("/").pop()}</p>
+            </section>
+          )}
         </div>
 
-        {/* Answer Section */}
-        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-6 shadow-sm border border-amber-200 mb-8">
-          <div className="flex items-start mb-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-amber-200 to-orange-200 flex items-center justify-center mr-4 flex-shrink-0 shadow-sm">
-              <span className="text-amber-800 font-bold text-lg">A</span>
-            </div>
-            <div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Answer</h2>
-              <p className="text-gray-800 text-lg leading-relaxed">{iftah.answer}</p>
-            </div>
-          </div>
-        </div>
+        {/* Sidebar */}
+        <div className="space-y-6">
 
-        {/* Tags and References */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-          {/* Tags */}
-          {iftah.tags && iftah.tags.length > 0 && (
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <svg className="w-5 h-5 text-amber-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M17.707 9.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0l-7-7A.997.997 0 012 10V5a3 3 0 013-3h5c.256 0 .512.098.707.293l7 7zM5 6a1 1 0 100-2 1 1 0 000 2z" clipRule="evenodd" />
-                </svg>
-                Tags
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {iftah.tags.map((tag, index) => (
-                  <span key={index} className="px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-sm font-medium">
-                    #{tag}
-                  </span>
-                ))}
+          {/* Mufti Card */}
+          {iftah.mufti && (
+            <div className="bg-white rounded-2xl shadow-sm border border-amber-100 overflow-hidden">
+              <div className="bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-4">
+                <h2 className="text-lg font-semibold text-white flex items-center">
+                  <User className="w-5 h-5 mr-2" /> About the Mufti
+                </h2>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-amber-200">
+                    <User className="w-9 h-9 text-amber-600" />
+                  </div>
+                  <h3 className="font-bold text-gray-900 text-lg">{iftah.mufti.full_name}</h3>
+                  {iftah.mufti.father_name && <p className="text-sm text-gray-600">Son of {iftah.mufti.father_name}</p>}
+                </div>
+                {iftah.mufti.address && (
+                  <p className="text-sm text-gray-700 flex items-start">
+                    <MapPin className="w-4 h-4 mr-2 text-amber-600" /> {iftah.mufti.address}
+                  </p>
+                )}
+                {iftah.mufti.phone && (
+                  <p className="text-sm text-gray-700 flex items-center">
+                    <Phone className="w-4 h-4 mr-2 text-amber-600" /> {iftah.mufti.phone}
+                  </p>
+                )}
+                {iftah.mufti.email && (
+                  <p className="text-sm text-gray-700 flex items-center truncate">
+                    <span className="mr-2">📧</span> {iftah.mufti.email}
+                  </p>
+                )}
+                {iftah.mufti.biography && (
+                  <div className="mt-4 pt-4 border-t border-amber-100">
+                    <p className="font-medium text-gray-900 mb-2">Biography</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{iftah.mufti.biography ?.replace(/<[^>]*>/g, "") }</p>
+                  </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* References */}
-          {iftah.references && iftah.references.length > 0 && (
-            <div className="bg-white rounded-2xl p-6 shadow-sm border border-amber-100">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-                <svg className="w-5 h-5 text-amber-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clipRule="evenodd" />
-                </svg>
-                References
-              </h3>
-              <ul className="space-y-2">
-                {iftah.references.map((reference, index) => (
-                  <li key={index} className="text-gray-700 text-sm flex items-start">
-                    <span className="text-amber-500 mr-2">•</span>
-                    {reference}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
+  
 
-        {/* Back Button */}
-        <div className="text-center">
-          <Link
-            href="/iftah"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white font-medium rounded-lg hover:from-amber-600 hover:to-orange-700 transition-all shadow-lg hover:shadow-xl"
-          >
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            Back to All Fatwas
-          </Link>
         </div>
+               </div>
+
       </main>
+
+      <footer className="max-w-5xl mx-auto px-5 py-8 mt-12 text-center text-sm text-gray-500 border-t border-amber-200">
+        <p>© {new Date().getFullYear()} Islamic Q&A Platform. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

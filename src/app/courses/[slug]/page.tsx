@@ -129,6 +129,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
               <div 
                 className="text-gray-700 leading-relaxed prose prose-amber max-w-none"
                 dangerouslySetInnerHTML={{ __html: course.description }}
+
+                
               />
             ) : (
               <p className="text-gray-700 leading-relaxed">
