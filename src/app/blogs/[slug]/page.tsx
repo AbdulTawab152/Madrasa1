@@ -55,7 +55,7 @@ export default async function BlogDetailsPage({ params }: Params) {
             <li>
               <Link
                 href="/"
-                className="flex items-center text-amber-600 hover:text-amber-700 transition-colors"
+                className="flex items-center text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
               >
                 <svg
                   className="w-4 h-4 mr-2"
@@ -81,7 +81,7 @@ export default async function BlogDetailsPage({ params }: Params) {
               </svg>
               <Link
                 href="/blogs"
-                className="text-amber-600 hover:text-amber-700 transition-colors"
+                className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0 "
               >
                 Blogs
               </Link>
@@ -222,7 +222,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                 <Link
                   key={rb.slug}
                   href={`/blogs/${rb.slug}`}
-                  className="group rounded-2xl overflow-hidden border border-gray-200 hover:border-orange-300 transition-all duration-300 hover:shadow-xl flex flex-col h-full bg-white"
+                  className="group rounded-2xl overflow-hidden border border-gray-200 hover:border-orange-300 transition-all duration-300 hover:shadow-xl flex flex-col h-full bg-white outline-none focus:outline-none focus:ring-0"
                 >
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image

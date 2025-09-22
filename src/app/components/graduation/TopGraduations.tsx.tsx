@@ -238,7 +238,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                   {/* Action Button */}
                   <Link href={`/graduated-students/${grad.slug}`}>
                     <motion.div
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-lg transition-all duration-300 text-sm"
+                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-yellow-500 text-white font-semibold rounded-lg transition-all duration-300 text-sm outline-none focus:outline-none focus:ring-0"
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                     >
@@ -262,7 +262,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
           >
             <Link href="/graduated-students">
               <motion.button
-                className="px-8 py-3 bg-white border-2 border-orange-500 text-orange-600 font-semibold rounded-lg hover:bg-orange-500 hover:text-white transition-all duration-300"
+                className="px-8 py-3 bg-white border-2 border-orange-500 text-orange-600 font-semibold rounded-lg hover:bg-orange-500 hover:text-white transition-all duration-300 outline-none focus:outline-none focus:ring-0"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
               >

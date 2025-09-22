@@ -4,19 +4,20 @@ import { fetchWithCache } from "../../../lib/api";
 import { endpoints } from "../../../lib/config";
 import { Author } from "../../../lib/types";
 import {
-  User,
+ 
   Calendar,
   BookOpen,
   GraduationCap,
-  Users,
+ 
   Heart,
-  Quote,
-  Star,
+
+
   Award,
   MapPin,
   BookText,
-  Phone,
+ 
 } from "lucide-react";
+import { FaPhone, FaUser } from "react-icons/fa6";
 
 interface AuthorPageProps {
   params: Promise<{ id: string }>;
@@ -66,22 +67,22 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
             {author.first_name} {author.last_name}
           </h1>
-          <p className="text-gray-500 mt-2 max-w-xl">
-            {author.bio || "No bio available."}
-          </p>
+          <div
+              className="text-gray-700 text-sm  [&_*]:text-[14px]" 
+              dangerouslySetInnerHTML={{ __html: (author.bio) }} />
         </div>
 
         {/* Info Grid */}
         <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-700">
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
-            <User className="text-amber-500" size={20} />
+            <FaUser className="text-amber-500" size={20} />
             <p>
               <strong>Father:</strong> {author.father_name || "N/A"}
             </p>
           </div>
 
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
-            <User className="text-amber-500" size={20} />
+            <FaUser className="text-amber-500" size={20} />
             <p>
               <strong>Grandfather:</strong> {author.grandfather_name || "N/A"}
             </p>
@@ -90,7 +91,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <Calendar className="text-amber-500" size={20} />
             <p>
-              <strong>DOB:</strong> {author.dob || "N/A"}
+              <strong>DOB:</strong> {author.dob ?.replace(/<[^>]*>/g, "")}
             </p>
           </div>
 
@@ -102,7 +103,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
           </div>
 
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
-            <Phone className="text-amber-500" size={20} />
+            <FaPhone className="text-amber-500" size={20} />
             <p>
               <strong>Contact:</strong> {author.contact_no || "N/A"}
             </p>

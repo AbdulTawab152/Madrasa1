@@ -3,42 +3,53 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Tasawwuf } from "@/lib/models/tasawwuf";
-import { motion, AnimatePresence } from "framer-motion";
 
-interface Props {
-  limit?: number;
-  homePage?: boolean;
+interface Tasawwuf {
+  id: number;
+  title: string;
+  slug: string;
+  description: string;
+  image?: string;
+  shared_by?: string;
+  created_at?: string;
+  category?: { id: number; name: string };
+  is_top?: number;
 }
 
-export default function TasawwufList({ limit, homePage }: Props) {
+interface Props {
+  homePage?: boolean;
+  limit?: number;
+}
+
+export default function TasawwufList({ homePage = false, limit }: Props) {
   const [posts, setPosts] = useState<Tasawwuf[]>([]);
-  const [loading, setLoading] = useState(true);
   const [categories, setCategories] = useState<string[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPosts() {
       try {
+        setIsLoading(true);
         const res = await fetch(
-          "https://lawngreen-dragonfly-304220.hostingersite.com/api/tasawwuf"
+          "https://lawngreen-dragonfly-304220.hostingersite.com/api/tasawwuf",
+          { cache: "no-store" }
         );
         const json = await res.json();
 
         const data = Array.isArray(json) ? json : [json];
         const filtered = homePage ? data.filter((post) => post.is_top === 1) : data;
-
         setPosts(limit ? filtered.slice(0, limit) : filtered);
 
-        // extract unique categories
-        const uniqueCats = Array.from(
-          new Set(data.map((p) => p.category?.name || "Uncategorized"))
-        );
-        setCategories(["All", ...uniqueCats]);
-      } catch (error) {
-        console.error("Error fetching Tasawwuf posts:", error);
+        // categories
+        const cats = Array.from(
+          new Set(data.map((post) => post.category?.name).filter(Boolean))
+        ) as string[];
+        setCategories(["All", ...cats]);
+      } catch (err) {
+        console.error("Error fetching tasawwuf posts:", err);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     }
 
@@ -46,94 +57,40 @@ export default function TasawwufList({ limit, homePage }: Props) {
   }, [homePage, limit]);
 
   const filteredPosts =
-    selectedCategory === "All"
+    activeCategory === "All"
       ? posts
-      : posts.filter((p) => p.category?.name === selectedCategory);
+      : posts.filter((post) => post.category?.name === activeCategory);
 
-  // Hero section component
-  const HeroSection = () => (
-    <section className="relative bg-gradient-to-br from-orange-50 via-white to-amber-50 py-20 px-4 overflow-hidden">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-0 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob"></div>
-      <div className="absolute top-0 right-0 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-2000"></div>
-      <div className="absolute -bottom-8 left-20 w-72 h-72 bg-orange-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-blob animation-delay-4000"></div>
-      
-      <div className="relative max-w-7xl mx-auto">
-        <div className="text-center">
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            className="text-5xl md:text-6xl font-bold text-gray-900 mb-6"
-          >
-            Spiritual <span className="text-orange-600">Wisdom</span> Journey
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.2 }}
-            className="text-xl text-gray-600 max-w-3xl mx-auto mb-10"
-          >
-            Explore the depths of Islamic spirituality and personal development through timeless teachings and practices.
-          </motion.p>
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4 }}
-            className="flex flex-wrap justify-center gap-4"
-          >
-            <Link 
-              href="#content" 
-              className="px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-medium rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
-            >
-              Explore Content
-            </Link>
-            <Link 
-              href="/about" 
-              className="px-8 py-4 bg-white text-orange-600 font-medium rounded-full border border-orange-200 shadow-sm hover:shadow-md transition-all duration-300"
-            >
-              Learn More
-            </Link>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-
-  // Loading skeleton
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="space-y-12">
-        {homePage && <HeroSection />}
+      <div className="space-y-16">
+        {/* Category Pills Skeleton */}
+        <div className="flex flex-wrap justify-center gap-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="h-10 w-24 bg-gray-200 rounded-full animate-pulse"></div>
+          ))}
+        </div>
         
-        {/* Category filter skeleton */}
-        {!homePage && (
-          <div className="flex flex-wrap gap-3 justify-center mb-12">
-            {[1, 2, 3, 4].map((item) => (
-              <div
-                key={item}
-                className="h-10 w-24 bg-gray-200 rounded-full animate-pulse"
-              ></div>
-            ))}
-          </div>
-        )}
-
-        {/* Posts skeleton */}
-        <div className="space-y-10 max-w-7xl mx-auto px-4">
-          {[1, 2, 3, 4].map((item) => (
-            <div key={item} className="relative">
-              <div className="flex flex-col md:flex-row gap-8 items-start pb-10 border-b border-gray-100">
-                <div className="w-full md:w-72 h-48 bg-gray-200 animate-pulse rounded-lg"></div>
-                <div className="flex-1 space-y-4">
-                  <div className="h-7 w-32 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-8 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse"></div>
-                  <div className="h-10 w-36 bg-gray-200 rounded-lg animate-pulse mt-6"></div>
+        {/* Featured Skeleton */}
+        <div className="relative rounded-2xl overflow-hidden h-[420px] bg-gray-200 animate-pulse"></div>
+        
+        {/* List Skeleton */}
+        <div className="space-y-12 max-w-5xl mx-auto">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex flex-col md:flex-row gap-6 border-b border-gray-200 pb-10">
+              <div className="w-full md:w-1/3 h-56 bg-gray-200 rounded-xl animate-pulse"></div>
+              <div className="flex-1 space-y-4">
+                <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
+                  <div className="h-4 bg-gray-200 rounded w-4/6 animate-pulse"></div>
+                </div>
+                <div className="flex justify-between">
+                  <div className="h-6 w-24 bg-gray-200 rounded-full animate-pulse"></div>
+                  <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
                 </div>
               </div>
-              <div className="absolute bottom-0 left-0 w-20 h-1 bg-gray-200 animate-pulse"></div>
             </div>
           ))}
         </div>
@@ -141,149 +98,184 @@ export default function TasawwufList({ limit, homePage }: Props) {
     );
   }
 
-  if (!posts.length)
+  if (!filteredPosts.length) {
     return (
       <div className="text-center py-16">
-        <div className="text-5xl mb-4">📝</div>
-        <h3 className="text-xl font-semibold text-gray-700 mb-2">
-          No posts found
-        </h3>
-        <p className="text-gray-500">
-          Check back later for new content.
-        </p>
+        <div className="mx-auto w-24 h-24 mb-4 text-gray-300">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-medium text-gray-600 mb-2">No articles found</h3>
+        <p className="text-gray-500">Try selecting a different category</p>
       </div>
     );
-    
+  }
+
+  const [featured, ...rest] = filteredPosts;
+
   return (
-    <div className="space-y-12">
-      {homePage && <HeroSection />}
-      
-      <div id="content" className="max-w-7xl mx-auto px-4">
-        {/* Category filter buttons */}
-        {!homePage && (
-          <div className="flex justify-center items-center w-full mb-16">
-            <div className="flex flex-wrap items-center justify-center gap-4 bg-white rounded-2xl shadow-sm p-6 w-full max-w-4xl border border-gray-100">
-              {categories.map((cat) => (
-                <motion.button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-orange-400 ${
-                    selectedCategory === cat
-                      ? "bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-md"
-                      : "bg-gray-50 text-gray-700 hover:bg-orange-50 hover:text-orange-600 border border-gray-200"
-                  }`}
-                >
-                  {cat}
-                </motion.button>
-              ))}
+    <section className="space-y-16">
+
+        {/* Hero Featured */}
+        {featured && (
+        <div className="relative rounded-2xl overflow-hidden shadow-lg group">
+          {featured.image && (
+            <Image
+              src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${featured.image}`}
+              alt={featured.title}
+              width={1200}
+              height={500}
+              className="w-full h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
+            />
+          )}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-10">
+            <div className="text-white max-w-3xl">
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-xs font-medium mb-4 border border-white/20">
+                {featured.category?.name || "Spirituality"}
+              </div>
+              <Link href={`/tasawwuf/${featured.slug}`}>
+                <h2 className="text-2xl text-white md:text-4xl font-bold mb-3 hover:text-amber-300 transition-colors leading-tight">
+                  {featured.title}
+                </h2>
+              </Link>
+              <p className="text-gray-200 mb-4 leading-relaxed line-clamp-2">
+                {featured.description .replace(/<[^>]*>/g, "")}
+              </p>
+              <div className="flex flex-wrap items-center gap-4 text-sm">
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                  </svg>
+                  <span className="font-medium">{featured.shared_by || "Unknown"}</span>
+                </div>
+                <div className="flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <span>
+                    {featured.created_at &&
+                      new Date(featured.created_at).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
-        )}
-
-        {/* Posts with animation */}
-        <div className="space-y-16">
-          <AnimatePresence mode="popLayout">
-            {filteredPosts.map((post, index) => (
-              <motion.article
-                key={post.id}
-                layout
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="relative group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-100"
-              >
-                <div className="flex flex-col lg:flex-row">
-                  {/* Image */}
-                  {post.image && (
-                    <div className="relative lg:w-5/12 xl:w-4/12 h-72 lg:h-auto overflow-hidden">
-                      <Image
-                        src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${post.image}`}
-                        alt={post.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-700"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      {homePage && post.is_top === 1 && (
-                        <span className="absolute top-4 left-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-md">
-                          FEATURED
-                        </span>
-                      )}
-                    </div>
-                  )}
-
-                  {/* Text Content */}
-                  <div className="flex-1 p-8">
-                    <div className="flex items-center gap-3 mb-5">
-                      <span className="px-3 py-1 bg-orange-100 text-orange-700 text-xs font-medium rounded-full">
-                        {post.category?.name || "Uncategorized"}
-                      </span>
-                      <span className="text-gray-400 text-sm">•</span>
-                      <span className="text-gray-500 text-sm">
-                        {post.read_time || "5"} min read
-                      </span>
-                    </div>
-                    
-                    <h2 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-orange-600 transition-colors duration-300">
-                      {post.title}
-                    </h2>
-                    
-                    <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
-                      {post.description}
-                    </p>
-                    
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-100">
-                      <Link
-                        href={`/tasawwuf/${post.slug}`}
-                        className="inline-flex items-center text-orange-600 font-medium hover:text-orange-700 transition-colors duration-300 group/btn"
-                      >
-                        Read more
-                        <svg 
-                          xmlns="http://www.w3.org/2000/svg" 
-                          className="h-5 w-5 ml-2 transition-transform duration-300 group-hover/btn:translate-x-1" 
-                          viewBox="0 0 20 20" 
-                          fill="currentColor"
-                        >
-                          <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                        </svg>
-                      </Link>
-                      
-                      <div className="flex items-center">
-                        <div className="w-9 h-9 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-medium text-sm">
-                          {post.author?.name?.charAt(0) || "A"}
-                        </div>
-                        <div className="ml-2 text-sm">
-                          <p className="text-gray-900 font-medium">{post.author?.name || "Admin"}</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.article>
-            ))}
-          </AnimatePresence>
         </div>
+      )}
+      {/* Category Pills */}
+      <div className="flex flex-wrap justify-center gap-2">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => setActiveCategory(cat)}
+            className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 outline-none focus:outline-none focus:ring-0 ${
+              activeCategory === cat
+                ? "bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-lg shadow-amber-500/20"
+                : "bg-white border border-gray-100 text-gray-600 hover:bg-amber-50 hover:text-amber-600 shadow-sm"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
 
-        {filteredPosts.length === 0 && (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100">
-            <div className="text-5xl mb-4">🔍</div>
-            <h3 className="text-xl font-medium text-gray-800 mb-3">
-              No posts found in this category
-            </h3>
-            <p className="text-gray-500 mb-6">
-              Try selecting a different category
-            </p>
-            <button 
-              onClick={() => setSelectedCategory("All")}
-              className="px-6 py-2.5 bg-orange-100 text-orange-700 rounded-full font-medium hover:bg-orange-200 transition-colors duration-300"
-            >
-              View All Categories
-            </button>
+    
+
+      {/* Vertical List */}
+      <div className="grid gap-8 max-w-5xl mx-auto">
+  {rest.map((post) => (
+    <div
+      key={post.id}
+      className="flex flex-col md:flex-row gap-6 p-6 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-all duration-300"
+    >
+      {/* Image */}
+      {post.image && (
+        <div className="relative w-full md:w-2/5 lg:w-1/3 h-52 rounded-lg overflow-hidden shadow-sm">
+          <Image
+            src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${post.image}`}
+            alt={post.title}
+            fill
+            className="object-cover hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute top-3 left-3">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm text-amber-700">
+              {post.category?.name || "Spirituality"}
+            </span>
           </div>
-        )}
+        </div>
+      )}
+
+      {/* Content */}
+      <div className="flex-1 flex flex-col justify-between py-1">
+        <div>
+         
+            <h3 className="text-xl font-semibold mb-3 text-gray-900 hover:text-amber-600 transition-colors line-clamp-2">
+              {post.title}
+            </h3>
+     
+          <p className="text-gray-600 line-clamp-3 leading-relaxed mb-4">
+            {post.description.replace(/<[^>]*>/g, "")}
+          </p>
+        </div>
+        
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-2">
+          <div className="flex flex-wrap items-center gap-3 text-sm">
+            <div className="flex items-center text-gray-500">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>{post.shared_by || "Unknown"}</span>
+            </div>
+            <div className="flex items-center text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>
+                {post.created_at &&
+                  new Date(post.created_at).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'short', 
+                    day: 'numeric' 
+                  })}
+              </span>
+            </div>
+          </div>
+          
+          {/* Read More Button */}
+          <Link 
+            href={`/tasawwuf/${post.slug}`}
+            className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 border border-amber-200 hover:border-amber-300 shadow-sm whitespace-nowrap outline-none focus:outline-none focus:ring-0"
+          >
+            Read More
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </div>
+  ))}
+</div>
+
+      {/* Homepage "Explore All" button */}
+      {homePage && posts.length > 0 && (
+        <div className="text-center mt-12">
+          <Link
+            href="/tasawwuf"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:opacity-90"
+          >
+            Explore All Content
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </Link>
+        </div>
+      )}
+    </section>
   );
 }

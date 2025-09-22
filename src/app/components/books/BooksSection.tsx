@@ -72,7 +72,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
             onMouseEnter={() => setHoveredBook(book.id)}
             onMouseLeave={() => setHoveredBook(null)}
           >
-            <Link href={`/book/${book.id}`} className="block h-full">
+            <div className="block h-full">
               <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-amber-100 overflow-hidden relative h-full flex flex-col">
                 {/* Book Image Container */}
                 
@@ -114,10 +114,13 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   
                   {/* View Details Button */}
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                    <div className="bg-black/60 text-white hover:text-orange-500 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2">
+                    <Link
+                      href={`/book/${book.id}`}
+                      className="bg-black/60 text-white hover:text-orange-500 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2 outline-none focus:outline-none focus:ring-0"
+                    >
                       <FaEye className="w-4 h-4" />
                       View Details
-                    </div>
+                    </Link>
                   </div>
                 </div>
 
@@ -128,6 +131,8 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                       {book.title}
                     </h3>
                   </div>
+
+    
                   
                   {/* Book Stats */}
                   <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-100">
@@ -146,7 +151,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                 {/* Hover Glow Effect */}
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-amber-400/5 to-orange-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               </div>
-            </Link>
+            </div>
           </div>
         ))}
       </div>

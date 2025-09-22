@@ -3,8 +3,8 @@ import BooksSection from "../components/books/BooksSection";
 
 export default function BooksPage() {
   return (
-    <main className="max-w-full mt-32 mx-auto">
-      <section className="relative w-full mt-0 mb-24 overflow-hidden">
+    <main className="max-w-full mt-16 mx-auto">
+      <section className="relative w-full mt-0 mb-10 overflow-hidden">
         {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-white to-orange-50 z-0"></div>
 

@@ -6,6 +6,8 @@ import { Calendar, MapPin, User, Clock, Users, ArrowRight } from "lucide-react";
 import { getImageUrl } from "../../../lib/utils";
 import { motion } from "framer-motion";
 import { Event } from "../../../lib/types";
+import { FaSearchLocation, FaTimes } from "react-icons/fa";
+import { FaBuildingCircleExclamation, FaClock, FaTimeline } from "react-icons/fa6";
 
 interface EventsSectionProps {
   events: Event[];
@@ -186,12 +188,10 @@ export default function EventsSection({
       )}
 
       {/* Events Section */}
-      <section className="w-full px-4 md:px-8 max-w-6xl mx-auto">
+      <section className="w-full px-4 md:px-8 md:pt-10 max-w-6xl mx-auto">
         <div className="relative text-center mb-10">
           {/* Subtle background accent */}
-          {/* <div className="absolute inset-0 -z-10 flex items-center justify-center">
-    <div className="w-40 h-40 md:w-60 md:h-60 rounded-full bg-gradient-to-r from-orange-200 via-pink-200 to-yellow-200 opacity-30 blur-3xl"></div>
-  </div> */}
+       
 
           {/* Title */}
           <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
@@ -199,7 +199,22 @@ export default function EventsSection({
               <></>
             ) : (
               <>
-                Our <span className="text-orange-500">Events</span>
+ 
+
+<motion.h2
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            Discover Our{" "}
+            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+              Events
+            </span>{" "}
+            
+          </motion.h2>
+
+
               </>
             )}
           </h2>
@@ -209,65 +224,116 @@ export default function EventsSection({
           <div className="absolute -left-4 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
 
           {displayEvents.map((event, idx) => (
-            <Link key={event.id} href={`/event/${event.slug}`}>
-              <div className="group flex flex-col md:flex-row items-start mb-12 relative pl-4 md:pl-24">
-                <div className="absolute -left-4 md:left-6 top-5 w-5 h-5 rounded-full bg-white border-4 border-orange-500 transition-transform duration-300 group-hover:scale-125 group-hover:" />
-                {idx < displayEvents.length - 1 && (
-                  <span className="absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
-                )}
+  <Link key={event.id} href={`/event/${event.slug}`}>
+    <div className="group flex flex-col md:flex-row items-start mb-12 relative pl-4 md:pl-24">
+      {/* Timeline dot */}
+      <div className="absolute -left-4 md:left-6 top-5 w-5 h-5 rounded-full bg-white border-4 border-orange-500 transition-transform duration-300 group-hover:scale-125" />
+      {idx < displayEvents.length - 1 && (
+        <span className="absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
+      )}
 
-                <div className="flex-1 bg-white rounded-xl   overflow-hidden transition-all duration-300 flex flex-col md:flex-row">
-                  {event.image && (
-                    <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
-                      <Image
-                        src={
-                          getImageUrl(event.image) || "/placeholder-event.jpg"
-                        }
-                        alt={event.title}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      {/* {event.is_featured && (
-                        <div className="absolute top-4 left-4 px-3 py-1 bg-gradient-to-r from-orange-400 to-pink-500 text-white text-xs font-semibold rounded-full shadow-md">
-                          ⭐ Featured
-                        </div>
-                      )} */}
-                    </div>
+      <div className="flex-1 bg-white rounded-xl overflow-hidden transition-all duration-300 flex flex-col md:flex-row">
+        {/* Event Image */}
+        {event.image && (
+          <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
+            <Image
+              src={getImageUrl(event.image) || "/placeholder-event.jpg"}
+              alt={event.title}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </div>
+        )}
+
+        {/* Event Content */}
+        <div className={`p-6 ${event.image ? "md:w-2/3" : "w-full"}`}>
+          {/* Date */}
+          <div className="flex items-center gap-3 mb-3 flex-wrap text-sm text-gray-500">
+            <Calendar size={18} className="text-orange-400" />
+            {new Date(event.created_at).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </div>
+
+          {/* Title */}
+          <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-500 transition-colors mb-3">
+            {event.title}
+          </h3>
+
+          {/* Description */}
+          <p className="text-gray-600 text-sm mb-4 line-clamp-4">
+            {event.description.replace(/<[^>]*>/g, "")}
+          </p>
+
+          {/* Event Info */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
+            {/* Location */}
+            <div className="flex items-center gap-1">
+              <FaSearchLocation size={16} className="text-orange-400" />
+              {event.live_link && (
+              <div className="flex items-center gap-1">
+                <a
+                  href={event.live_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-500 font-medium hover:underline flex items-center gap-1"
+                >
+                  {event.live_link_type === "facebook" && (
+                    <span> Facebook Live</span>
                   )}
-
-                  <div className={`p-6 ${event.image ? "md:w-2/3" : "w-full"}`}>
-                    <div className="flex items-center gap-3 mb-3 flex-wrap text-sm text-gray-500">
-                      <Calendar size={18} className="text-orange-400" />
-                      {new Date(event.created_at).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      })}
-                    </div>
-
-                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-500 transition-colors mb-3">
-                      {event.title}
-                    </h3>
-
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-4">
-                      {event.description.replace(/<[^>]*>/g, "")}
-                    </p>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-                      <div className="flex items-center gap-1">
-                        <MapPin size={16} className="text-orange-400" />
-                        <span>{event.address || "Location TBD"}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <User size={16} className="text-orange-400" />
-                        <span>{event.branch_name || "Main Branch"}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  {event.live_link_type === "youtube" && (
+                    <span> YouTube Live</span>
+                  )}
+                  {event.live_link_type === "zoom" && (
+                    <span> Zoom Meeting</span>
+                  )}
+                  {/* {!["facebook", "youtube", "zoom"].includes(
+                    event.live_link_type
+                  ) && <span>🔗 Live Link</span>} */}
+                </a>
               </div>
-            </Link>
-          ))}
+            )}
+            </div>
+
+            {/* Duration */}
+            <div className="flex items-center gap-1">
+              <FaClock size={16} className="text-orange-400" />
+              <span>{event.duration || "N/A"}</span>
+            </div>
+
+            {/* Live Link */}
+            {/* {event.live_link && (
+              <div className="flex items-center gap-1">
+                <a
+                  href={event.live_link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-orange-500 font-medium hover:underline flex items-center gap-1"
+                >
+                  {event.live_link_type === "facebook" && (
+                    <span>📺 Facebook Live</span>
+                  )}
+                  {event.live_link_type === "youtube" && (
+                    <span>▶️ YouTube Live</span>
+                  )}
+                  {event.live_link_type === "zoom" && (
+                    <span>🎥 Zoom Meeting</span>
+                  )}
+                  {!["facebook", "youtube", "zoom"].includes(
+                    event.live_link_type
+                  ) && <span>🔗 Live Link</span>}
+                </a>
+              </div>
+            )} */}
+          </div>
+        </div>
+      </div>
+    </div>
+  </Link> 
+))}
+
         </div>
         {!showAll && sortedEvents.length > 3 && (
           <div className="mt-12 text-center">

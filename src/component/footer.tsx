@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart } from "lucide-react";
 
 const Footer = () => (
-  <footer className="bg-gradient-to-br from-orange-50 to-amber-50 pt-16 pb-8">
+  <footer className="bg-gradient-to-br mt-10 from-orange-50 to-amber-50 pt-16 pb-8">
     <div className="max-w-7xl mx-auto px-6">
       {/* Main Footer Content */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">

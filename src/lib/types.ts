@@ -27,7 +27,25 @@ export interface Blog extends BaseEntity {
 }
 
 // Course types (matching actual API structure)
-export interface Course extends BaseEntity {
+interface Instructor {
+  id: number;
+  unique_id: string;
+  first_name: string;
+  last_name: string;
+  father_name: string;
+  description: string;
+  full_address: string;
+  dob: string;
+  image: string;
+  contact_no: string;
+  is_alive: number;
+  is_published: number;
+  created_at: string;
+  updated_at: string;
+}
+
+interface Course {
+  id: number;
   title: string;
   slug: string;
   book_id: number;
@@ -42,7 +60,11 @@ export interface Course extends BaseEntity {
   space: string;
   short_video: string;
   image: string;
+  created_at: string;
+  updated_at: string;
+  recorded_by?: Instructor; // ✅ include instructor data
 }
+
 
 // Author types (matching existing API structure)
 export interface Author extends BaseEntity {
@@ -91,10 +113,10 @@ export interface Book extends BaseEntity {
 
 // Event types (matching actual API structure)
 export interface Event extends BaseEntity {
+  id: number;
   title: string;
   slug: string;
   image: string;
-   id: number;
   branch_name: string;
   address: string;
   contact: string;
@@ -104,7 +126,13 @@ export interface Event extends BaseEntity {
   country: string;
   created_at: string;
   updated_at: string;
+
+  // New fields
+  duration: string;
+  live_link?: string;       // optional because not every event may have it
+  live_link_type?: string;  // e.g. "facebook" | "youtube" | "zoom"
 }
+
 
 // Fatwa types
 export interface Iftah {

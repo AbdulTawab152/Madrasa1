@@ -29,7 +29,7 @@ export default function BlogCard({ blog }: { blog: Blog }) {
         <p className="text-gray-600 text-sm mb-4">{blog.excerpt}</p>
         <Link
           href={`/top-blog/${blog.slug}`}
-          className="text-blue-500 hover:underline"
+          className="text-blue-500 outline-none focus:outline-none focus:ring-0"
         >
           Read More →
         </Link>

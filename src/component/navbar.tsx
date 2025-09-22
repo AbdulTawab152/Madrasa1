@@ -160,7 +160,7 @@ const Navbar = memo(() => {
                       >
                         {item.name}
                         {isActive && (
-                          <div className="absolute -bottom-1 left-0 w-full h-0.5 bg-amber-600 rounded-full"></div>
+                          <div className="absolute -bottom-1 left-0 w-full h-0.5  rounded-full"></div>
                         )}
                         <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 rounded-full transition-all duration-200 group-hover:w-full"></div>
                       </Link>
@@ -249,7 +249,7 @@ const Navbar = memo(() => {
   {/* Mobile Navigation Menu */}
   <div className={`fixed inset-0 z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}>
     <div className="absolute inset-0 bg-black/20" onClick={() => setIsOpen(false)}></div>
-    <div className="relative w-4/5 max-w-sm h-full bg-gradient-to-b from-amber-50 to-amber-100 shadow-xl">
+    <div className="relative w-4/5 max-w-sm h-full bg-white shadow-2xl">
     
 
       {/* Navigation Items */}

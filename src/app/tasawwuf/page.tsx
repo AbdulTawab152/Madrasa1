@@ -1,27 +1,14 @@
-// app/tasawwuf/page.tsx
-import TasawufList from "../components/tasawuuf/TasawwufList";
-import { motion } from "framer-motion"; 
+"use client";
 
-export default function TasawufPage() {
+import TasawwufList from "../components/tasawuuf/TasawwufList";
+
+export default function TasawwufPage() {
   return (
-    <div className="min-h-screen mt-28 bg-gradient-to-b from-orange-50 to-amber-50">
-      {/* Hero Section with Orange Theme */}
-  
-
-      {/* Content Section */}
-      <section className="max-w-6xl mx-auto px-6 py-16 md:py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-orange-900 mb-6">Sacred Knowledge Repository</h2>
-          <p className="text-orange-800 max-w-2xl mx-auto text-lg">
-            Explore the depths of Islamic spirituality through our curated collection of articles on Tasawuf
-          </p>
-        </div>
-     
-        <TasawufList />
-      </section>
-
-      {/* Newsletter Section */}
- 
-    </div>
+    <main className="py-16">
+      <div className="max-w-7xl mx-auto px-4">
+        <h1 className="text-3xl font-bold text-center mb-12">📿 تصوف Articles</h1>
+        <TasawwufList homePage={false} />
+      </div>
+    </main>
   );
 }

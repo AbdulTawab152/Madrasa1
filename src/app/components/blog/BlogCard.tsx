@@ -244,6 +244,8 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
       )}
 
       {/* Category Filter */}
+
+      {!homePage && (
       <div className="max-w-7xl mt-10 mx-auto px-6 mb-12">
         <div className="flex flex-wrap justify-center gap-3">
           {categories.map((category) => (
@@ -263,6 +265,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
           ))}
         </div>
       </div>
+      )}
 
       {/* Blog Grid */}
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -310,9 +313,14 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <span>{item.date?.split("T")[0] || "Unknown date"}</span>
                   </div>
-                  <Link href={`/blogs/${item.slug}`} className="group block h-full">
-                    <span className="text-orange-500 group-hover:text-orange-600 transition-colors">See More →</span>
-                  </Link>
+               
+                  <Link
+                          href={`/blogs/${item.slug}`}
+                          className="group block h-full text-orange-500 hover:text-orange-600 transition-colors rounded outline-none focus:outline-none focus:ring-0"
+                        >
+                          See More →
+                        </Link>
+
                 </div>
               </div>
             </motion.div>

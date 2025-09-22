@@ -110,7 +110,75 @@ export default async function BookDetailsPage({ params }: Params) {
                     </div>
                   )}
                 </div>
+
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
+                  {book.pages && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">Pages</div>
+                      <div className="text-lg font-semibold text-gray-900">{book.pages}</div>
+                    </div>
+                  )}
+                  {book.written_year && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">Year</div>
+                      <div className="text-lg font-semibold text-gray-900">{book.written_year}</div>
+                    </div>
+                  )}
+                  {/* {typeof book.is_published !== "undefined" && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">Published</div>
+                      <div className="text-lg font-semibold text-gray-900">
+                        {book.is_published ? "Yes" : "No"}
+                      </div>
+                    </div>
+                  )} */}
+                  {typeof book.is_in_library !== "undefined" && (
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <div className="text-sm text-gray-500 mb-1">In Library</div>
+                      <div className="text-lg font-semibold text-gray-900">
+                        {book.is_in_library ? "Yes" : "No"}
+                      </div>
+                    </div>
+                  )}
+                {typeof book.downloadable !== "undefined" && (
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <div className="text-sm text-gray-500 mb-2">Downloadable</div>
+                    {book.downloadable ? (
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700 border border-green-200">
+                        ✅ Yes
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-700 border border-red-200">
+                        ❌ No
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="flex gap-3 w-full pt-4">
+                      {book.downloadable && book.pdf_file ? (
+                        <a
+                          href={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${book.pdf_file}`}
+                          download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2 border border-gray-300 text-gray-700 px-6 py-3 rounded-xl font-medium shadow-sm hover:shadow-md hover:bg-gray-100 transition-all duration-300"
+                        >
+                          <FaDownload/> <span>Download</span>
+                        </a>
+                      ) : (
+                        <button
+                          disabled
+                          className="flex items-center gap-2 border border-gray-200 text-gray-400 px-6 py-3 rounded-xl cursor-not-allowed bg-gray-50 font-medium"
+                        >
+                          🚫 <span>Not Available</span>
+                        </button>
+                      )}
+                    </div>
+
+                </div>
               </div>
+              
+
 
               {/* Book Info */}
               <div className="md:col-span-2 space-y-6">
@@ -118,85 +186,16 @@ export default async function BookDetailsPage({ params }: Params) {
                 {book.description && (
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900 mb-3">Description</h2>
-                    <div 
-                      className="text-gray-700 leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: book.description }}
-                    />
-                  </div>
+                    <div
+                    className="
+                      text-gray-700 text-sm md:text-[20px] 
+                      [&_*]:text-base [&_*]:md:text-xl
+                    "
+                    dangerouslySetInnerHTML={{ __html: book.description }}
+                  />
+             </div>
                 )}
 
-                {/* Book Details */}
-              {/* Book Details */}
-<div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-  {book.pages && (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <div className="text-sm text-gray-500 mb-1">Pages</div>
-      <div className="text-lg font-semibold text-gray-900">{book.pages}</div>
-    </div>
-  )}
-  {book.written_year && (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <div className="text-sm text-gray-500 mb-1">Year</div>
-      <div className="text-lg font-semibold text-gray-900">{book.written_year}</div>
-    </div>
-  )}
-  {/* {typeof book.is_published !== "undefined" && (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <div className="text-sm text-gray-500 mb-1">Published</div>
-      <div className="text-lg font-semibold text-gray-900">
-        {book.is_published ? "Yes" : "No"}
-      </div>
-    </div>
-  )} */}
-  {typeof book.is_in_library !== "undefined" && (
-    <div className="bg-gray-50 p-4 rounded-lg">
-      <div className="text-sm text-gray-500 mb-1">In Library</div>
-      <div className="text-lg font-semibold text-gray-900">
-        {book.is_in_library ? "Yes" : "No"}
-      </div>
-    </div>
-  )}
-{typeof book.downloadable !== "undefined" && (
-  <div className="bg-gray-50 p-4 rounded-lg">
-    <div className="text-sm text-gray-500 mb-2">Downloadable</div>
-    {book.downloadable ? (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-700 border border-green-200">
-        ✅ Yes
-      </span>
-    ) : (
-      <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-red-100 text-red-700 border border-red-200">
-        ❌ No
-      </span>
-    )}
-  </div>
-)}
-
-</div>
-
-{/* Action Buttons */}
-<div className="flex gap-3 pt-4">
-  {book.downloadable && book.pdf_file ? (
-    <a
-      href={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${book.pdf_file}`}
-      download
-      target="_blank"
-      rel="noopener noreferrer"
-      className="flex items-center gap-2 border border-gray-300 text-gray-700 px-6 py-3 rounded-xl font-medium shadow-sm hover:shadow-md hover:bg-gray-100 transition-all duration-300"
-    >
-      <FaDownload/> <span>Download PDF</span>
-    </a>
-  ) : (
-    <button
-      disabled
-      className="flex items-center gap-2 border border-gray-200 text-gray-400 px-6 py-3 rounded-xl cursor-not-allowed bg-gray-50 font-medium"
-    >
-      🚫 <span>Not Available</span>
-    </button>
-  )}
-</div>
-
-
-               
               </div>
             </div>
           </div>
@@ -221,14 +220,16 @@ export default async function BookDetailsPage({ params }: Params) {
                   </div>
                 )}
                 <div className="flex-1">
-                  <h3 className="text-[20px] font-semibold text-gray-900 mb-2">
+                  <h3 className="text-lg md:text-[20px] font-semibold text-gray-900 mb-2">
                     {book.author.first_name} {book.author.last_name || ''}
                   </h3>
                   {book.author.bio && (
-                    <div 
-                      className="text-gray-600 text-[20px] leading-relaxed mb-3"
-                      dangerouslySetInnerHTML={{ __html: book.author.bio }}
-                    />
+                    <div
+                        className=" text-gray-700 text-[10px] md:text-[20px] 
+                          [&_*]:text-base [&_*]:md:text-md
+                        "
+                        dangerouslySetInnerHTML={{ __html: book.author.bio }}
+                      />
                   )}
                   <div className="flex flex-wrap gap-4 text-sm text-gray-500">
                     {book.author.contact_no && (

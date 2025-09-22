@@ -4,6 +4,7 @@ import About from "./components/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Link from "next/link";
+import Contact from "../app/components/contact/ContactForm"
 
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
@@ -100,6 +101,7 @@ export default async function HomePage() {
     <div className="min-h-screen bg-white">
       <Hero />
       <About />
+     
 
       {/* <GraduationsSection graduations={graduations || []} showAll={false} /> */}
 
@@ -141,6 +143,10 @@ export default async function HomePage() {
         </div>
       </section>
 
+
+
+    
+
       {/* Books */}
 
       <section className="relative py-12 bg-gradient-to-b from-amber-50 to-white">
@@ -151,7 +157,7 @@ export default async function HomePage() {
               Explore Knowledge
             </p>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-black mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
               Our <span className="text-amber-600">Books</span>
             </h2>
 

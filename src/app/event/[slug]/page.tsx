@@ -76,7 +76,7 @@ export default async function EventDetailsPage({ params }: Params) {
             <li>
               <Link
                 href="/"
-                className="text-amber-600 hover:text-amber-700 transition-colors"
+                className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
               >
                 Home
               </Link>
@@ -85,7 +85,7 @@ export default async function EventDetailsPage({ params }: Params) {
               <span className="mx-2 text-amber-400">/</span>
               <Link
                 href="/event"
-                className="text-amber-600 hover:text-amber-700 transition-colors"
+                className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
               >
                 Events
               </Link>
@@ -255,7 +255,7 @@ export default async function EventDetailsPage({ params }: Params) {
                     <Link
                       key={event.id}
                       href={`/event/${event.slug}`}
-                      className="block group"
+                      className="block group outline-none focus:outline-none focus:ring-0"
                     >
                       <div className="flex space-x-3">
                         <div className="flex-shrink-0 relative h-16 w-16 rounded-lg overflow-hidden">

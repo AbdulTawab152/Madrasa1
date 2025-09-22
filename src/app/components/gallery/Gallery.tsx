@@ -164,14 +164,24 @@ export default function Gallery({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
-            Madrasa <span className="text-orange-600">Collection</span>
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Explore the knowledge and teachings of our well-established madrasa,
-            nurturing minds and hearts for a brighter future
-          </p>
-        </div>
+  {/* Title */}
+  <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+    Madrasa{" "}
+    <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+      Collection
+    </span>
+  </h2>
+
+  {/* Decorative underline */}
+  <div className="w-20 h-1 bg-gradient-to-r from-amber-400 to-orange-500 rounded-full mx-auto mb-6"></div>
+
+  {/* Description */}
+  <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+    Explore the timeless knowledge and spiritual teachings of our madrasa, 
+    nurturing minds and hearts to build a brighter and enlightened future.
+  </p>
+</div>
+
 
         {/* Controls */}
 
@@ -227,7 +237,7 @@ export default function Gallery({
 
             {/* Fourth item - second slider */}
             <div
-              className="md:row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className=" hidden md:flex md:row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               onClick={() => openLightbox(4)}
             >
               <MiniSlider
@@ -243,10 +253,10 @@ export default function Gallery({
               return (
                 <div
                   key={`grid-item-${img.id}-${index + 4}`}
-                  className={`relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl 
-        ${isBig ? "md:col-span-2 md:row-span-2 h-[255px]" : "h-64"}
-      `}
-                  onClick={() => openLightbox(index + 3)} // slice starts at 3 → offset by 3
+                  className={` hidden md:flex relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl 
+                ${isBig ? "md:col-span-2 md:row-span-2 h-[255px]" : "h-64"}
+              `}
+                          onClick={() => openLightbox(index + 3)} // slice starts at 3 → offset by 3
                 >
                   <div className="relative w-full h-full overflow-hidden">
                     <img

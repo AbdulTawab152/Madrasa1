@@ -19,6 +19,7 @@ export const apiConfig = {
 export const endpoints = {
   blogs: `${apiConfig.baseUrl}/blogs`,
   courses: `${apiConfig.baseUrl}/courses`,
+  // course: `${apiConfig.baseUrl}/course`,
   authors: `${apiConfig.baseUrl}/authors`,
   books: `${apiConfig.baseUrl}/books`,
   book: `${apiConfig.baseUrl}/book`,
@@ -28,6 +29,7 @@ export const endpoints = {
   graduated: `${apiConfig.baseUrl}/graduations`,
   awlyaa: `${apiConfig.baseUrl}/awlyaa`,
   gallery: `${apiConfig.baseUrl}/gallery`,
+  donation: `${apiConfig.baseUrl}/donate-info-for-web`,
 } as const;
 
 
@@ -56,6 +58,8 @@ export const navigation = {
   
     { name: 'Article', href: '/articles', icon: 'article' },
     { name: 'Awalyaa', href: '/awlayaa', icon: 'awlayaa' },
+    {name : "contact" ,  href: "/contact"}
+  
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

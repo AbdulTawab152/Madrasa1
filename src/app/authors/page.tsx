@@ -5,6 +5,7 @@ import { fetchWithCache } from "../../lib/api";
 import { endpoints } from "../../lib/config";
 import { Author } from "../../lib/types";
 import { FaTwitter, FaLinkedin, FaFacebook } from "react-icons/fa";
+import truncate from "html-truncate";
 
 // Fetch authors from API (no cache)
 async function fetchAuthorsData(): Promise<Author[]> {
@@ -65,10 +66,9 @@ export default async function AuthorsPage() {
           .map((author) => {
             const alive = author.is_alive;
             return (
-              <Link
-                key={author.id}
-                href={`/authors/${author.id}`}
-                className="group relative bg-white/70 backdrop-blur-xl rounded-3xl hover:-translate-y-2 transition-all duration-500 overflow-hidden"
+              <div
+               
+                className="group relative bg-white/70 backdrop-blur-xl rounded-3xl hover:-translate-y-2 transition-all duration-500 overflow-hidden outline-none focus:outline-none focus:ring-0"
               >
                 {/* Avatar */}
                 <div className="flex justify-center mt-14 relative">
@@ -100,18 +100,27 @@ export default async function AuthorsPage() {
                   <h2 className="text-xl font-bold text-gray-900 group-hover:text-amber-600 transition">
                     {author.first_name || "Unknown"} {author.last_name || ""}
                   </h2>
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-3">
-                    {author.bio?.replace(/<[^>]*>/g, "")}
-                  </p>
+               
+
+                  <div
+                                className="text-gray-700 text-sm  [&_*]:text-[14px]"
+                                dangerouslySetInnerHTML={{ __html: truncate(author.bio, 50) }}
+                              />
+
 
                   {/* Button */}
+
+              
                   <div className="mt-6">
-                    <span className="inline-block px-6 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition">
+                  <Link  key={author.id}
+                href={`/authors/${author.id}`}
+                   className="inline-block px-6 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition outline-none focus:outline-none focus:ring-0">
                       View Profile →
-                    </span>
+                    
+                    </Link>
                   </div>
                 </div>
-              </Link>
+              </div>
             );
           })}
       </div>

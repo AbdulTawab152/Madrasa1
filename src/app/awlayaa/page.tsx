@@ -24,6 +24,8 @@ export default function AwlyaaListPage() {
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
+  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -130,23 +132,7 @@ export default function AwlyaaListPage() {
               their expertise, passion, and dedication to making a difference.
             </p>
 
-            {/* <div className="flex flex-wrap justify-center gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-white text-orange-600 font-bold rounded-full shadow-lg hover:bg-gray-50 transition-all flex items-center gap-2"
-              >
-                <FaUsers className="text-lg" /> Join Our Community
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-8 py-3 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-all flex items-center gap-2"
-              >
-                <FaStar className="text-lg" /> Become an Awlyaa
-              </motion.button>
-            </div> */}
+    
           </motion.div>
 
           {/* Stats Section */}
@@ -262,20 +248,13 @@ export default function AwlyaaListPage() {
 
                     {/* Content Section */}
                     <div className="p-6 flex flex-col flex-grow">
-                      <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
+                      <h2 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
                         {item.name}
                       </h2>
 
-                      {item.title && (
-                        <div className="flex items-center gap-2 mb-4">
-                          <FaAward className="text-orange-500 flex-shrink-0" />
-                          <p className="text-gray-600 line-clamp-2">
-                            {item.title}
-                          </p>
-                        </div>
-                      )}
+                  
 
-                      <p>
+                      <p className="text-sm pt-2">
                         <strong>Death:</strong>{" "}
                         {item.death_date
                           ? `${new Date(item.death_date).toDateString()} – ${
@@ -323,65 +302,9 @@ export default function AwlyaaListPage() {
           </motion.div>
         )}
 
-        {/* Testimonial Section */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-20 bg-gradient-to-r from-orange-500 to-amber-500 rounded-2xl overflow-hidden shadow-xl"
-        >
-          <div className="p-8 md:p-12 text-white">
-            <div className="max-w-4xl mx-auto">
-              <FaQuoteLeft className="text-4xl text-orange-200 mb-6" />
-              <p className="text-xl md:text-2xl font-light mb-6">
-                Being part of the Awlyaa community has allowed me to connect with incredible minds, share knowledge, and grow both personally and professionally. It's more than a network—it's a family.
-              </p>
-              <div className="flex items-center">
-                <div className="w-12 h-12 bg-orange-400 rounded-full flex items-center justify-center mr-4">
-                  <span className="font-bold">SA</span>
-                </div>
-                <div>
-                  <p className="font-semibold">Sarah Ahmed</p>
-                  <p className="text-orange-200">Senior Awlyaa Member</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div> */}
+    
 
-        {/* CTA Section */}
-        {/* <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">Ready to Join Our Community?</h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Apply to become an Awlyaa and connect with like-minded professionals, share your expertise, and grow your influence.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors shadow-md flex items-center gap-2"
-              >
-                <FaStar className="text-lg" /> Apply Now
-              </motion.button>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-6 py-3 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors flex items-center gap-2"
-              >
-                <FaUsers className="text-lg" /> Learn More
-              </motion.button>
-            </div>
-          </div>
-        </motion.div> */}
+      
       </div>
     </div>
   );

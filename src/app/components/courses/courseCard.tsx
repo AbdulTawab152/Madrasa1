@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { getImageUrl } from "../../../lib/utils";
+import { FaVideo } from "react-icons/fa6";
 
 interface Course {
   id: number;
@@ -23,6 +24,7 @@ interface Course {
   short_video: string;
   image: string;
 }
+
 
 interface CoursesSectionProps {
   courses: Course[];
@@ -57,7 +59,7 @@ export default function CoursesSection({
     <div className="w-full">
       {/* Enhanced Hero Section */}
       {showAll && (
-        <div className="w-full">
+        <div className="  ">
           <section className="relative w-full mt-0 overflow-hidden">
             {/* Enhanced Background Layer */}
             <div className="absolute inset-0 pointer-events-none z-0 w-full h-full">
@@ -74,7 +76,7 @@ export default function CoursesSection({
                 }}
               />
               {/* Gradient overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-900/60 via-gray-800/50 to-amber-900/40 w-full h-full" />
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-900/60 via-gray-600/50 to-amber-900/40 w-full h-full" />
 
               {/* Animated floating orbs for extra visual interest */}
               <motion.div
@@ -222,7 +224,7 @@ export default function CoursesSection({
       )}
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 mt-20 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 mt-20 px-4 md:grid-cols-2 md:px-10 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {displayCourses.map((course) => {
           if (!course.is_published) return null;
 
@@ -261,7 +263,7 @@ export default function CoursesSection({
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
-                    <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                    <FaVideo size={20}/>
                   </svg>
                   {course.video_quantity}
                 </motion.div>
@@ -298,13 +300,16 @@ export default function CoursesSection({
                   {course.title}
                 </h3>
 
-                <div
-                  className="text-black text-[10px] mb-4 flex-1 line-clamp-3 leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: course.description }}
-                />
+                <div className="text-sm text-black leading-relaxed">
+                    <span
+                      className="line-clamp-3 block"
+                      dangerouslySetInnerHTML={{ __html: course.description }}
+                    />
+                  </div>
+
 
                 <Link href={`/courses/${course.slug}`} className="mt-auto">
-                  <button className="w-full bg-amber-600 text-white font-medium py-2 px-3 rounded-md hover:bg-amber-700 transition-all duration-300 text-sm shadow-sm">
+                  <button className="w-full bg-amber-600 text-white font-medium py-2 px-3 rounded-md hover:bg-amber-700 transition-all duration-300 text-sm shadow-sm outline-none focus:outline-none focus:ring-0">
                     View Course
                   </button>
                 </Link>

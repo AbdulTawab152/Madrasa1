@@ -76,14 +76,14 @@ const Hero = () => {
   <div className="flex flex-wrap gap-4 mt-4">
     {/* Learn More */}
     <Link href={"/about"}>
-    <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-5 py-2 rounded-full text-sm sm:text-base md:text-base font-semibold flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition-transform duration-300">
+    <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-5 py-2 rounded-full text-sm sm:text-base md:text-base font-semibold flex items-center justify-center gap-2 shadow-lg hover:scale-105 transition-transform duration-300 outline-none focus:outline-none focus:ring-0">
       Learn More <FaArrowRight />
     </button>
     </Link>
 
     {/* Courses */}
     <Link href={"/courses"}>
-    <button className="border border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 px-10 py-2 rounded-full text-sm sm:text-base md:text-base font-semibold flex items-center justify-center gap-2 hover:bg-orange-500/25 hover:text-white hover:shadow-lg transition-all duration-300">
+    <button className="border border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 px-10 py-2 rounded-full text-sm sm:text-base md:text-base font-semibold flex items-center justify-center gap-2 hover:bg-orange-500/25 hover:text-white hover:shadow-lg transition-all duration-300 outline-none focus:outline-none focus:ring-0">
       View Courses
     </button>
     </Link>

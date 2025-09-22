@@ -184,6 +184,45 @@ export class BlogsApi {
   }
 }
 
+
+export class DonationApi {
+  static async getAll() {
+    const result = await apiClient.get(endpoints.donation);
+    if (!result.success) {
+      return {
+        data: getFallbackData("donation"),
+        success: true,
+        message: "Using fallback data due to API unavailability",
+      };
+    }
+    return result;
+  }
+
+  static async getById(id: string) {
+    const result = await apiClient.get(`${endpoints.donation}/${id}`);
+    if (!result.success) {
+      return {
+      
+        success: true,
+        message: "Using fallback data due to API unavailability",
+      };
+    }
+    return result;
+  }
+
+  static async getBySlug(slug: string) {
+    const result = await apiClient.get(`${endpoints.donation}/slug/${slug}`);
+    if (!result.success) {
+      return {
+     
+        success: true,
+        message: "Using fallback data due to API unavailability",
+      };
+    }
+    return result;
+  }
+}
+
 export class CoursesApi {
   static async getAll() {
     const result = await apiClient.get(endpoints.courses);
@@ -221,7 +260,6 @@ export class CoursesApi {
     return result;
   }
 }
-
 export class AwlyaaApi {
   static async getAll() {
     return apiClient.get(endpoints.awlyaa);

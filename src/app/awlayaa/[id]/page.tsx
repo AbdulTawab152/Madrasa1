@@ -75,10 +75,10 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
 
             {/* Name and Title */}
             <div className="text-center mt-6">
-              <h1 className="text-4xl font-bold text-gray-900">
+              <h1 className="text-xl md:text-2xl font-bold text-gray-900">
                 {awlyaa.name}
               </h1>
-              <p className="text-xl text-amber-600 font-medium mt-2">
+              <p className="text-md md:text-xl text-amber-600 font-medium mt-2">
                 {awlyaa.title || "Distinguished Scholar"}
               </p>
               {awlyaa.nickname && (
@@ -92,6 +92,93 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Left Column - Personal Info */}
           <div className="lg:col-span-1 space-y-6">
+
+            {/* teacher */}
+
+          <div className="bg-white rounded-2xl p-6 border border-gray-200">
+            <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+              <GraduationCap className="text-amber-500" size={24} />
+              Teachers 
+            </h2>
+
+            {awlyaa.teachers &&
+            Array.isArray(awlyaa.teachers) &&
+            awlyaa.teachers.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4">
+                {awlyaa.teachers.map((t: any) => (
+                  <div
+                    key={t.id}
+                    className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg"
+                  >
+                    <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+                      <User className="text-amber-600" size={16} />
+                    </div>
+                    {t.teacher?.id ? (
+                  <a
+                  href={`/awlayaa/${t.teacher.id}`}
+                  className="font-semibold text-[12px] text-amber-700 hover:underline transition-colors outline-none focus:outline-none focus:ring-0"
+                  title="View teacher details"
+                >
+                  {t.teacher?.name || "Unknown Teacher"}
+                </a>
+                
+                  
+                    ) : (
+                      <span className="font-semibold text-[12px]">
+                        {t.teacher?.name || "Unknown Teacher"}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="text-gray-500 italic">
+                No teacher information available
+              </p>
+            )}
+          </div>
+
+            {/* Students Section */}
+            <div className="bg-white rounded-2xl p-6  border border-gray-200">
+              <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <Users className="text-amber-500" size={24} />
+                Students
+              </h2>
+
+              {awlyaa.students &&
+              Array.isArray(awlyaa.students) &&
+              awlyaa.students.length > 0 ? (
+                <div className="grid grid-cols-1 gap-4">
+                  {awlyaa.students.map((s: any) => (
+                    <div
+                      key={s.id}
+                      className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg"
+                    >
+                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                        <User className="text-orange-600" size={16} />
+                      </div>
+                      {s.student?.id ? (
+                        <a
+                          href={`/awlayaa/${s.student.id}`}
+                          className="font-semibold text-[12px] text-orange-700 hover:underline transition-colors outline-none focus:outline-none focus:ring-0"
+                          title="View student details"
+                        >
+                          {s.student?.name || "Unknown Student"}
+                        </a>
+                      ) : (
+                        <span className="font-semibold text-[12px]">
+                          {s.student?.name || "Unknown Student"}
+                        </span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-gray-500 italic">
+                  No student information available
+                </p>
+              )}
+            </div>
             {/* Quick Facts Card */}
             <div className="bg-white rounded-2xl p-6  border border-gray-200">
               <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
@@ -107,7 +194,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   />
                   <div>
                     <p className="text-sm text-gray-500">Father's Name</p>
-                    <p className="font-medium">
+                    <p className="font-semibold">
                       {awlyaa.father_name || "Not specified"}
                     </p>
                   </div>
@@ -131,12 +218,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                     className="text-amber-500 mt-1 flex-shrink-0"
                     size={18}
                   />
-                  <div>
-                    <p className="text-sm text-gray-500">Education</p>
-                    <p className="font-medium">
-                      {awlyaa.education || "Not specified"}
-                    </p>
-                  </div>
+                
                 </div>
 
                 <div className="flex items-start gap-3">
@@ -145,8 +227,8 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                     size={18}
                   />
                   <div>
-                    <p className="text-sm text-gray-500">Books Written</p>
-                    <p className="font-medium">
+                    <p className="text-sm font-semibold text-gray-500">Books Written</p>
+                    <p className=" text-sm">
                       {awlyaa.books_written || "Not specified"}
                     </p>
                   </div>
@@ -220,71 +302,16 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
           {/* Right Column - Detailed Info */}
           <div className="lg:col-span-2 space-y-6">
             {/* Teachers Section */}
-            <div className="bg-white rounded-2xl p-6  border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <GraduationCap className="text-amber-500" size={24} />
-                Teachers & Mentors
-              </h2>
-
-              {awlyaa.teachers &&
-              Array.isArray(awlyaa.teachers) &&
-              awlyaa.teachers.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {awlyaa.teachers.map((t: any) => (
-                    <div
-                      key={t.id}
-                      className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg"
-                    >
-                      <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                        <User className="text-amber-600" size={16} />
-                      </div>
-                      <span className="font-medium">
-                        {t.teacher?.name || "Unknown Teacher"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">
-                  No teacher information available
-                </p>
-              )}
-            </div>
-
-            {/* Students Section */}
-            <div className="bg-white rounded-2xl p-6  border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Users className="text-amber-500" size={24} />
-                Students & Followers
-              </h2>
-
-              {awlyaa.students &&
-              Array.isArray(awlyaa.students) &&
-              awlyaa.students.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {awlyaa.students.map((s: any) => (
-                    <div
-                      key={s.id}
-                      className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg"
-                    >
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                        <User className="text-orange-600" size={16} />
-                      </div>
-                      <span className="font-medium">
-                        {s.student?.name || "Unknown Student"}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">
-                  No student information available
-                </p>
-              )}
-            </div>
+      
+                <div className={`mb-6 ${awlyaa.lang === "fa" || awlyaa.lang === "ps" ? "text-right" : "text-left"}`}>
+                    <p className="text-sm text-gray-500">Education</p>
+                    <p className="font">
+                      {awlyaa.education || "Not specified"}
+                    </p>
+                  </div>
 
             {/* Famous Works Section */}
-            <div className="bg-white rounded-2xl p-6  border border-gray-200">
+            <div className="">
               <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
                 <BookText className="text-amber-500" size={24} />
                 Famous Works & Contributions
@@ -297,7 +324,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   {awlyaa.famous_works.map((work: any, idx: number) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg"
+                      className="flex items-start gap-3 p-3  "
                     >
                       <Star
                         className="text-amber-500 mt-1 flex-shrink-0"
@@ -308,12 +335,12 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   ))}
                 </div>
               ) : awlyaa.famous_works ? (
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                <div className="flex items-start gap-3  rounded-lg">
                   <Star
                     className="text-amber-500 mt-1 flex-shrink-0"
                     size={16}
                   />
-                  <span className="font-medium">{awlyaa.famous_works}</span>
+                  <span className="font-semibold text-sm">{awlyaa.famous_works}</span>
                 </div>
               ) : (
                 <p className="text-gray-500 italic">
@@ -338,35 +365,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
               </div>
             )}
 
-            {/* Legacy Section */}
-            <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 text-white">
-              <h2 className="text-xl font-bold mb-4">Legacy & Impact</h2>
-              <p className="opacity-90">
-                This distinguished scholar has made significant contributions to
-                their field and continues to inspire generations of students and
-                researchers through their work and teachings.
-              </p>
-              <div className="flex gap-4 mt-4">
-                <div className="flex-1 bg-white/20 p-3 rounded-lg text-center">
-                  <div className="text-2xl font-bold">
-                    {awlyaa.teachers?.length || 0}+
-                  </div>
-                  <div className="text-sm">Teachers</div>
-                </div>
-                <div className="flex-1 bg-white/20 p-3 rounded-lg text-center">
-                  <div className="text-2xl font-bold">
-                    {awlyaa.students?.length || 0}+
-                  </div>
-                  <div className="text-sm">Students</div>
-                </div>
-                <div className="flex-1 bg-white/20 p-3 rounded-lg text-center">
-                  <div className="text-2xl font-bold">
-                    {awlyaa.books_written || 0}+
-                  </div>
-                  <div className="text-sm">Books</div>
-                </div>
-              </div>
-            </div>
+          
           </div>
         </div>
       </div>

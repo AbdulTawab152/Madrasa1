@@ -2,25 +2,10 @@
 import { CoursesApi } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
+// import Courses from "../../../lib/types"
 import { FaClock, FaUsers, FaStar, FaBook, FaVideo, FaPlay, FaGraduationCap } from 'react-icons/fa';
 
-interface Course {
-  id: number;
-  title: string;
-  slug: string;
-  book_id: number;
-  recorded_by_id: number;
-  description: string;
-  publish_date: string;
-  created_date: string;
-  is_published: number;
-  duration: string;
-  video_quantity: number;
-  resolution: string;
-  space: string;
-  short_video: string;
-  image: string;
-}
+
 
 export default async function CourseDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -96,7 +81,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
               {course.title}
             </h1>
-            <div className="flex flex-wrap gap-3 mt-6">
+            {/* <div className="flex flex-wrap gap-3 mt-6">
               <div className="flex items-center text-white bg-white/20 backdrop-blur-sm px-3 py-2 rounded-lg">
                 <FaBook className="mr-2" />
                 <span className="font-medium">Published</span>
@@ -110,7 +95,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 <FaVideo className="mr-2" />
                 <span className="font-medium">{course.duration || 'Flexible'}</span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -168,8 +153,13 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
               </div>
               <div>
                 <div className="font-semibold text-black">Published Date</div>
-                <div className="text-gray-600">{course.publish_date ? new Date(course.publish_date).toLocaleDateString() : 'Recently'}</div>
+                <div className="text-gray-600">
+                  {course.publish_date
+                    ? new Intl.DateTimeFormat('fa-IR', { year: 'numeric', month: 'long', day: 'numeric' }).format(new Date(course.publish_date))
+                    : 'Recently'}
+                </div>
               </div>
+
             </div>
 
             <div className="flex items-center gap-4 p-4 bg-amber-50 rounded-xl border border-amber-200">
@@ -237,6 +227,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             </div>
           </div>
         </div>
+
+        
 
       </div>
     </div>
