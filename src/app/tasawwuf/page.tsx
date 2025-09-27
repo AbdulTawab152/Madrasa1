@@ -1,13 +1,16 @@
 "use client";
 
 import TasawwufList from "../components/tasawuuf/TasawwufList";
+import IslamicHeader from "../components/IslamicHeader";
 
 export default function TasawwufPage() {
   return (
-    <main className="py-16">
-      <div className="max-w-7xl mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-12">📿 تصوف Articles</h1>
-        <TasawwufList homePage={false} />
+    <main>
+      <IslamicHeader pageType="tasawwuf" />
+      <div className="pb-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <TasawwufList homePage={false} />
+        </div>
       </div>
     </main>
   );

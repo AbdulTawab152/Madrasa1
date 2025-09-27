@@ -1,14 +1,36 @@
-import TraditionalContentSection from './TraditionalContentSection';
+import { ArticlesApi, extractArray } from "@/lib/api";
+import TraditionalContentSection from "./TraditionalContentSection";
 
-// Fetch articles from API
-async function fetchArticlesData() {
-  const API_URL = "https://lawngreen-dragonfly-304220.hostingersite.com/api/articles";
-  const res = await fetch(API_URL, { cache: "no-store" });
+type RawArticle = {
+  id: number;
+  name?: string;
+  title?: string;
+  description?: string;
+  content?: string;
+  category?: string | { name?: string } | null;
+  category_id?: string | number | null;
+  author?: string | { name?: string } | null;
+  shared_by?: string | null;
+  image?: string | null;
+  thumbnail?: string | null;
+  slug?: string | null;
+  tags?: unknown;
+  is_published?: boolean | number | null;
+  view_count?: number | null;
+  viewCount?: number | null;
+  created_at?: string | null;
+  published_at?: string | null;
+  date?: string | null;
+};
 
-  if (!res.ok) throw new Error("Error fetching data");
+async function fetchArticlesData(): Promise<RawArticle[]> {
+  const response = await ArticlesApi.getAll();
 
-  const data = await res.json();
-  return data;
+  if (!response.success) {
+    throw new Error(response.error || "Unable to load articles");
+  }
+
+  return extractArray<RawArticle>(response.data);
 }
 
 interface ArticlesPreviewProps {
@@ -19,9 +41,9 @@ export default async function ArticlesPreview({ limit }: ArticlesPreviewProps) {
   const articlesData = await fetchArticlesData();
   
   // Map the API response to match the expected ContentItem interface
-  const mappedArticles = articlesData.map((item: any) => {
-    // Handle author field - ensure it's always a string or undefined
-    let authorName = 'Anonymous';
+  const mappedArticles = articlesData.map((item) => {
+        // Handle author field - ensure it's always a string or undefined
+        let authorName = 'Anonymous';
     if (item.author) {
       if (typeof item.author === 'string') {
         authorName = item.author;

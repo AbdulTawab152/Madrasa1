@@ -3,23 +3,16 @@
 import Image from "next/image";
 import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { GraduationsApi } from "@/lib/api";
+import { getImageUrl } from "@/lib/utils";
 
-const API =
-  "https://lawngreen-dragonfly-304220.hostingersite.com/api/graduations";
-
-// Fetch graduation details from API
 async function getGraduation(slug: string) {
-  const res = await fetch(`${API}/${slug}`,{ next: { revalidate: 60 } });
-  if (!res.ok) return null;
-  return await res.json();
+  const result = await GraduationsApi.getBySlug(slug);
+  if (!result.success) {
+    return null;
+  }
+  return result.data;
 }
-
-// Convert image path to full URL or placeholder
-const getImageUrl = (img?: string | null) => {
-  if (!img) return "/placeholder-graduation.jpg"; // fallback image
-  if (img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
 
 export default function GraduationDetailPage({
   params,
@@ -139,13 +132,13 @@ export default function GraduationDetailPage({
               <>
                 <motion.button
                   onClick={goToPreviousImage}
-                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 md:p-3 text-white hover:bg-black/75 focus:outline-none"
+                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 rounded-full bg-primary-900/40 p-2 md:p-3 text-white hover:bg-primary-900/60 focus:outline-none"
                 >
                   &lt;
                 </motion.button>
                 <motion.button
                   onClick={goToNextImage}
-                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 rounded-full bg-black/50 p-2 md:p-3 text-white hover:bg-black/75 focus:outline-none"
+                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 rounded-full bg-primary-900/40 p-2 md:p-3 text-white hover:bg-primary-900/60 focus:outline-none"
                 >
                   &gt;
                 </motion.button>
@@ -169,7 +162,10 @@ export default function GraduationDetailPage({
                   layout
                 >
                   <img
-                    src={getImageUrl(img.image)}
+                    src={
+                      getImageUrl(img.image, "/placeholder-graduation.jpg") ||
+                      "/placeholder-graduation.jpg"
+                    }
                     alt="Thumbnail"
                     className="h-full w-full object-cover rounded-lg"
                   />
@@ -254,7 +250,9 @@ export default function GraduationDetailPage({
         {graduation.graduated_students?.length > 0 ? (
           <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {graduation.graduated_students.map((s: any, index: number) => {
-              const imageUrl = getImageUrl(s.image);
+              const imageUrl =
+                getImageUrl(s.image, "/placeholder-graduation.jpg") ||
+                "/placeholder-graduation.jpg";
               return (
                 <motion.div
                   key={s.id}
@@ -278,7 +276,7 @@ export default function GraduationDetailPage({
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl" />
                     {s.graduation_type?.name && (
-                      <span className="absolute top-4 right-4 px-3 py-1 text-xs md:text-sm font-semibold rounded-full bg-black/40 text-white shadow-md">
+                    <span className="absolute top-4 right-4 px-3 py-1 text-xs md:text-sm font-semibold rounded-full bg-primary-900/40 text-white shadow-md">
                         {s.graduation_type.name}
                       </span>
                     )}
@@ -311,7 +309,7 @@ export default function GraduationDetailPage({
       {/* Student Modal */}
       {isModalOpen && selectedStudent && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-primary-900/70 backdrop-blur-sm p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           onClick={closeModal}
@@ -325,8 +323,8 @@ export default function GraduationDetailPage({
           >
             {/* Header with orange gradient background */}
             <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-6 text-white relative">
-              <button
-                className="absolute top-4 right-4 text-white hover:text-gray-200 bg-black/20 rounded-full p-1 w-8 h-8 flex items-center justify-center transition-all hover:scale-110"
+                <button
+                className="absolute top-4 right-4 text-white hover:text-primary-100 bg-primary-900/30 rounded-full p-1 w-8 h-8 flex items-center justify-center transition-all hover:scale-110"
                 onClick={closeModal}
                 aria-label="Close modal"
               >
@@ -350,7 +348,10 @@ export default function GraduationDetailPage({
                 <div className="relative">
                   <div className="w-24 h-24 rounded-full border-4 border-white/30 bg-white/10 flex items-center justify-center overflow-hidden">
                     <Image
-                      src={getImageUrl(selectedStudent.image)}
+                      src={
+                        getImageUrl(selectedStudent.image, "/placeholder-graduation.jpg") ||
+                        "/placeholder-graduation.jpg"
+                      }
                       alt={`${selectedStudent.first_name} ${selectedStudent.last_name}`}
                       width={96}
                       height={96}

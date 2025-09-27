@@ -1,5 +1,9 @@
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+
+import { Card, CardBadge, CardContent, CardFooter, CardMedia } from "./Card";
+import { getImageUrl } from "@/lib/utils";
 
 interface Blog {
   id: number;
@@ -9,31 +13,46 @@ interface Blog {
   excerpt: string;
 }
 
+const fallbackImage = "/placeholder-blog.jpg";
+
 export default function BlogCard({ blog }: { blog: Blog }) {
-  // اینجا imageUrl را تعریف کن چون blog موجود است
-  const imageUrl = blog.image.startsWith("http")
-    ? blog.image
-    : `https://lawngreen-dragonfly-304220.hostingersite.com${blog.image}`;
+  const imageUrl = getImageUrl(blog.image, fallbackImage) ?? fallbackImage;
 
   return (
-    <div className="bg-white rounded-lg shadow hover:shadow-lg transition overflow-hidden">
-      <Image
-        src={imageUrl}
-        alt={blog.title}
-        width={400}
-        height={250}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <h3 className="font-bold text-lg mb-2">{blog.title}</h3>
-        <p className="text-gray-600 text-sm mb-4">{blog.excerpt}</p>
-        <Link
-          href={`/top-blog/${blog.slug}`}
-          className="text-blue-500 outline-none focus:outline-none focus:ring-0"
-        >
-          Read More →
-        </Link>
-      </div>
-    </div>
+    <Card className="h-full">
+      <CardMedia className="aspect-[16/10]">
+        <Image
+          src={imageUrl}
+          alt={blog.title}
+          fill
+          sizes="(min-width: 1280px) 340px, (min-width: 768px) 45vw, 90vw"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+
+        <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
+          Blog Insight
+        </CardBadge>
+      </CardMedia>
+
+      <CardContent className="gap-4">
+        <h3 className="text-xl font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
+          {blog.title}
+        </h3>
+
+        <p className="text-sm leading-relaxed text-primary-600 line-clamp-3">
+          {blog.excerpt}
+        </p>
+
+        <CardFooter className="border-0 p-0 pt-2">
+          <Link
+            href={`/top-blog/${blog.slug}`}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-primary-600 transition-colors duration-200 hover:text-primary-700 outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Read more
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+        </CardFooter>
+      </CardContent>
+    </Card>
   );
 }

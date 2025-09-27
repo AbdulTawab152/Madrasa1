@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { AwlyaaApi } from "../../../lib/api";
 import { Awlyaa } from "../../../lib/types";
+import { getImageUrl } from "@/lib/utils";
 import {
   User,
   Calendar,
@@ -18,12 +19,6 @@ import {
 interface AwlyaaPageProps {
   params: Promise<{ id: string }>;
 }
-
-const getImageUrl = (img?: string | null) => {
-  if (!img) return "/placeholder-author.jpg";
-  if (img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
 
 export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
   const { id } = await params;
@@ -56,7 +51,10 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
               <div className="relative">
                 {awlyaa.profile_image ? (
                   <Image
-                    src={getImageUrl(awlyaa.profile_image)}
+                    src={
+                      getImageUrl(awlyaa.profile_image, "/placeholder-author.jpg") ||
+                      "/placeholder-author.jpg"
+                    }
                     alt={awlyaa.name}
                     width={200}
                     height={200}

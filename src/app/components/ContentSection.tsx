@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useRef, useEffect } from "react";
+import { getImageUrl } from "@/lib/utils";
 
 interface Author {
   name: string;
@@ -53,11 +54,6 @@ export default function ContentSection({
       mainControls.start("visible");
     }
   }, [isInView, mainControls]);
-
-  const getImageUrl = (img?: string) => {
-    if (img && img.startsWith("http")) return img;
-    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-  };
 
   // Combine and sort content
   const allContent = [
@@ -247,8 +243,11 @@ export default function ContentSection({
               {item.image && (
                 <div className="lg:w-80 flex-shrink-0">
                   <div className="relative h-48 lg:h-full rounded-xl overflow-hidden">
-                    <Image
-                      src={getImageUrl(item.image)}
+                  <Image
+                    src={
+                      getImageUrl(item.image, "/placeholder-article.jpg") ||
+                      "/placeholder-article.jpg"
+                    }
                       alt={item.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
@@ -277,7 +276,7 @@ export default function ContentSection({
                 <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
                   <div className="flex-1">
                     <motion.h3
-                      whileHover={{ color: "#ea580c" }}
+                      whileHover={{ color: "var(--color-secondary-600)" }}
                       className="text-xl font-semibold text-gray-900 leading-tight mb-2"
                     >
                       <Link

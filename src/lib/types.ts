@@ -44,7 +44,7 @@ interface Instructor {
   updated_at: string;
 }
 
-interface Course {
+export interface Course {
   id: number;
   title: string;
   slug: string;

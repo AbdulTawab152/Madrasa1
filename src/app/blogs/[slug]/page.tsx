@@ -1,8 +1,9 @@
 // app/blogs/[slug]/page.tsx
-import { BlogsApi } from "../../../lib/api";
+import { BlogsApi, extractArray } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getImageUrl } from "@/lib/utils";
 
 interface Blog {
   name: string;
@@ -30,19 +31,28 @@ interface Params {
 export default async function BlogDetailsPage({ params }: Params) {
   const { slug } = await params;
 
-  // Fetch blogs
-  const res = await BlogsApi.getAll();
-  const blogs: Blog[] = Array.isArray(res.data) ? res.data : [];
-  const blog = blogs.find((b) => b.slug === slug);
+  const blogResponse = await BlogsApi.getBySlug(slug);
+  if (!blogResponse.success) {
+    notFound();
+  }
+
+  const blogPayload = blogResponse.data;
+  const blog = Array.isArray(blogPayload)
+    ? (blogPayload[0] as Blog | undefined)
+    : (blogPayload as Blog | undefined);
+
   if (!blog) notFound();
 
-  const relatedBlogs = blogs.filter((b) => b.slug !== slug).slice(0, 3);
-  const getImageUrl = (img?: string) =>
-    img
-      ? img.startsWith("http")
-        ? img
-        : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`
-      : "/placeholder.jpg";
+  let relatedBlogs: Blog[] = [];
+  try {
+    const relatedResponse = await BlogsApi.getAll({ limit: 6 });
+    if (relatedResponse.success) {
+      const data = extractArray<Blog>(relatedResponse.data);
+      relatedBlogs = data.filter((b) => b.slug !== slug).slice(0, 3);
+    }
+  } catch (relatedError) {
+    console.warn("Failed to load related blogs:", relatedError);
+  }
 
   return (
     <main className="min-h-screen mt-24 bg-gray-50 font-sans">
@@ -146,7 +156,10 @@ export default async function BlogDetailsPage({ params }: Params) {
           {(blog.featuredImage || blog.image) && (
             <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg mb-10 group">
               <Image
-                src={getImageUrl(blog.featuredImage || blog.image)}
+                src={
+                  getImageUrl(blog.featuredImage || blog.image, "/placeholder.jpg") ||
+                  "/placeholder.jpg"
+                }
                 alt={blog.title}
                 fill
                 className="object-cover group-hover:scale-103 transition-transform duration-700"
@@ -226,7 +239,10 @@ export default async function BlogDetailsPage({ params }: Params) {
                 >
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
-                      src={getImageUrl(rb.featuredImage || rb.image)}
+                      src={
+                        getImageUrl(rb.featuredImage || rb.image, "/placeholder.jpg") ||
+                        "/placeholder.jpg"
+                      }
                       alt={rb.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-500"

@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { apiConfig } from "./config";
 
 /**
  * Utility function to merge Tailwind CSS classes with proper conflict resolution
@@ -192,9 +193,143 @@ export function deepClone<T>(obj: T): T {
   return obj;
 }
 
+const DEFAULT_IMAGE_PLACEHOLDER = "/placeholder-gallery.jpg";
+const STORAGE_PATH_PREFIXES = [
+  "madrasa/public/storage/",
+  "public/storage/",
+  "storage/",
+];
+
+const ensureLeadingSlash = (value: string) =>
+  value.startsWith("/") ? value : `/${value}`;
+
+const encodePathSegments = (value: string) =>
+  value
+    .split("/")
+    .filter(Boolean)
+    .map((segment) => encodeURIComponent(segment))
+    .join("/");
+
+const stripStoragePrefix = (value: string) => {
+  let normalized = value.replace(/^\/+/, "");
+  for (const prefix of STORAGE_PATH_PREFIXES) {
+    if (normalized.startsWith(prefix)) {
+      normalized = normalized.slice(prefix.length);
+      break;
+    }
+  }
+  return normalized.replace(/^\/+/, "");
+};
+
+const isRemoteUrl = (value: string) => /^https?:\/\//iu.test(value);
+const isDataUrl = (value: string) => value.startsWith("data:");
+
+const extractStoragePathFromUrl = (value: string) => {
+  try {
+    const url = new URL(value);
+    const path = url.pathname.replace(/^\/+/, "");
+    const normalized = stripStoragePrefix(path);
+    return normalized || null;
+  } catch {
+    return null;
+  }
+};
+
+const buildImageProxyUrl = (value: string) => {
+  const normalized = stripStoragePrefix(value);
+  if (!normalized) return null;
+
+  const encodedPath = encodePathSegments(normalized);
+  return encodedPath ? `/api/images/${encodedPath}` : null;
+};
+
+const resolveLocalAsset = (value: string) => {
+  const normalized = value.replace(/^\/+/, "");
+  if (!normalized) return null;
+
+  if (normalized.includes("placeholder")) {
+    return ensureLeadingSlash(normalized);
+  }
+
+  if (normalized.startsWith("public/")) {
+    return ensureLeadingSlash(normalized.slice("public/".length));
+  }
+
+  if (normalized.startsWith("images/")) {
+    return ensureLeadingSlash(normalized);
+  }
+
+  if (normalized.startsWith("assets/")) {
+    return ensureLeadingSlash(normalized);
+  }
+
+  return null;
+};
+
+const resolveFallback = (fallback?: string | null) => {
+  if (!fallback) return DEFAULT_IMAGE_PLACEHOLDER;
+  const trimmed = fallback.trim();
+  if (!trimmed) return DEFAULT_IMAGE_PLACEHOLDER;
+  if (isRemoteUrl(trimmed) || isDataUrl(trimmed) || trimmed.startsWith("/")) {
+    return trimmed;
+  }
+  return ensureLeadingSlash(trimmed);
+};
+
+export const buildStorageUrl = (path?: string | null) => {
+  if (!path) return null;
+
+  if (path.startsWith("http")) {
+    return path;
+  }
+
+  const trimmedBase = apiConfig.storageBaseUrl.replace(/\/+$/u, "");
+  const normalizedPath = path.replace(/^\/+/, "");
+  return `${trimmedBase}/${normalizedPath}`;
+};
+
 // General image URL function that can be used everywhere
-export const getImageUrl = (img?: string) => {
-  if (!img) return null;
-  if (img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+export const getImageUrl = (img?: string | null, fallback?: string | null) => {
+  const fallbackUrl = resolveFallback(fallback);
+
+  if (!img) return fallbackUrl;
+
+  const rawValue = `${img}`.trim();
+  if (!rawValue) return fallbackUrl;
+
+  if (rawValue.startsWith("/api/images/")) {
+    return rawValue;
+  }
+
+  if (isDataUrl(rawValue)) {
+    return rawValue;
+  }
+
+  const localAsset = resolveLocalAsset(rawValue);
+  if (localAsset) {
+    return localAsset;
+  }
+
+  if (isRemoteUrl(rawValue)) {
+    const storagePath = extractStoragePathFromUrl(rawValue);
+    if (storagePath) {
+      const proxied = buildImageProxyUrl(storagePath);
+      if (proxied) return proxied;
+    }
+    return rawValue;
+  }
+
+  const proxied = buildImageProxyUrl(rawValue);
+  if (proxied) return proxied;
+
+  return fallbackUrl;
+};
+
+// Enhanced image URL function with fallback handling
+export const getImageUrlWithFallback = (
+  img?: string | null,
+  fallback?: string | null
+) => {
+  const url = getImageUrl(img, fallback);
+  return url || resolveFallback(fallback);
 };

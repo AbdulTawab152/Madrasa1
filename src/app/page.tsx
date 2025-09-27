@@ -21,51 +21,17 @@ const BooksSection = lazy(() => import("./components/books/BooksSection"));
 
 // Removed getImages function - now handled by LazyGallerySection
 
-import { fetchWithCache } from "../lib/api";
-import { endpoints } from "../lib/config";
-import { Blog, Course as CourseType } from "../lib/types";
-
-async function fetchBlogsData(): Promise<Blog[]> {
-  try {
-    const data = await fetchWithCache<Blog[]>(endpoints.blogs);
-    return Array.isArray(data) ? data : [];
-  } catch (error) {
-    console.error("Error fetching blogs:", error);
-    // Return fallback data when API fails
-    return [
-      {
-        id: 1,
-        name: "Welcome Blog",
-        title: "Welcome to Our Islamic Learning Platform",
-        slug: "welcome-islamic-learning",
-        description: "Discover authentic Islamic knowledge and teachings.",
-        image: "/placeholder-blog.jpg",
-        date: new Date().toISOString(),
-        is_published: true,
-        is_top: false,
-        category_id: 1,
-        author: {
-          id: 1,
-          first_name: "Admin",
-          last_name: "User",
-          father_name: "System",
-          grandfather_name: "Admin",
-          full_address: "System Address",
-          dob: "1990-01-01",
-          bio: "System administrator",
-          name: "Admin User",
-          is_published: true,
-          is_alive: true,
-        },
-      },
-    ];
-  }
-}
+import { CoursesApi, extractArray } from "../lib/api";
+import { Course as CourseType } from "../lib/types";
 
 async function fetchCourseData(): Promise<CourseType[]> {
   try {
-    const data = await fetchWithCache<CourseType[]>(endpoints.courses);
-    return Array.isArray(data) ? data : [];
+    const response = await CoursesApi.getAll();
+    if (!response.success) {
+      throw new Error(response.error || "Failed to load courses");
+    }
+
+    return extractArray<CourseType>(response.data);
   } catch (error) {
     console.error("Error fetching courses:", error);
     // Return fallback data when API fails
@@ -93,10 +59,7 @@ async function fetchCourseData(): Promise<CourseType[]> {
 
 export default async function HomePage() {
   // Only fetch essential data for initial page load
-  const [blogs, courses] = await Promise.all([
-    fetchBlogsData(),
-    fetchCourseData(),
-  ]);
+  const courses = await fetchCourseData();
   return (
     <div className="min-h-screen bg-white">
       <Hero />

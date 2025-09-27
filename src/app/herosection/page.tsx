@@ -41,7 +41,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
 
 const Hero = () => {
   return (
-    <div className="relative  bg-black overflow-hidden mt-[-40px] md:mt-[0px] space-y-6">
+    <div className="relative  bg-primary-900 overflow-hidden mt-[-40px] md:mt-[0px] space-y-6">
       <div className="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black via-black/10 to-transparent z-10 pointer-events-none blur-lg" />
 
       <div className="space-y-4 relative z-20">

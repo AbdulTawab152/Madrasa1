@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
+import { TasawwufApi } from "@/lib/api";
+import { buildStorageUrl } from "@/lib/utils";
 
 interface Tasawwuf {
   id: number;
@@ -12,15 +14,16 @@ interface Tasawwuf {
   category?: { id: number; name: string };
 }
 
+const buildImageUrl = (path?: string | null) => buildStorageUrl(path) ?? undefined;
+
 async function getPost(slug: string): Promise<Tasawwuf | null> {
   try {
-    const res = await fetch(
-      `https://lawngreen-dragonfly-304220.hostingersite.com/api/tasawwuf/${slug}`,
-      { cache: "no-store" }
-    );
-    if (!res.ok) return null;
-    const json = await res.json();
-    return json;
+    const result = await TasawwufApi.getBySlug(slug);
+    if (!result.success) {
+      return null;
+    }
+
+    return (result.data as Tasawwuf | null) ?? null;
   } catch {
     return null;
   }
@@ -53,7 +56,7 @@ export default async function TasawwufSinglePage({
         {post.image && (
           <div className="relative w-full h-80 mb-8 rounded-lg overflow-hidden">
             <Image
-              src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${post.image}`}
+              src={buildImageUrl(post.image) || "/placeholder-tasawwuf.jpg"}
               alt={post.title}
               fill
               className="object-cover"
@@ -63,7 +66,7 @@ export default async function TasawwufSinglePage({
 
         {/* Description */}
         <article className="prose max-w-none text-gray-700 leading-relaxed">
-          {post.description .replace(/<[^>]*>/g, "")}
+          {post.description?.replace(/<[^>]*>/g, "")}
         </article>
 
         {/* Footer */}

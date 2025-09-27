@@ -7,6 +7,7 @@ import {
   X,
   Sparkles,
 } from "lucide-react";
+import { getImageUrlWithFallback } from "@/lib/utils";
 
 interface GalleryItem {
   id: number;
@@ -16,12 +17,6 @@ interface GalleryItem {
   image: string;
   featured?: boolean;
 }
-
-const getImageUrl = (img: string) => {
-  if (!img) return "";
-  if (img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
 
 // Mini Slider Component
 const MiniSlider = ({
@@ -49,7 +44,7 @@ const MiniSlider = ({
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl group">
       <img
-        src={getImageUrl(images[currentSlide].image)}
+        src={getImageUrlWithFallback(images[currentSlide].image, "/placeholder-gallery.jpg")}
         alt={images[currentSlide].title}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
@@ -207,8 +202,8 @@ export default function Gallery({
                 onClick={() => openLightbox(index)}
               >
                 <div className="relative  overflow-hidden">
-                  <img
-                    src={getImageUrl(img.image)}
+          <img
+            src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
                     alt={img.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
@@ -260,7 +255,7 @@ export default function Gallery({
                 >
                   <div className="relative w-full h-full overflow-hidden">
                     <img
-                      src={getImageUrl(img.image)}
+                      src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
                       alt={img.title}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -297,7 +292,7 @@ export default function Gallery({
               >
                 <div className="relative h-64 w-full overflow-hidden">
                   <img
-                    src={getImageUrl(img.image)}
+                    src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
                     alt={img.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
@@ -317,7 +312,7 @@ export default function Gallery({
 
         {/* Lightbox */}
         {currentIndex !== null && (
-          <div className="fixed inset-0 bg-black/95 flex items-center justify-center z-50 p-4">
+      <div className="fixed inset-0 bg-primary-950/90 flex items-center justify-center z-50 p-4">
             {/* Close button */}
             <button
               onClick={closeLightbox}
@@ -344,7 +339,7 @@ export default function Gallery({
             {/* Main image */}
             <div className="relative max-h-[85vh] max-w-4xl w-full">
               <img
-                src={getImageUrl(filteredImages[currentIndex].image)}
+                src={getImageUrlWithFallback(filteredImages[currentIndex].image, "/placeholder-gallery.jpg")}
                 alt={filteredImages[currentIndex].title}
                 className="max-h-[85vh] max-w-full mx-auto object-contain rounded-lg"
               />
@@ -377,8 +372,11 @@ export default function Gallery({
                     currentIndex === index ? "border-orange-500" : "border-transparent"
                   }`}
                 >
-                  <img
-                    src={getImageUrl(img.image)}
+                <img
+                  src={
+                    getImageUrl(img.image, "/placeholder-gallery.jpg") ||
+                    "/placeholder-gallery.jpg"
+                  }
                     alt={img.title}
                     className="w-full h-full object-cover"
                   />

@@ -1,7 +1,6 @@
 // app/authors/[id]/page.tsx
 import Image from "next/image";
-import { fetchWithCache } from "../../../lib/api";
-import { endpoints } from "../../../lib/config";
+import { AuthorsApi } from "../../../lib/api";
 import { Author } from "../../../lib/types";
 import {
  
@@ -18,6 +17,7 @@ import {
  
 } from "lucide-react";
 import { FaPhone, FaUser } from "react-icons/fa6";
+import { getImageUrl } from "@/lib/utils";
 
 interface AuthorPageProps {
   params: Promise<{ id: string }>;
@@ -25,18 +25,16 @@ interface AuthorPageProps {
 
 async function fetchAuthor(id: string): Promise<Author> {
   try {
-    const data = await fetchWithCache<Author>(`${endpoints.authors}/${id}`);
-    return data;
+    const response = await AuthorsApi.getById(id);
+    if (!response.success) {
+      throw new Error(response.error || "Author not found");
+    }
+
+    return response.data as Author;
   } catch (error) {
     throw new Error("Author not found");
   }
 }
-
-const getImageUrl = (img?: string | null) => {
-  if (!img) return "/placeholder-author.jpg";
-  if (img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
 
 export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   const { id } = await params;
@@ -49,7 +47,10 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
         <div className="flex flex-col items-center text-center relative">
           {author.image ? (
             <Image
-              src={getImageUrl(author.image)}
+              src={
+                getImageUrl(author.image, "/placeholder-author.jpg") ||
+                "/placeholder-author.jpg"
+              }
               alt={`${author.first_name} ${author.last_name}`}
               width={200}
               height={200}

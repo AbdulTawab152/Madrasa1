@@ -4,6 +4,7 @@ import { Book } from "../../../lib/types";
 import Link from "next/link";
 import { FaBook, FaCalendar, FaUser, FaArrowLeft, FaEye, FaHeart } from 'react-icons/fa';
 import { FaDownload, FaDownLong } from "react-icons/fa6";
+import { buildStorageUrl, getImageUrl } from "@/lib/utils";
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -33,12 +34,6 @@ export default async function BookDetailsPage({ params }: Params) {
         </div>
       );
     }
-
-    const getImageUrl = (img?: string | null) => {
-      if (!img) return null;
-      if (img.startsWith("http")) return img;
-      return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-    };
 
     return (
       <div className="min-h-screen mt-36 md:mt-[100px] bg-white">
@@ -95,7 +90,7 @@ export default async function BookDetailsPage({ params }: Params) {
                 <div className="rounded-lg overflow-hidden shadow-md">
                   {book.image ? (
                     <Image
-                      src={getImageUrl(book.image) || ""}
+                      src={getImageUrl(book.image, "/placeholder-book.jpg") || "/placeholder-book.jpg"}
                       alt={book.title}
                       width={400}
                       height={500}
@@ -157,7 +152,7 @@ export default async function BookDetailsPage({ params }: Params) {
                 <div className="flex gap-3 w-full pt-4">
                       {book.downloadable && book.pdf_file ? (
                         <a
-                          href={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${book.pdf_file}`}
+                          href={buildStorageUrl(book.pdf_file) || "#"}
                           download
                           target="_blank"
                           rel="noopener noreferrer"

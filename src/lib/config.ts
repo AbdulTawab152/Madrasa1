@@ -7,8 +7,21 @@ export const appConfig = {
 } as const;
 
 // API Configuration
+const defaultApiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lawngreen-dragonfly-304220.hostingersite.com/api';
+
+const inferStorageBase = () => {
+  if (process.env.NEXT_PUBLIC_API_STORAGE_URL) {
+    return process.env.NEXT_PUBLIC_API_STORAGE_URL;
+  }
+
+  // Try the correct storage path structure
+  const baseUrl = defaultApiBase.replace('/api', '');
+  return `${baseUrl}/madrasa/public/storage`;
+};
+
 export const apiConfig = {
-  baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lawngreen-dragonfly-304220.hostingersite.com/api',
+  baseUrl: defaultApiBase, // Always use domain-based API
+  storageBaseUrl: inferStorageBase(),
   cache: {
     duration: parseInt(process.env.NEXT_PUBLIC_CACHE_DURATION || '300'), // 5 minutes for better performance
     revalidate: parseInt(process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL || '300'), // 5 minutes
@@ -30,6 +43,8 @@ export const endpoints = {
   awlyaa: `${apiConfig.baseUrl}/awlyaa`,
   gallery: `${apiConfig.baseUrl}/gallery`,
   donation: `${apiConfig.baseUrl}/donate-info-for-web`,
+  tasawwuf: `${apiConfig.baseUrl}/tasawwuf`,
+  contact: `${apiConfig.baseUrl}/contact`,
 } as const;
 
 
@@ -45,19 +60,20 @@ export const navigation = {
   main: [
     { name: 'Home', href: '/', icon: 'home' },
     { name: 'Courses', href: '/courses', icon: 'course' },
-    { name: 'Blogs', href: '/blogs', icon: 'blog' },
-    { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'iftah', href: '/iftah', icon: 'fatwa' },
-  
-   
-    { name: 'Author', href: '/authors', icon: 'author' },
-    { name: 'Book', href: '/book', icon: 'book' },
-    { name: 'Event', href: '/event', icon: 'event' },
-    { name: 'Tasawof', href: '/tasawwuf', icon: 'tasawwuf' },
-    { name: 'Donation', href: '/donation', icon: 'donation' },
   
     { name: 'Article', href: '/articles', icon: 'article' },
     { name: 'Awalyaa', href: '/awlayaa', icon: 'awlayaa' },
+   
+    { name: 'Books', href: '/book', icon: 'book' },
+    { name: 'Donation', href: '/donation', icon: 'donation' },
+    { name: 'Blogs', href: '/blogs', icon: 'blog' },
+    { name: 'Author', href: '/authors', icon: 'author' },
+
+    { name: 'Event', href: '/event', icon: 'event' },
+    { name: 'Tasawof', href: '/tasawwuf', icon: 'tasawwuf' },
+    { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
+  
     {name : "contact" ,  href: "/contact"}
   
     // { name: 'Gallery', href: '/gallery', icon: '' },

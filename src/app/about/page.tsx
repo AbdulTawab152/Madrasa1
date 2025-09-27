@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import IslamicHeader from "../components/IslamicHeader";
 import { BookOpen, Award, Heart, Users, Sparkles, Clock, GraduationCap, Target, Lightbulb, Star, CheckCircle, Quote } from "lucide-react";
 import img from "../../../public/1.jpg";
 
@@ -65,25 +66,16 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="bg-white mt-[100px]">
-      {/* Hero Section */}
+    <div className="bg-white">
+      <IslamicHeader 
+        pageType="about"
+        title="About Anwarul Uloom"
+        subtitle="For over six decades, we've been committed to spreading authentic Islamic knowledge and nurturing hearts and minds."
+      />
+      
+      {/* Stats */}
       <section className="py-16 bg-gradient-to-b from-amber-50 to-white">
         <div className="max-w-6xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
-              <Star className="h-4 w-4 mr-2" />
-              Our Legacy Since 1961
-            </div>
-            <h1 className="text-4xl sm:text-5xl font-bold text-black mb-6">
-              About <span className="text-amber-600">Anwarul Uloom</span>
-            </h1>
-            <p className="text-lg text-black max-w-3xl mx-auto">
-              For over six decades, we've been committed to spreading authentic Islamic knowledge 
-              and nurturing hearts and minds.
-            </p>
-          </div>
-
-          {/* Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12">
             {stats.map((stat, index) => (
               <div

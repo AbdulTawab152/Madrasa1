@@ -3,6 +3,8 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { TasawwufApi, extractArray } from "@/lib/api";
+import { getImageUrl } from "@/lib/utils";
 
 interface Tasawwuf {
   id: number;
@@ -31,13 +33,12 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
     async function fetchPosts() {
       try {
         setIsLoading(true);
-        const res = await fetch(
-          "https://lawngreen-dragonfly-304220.hostingersite.com/api/tasawwuf",
-          { cache: "no-store" }
-        );
-        const json = await res.json();
+        const response = await TasawwufApi.getAll();
+        if (!response.success) {
+          throw new Error(response.error || "Unable to load tasawwuf content");
+        }
 
-        const data = Array.isArray(json) ? json : [json];
+        const data = extractArray<Tasawwuf>(response.data);
         const filtered = homePage ? data.filter((post) => post.is_top === 1) : data;
         setPosts(limit ? filtered.slice(0, limit) : filtered);
 
@@ -122,7 +123,10 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
         <div className="relative rounded-2xl overflow-hidden shadow-lg group">
           {featured.image && (
             <Image
-              src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${featured.image}`}
+              src={
+                getImageUrl(featured.image, "/placeholder-tasawwuf.jpg") ||
+                "/placeholder-tasawwuf.jpg"
+              }
               alt={featured.title}
               width={1200}
               height={500}
@@ -140,7 +144,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
                 </h2>
               </Link>
               <p className="text-gray-200 mb-4 leading-relaxed line-clamp-2">
-                {featured.description .replace(/<[^>]*>/g, "")}
+                {featured.description?.replace(/<[^>]*>/g, "")}
               </p>
               <div className="flex flex-wrap items-center gap-4 text-sm">
                 <div className="flex items-center">
@@ -197,7 +201,10 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
       {post.image && (
         <div className="relative w-full md:w-2/5 lg:w-1/3 h-52 rounded-lg overflow-hidden shadow-sm">
           <Image
-            src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${post.image}`}
+            src={
+              getImageUrl(post.image, "/placeholder-tasawwuf.jpg") ||
+              "/placeholder-tasawwuf.jpg"
+            }
             alt={post.title}
             fill
             className="object-cover hover:scale-105 transition-transform duration-500"
@@ -219,7 +226,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
             </h3>
      
           <p className="text-gray-600 line-clamp-3 leading-relaxed mb-4">
-            {post.description.replace(/<[^>]*>/g, "")}
+            {post.description?.replace(/<[^>]*>/g, "")}
           </p>
         </div>
         

@@ -1,12 +1,11 @@
-import ArticlesPreview from "../components/Articles";
+import ArticlesCard from "../components/ArticlesCard";
+import IslamicHeader from "../components/IslamicHeader";
 
 export default function ArticlesPage() {
   return (
-    <main className="p-8 mt-24">
-    
-
-      {/* Show all articles */}
-      <ArticlesPreview  /> 
+    <main className="w-full">
+      <IslamicHeader pageType="articles" title={""} />
+      <ArticlesCard />
     </main>
   );
 }

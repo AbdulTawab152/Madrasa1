@@ -1,378 +1,230 @@
 "use client";
 
-import Link from "next/link";
+import type { ReactNode } from "react";
+
 import Image from "next/image";
-import { useState } from "react";
+import Link from "next/link";
 import { motion } from "framer-motion";
-import { getImageUrl } from "../../../lib/utils";
-import { FaVideo } from "react-icons/fa6";
+import { ArrowUpRight, BookOpen, Clock, UserRound } from "lucide-react";
 
-interface Course {
-  id: number;
-  title: string;
-  slug: string;
-  book_id: number;
-  recorded_by_id: number;
-  description: string;
-  publish_date: string;
-  created_date: string;
-  is_published: number;
-  duration: string;
-  video_quantity: number;
-  resolution: string;
-  space: string;
-  short_video: string;
-  image: string;
-}
-
+import { Card, CardContent, CardFooter, CardMedia } from "../Card";
+import { getImageUrl } from "@/lib/utils";
+import type { Course as CourseType } from "@/lib/types";
 
 interface CoursesSectionProps {
-  courses: Course[];
+  courses: CourseType[];
   showAll?: boolean;
+  heading?: {
+    title?: string;
+    subtitle?: string;
+    eyebrow?: string;
+  };
 }
+
+const fallbackCourseImage = "/placeholder-course.jpg";
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const stripHtml = (value?: string | null) =>
+  (value || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const formatDate = (value?: string | null) => {
+  if (!value) return "Recently updated";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Recently updated";
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
+
+const instructorName = (course: CourseType) => {
+  const { recorded_by: instructor } = course;
+  if (!instructor) return "Haq Madrasa";
+  const parts = [instructor.first_name, instructor.last_name].filter(Boolean);
+  return parts.length > 0 ? parts.join(" ") : "Haq Madrasa";
+};
 
 export default function CoursesSection({
   courses,
   showAll = false,
+  heading,
 }: CoursesSectionProps) {
-  const sortedCourses =
-    courses
-      ?.filter((course) => course.is_published === 1)
-      .sort(
-        (a, b) =>
-          new Date(b.publish_date).getTime() -
-          new Date(a.publish_date).getTime()
-      ) || [];
+  const publishedCourses = (courses || [])
+    .filter((course) => Number(course.is_published) === 1)
+    .sort((a, b) => {
+      const aDate = new Date(
+        a.publish_date || a.created_date || a.created_at || "",
+      ).getTime();
+      const bDate = new Date(
+        b.publish_date || b.created_date || b.created_at || "",
+      ).getTime();
+      if (Number.isNaN(aDate) || Number.isNaN(bDate)) return 0;
+      return bDate - aDate;
+    });
 
-  const [visibleCount, setVisibleCount] = useState(
-    showAll ? sortedCourses.length : 6
-  );
   const displayCourses = showAll
-    ? sortedCourses.slice(0, visibleCount)
-    : sortedCourses.slice(0, 4);
+    ? publishedCourses
+    : publishedCourses.slice(0, 3);
 
-  const handleSeeMore = () => {
-    setVisibleCount((prev) => prev + 6);
-  };
+  if (displayCourses.length === 0) {
+    return (
+      <section className="py-16 text-center">
+        <div className="mx-auto max-w-2xl space-y-4 rounded-3xl border border-primary-100/60 bg-white/95 p-12 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.45)]">
+          <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
+            Coming soon
+          </p>
+          <h2 className="text-2xl font-semibold text-primary-900">
+            Fresh courses are on the way
+          </h2>
+          <p className="text-primary-600">
+            We are curating new learning experiences. Please check back shortly.
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <div className="w-full">
-      {/* Enhanced Hero Section */}
-      {showAll && (
-        <div className="  ">
-          <section className="relative w-full mt-0 overflow-hidden">
-            {/* Enhanced Background Layer */}
-            <div className="absolute inset-0 pointer-events-none z-0 w-full h-full">
-              {/* Main background image with a soft blur and color overlay */}
-              <Image
-                src="/1.jpg"
-                alt="Courses background"
-                fill
-                priority
-                className="object-cover object-center w-full h-full opacity-90"
-                style={{
-                  filter:
-                    "blur(1.5px) brightness(0.6) saturate(1.15) contrast(1.1)",
-                }}
-              />
-              {/* Gradient overlay for depth */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-900/60 via-gray-600/50 to-amber-900/40 w-full h-full" />
+    <section className="px-4 pb-16 pt-24 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-6xl space-y-10">
+        {heading ? (
+          <motion.header
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="mx-auto max-w-3xl space-y-4 text-center"
+          >
+            {heading.eyebrow ? (
+              <span className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary-600">
+                {heading.eyebrow}
+              </span>
+            ) : null}
+            {heading.title ? (
+              <h2 className="text-3xl font-semibold text-primary-900 md:text-4xl">
+                {heading.title}
+              </h2>
+            ) : null}
+            {heading.subtitle ? (
+              <p className="text-sm text-primary-600 sm:text-base">
+                {heading.subtitle}
+              </p>
+            ) : null}
+          </motion.header>
+        ) : null}
 
-              {/* Animated floating orbs for extra visual interest */}
-              <motion.div
-                className="absolute top-10 left-10 w-40 h-40 bg-gradient-to-br from-orange-200/40 to-yellow-200/40 rounded-full blur-3xl"
-                animate={{
-                  x: [0, 60, 0],
-                  y: [0, -30, 0],
-                  scale: [1, 1.15, 1],
-                }}
-                transition={{
-                  duration: 18,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              <motion.div
-                className="absolute bottom-10 right-10 w-56 h-56 bg-gradient-to-br from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl"
-                animate={{
-                  x: [0, -50, 0],
-                  y: [0, 40, 0],
-                  scale: [1, 0.95, 1],
-                }}
-                transition={{
-                  duration: 22,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-              {/* Decorative accent dots */}
-              <div className="absolute top-1/4 left-1/3 w-2 h-2 bg-orange-400/60 rounded-full animate-pulse"></div>
-              <div className="absolute bottom-1/3 right-1/3 w-1.5 h-1.5 bg-yellow-400/80 rounded-full animate-pulse delay-1000"></div>
-              <div className="absolute top-2/3 left-1/4 w-1.5 h-1.5 bg-orange-300/70 rounded-full animate-pulse delay-2000"></div>
-            </div>
-
-            <div className="relative z-10 py-20 md:py-16 px-6 flex flex-col items-center text-center">
-              {/* Animated headline */}
-              <motion.h1
-                className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-8 leading-tight drop-shadow-2xl"
-                style={{
-                  textShadow: "0 2px 8px rgba(0,0,0,0.18), 0 1px 0 #fff",
-                }}
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                <span className="text-orange-600 drop-shadow-lg">Discover</span>{" "}
-                <span className="relative">
-                  <span className="text-orange-500 drop-shadow-lg">
-                    Courses
-                  </span>
-                  <motion.div
-                    className="absolute -bottom-2 left-0 right-0 h-3 bg-orange-200/80 rounded-full -z-10 blur-[2px]"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 1, duration: 0.8, ease: "easeOut" }}
-                  />
-                </span>
-                <br className="hidden md:block" />
-                <span className="text-gray-700 drop-shadow-lg">That</span>{" "}
-                <span className="relative inline-block">
-                  <span className="text-orange-400 drop-shadow-lg">
-                    Inspire
-                  </span>
-                  <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-2 bg-orange-100/90 rounded-full blur-[1px]"
-                    initial={{ scaleX: 0 }}
-                    animate={{ scaleX: 1 }}
-                    transition={{ delay: 1.2, duration: 0.6, ease: "easeOut" }}
-                  />
-                </span>
-              </motion.h1>
-
-              {/* Animated description */}
-              <motion.p
-                className="text-lg md:text-xl text-gray-200 max-w-2xl mx-auto mb-14 leading-relaxed font-light drop-shadow"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.8 }}
-              >
-                <span className="inline-block bg-black/30 backdrop-blur-sm px-4 py-2 rounded-xl shadow-lg border border-white/20">
-                  Explore our curated collection of Islamic courses and
-                  tutorials.
-                  <br className="hidden md:inline" />
-                  <span className="text-amber-400 font-semibold">
-                    {" "}
-                    Learn
-                  </span>,{" "}
-                  <span className="text-orange-400 font-semibold">grow</span>,
-                  and{" "}
-                  <span className="text-yellow-400 font-semibold">advance</span>{" "}
-                  your knowledge at your own pace.
-                </span>
-              </motion.p>
-              {/* Decorative divider */}
-              <motion.div
-                className="w-32 h-1.5 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-yellow-400 mx-auto mb-2 shadow-lg"
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ delay: 1.5, duration: 0.7, ease: "easeOut" }}
-                style={{ transformOrigin: "left" }}
-              />
-            </div>
-          </section>
-        </div>
-      )}
-
-      {/* Enhanced Featured Section Header */}
-      {!showAll && (
         <motion.div
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          initial="hidden"
+          animate="visible"
+          transition={{ staggerChildren: 0.1, delayChildren: 0.08 }}
+          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
         >
-          <motion.div
-            className="inline-block mb-6 px-4 py-2 bg-gradient-to-r from-amber-500 to-orange-500 text-white text-sm font-medium rounded-full shadow-lg"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            🌟 Featured
-          </motion.div>
-          <motion.h2
-            className="text-3xl md:text-4xl font-bold text-gray-900 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Discover Our{" "}
-            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-              Most Popular
-            </span>{" "}
-            Courses
-          </motion.h2>
-          <motion.p
-            className="text-gray-600 max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-          >
-            Carefully selected Islamic learning courses that guide you on a
-            journey of knowledge, faith, and growth.
-          </motion.p>
-        </motion.div>
-      )}
+          {displayCourses.map((course) => {
+            const coverImage =
+              getImageUrl(course.image, fallbackCourseImage) ??
+              fallbackCourseImage;
+            const publishedOn = formatDate(
+              course.publish_date || course.created_date || course.created_at,
+            );
 
-      {/* Courses Grid */}
-      <div className="grid grid-cols-1 mt-20 px-4 md:grid-cols-2 md:px-10 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {displayCourses.map((course) => {
-          if (!course.is_published) return null;
-
-          const imageUrl = getImageUrl(course.image);
-
-          return (
-            <div
-              key={course.id}
-              className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 
-                         overflow-hidden border border-amber-100 flex flex-col h-[400px] group"
-            >
-              {/* Image */}
-              <div className="relative overflow-hidden h-48">
-                {imageUrl ? (
-                  <Image
-                    src={imageUrl}
-                    alt={course.title}
-                    width={400}
-                    height={240}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-amber-50 to-orange-50 flex items-center justify-center">
-                    <span className="text-4xl">📚</span>
-                  </div>
-                )}
-
-                {/* Enhanced Video Count Badge with Icon */}
-                <motion.div
-                  className="absolute top-3 left-3 bg-orange/500/2 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-xl backdrop-blur-sm flex items-center gap-1.5"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                >
-                  <svg
-                    className="w-3 h-3"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <FaVideo size={20}/>
-                  </svg>
-                  {course.video_quantity}
-                </motion.div>
-
-                {/* Enhanced Duration Badge */}
-                <motion.div
-                  className="absolute top-3 right-3 bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg border border-white/30"
-                  whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                >
-                  <svg
-                    className="w-3 h-3 text-amber-500"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span className="text-gray-800 font-semibold text-xs ">
-                    {" "}
-                    Hours : {course.duration}
-                  </span>
-                </motion.div>
-
-                {/* Resolution Badge */}
-              </div>
-
-              {/* Content */}
-              <div className="p-5 flex-1 flex flex-col">
-                <h3 className="text-lg font-bold text-black mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors">
-                  {course.title}
-                </h3>
-
-                <div className="text-sm text-black leading-relaxed">
-                    <span
-                      className="line-clamp-3 block"
-                      dangerouslySetInnerHTML={{ __html: course.description }}
-                    />
-                  </div>
-
-
-                <Link href={`/courses/${course.slug}`} className="mt-auto">
-                  <button className="w-full bg-amber-600 text-white font-medium py-2 px-3 rounded-md hover:bg-amber-700 transition-all duration-300 text-sm shadow-sm outline-none focus:outline-none focus:ring-0">
-                    View Course
-                  </button>
-                </Link>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* See More Button */}
-      {showAll && visibleCount < sortedCourses.length && (
-        <div className="mt-12 flex justify-center">
-          <button
-            onClick={handleSeeMore}
-            className="inline-flex items-center gap-2 px-5 py-2 bg-amber-600 
-                       text-white font-medium text-sm rounded-md shadow-sm 
-                       hover:bg-amber-700 transition-all duration-300"
-          >
-            See More
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </button>
-        </div>
-      )}
-
-      {/* Explore All Button (only in Featured section) */}
-      {!showAll && displayCourses.length > 0 && (
-        <div className="mt-12 flex justify-center">
-          <Link href="/courses">
-            <button
-              className="inline-flex items-center gap-2 px-5 py-2 bg-amber-600 
-                               text-white font-medium text-sm rounded-md shadow-sm 
-                               hover:bg-amber-700 transition-all duration-300"
-            >
-              Explore All Courses
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+            return (
+              <motion.article
+                key={course.id}
+                variants={cardVariants}
+                className="h-full"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </button>
-          </Link>
-        </div>
-      )}
-    </div>
+                <Card className="group flex h-full flex-col rounded-2xl border border-primary-100/60 bg-white/95 shadow-[0_14px_40px_-28px_rgba(15,23,42,0.35)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_-24px_rgba(15,23,42,0.4)]">
+                  <CardMedia className="aspect-[16/9]" gradientOverlay={false}>
+                    <Image
+                      src={coverImage}
+                      alt={course.title}
+                      fill
+                      sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 90vw"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                  </CardMedia>
+
+                  <CardContent className="gap-3.5 px-5 pb-2.5 pt-5">
+                    <div className="space-y-2.5">
+                      <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-500">
+                        {publishedOn}
+                      </span>
+
+                      <Link
+                        href={`/courses/${course.slug}`}
+                        className="block outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                      >
+                        <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
+                          {course.title}
+                        </h3>
+                      </Link>
+
+                      <p className="text-sm leading-relaxed text-primary-600 line-clamp-2">
+                        {stripHtml(course.description) ||
+                          "An immersive learning journey curated by our scholars."}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-2.5 text-[13px] font-medium text-primary-700 sm:grid-cols-2">
+                      <CourseMetaItem
+                        icon={<Clock className="h-3.5 w-3.5" />}
+                        label={course.duration || "Self paced"}
+                      />
+                      <CourseMetaItem
+                        icon={<BookOpen className="h-3.5 w-3.5" />}
+                        label={
+                          course.video_quantity
+                            ? `${course.video_quantity} lessons`
+                            : "Flexible learning"
+                        }
+                      />
+                    </div>
+
+                    <CardFooter className="!mt-0 border-t border-primary-100/60 pt-2">
+                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-primary-600 shadow-inner shadow-primary-100/70 ring-1 ring-primary-100/70">
+                          <UserRound className="h-4 w-4" />
+                        </span>
+                        <span>{instructorName(course)}</span>
+                      </div>
+
+                      <Link
+                        href={`/courses/${course.slug}`}
+                        className="inline-flex items-center gap-1.5 rounded-full bg-primary-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                      >
+                        View course
+                        <ArrowUpRight className="h-4 w-4" />
+                      </Link>
+                    </CardFooter>
+                  </CardContent>
+                </Card>
+              </motion.article>
+            );
+          })}
+        </motion.div>
+      </div>
+    </section>
   );
 }
+
+const CourseMetaItem = ({
+  icon,
+  label,
+}: {
+  icon: ReactNode;
+  label: string;
+}) => (
+  <div className="flex items-center gap-2 rounded-xl border border-primary-100/70 bg-white/85 px-3 py-2 shadow-sm backdrop-blur">
+    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary-100/80 via-white to-primary-200/70 text-primary-600 shadow-inner shadow-primary-200/60 ring-1 ring-primary-300/50">
+      {icon}
+    </span>
+    <span className="truncate text-primary-800">{label}</span>
+  </div>
+);

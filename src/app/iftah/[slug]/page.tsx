@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { IftahApi } from "@/lib/api";
+import { buildStorageUrl } from "@/lib/utils";
 import {
   User,
   Calendar,
@@ -50,27 +52,40 @@ interface Iftah {
   tag?: Tag;
 }
 
+const buildAssetUrl = (path?: string | null) => buildStorageUrl(path) ?? undefined;
+
 export default function IftahDetailsPage({ params }: { params: { slug: string } }) {
   const [iftah, setIftah] = useState<Iftah | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch(
-          `https://lawngreen-dragonfly-304220.hostingersite.com/api/iftah/${params.slug}`,
-          { cache: "no-store" }
-        );
-        const data = await res.json();
-        setIftah(data);
+        const response = await IftahApi.getIftah(params.slug);
+        if (!isMounted) return;
+
+        if (response.success) {
+          setIftah((response.data as Iftah) ?? null);
+        } else {
+          setIftah(null);
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
+        if (isMounted) {
+          setIftah(null);
+        }
       } finally {
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       }
     };
     fetchData();
+    return () => {
+      isMounted = false;
+    };
   }, [params.slug]);
 
   if (isLoading) {
@@ -195,7 +210,7 @@ export default function IftahDetailsPage({ params }: { params: { slug: string } 
                 <FileText className="w-5 h-5 mr-2" /> Attachment
               </h2>
               <a
-                href={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${iftah.attachment}`}
+                href={buildAssetUrl(iftah.attachment)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow-sm hover:shadow-md"
@@ -258,9 +273,7 @@ export default function IftahDetailsPage({ params }: { params: { slug: string } 
 
       </main>
 
-      <footer className="max-w-5xl mx-auto px-5 py-8 mt-12 text-center text-sm text-gray-500 border-t border-amber-200">
-        <p>© {new Date().getFullYear()} Islamic Q&A Platform. All rights reserved.</p>
-      </footer>
+     
     </div>
   );
 }

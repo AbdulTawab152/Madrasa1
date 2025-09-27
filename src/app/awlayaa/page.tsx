@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 import { Awlyaa } from "../../lib/types";
 import { AwlyaaApi } from "../../lib/api";
 import { motion } from "framer-motion";
+import { getImageUrl } from "@/lib/utils";
+import IslamicHeader from "../components/IslamicHeader";
 import {
   FaUser,
   FaAward,
@@ -99,86 +101,10 @@ export default function AwlyaaListPage() {
     );
 
   return (
-    <div className="min-h-screen mt-20 md:mt-10 bg-gradient-to-b from-gray-50 to-gray-100">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-orange-500 via-amber-500 to-orange-600 text-white pt-32 pb-24 overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute top-0 left-0 w-full h-full opacity-10">
-          <div className="absolute top-10% left-10% w-72 h-72 bg-white rounded-full"></div>
-          <div className="absolute top-60% left-80% w-96 h-96 bg-amber-300 rounded-full"></div>
-          <div className="absolute top-20% left-70% w-64 h-64 bg-white rounded-full"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
-            <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full mb-6">
-              <FaRibbon className="text-amber-200" />
-              <span className="text-amber-100 text-sm">
-                Distinguished Community
-              </span>
-            </div>
-
-            <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-              Meet Our <span className="text-amber-200">Awlyaa</span>
-            </h1>
-
-            <p className="text-xl text-orange-100 max-w-3xl mx-auto mb-10">
-              Discover the exceptional individuals who shape our community with
-              their expertise, passion, and dedication to making a difference.
-            </p>
-
-    
-          </motion.div>
-
-          {/* Stats Section */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto mt-16"
-          >
-            {[
-              { value: "100+", label: "Awlyaa Members" },
-              { value: "25+", label: "Countries" },
-              { value: "15+", label: "Expertise Fields" },
-              { value: "98%", label: "Satisfaction Rate" },
-            ].map((stat, index) => (
-              <div
-                key={index}
-                className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl text-center border border-white/20"
-              >
-                <div className="text-2xl md:text-3xl font-bold text-amber-200">
-                  {stat.value}
-                </div>
-                <div className="text-orange-100 text-sm mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-
-        {/* Decorative wave */}
-        <div className="absolute bottom-0 left-0 w-full">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 1440 120"
-            className="w-full"
-          >
-            <path
-              fill="#f9fafb"
-              fillOpacity="1"
-              d="M0,64L80,58.7C160,53,320,43,480,48C640,53,800,75,960,74.7C1120,75,1280,53,1360,42.7L1440,32L1440,120L1360,120C1280,120,1120,120,960,120C800,120,640,120,480,120C320,120,160,120,80,120L0,120Z"
-            ></path>
-          </svg>
-        </div>
-      </section>
-
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <IslamicHeader pageType="awlayaa" />
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 py-16 -mt-16 relative z-20">
+      <div className="max-w-7xl mx-auto px-6 pb-16 relative z-20">
         {/* Search Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -220,7 +146,10 @@ export default function AwlyaaListPage() {
                     <div className="relative h-60 overflow-hidden">
                       {item.profile_image ? (
                         <img
-                          src={`https://lawngreen-dragonfly-304220.hostingersite.com/storage/${item.profile_image}`}
+                          src={
+                            getImageUrl(item.profile_image, "/placeholder-awlyaa.jpg") ||
+                            "/placeholder-awlyaa.jpg"
+                          }
                           alt={item.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />

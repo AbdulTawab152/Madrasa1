@@ -2,190 +2,183 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useMemo, memo } from "react";
-import { navigation } from "../lib/config";
+import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { FaList } from "react-icons/fa6";
 
-const Navbar = memo(() => {
-  const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+import { appConfig, navigation } from "@/lib/config";
+import RouteProgressBar from "@/components/RouteProgressBar";
 
-  // Handle scroll effect
+const PRIMARY_LINK_LIMIT = 7;
+
+const Navbar = memo(function Navbar() {
+  const pathname = usePathname();
+  const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [hasScrolled, setHasScrolled] = useState(false);
+
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setHasScrolled(window.scrollY > 10);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Memoized date calculations to avoid recalculating on every render
-  const { desktopDate, mobileDate } = useMemo(() => {
-    const now = new Date();
+  useEffect(() => {
+    setMobileMenuOpen(false);
+    setMoreMenuOpen(false);
+  }, [pathname]);
 
-    // Format Gregorian date in English (US)
-    const gregorianEnglish = now.toLocaleDateString("en-US", {
+  const { desktop, mobile } = useMemo(() => {
+    const now = new Date();
+    const gregorianFull = now.toLocaleDateString("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     });
-
-    const gregorianEnglishShort = now.toLocaleDateString("en-US", {
+    const gregorianCompact = now.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
       day: "numeric",
     });
 
-    // Islamic (Hijri) date using Intl API in English
-    let islamicDate = "";
-    let islamicDateShort = "";
-
     try {
-      const islamic = new Intl.DateTimeFormat("en-u-ca-islamic", {
+      const hijriFull = new Intl.DateTimeFormat("en-u-ca-islamic", {
         year: "numeric",
         month: "long",
         day: "numeric",
       }).format(now);
-      islamicDate = islamic.replace("AH", "Hijri");
-
-      const islamicShort = new Intl.DateTimeFormat("en-u-ca-islamic", {
+      const hijriCompact = new Intl.DateTimeFormat("en-u-ca-islamic", {
         year: "numeric",
         month: "short",
         day: "numeric",
       }).format(now);
-      islamicDateShort = islamicShort.replace("AH", "Hijri");
+
+      return {
+        desktop: `${hijriFull.replace("AH", "Hijri")} ${gregorianFull}`.trim(),
+        mobile: `${hijriCompact.replace("AH", "Hijri")} ${gregorianCompact}`.trim(),
+      };
     } catch {
-      // Fallback if Islamic date calculation fails
-      islamicDate = "";
-      islamicDateShort = "";
+      return {
+        desktop: gregorianFull,
+        mobile: gregorianCompact,
+      };
     }
+  }, []);
 
-    return {
-      desktopDate: `${islamicDate} ${gregorianEnglish}`,
-      mobileDate: `${islamicDateShort} ${gregorianEnglishShort}`,
-    };
-  }, []); // Empty dependency array - only calculate once per session
+  const primaryLinks = useMemo(
+    () => navigation.main.slice(0, PRIMARY_LINK_LIMIT),
+    []
+  );
+  const secondaryLinks = useMemo(
+    () => navigation.main.slice(PRIMARY_LINK_LIMIT),
+    []
+  );
 
-  // Memoized navigation items
-  const mainNavItems = useMemo(() => navigation.main.slice(0, 6), []);
-  const dropdownNavItems = useMemo(() => navigation.main.slice(6), []);
+  const toggleMobileMenu = useCallback(() => {
+    setMobileMenuOpen((previous) => !previous);
+  }, []);
+
+  const toggleMoreMenu = useCallback(() => {
+    setMoreMenuOpen((previous) => !previous);
+  }, []);
+
+  const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
+  const closeMoreMenu = useCallback(() => setMoreMenuOpen(false), []);
 
   return (
-    <div className="fixed w-full z-50 top-0 start-0">
-      {/* Top Bar - Amber */}
-      <div className="bg-gradient-to-r from-amber-800 via-amber-700 to-amber-800 text-white py-3 px-4">
-        <div className="max-w-screen-xl mx-auto">
-          {/* Desktop Layout */}
-          <div className="hidden md:flex items-center justify-between">
-            {/* Left - Dates */}
-            <div className="text-sm font-medium text-amber-100">
-              <div className="flex items-center gap-2">
-                <span>{desktopDate}</span>
-              </div>
-            </div>
-
-            {/* Center - Arabic Calligraphy */}
-            <div className="text-center">
-              <span className="arabic text-xl font-bold tracking-wider text-amber-50 drop-shadow-sm">
-                بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-              </span>
-            </div>
+    <header className="fixed inset-x-0 top-0 z-50">
+      <div className="relative overflow-hidden bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 text-white">
+        <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_rgba(255,255,255,0))]" aria-hidden="true" />
+        <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
+        <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-secondary-400/30 blur-2xl" aria-hidden="true" />
+        <div className="max-w-screen-xl relative mx-auto px-4 py-3">
+          <div className="hidden md:flex items-center justify-between text-sm text-primary-50/90">
+            <span>{desktop}</span>
+            <span className="arabic text-xl font-bold tracking-widest text-secondary-100 drop-shadow-sm">
+              بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+            </span>
           </div>
-
-          {/* Mobile Layout */}
-          <div className="md:hidden">
-            {/* Arabic Calligraphy - Mobile */}
-            <div className="text-center mb-2">
-              <span className="arabic text-lg font-bold tracking-wider text-amber-50 drop-shadow-sm">
-                بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
-              </span>
-            </div>
-
-            {/* Dates - Mobile */}
-            <div className="text-center">
-              <div className="text-xs font-medium text-amber-100">
-                <div className="flex items-center justify-center gap-1">
-                  <svg
-                    className="w-3 h-3 text-amber-200"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                  <span>{mobileDate}</span>
-                </div>
-              </div>
-            </div>
+          <div className="md:hidden text-center space-y-2">
+            <span className="arabic block text-lg font-bold tracking-widest text-secondary-100 drop-shadow-sm">
+              بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+            </span>
+            <span className="inline-flex items-center justify-center gap-2 text-[11px] font-medium text-primary-50/90">
+              <svg
+                className="h-3 w-3 text-primary-200"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                aria-hidden="true"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              <span>{mobile}</span>
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Main Navigation Bar - White */}
       <nav
-        className={`bg-white border-b border-amber-200 transition-all duration-300 ${
-          scrolled ? "shadow-md shadow-amber-100" : ""
+        className={`relative bg-white/95 backdrop-blur transition-all duration-300 border-b border-primary-100/70 ${
+          hasScrolled ? "shadow-[0_12px_35px_-25px_rgba(4,22,19,0.55)]" : ""
         }`}
+        aria-label="Primary"
       >
-        <div className="max-w-screen-xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            {/* Left - Logo/Brand */}
-            <div className="flex items-center flex-shrink-0">
-              <Link
-                href="/"
-                className="text-2xl font-bold text-amber-800 hover:text-amber-600 transition-colors duration-200"
-              >
-                Anwarul Uloom
-              </Link>
-            </div>
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-6 py-4">
+          <div className="flex items-center justify-between gap-4">
+            <Link
+              href="/"
+              className="flex items-center gap-3 text-2xl font-semibold text-primary-900 hover:text-primary-700 transition-colors duration-200"
+            >
+              <span className="hidden sm:inline-block rounded-full bg-primary-800/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
+                مؤسسة
+              </span>
+              {appConfig.name}
+            </Link>
 
-            {/* Center - Navigation Links */}
             <div className="hidden lg:flex items-center justify-center flex-1">
-              <div className="flex items-center space-x-6 rtl:space-x-reverse">
-                {/* Main Navigation Items */}
-                {mainNavItems.map((item, index) => {
-                  const isActive = pathname === item.href;
+              <ul className="flex items-center gap-6">
+                {primaryLinks.map(({ href, name }) => {
+                  const isActive = pathname === href;
                   return (
-                    <div key={item.href} className="flex items-center group">
+                    <li key={href} className="group relative">
                       <Link
-                        href={item.href}
-                        className={`text-amber-700 hover:text-amber-600 font-semibold text-base transition-colors duration-200 relative py-2 focus:outline-none focus:ring-0 ${
-                          isActive ? "text-amber-600" : ""
+                        href={href}
+                        className={`font-medium text-[15px] uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800  outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                          isActive ? "text-primary-600" : ""
                         }`}
                       >
-                        {item.name}
-                        {isActive && (
-                          <div className="absolute -bottom-1 left-0 w-full h-0.5  rounded-full"></div>
-                        )}
-                        <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-amber-600 rounded-full transition-all duration-200 group-hover:w-full"></div>
+                        {name}
                       </Link>
-                      {index < mainNavItems.length - 1 && (
-                        <div className="mx-4 w-px h-5 bg-amber-300 group-hover:bg-amber-400 transition-colors duration-200"></div>
-                      )}
-                    </div>
+                      <span
+                        className={`absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-secondary-500 transition-opacity duration-200 ${
+                          isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                        }`}
+                        aria-hidden="true"
+                      />
+                    </li>
                   );
                 })}
 
-                {/* Dropdown Menu */}
-                <div className="flex items-center group">
-                  <div className="mx-4 w-px h-5 bg-amber-300 group-hover:bg-amber-400 transition-colors duration-200"></div>
-                  <div className="relative">
+                {secondaryLinks.length > 0 && (
+                  <li className="relative">
                     <button
-                      onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                      className="text-amber-700 hover:text-amber-600 font-semibold text-base transition-colors duration-200 flex items-center gap-2 py-2 focus:outline-none focus:ring-0"
+                      type="button"
+                      onClick={toggleMoreMenu}
+                      className="flex items-center gap-2 font-medium text-[15px] uppercase tracking-wide text-primary-800 hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:outline-none"
+                      aria-haspopup="true"
+                      aria-expanded={isMoreMenuOpen}
                     >
                       More
                       <svg
-                        className={`w-4 h-4 transition-transform duration-200 ${
-                          isDropdownOpen ? "rotate-180" : ""
+                        className={`h-4 w-4 transition-transform ${
+                          isMoreMenuOpen ? "rotate-180" : ""
                         }`}
                         fill="currentColor"
                         viewBox="0 0 20 20"
+                        aria-hidden="true"
                       >
                         <path
                           fillRule="evenodd"
@@ -194,169 +187,192 @@ const Navbar = memo(() => {
                         />
                       </svg>
                     </button>
-
-                    {/* Dropdown Content */}
-                    <div
-                      className={`absolute top-full left-1/2 transform -translate-x-1/2 mt-3 w-56 bg-white rounded-xl shadow-xl border border-amber-200 transition-all duration-200 ${
-                        isDropdownOpen
-                          ? "opacity-100 visible translate-y-0"
-                          : "opacity-0 invisible -translate-y-2"
-                      }`}
-                    >
-                      <div className="py-3">
-                        {dropdownNavItems.map((item) => {
-                          const isActive = pathname === item.href;
-                          return (
-                            <Link
-                              key={item.href}
-                              href={item.href}
-                              className={`block px-4 py-3 text-sm transition-colors duration-200 focus:outline-none focus:ring-0 ${
-                                isActive
-                                  ? "text-amber-600 bg-amber-50 font-medium"
-                                  : "text-amber-700 hover:text-amber-600 hover:bg-amber-50"
-                              }`}
-                              onClick={() => setIsDropdownOpen(false)}
-                            >
-                              {item.name}
-                            </Link>
+                <div
+                  className={`absolute left-1/2 top-full mt-3 w-56 -translate-x-1/2 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
+                    isMoreMenuOpen
+                      ? "visible opacity-100"
+                      : "invisible -translate-y-2 opacity-0"
+                  }`}
+                  role="menu"
+                >
+                  <ul className="py-3">
+                    {secondaryLinks.map(({ href, name }) => {
+                      const isActive = pathname === href;
+                      return (
+                        <li key={href}>
+                          <Link
+                            href={href}
+                            onClick={closeMoreMenu}
+                            className={`block px-4 py-3 uppercase text-sm transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
+                              isActive
+                                ? "bg-primary-50 font-semibold text-primary-700"
+                                : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
+                            }`}
+                          >
+                            {name}
+                          </Link>
+                        </li>
                           );
                         })}
-                      </div>
+                      </ul>
                     </div>
-                  </div>
+                  </li>
+                )}
+              </ul>
+            </div>
+
+            <button
+              type="button"
+              onClick={toggleMobileMenu}
+              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-100 text-primary-700 hover:bg-primary-200 transition lg:hidden"
+              aria-label="Toggle navigation menu"
+              aria-expanded={isMobileMenuOpen}
+            >
+              <FaList size={20} />
+            </button>
+          </div>
+        </div>
+        <RouteProgressBar />
+      </nav>
+
+      <div
+        className={`lg:hidden fixed inset-0 z-40 bg-primary-900/40 transition-opacity duration-300 ${
+          isMobileMenuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+        aria-hidden="true"
+        onClick={closeMobileMenu}
+      />
+
+      <aside
+        className={`lg:hidden fixed inset-y-0 left-0 z-50 w-4/5 max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
+          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        aria-label="Mobile navigation"
+      >
+        <div className="flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100">
+          <span className="text-lg font-semibold text-primary-900 tracking-wide">{appConfig.name}</span>
+          <button
+            type="button"
+            onClick={closeMobileMenu}
+            className="rounded-full p-2 text-primary-700 hover:text-primary-600 focus:outline-none focus-visible:outline-none"
+            aria-label="Close navigation menu"
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        <nav className="h-full overflow-y-auto px-6 py-6" aria-label="Mobile">
+          <div className="space-y-3">
+            {primaryLinks.map(({ href, name }) => {
+              const isActive = pathname === href;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  onClick={closeMobileMenu}
+                  className={`flex items-center justify-between rounded-xl p-4 text-lg font-medium transition-all duration-200 shadow-sm ${
+                    isActive
+                      ? "border-l-4 border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900"
+                      : "text-primary-800/90 hover:bg-primary-100/40"
+                  }`}
+                >
+                  <span>{name}</span>
+                  {isActive && (
+                    <span className="rounded-full bg-primary-600 px-2 py-0.5 text-xs font-semibold text-primary-50">
+                      Active
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+
+            {secondaryLinks.length > 0 && (
+              <div className="pt-5 mt-6 border-t border-primary-100/60">
+                <button
+                  type="button"
+                  onClick={toggleMoreMenu}
+                  className="flex w-full items-center justify-between rounded-xl bg-primary-100/40 p-4 text-lg font-semibold text-primary-800 hover:bg-primary-100/60 transition-all duration-200 focus:outline-none focus-visible:outline-none"
+                  aria-expanded={isMoreMenuOpen}
+                >
+                  <span className="flex items-center gap-3">
+                    <svg
+                      className="h-5 w-5 text-primary-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M4 6h16M4 12h16m-7 6h7"
+                      />
+                    </svg>
+                    More options
+                  </span>
+                  <svg
+                    className={`h-4 w-4 text-primary-500 transition-transform ${
+                      isMoreMenuOpen ? "rotate-180" : ""
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+
+                <div
+                  className={`mt-2 space-y-2 overflow-hidden transition-all duration-300 ${
+                    isMoreMenuOpen ? "max-h-96" : "max-h-0"
+                  }`}
+                >
+                  {secondaryLinks.map(({ href, name }) => {
+                    const isActive = pathname === href;
+                    return (
+                      <Link
+                        key={href}
+                        href={href}
+                        onClick={() => {
+                          closeMobileMenu();
+                          closeMoreMenu();
+                        }}
+                        className={`block rounded-lg p-3 text-base font-medium transition-all duration-200 ${
+                          isActive
+                            ? "bg-primary-100/50 text-primary-900"
+                            : "text-primary-700 hover:bg-primary-100/30"
+                        }`}
+                      >
+                        {name}
+                      </Link>
+                    );
+                  })}
                 </div>
               </div>
-            </div>
-
-            {/* Right - Mobile Menu Button */}
-           
-
+            )}
           </div>
-
-          <div className="lg:hidden">
-  {/* Hamburger Button */}
-  <div className="flex items-center left-0 flex-shrink-0">
-    <button
-      onClick={() => setIsOpen(!isOpen)}
-      className="inline-flex items-center absolute right-0 top-[90px] justify-center p-2 rounded-lg text-amber-600 focus:outline-none focus:ring-2 focus:ring-amber-200 transition-all duration-300"
-      aria-label="Toggle menu"
-      aria-expanded={isOpen}
-    >
-    <FaList size={20}/>
-    </button>
-  </div>
-
-  {/* Mobile Navigation Menu */}
-  <div className={`fixed inset-0 z-50 transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} transition-transform duration-300 ease-in-out lg:hidden`}>
-    <div className="absolute inset-0 bg-black/20" onClick={() => setIsOpen(false)}></div>
-    <div className="relative w-4/5 max-w-sm h-full bg-white shadow-2xl">
-    
-
-      {/* Navigation Items */}
-      <nav className="pt-16 px-6 overflow-y-auto h-full">
-        <div className="space-y-2">
-          {/* Main navigation items */}
-          {navigation.main.slice(0, 4).map((item) => {
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center p-4 rounded-xl text-lg font-medium transition-all duration-200 ${
-                  isActive
-                    ? "text-amber-900 bg-gradient-to-r from-amber-400/30 to-amber-300/30 shadow-sm border-l-4 border-amber-600"
-                    : "text-amber-800 hover:text-amber-700 hover:bg-amber-200/40"
-                }`}
-                onClick={() => setIsOpen(false)}
-              >
-                <span className="flex-1">{item.name}</span>
-                {isActive && (
-                  <div className="ml-2 bg-amber-600 text-amber-50 text-xs px-2 py-1 rounded-full">
-                    Active
-                  </div>
-                )}
-              </Link>
-            );
-          })}
-
-          {/* More dropdown section */}
-          <div className="pt-4 mt-4 border-t border-amber-200/60">
-            <button
-              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-              className="w-full flex justify-between items-center p-4 rounded-xl text-lg font-medium text-amber-800 bg-amber-200/30 hover:bg-amber-200/50 transition-all duration-200"
-              aria-expanded={isDropdownOpen}
-            >
-              <span className="flex items-center">
-                <svg className="w-5 h-5 mr-3 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-                More Options
-              </span>
-              <svg
-                className={`w-4 h-4 transition-transform duration-200 ${
-                  isDropdownOpen ? "rotate-180" : ""
-                } text-amber-600`}
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
-
-            {/* Dropdown items */}
-            <div
-              className={`mt-2 ml-6 space-y-1 rounded-lg overflow-hidden transition-all duration-300 ${
-                isDropdownOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
-              }`}
-            >
-              {[
-                { href: "/author", name: "Author" },
-                { href: "/articles", name: "Articles" },
-                { href: "/iftah", name: "Iftah" },
-                { href: "/donation", name: "Donation" },
-                { href: "/tasawwuf", name: "Tasawwuf" },
-              ].map(({ href, name }) => {
-                const isActive = pathname === href;
-                return (
-                  <Link
-                    key={href}
-                    href={href}
-                    className={`flex items-center p-3 rounded-lg text-base font-medium transition-all duration-200 ${
-                      isActive
-                        ? "text-amber-900 bg-amber-200/50"
-                        : "text-amber-700 hover:text-amber-800 hover:bg-amber-200/30"
-                    }`}
-                    onClick={() => {
-                      setIsOpen(false);
-                      setIsDropdownOpen(false);
-                    }}
-                  >
-                    <span>{name}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
-</div>
-
-          {/* Mobile Navigation */}
-
-          {/* Mobile Navigation */}
-         
-        </div>
-      </nav>
-    </div>
+        </nav>
+      </aside>
+    </header>
   );
 });
-
-Navbar.displayName = "Navbar";
 
 export default Navbar;

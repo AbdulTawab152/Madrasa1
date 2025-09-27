@@ -1,48 +1,53 @@
 "use client";
 import { useEffect, useState } from "react";
+import { GalleryApi, extractArray } from "@/lib/api";
 import Gallery from "./gallery/Gallery";
 
+interface GalleryItem {
+  id: number | string;
+  image?: string | null;
+  title?: string | null;
+  [key: string]: unknown;
+}
+
 export default function LazyGallerySection() {
-  const [images, setImages] = useState<any[]>([]);
+  const [images, setImages] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchImages() {
       try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+        const response = await GalleryApi.getAll();
+        if (!isMounted) return;
 
-        const res = await fetch(
-          "https://lawngreen-dragonfly-304220.hostingersite.com/api/gallery",
-          {
-            next: { revalidate: 300 }, // Cache for 5 minutes
-            headers: {
-              "Content-Type": "application/json",
-            },
-            signal: controller.signal,
-          }
-        );
+        const payload = extractArray<GalleryItem>(response.data);
 
-        clearTimeout(timeoutId);
-
-        if (!res.ok) throw new Error("Failed to fetch gallery");
-        const data = await res.json();
-        setImages(Array.isArray(data) ? data : data?.data || []);
+        setImages(payload);
       } catch (error) {
         console.error("Error fetching gallery:", error);
-        // Use fallback images
-        setImages([
-          {
-            id: 1,
-            image: "/placeholder-gallery.jpg",
-            title: "Gallery temporarily unavailable",
-          },
-        ]);
+        if (isMounted) {
+          setImages([
+            {
+              id: 1,
+              image: "/placeholder-gallery.jpg",
+              title: "Gallery temporarily unavailable",
+            },
+          ]);
+        }
       } finally {
-        setLoading(false);
+        if (isMounted) {
+          setLoading(false);
+        }
       }
     }
+
     fetchImages();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (loading) {

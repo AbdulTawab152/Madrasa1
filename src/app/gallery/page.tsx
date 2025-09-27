@@ -1,17 +1,25 @@
-// src/app/gallery/page.tsx
+import { GalleryApi, extractArray } from "@/lib/api";
 import Gallery from "./../components/gallery/Gallery";
+import IslamicHeader from "../components/IslamicHeader";
 
 async function getImages() {
-  const res = await fetch(
-    "https://lawngreen-dragonfly-304220.hostingersite.com/api/gallery",
-    { cache: "no-store" }
-  );
-  if (!res.ok) throw new Error("Failed to fetch gallery");
-  return res.json();
+  const response = await GalleryApi.getAll();
+  if (!response.success) {
+    throw new Error(response.error || "Failed to fetch gallery");
+  }
+
+  return extractArray<Record<string, unknown>>(response.data);
 }
 
 export default async function GalleryPage() {
   const images = await getImages();
 
-  return <Gallery initialImages={images} />;
+  return (
+    <div>
+      <IslamicHeader pageType="gallery" />
+      <div className="pb-16">
+        <Gallery initialImages={images} />
+      </div>
+    </div>
+  );
 }

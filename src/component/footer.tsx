@@ -16,7 +16,8 @@ const Footer = () => (
               alt="Madrasa Logo" 
               width={40}
               height={40}
-              className="object-contain rounded-full" 
+              className="object-contain rounded-full"
+              style={{ width: "auto", height: "auto" }}
             />
             <div>
               <h3 className="text-xl font-bold text-gray-900">Madrasa</h3>

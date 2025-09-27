@@ -2,12 +2,13 @@
 import Link from "next/link";
 
 import Image from "next/image";
-import { Calendar, MapPin, User, Clock, Users, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Clock, Users, ArrowRight } from "lucide-react";
 import { getImageUrl } from "../../../lib/utils";
 import { motion } from "framer-motion";
 import { Event } from "../../../lib/types";
 import { FaSearchLocation, FaTimes } from "react-icons/fa";
 import { FaBuildingCircleExclamation, FaClock, FaTimeline } from "react-icons/fa6";
+import { Card, CardBadge, CardContent, CardFooter, CardMedia } from "../Card";
 
 interface EventsSectionProps {
   events: Event[];
@@ -16,6 +17,25 @@ interface EventsSectionProps {
   heroSubtitle?: string;
   heroImage?: string;
 }
+
+const fallbackEventImage = "/placeholder-event.jpg";
+
+const stripHtml = (value?: string | null) =>
+  (value || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+
+const formatEventDate = (value?: string | null) => {
+  if (!value) return "Recently updated";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "Recently updated";
+  return date.toLocaleDateString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+};
 
 export default function EventsSection({
   events,
@@ -194,145 +214,155 @@ export default function EventsSection({
        
 
           {/* Title */}
-          <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight">
-            {showAll ? (
-              <></>
-            ) : (
-              <>
- 
-
-<motion.h2
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Discover Our{" "}
-            <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
-              Events
-            </span>{" "}
-            
-          </motion.h2>
-
-
-              </>
-            )}
-          </h2>
+          {showAll ? (
+            <></>
+          ) : (
+            <motion.h2
+              className="text-4xl md:text-5xl font-bold text-gray-900 mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
+              Discover Our{" "}
+              <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">
+                Events
+              </span>{" "}
+            </motion.h2>
+          )}
         </div>
 
         <div className="relative">
           <div className="absolute -left-4 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
 
-          {displayEvents.map((event, idx) => (
-  <Link key={event.id} href={`/event/${event.slug}`}>
-    <div className="group flex flex-col md:flex-row items-start mb-12 relative pl-4 md:pl-24">
-      {/* Timeline dot */}
-      <div className="absolute -left-4 md:left-6 top-5 w-5 h-5 rounded-full bg-white border-4 border-orange-500 transition-transform duration-300 group-hover:scale-125" />
-      {idx < displayEvents.length - 1 && (
-        <span className="absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
-      )}
+          {displayEvents.map((event, idx) => {
+            const coverImage =
+              getImageUrl(event.image, fallbackEventImage) ?? fallbackEventImage;
+            const eventDate = formatEventDate(event.created_at);
+            const location =
+              event.address || event.branch_name || event.country || "Location coming soon";
 
-      <div className="flex-1 bg-white rounded-xl overflow-hidden transition-all duration-300 flex flex-col md:flex-row">
-        {/* Event Image */}
-        {event.image && (
-          <div className="md:w-1/3 h-48 md:h-auto relative overflow-hidden">
-            <Image
-              src={getImageUrl(event.image) || "/placeholder-event.jpg"}
-              alt={event.title}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          </div>
-        )}
+            const liveLabel = (() => {
+              switch (event.live_link_type) {
+                case "facebook":
+                  return "Facebook Live";
+                case "youtube":
+                  return "YouTube Live";
+                case "zoom":
+                  return "Zoom Meeting";
+                default:
+                  return "Join live";
+              }
+            })();
 
-        {/* Event Content */}
-        <div className={`p-6 ${event.image ? "md:w-2/3" : "w-full"}`}>
-          {/* Date */}
-          <div className="flex items-center gap-3 mb-3 flex-wrap text-sm text-gray-500">
-            <Calendar size={18} className="text-orange-400" />
-            {new Date(event.created_at).toLocaleDateString("en-US", {
-              month: "short",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </div>
+            return (
+              <motion.div
+                key={event.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                className="group relative mb-12 pl-4 md:pl-24"
+              >
+                <div className="pointer-events-none absolute -left-4 md:left-6 top-5 h-5 w-5 rounded-full border-4 border-white bg-primary-500 shadow-lg transition-transform duration-300 group-hover:scale-110" />
+                {idx < displayEvents.length - 1 ? (
+                  <span className="pointer-events-none absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100" />
+                ) : null}
 
-          {/* Title */}
-          <h3 className="text-xl font-bold text-gray-900 group-hover:text-orange-500 transition-colors mb-3">
-            {event.title}
-          </h3>
+                <Card className="relative flex w-full flex-col overflow-hidden bg-white/95 backdrop-blur md:flex-row">
+                  <CardMedia className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3]">
+                    <Image
+                      src={coverImage}
+                      alt={event.title}
+                      fill
+                      sizes="(min-width: 1280px) 480px, (min-width: 768px) 50vw, 100vw"
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
 
-          {/* Description */}
-          <p className="text-gray-600 text-sm mb-4 line-clamp-4">
-            {event.description.replace(/<[^>]*>/g, "")}
-          </p>
+                    <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
+                      Community Event
+                    </CardBadge>
+                    {event.branch_name ? (
+                      <CardBadge className="absolute bottom-4 right-4 bg-primary-600 text-white">
+                        {event.branch_name}
+                      </CardBadge>
+                    ) : null}
+                  </CardMedia>
 
-          {/* Event Info */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-            {/* Location */}
-            <div className="flex items-center gap-1">
-              <FaSearchLocation size={16} className="text-orange-400" />
-              {event.live_link && (
-              <div className="flex items-center gap-1">
-                <a
-                  href={event.live_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 font-medium hover:underline flex items-center gap-1"
-                >
-                  {event.live_link_type === "facebook" && (
-                    <span> Facebook Live</span>
-                  )}
-                  {event.live_link_type === "youtube" && (
-                    <span> YouTube Live</span>
-                  )}
-                  {event.live_link_type === "zoom" && (
-                    <span> Zoom Meeting</span>
-                  )}
-                  {/* {!["facebook", "youtube", "zoom"].includes(
-                    event.live_link_type
-                  ) && <span>🔗 Live Link</span>} */}
-                </a>
-              </div>
-            )}
-            </div>
+                  <CardContent className="w-full gap-6 p-6 md:w-1/2">
+                    <div className="space-y-4">
+                      <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">
+                        <Calendar className="h-4 w-4 text-primary-500" />
+                        <span>{eventDate}</span>
+                      </div>
 
-            {/* Duration */}
-            <div className="flex items-center gap-1">
-              <FaClock size={16} className="text-orange-400" />
-              <span>{event.duration || "N/A"}</span>
-            </div>
+                      <h3 className="text-2xl font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
+                        {event.title}
+                      </h3>
 
-            {/* Live Link */}
-            {/* {event.live_link && (
-              <div className="flex items-center gap-1">
-                <a
-                  href={event.live_link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-orange-500 font-medium hover:underline flex items-center gap-1"
-                >
-                  {event.live_link_type === "facebook" && (
-                    <span>📺 Facebook Live</span>
-                  )}
-                  {event.live_link_type === "youtube" && (
-                    <span>▶️ YouTube Live</span>
-                  )}
-                  {event.live_link_type === "zoom" && (
-                    <span>🎥 Zoom Meeting</span>
-                  )}
-                  {!["facebook", "youtube", "zoom"].includes(
-                    event.live_link_type
-                  ) && <span>🔗 Live Link</span>}
-                </a>
-              </div>
-            )} */}
-          </div>
-        </div>
-      </div>
-    </div>
-  </Link> 
-))}
+                      <p className="text-sm leading-relaxed text-primary-600 line-clamp-4">
+                        {stripHtml(event.description)}
+                      </p>
+                    </div>
+
+                    <div className="grid gap-3 text-sm text-primary-700 md:grid-cols-2">
+                      <span className="inline-flex items-center gap-2">
+                        <MapPin className="h-4 w-4 text-primary-500" />
+                        <span className="line-clamp-1">{location}</span>
+                      </span>
+
+                      <span className="inline-flex items-center gap-2">
+                        <Clock className="h-4 w-4 text-primary-500" />
+                        <span>{event.duration || "Flexible"}</span>
+                      </span>
+
+                      {event.contact ? (
+                        <span className="inline-flex items-center gap-2">
+                          <Users className="h-4 w-4 text-primary-500" />
+                          <span className="line-clamp-1">{event.contact}</span>
+                        </span>
+                      ) : null}
+
+                      {event.live_link ? (
+                        <span className="inline-flex items-center gap-2 text-primary-600">
+                          <ArrowRight className="h-4 w-4" />
+                          <span>{liveLabel}</span>
+                        </span>
+                      ) : null}
+                    </div>
+
+                    <CardFooter>
+                      <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-700">
+                        <Users className="h-4 w-4 text-primary-500" />
+                        Organized by Haq Madrasa
+                      </span>
+
+                      <div className="flex flex-wrap items-center gap-2">
+                        {event.live_link ? (
+                          <a
+                            href={event.live_link}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600 transition-colors duration-200 hover:bg-primary-100"
+                          >
+                            Join live
+                            <ArrowRight className="h-4 w-4" />
+                          </a>
+                        ) : null}
+
+                        <Link
+                          href={`/event/${event.slug}`}
+                          className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary-700"
+                        >
+                          Event details
+                          <ArrowRight className="h-4 w-4" />
+                        </Link>
+                      </div>
+                    </CardFooter>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            );
+          })}
 
         </div>
         {!showAll && sortedEvents.length > 3 && (

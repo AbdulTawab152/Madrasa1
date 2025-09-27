@@ -1,8 +1,9 @@
 // app/events/[slug]/page.tsx
-import { EventsApi } from "../../../lib/api";
+import { EventsApi, extractArray } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getImageUrl } from "@/lib/utils";
 
 interface Event {
   id: number;
@@ -27,20 +28,28 @@ interface Params {
 export default async function EventDetailsPage({ params }: Params) {
   const { slug } = await params;
 
-  // Fetch events
-  const res = await EventsApi.getAll();
-  const events: Event[] = Array.isArray(res.data) ? res.data : [];
-  const event = events.find((e) => e.slug === slug);
+  const eventResponse = await EventsApi.getBySlug(slug);
+  if (!eventResponse.success) {
+    notFound();
+  }
+
+  const eventPayload = eventResponse.data;
+  const event = Array.isArray(eventPayload)
+    ? (eventPayload[0] as Event | undefined)
+    : (eventPayload as Event | undefined);
+
   if (!event) notFound();
 
-  const relatedEvents = events.filter((e) => e.slug !== slug).slice(0, 3);
-
-  const getImageUrl = (img?: string) =>
-    img
-      ? img.startsWith("http")
-        ? img
-        : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`
-      : "/placeholder.jpg";
+  let relatedEvents: Event[] = [];
+  try {
+    const relatedResponse = await EventsApi.getAll({ limit: 6 });
+    if (relatedResponse.success) {
+      const data = extractArray<Event>(relatedResponse.data);
+      relatedEvents = data.filter((e) => e.slug !== slug).slice(0, 3);
+    }
+  } catch (relatedError) {
+    console.warn("Failed to load related events:", relatedError);
+  }
 
   // Format date for better display
   const formatDate = (dateString: string) => {
@@ -102,7 +111,10 @@ export default async function EventDetailsPage({ params }: Params) {
               {event.image && (
                 <div className="relative w-full h-64 sm:h-80 md:h-96 overflow-hidden">
                   <Image
-                    src={getImageUrl(event.image)}
+                    src={
+                      getImageUrl(event.image, "/placeholder-event.jpg") ||
+                      "/placeholder-event.jpg"
+                    }
                     alt={event.title}
                     fill
                     className="object-cover"
@@ -260,7 +272,10 @@ export default async function EventDetailsPage({ params }: Params) {
                       <div className="flex space-x-3">
                         <div className="flex-shrink-0 relative h-16 w-16 rounded-lg overflow-hidden">
                           <Image
-                            src={getImageUrl(event.image)}
+                            src={
+                              getImageUrl(event.image, "/placeholder-event.jpg") ||
+                              "/placeholder-event.jpg"
+                            }
                             alt={event.title}
                             fill
                             className="object-cover group-hover:scale-105 transition-transform duration-300"

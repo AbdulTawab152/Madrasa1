@@ -1,33 +1,86 @@
-// app/courses/page.tsx
-import CoursesSection from "./../components/courses/courseCard";
-import { CoursesApi } from "../../lib/api";
+'use client';
 
-interface Course {
-  id: number;
-  name: string;
-  title: string;
-  slug: string;
-  description: string;
-  image?: string;
-  date: string;
-  is_published: boolean;
-  is_top: boolean;
-  category_id: number;
-  rating?: number;
-  lessons?: number;
-  enrolled?: string;
-}
+import { useMemo } from "react";
 
-export default async function CoursesPage() {
-  // fetch تمام کورس‌ها
-  const res = await CoursesApi.getAll();
-  const courses = Array.isArray(res.data) ? res.data as Course[] : [];
+import CoursesSection from "../components/courses/courseCard";
+import IslamicHeader from "../components/IslamicHeader";
+
+import PageSkeleton from "@/components/loading/PageSkeleton";
+import PaginationControls from "@/components/PaginationControls";
+import { usePaginatedResource } from "@/hooks/usePaginatedResource";
+import { CoursesApi } from "@/lib/api";
+import type { Course as CourseType } from "@/lib/types";
+
+export default function CoursesPage() {
+  const {
+    items,
+    isLoadingInitial,
+    isFetchingMore,
+    error,
+    hasNextPage,
+    hasPreviousPage,
+    goToPage,
+    reload,
+    page,
+    totalPages,
+  } = usePaginatedResource<CourseType>((params) => CoursesApi.getAll(params), {
+    pageSize: 12,
+  });
+
+  const courses = useMemo(() => {
+    const deduped = new Map<number, CourseType>();
+    items.forEach((course) => {
+      if (course && typeof course.id === "number") {
+        deduped.set(course.id, course);
+      }
+    });
+    return Array.from(deduped.values());
+  }, [items]);
 
   return (
-    <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white pt-20">
-      <div className="w-full mx-auto  py-12">
-        {/* @ts-expect-error: Type mismatch between Course types */}
-        <CoursesSection courses={courses} showAll={true} />
+    <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
+      <IslamicHeader
+        pageType="courses"
+        alignment="center"
+        cta={{
+          label: "Explore All Courses",
+          href: "/courses",
+        }}
+      />
+
+      <div className="w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        {isLoadingInitial ? (
+          <PageSkeleton type="courses" showFilters={false} cardCount={6} />
+        ) : error ? (
+          <div className="max-w-3xl mx-auto text-center bg-red-50 border border-red-100 rounded-3xl p-10 shadow-soft">
+            <h2 className="text-2xl font-semibold text-red-700 mb-4">
+              Unable to load courses
+            </h2>
+            <p className="text-red-600 mb-6">
+              {error}. Please try refreshing the page.
+            </p>
+            <button
+              onClick={() => void reload()}
+              className="inline-flex items-center rounded-full bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
+            >
+              Retry loading courses
+            </button>
+          </div>
+        ) : (
+          <CoursesSection courses={courses} showAll={true} />
+        )}
+
+        {!isLoadingInitial && !error && courses.length > 0 && (
+          <PaginationControls
+            className="mt-12"
+            page={page}
+            totalPages={totalPages}
+            hasNextPage={hasNextPage}
+            hasPrevPage={hasPreviousPage}
+            onPageChange={(target) => void goToPage(target)}
+            isBusy={isFetchingMore}
+          />
+        )}
       </div>
     </main>
   );

@@ -1,128 +1,90 @@
-// app/authors/page.tsx
 import Image from "next/image";
 import Link from "next/link";
-import { fetchWithCache } from "../../lib/api";
-import { endpoints } from "../../lib/config";
-import { Author } from "../../lib/types";
-import { FaTwitter, FaLinkedin, FaFacebook } from "react-icons/fa";
 import truncate from "html-truncate";
+import IslamicHeader from "../components/IslamicHeader";
 
-// Fetch authors from API (no cache)
+import { AuthorsApi } from "../../lib/api";
+import { Author } from "../../lib/types";
+import { getImageUrl } from "@/lib/utils";
+
 async function fetchAuthorsData(): Promise<Author[]> {
   try {
-    const data = await fetchWithCache<Author[]>(endpoints.authors, {
-      cache: "no-store",
-    });
-    return Array.isArray(data) ? data : [];
+    const response = await AuthorsApi.getAll();
+    if (!response.success) {
+      throw new Error(response.error || "Failed to load authors");
+    }
+    const payload = response.data;
+    return Array.isArray(payload) ? payload : [];
   } catch (error) {
     console.error("Error fetching authors:", error);
     return [];
   }
 }
 
-// Get image URL safely
-const getImageUrl = (img?: string | null) => {
-  if (!img) return "/placeholder-author.jpg";
-  if (img.startsWith("http")) return img;
-  return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-};
-
-// Filter only published AND alive authors
 const isPublishedAndAlive = (author: Author): boolean => {
-  return author.is_published && author.is_alive;
+  return Boolean(author.is_published && author.is_alive);
 };
 
 export default async function AuthorsPage() {
   const authors = await fetchAuthorsData();
-  console.log("Authors fetched:", authors);
-
-  if (!authors.length) {
-    return (
-      <main className="p-10 mt-32 min-h-screen text-center">
-        <h1 className="text-3xl font-bold">No authors found 😢</h1>
-      </main>
-    );
-  }
 
   return (
-    <main className="p-10 mt-32 bg-gradient-to-br from-gray-50 via-gray-100 to-gray-200 min-h-screen">
-      {/* Header */}
-      <div className="text-center mb-16">
-        <h1 className="text-5xl font-extrabold text-gray-800 tracking-tight">
-          Meet Our{" "}
-          <span className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent">
-            Authors
-          </span>
-        </h1>
-        <p className="text-gray-600 mt-3 text-lg max-w-2xl mx-auto">
-          Creative storytellers and thinkers shaping our community 🌟
-        </p>
-      </div>
+    <main className="min-h-screen bg-background-primary">
+      <IslamicHeader pageType="authors" />
+      <div className="max-w-7xl mx-auto px-6 space-y-12 pb-16">
+        {authors.filter(isPublishedAndAlive).length === 0 ? (
+          <div className="text-center rounded-2xl border border-primary-100/60 bg-white/90 p-10 shadow-soft">
+            <h2 className="text-2xl font-semibold text-primary-800">
+              No authors found.
+            </h2>
+            <p className="text-primary-600 mt-2">Please check back soon for new profiles.</p>
+          </div>
+        ) : (
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+            {authors
+              .filter(isPublishedAndAlive)
+              .map((author) => (
+                <article
+                  key={author.id}
+                  className="group relative rounded-3xl border border-primary-100/60 bg-white/90 p-8 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
+                >
+                  <div className="flex justify-center -mt-16 mb-6">
+                    <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-white shadow-lg ring-4 ring-primary-200 transition group-hover:ring-primary-300">
+                      <Image
+                        src={getImageUrl(author.image, "/placeholder-author.jpg") || "/placeholder-author.jpg"}
+                        alt={`${author.first_name || "Unknown"} ${author.last_name || ""}`}
+                        width={200}
+                        height={200}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
+                  </div>
 
-      {/* Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-        {authors
-          .filter((author) => author.is_published) // published
-          .map((author) => {
-            const alive = author.is_alive;
-            return (
-              <div
-               
-                className="group relative bg-white/70 backdrop-blur-xl rounded-3xl hover:-translate-y-2 transition-all duration-500 overflow-hidden outline-none focus:outline-none focus:ring-0"
-              >
-                {/* Avatar */}
-                <div className="flex justify-center mt-14 relative">
-                  <div className="relative w-32 h-32 rounded-full border-4 border-white shadow-xl overflow-hidden ring-4 ring-amber-400/60 group-hover:ring-pink-400/80 transition">
-                    <Image
-                      src={getImageUrl(author.image)}
-                      alt={`${author.first_name || "Unknown"} ${
-                        author.last_name || ""
-                      }`}
-                      width={200}
-                      height={200}
-                      className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                  <div className="text-center space-y-4">
+                    <span className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700">
+                      Active
+                    </span>
+                    <h2 className="text-xl font-semibold text-primary-900">
+                      {author.first_name || "Unknown"} {author.last_name || ""}
+                    </h2>
+                    <div
+                      className="text-primary-600 text-sm [&_*]:text-[14px]"
+                      dangerouslySetInnerHTML={{ __html: truncate(author.bio, 80) }}
                     />
                   </div>
 
-                  {/* Alive / Dead Dot */}
-                  <span
-                    className={`absolute -top-2 md:top-2 right-32 w-5 h-5 rounded-full border-2 border-white ${
-                      alive
-                        ? "bg-green-500 animate-pulse"
-                        : "bg-red-500 animate-pulse"
-                    }`}
-                    title={alive ? "Alive" : "Deceased"}
-                  ></span>
-                </div>
-
-                {/* Info */}
-                <div className="p-6 text-center">
-                  <h2 className="text-xl font-bold text-gray-900 group-hover:text-amber-600 transition">
-                    {author.first_name || "Unknown"} {author.last_name || ""}
-                  </h2>
-               
-
-                  <div
-                                className="text-gray-700 text-sm  [&_*]:text-[14px]"
-                                dangerouslySetInnerHTML={{ __html: truncate(author.bio, 50) }}
-                              />
-
-
-                  {/* Button */}
-
-              
-                  <div className="mt-6">
-                  <Link  key={author.id}
-                href={`/authors/${author.id}`}
-                   className="inline-block px-6 py-2 text-sm font-medium rounded-full bg-gradient-to-r from-amber-500 to-pink-500 text-white shadow-md hover:shadow-lg hover:scale-105 transition outline-none focus:outline-none focus:ring-0">
-                      View Profile →
-                    
+                  <div className="mt-6 flex justify-center gap-3">
+                    <Link
+                      href={`/authors/${author.id}`}
+                      className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-5 py-2 text-sm font-semibold text-primary-700 transition-colors duration-200 hover:bg-primary-100"
+                    >
+                      View Profile
                     </Link>
                   </div>
-                </div>
-              </div>
-            );
-          })}
+                </article>
+              ))}
+          </div>
+        )}
       </div>
     </main>
   );

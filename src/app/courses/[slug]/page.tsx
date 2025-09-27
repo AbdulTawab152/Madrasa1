@@ -1,17 +1,20 @@
 // app/courses/[slug]/page.tsx
-import { CoursesApi } from "../../../lib/api";
+import { CoursesApi, extractArray } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
-// import Courses from "../../../lib/types"
+import { getImageUrl } from "@/lib/utils";
+import type { Course } from "@/lib/types";
 import { FaClock, FaUsers, FaStar, FaBook, FaVideo, FaPlay, FaGraduationCap } from 'react-icons/fa';
 
 
 
 export default async function CourseDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const res = await CoursesApi.getAll();
-  const courses = Array.isArray(res.data) ? (res.data as Course[]) : [];
-  const course = courses.find(c => c.slug === slug);
+  const courseResponse = await CoursesApi.getBySlug(slug);
+  const coursePayload = courseResponse.data;
+  const course = Array.isArray(coursePayload)
+    ? (coursePayload[0] as Course | undefined)
+    : (coursePayload as Course | undefined);
 
   if (!course) {
     return (
@@ -27,10 +30,16 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
     );
   }
 
-  const getImageUrl = (img?: string | null) => {
-    if (img?.startsWith("http")) return img;
-    return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
-  };
+  let relatedCourses: Course[] = [];
+  try {
+    const relatedResponse = await CoursesApi.getAll({ limit: 6 });
+    if (relatedResponse.success) {
+      const data = extractArray<Course>(relatedResponse.data);
+      relatedCourses = data.filter((item) => item.slug !== slug).slice(0, 3);
+    }
+  } catch (relatedError) {
+    console.warn("Failed to load related courses:", relatedError);
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
@@ -69,13 +78,13 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
       <div className="relative h-80 lg:h-96 bg-gradient-to-r from-amber-600 to-amber-700 overflow-hidden rounded-b-3xl shadow-xl">
         {course.image && (
           <Image
-            src={getImageUrl(course.image)}
+            src={getImageUrl(course.image, "/placeholder-course.jpg") || "/placeholder-course.jpg"}
             alt={course.title}
             fill
             className="object-cover opacity-30"
           />
         )}
-        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="absolute inset-0 bg-primary-900/25"></div>
         <div className="container mx-auto px-4 h-full flex items-center relative z-10">
           <div className="max-w-4xl">
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">

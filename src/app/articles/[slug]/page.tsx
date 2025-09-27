@@ -1,9 +1,10 @@
 // app/articles/[slug]/page.tsx
-import { ArticlesApi } from "../../../lib/api";
+import { ArticlesApi, extractArray } from "../../../lib/api";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { getImageUrl } from "@/lib/utils";
 
 interface Article {
   title: string;
@@ -32,21 +33,28 @@ interface PageProps {
 export default async function ArticleDetailsPage({ params }: PageProps) {
   const { slug } = await params;
 
-  // گرفتن لیست مقالات
-  const res = await ArticlesApi.getAll();
-  const articles: Article[] = Array.isArray(res.data) ? res.data : [];
-  const article = articles.find((a) => a.slug === slug);
+  const articleResponse = await ArticlesApi.getBySlug(slug);
+  if (!articleResponse.success) {
+    notFound();
+  }
+
+  const articlePayload = articleResponse.data;
+  const article = Array.isArray(articlePayload)
+    ? (articlePayload[0] as Article | undefined)
+    : (articlePayload as Article | undefined);
 
   if (!article) notFound();
 
-  const relatedArticles = articles.filter((a) => a.slug !== slug).slice(0, 3);
-
-  const getImageUrl = (img?: string) =>
-    img
-      ? img.startsWith("http")
-        ? img
-        : `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`
-      : "/placeholder.jpg";
+  let relatedArticles: Article[] = [];
+  try {
+    const relatedResponse = await ArticlesApi.getAll({ limit: 6 });
+    if (relatedResponse.success) {
+      const data = extractArray<Article>(relatedResponse.data);
+      relatedArticles = data.filter((a) => a.slug !== slug).slice(0, 3);
+    }
+  } catch (relatedError) {
+    console.warn("Failed to load related articles:", relatedError);
+  }
 
   return (
     <main className="min-h-screen mt-32 bg-gradient-to-b from-amber-50/30 to-white">
@@ -100,7 +108,10 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
           {(article.featuredImage || article.image) && (
             <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-xl mb-10 group">
               <Image
-                src={getImageUrl(article.featuredImage || article.image)}
+                src={
+                  getImageUrl(article.featuredImage || article.image, "/placeholder.jpg") ||
+                  "/placeholder.jpg"
+                }
                 alt={article.title}
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -114,7 +125,29 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
         </article>
 
         {/* Related Articles */}
-        {/* بعداً می‌تونی اینجا نمایش بدی */}
+        {relatedArticles.length > 0 && (
+          <section className="mt-16">
+            <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+              Related Articles
+            </h2>
+            <div className="grid gap-6 md:grid-cols-2">
+              {relatedArticles.map((item) => (
+                <Link
+                  key={item.slug}
+                  href={`/articles/${item.slug}`}
+                  className="block bg-white border border-amber-100 rounded-xl p-6 shadow-sm hover:shadow-md transition"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-2 line-clamp-2">
+                    {item.description || "Continue reading"}
+                  </p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   );

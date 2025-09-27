@@ -71,6 +71,18 @@ export const fallbackData = {
       title: "Islamic Architecture",
     },
   ],
+  tasawwuf: [
+    {
+      id: 1,
+      title: "Spiritual Reflections",
+      slug: "spiritual-reflections",
+      description: "Offline Tasawwuf content is shown while the connection is unavailable.",
+      image: "/placeholder-tasawwuf.jpg",
+      shared_by: "Admin",
+      created_at: new Date().toISOString(),
+      category: { id: 1, name: "Spirituality" },
+    },
+  ],
 };
 
 // Helper function to get fallback data

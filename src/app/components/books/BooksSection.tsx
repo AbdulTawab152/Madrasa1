@@ -63,8 +63,8 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
 
   return (
     <div className="w-full">
-      {/* Enhanced Books Grid */}
-      <div className="grid grid-cols-1 mb-20 px-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {/* Books Grid with proper margins */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
         {displayBooks.map((book) => (
           <div
             key={book.id}
@@ -73,7 +73,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
             onMouseLeave={() => setHoveredBook(null)}
           >
             <div className="block h-full">
-              <div className="bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-500 transform hover:-translate-y-2 border border-amber-100 overflow-hidden relative h-full flex flex-col">
+              <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-amber-100 overflow-hidden relative h-full flex flex-col group-hover:border-amber-200">
                 {/* Book Image Container */}
                 
                 <div className="relative h-64 overflow-hidden flex-shrink-0">
@@ -97,10 +97,10 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   )}
                   
                   {/* Enhanced Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-amber-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
                   
                   {/* Book Badge */}
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg">
+                  <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg">
                     <FaBook className="inline mr-1" />
                     Book
                   </div>
@@ -116,7 +116,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
                     <Link
                       href={`/book/${book.id}`}
-                      className="bg-black/60 text-white hover:text-orange-500 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2 outline-none focus:outline-none focus:ring-0"
+                      className="bg-amber-900/60 text-white hover:text-amber-100 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2 outline-none focus:outline-none focus:ring-0"
                     >
                       <FaEye className="w-4 h-4" />
                       View Details
@@ -125,15 +125,18 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                 </div>
 
                 {/* Book Info */}
-                <div className="p-5 flex-1 flex flex-col justify-between">
+                <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h3 className="text-lg font-bold text-black mb-3 line-clamp-2 group-hover:text-amber-600 transition-colors leading-tight">
+                    <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-amber-700 transition-colors leading-tight">
                       {book.title}
                     </h3>
+                    {book.description && (
+                      <p className="text-sm text-gray-600 line-clamp-2 mb-3">
+                        {book.description}
+                      </p>
+                    )}
                   </div>
 
-    
-                  
                   {/* Book Stats */}
                   <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-100">
                     <div className="flex items-center gap-2">
@@ -149,7 +152,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                 </div>
                 
                 {/* Hover Glow Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-amber-400/5 to-orange-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
               </div>
             </div>
           </div>

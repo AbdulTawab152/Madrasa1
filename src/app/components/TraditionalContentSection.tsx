@@ -2,6 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import IslamicHeader from "./IslamicHeader";
 
 interface Author {
   name: string;
@@ -69,49 +70,6 @@ export default function TraditionalContentSection({
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
-      {/* Enhanced Header Section */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 py-12 px-6 shadow-2xl">
-        {/* Decorative Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full -translate-x-1/2 -translate-y-1/2 blur-3xl"></div>
-          <div className="absolute bottom-0 right-0 w-80 h-80 bg-amber-300/20 rounded-full translate-x-1/3 translate-y-1/3 blur-3xl"></div>
-          <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-orange-300/15 rounded-full -translate-x-1/2 -translate-y-1/2 blur-2xl"></div>
-        </div>
-        
-        {/* Islamic Pattern Overlay */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgdmlld0JveD0iMCAwIDYwIDYwIj48ZyBmaWxsPSJub25lIiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLW9wYWNpdHk9IjAuMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMTUiLz48Y2lyY2xlIGN4PSIzMCIgY3k9IjMwIiByPSIyNSIvPjxjaXJjbGUgY3g9IjMwIiBjeT0iMzAiIHI9IjUiLz48bGluZSB4MT0iMzAiIHkxPSIwIiB4Mj0iMzAiIHkyPSI2MCIvPjxsaW5lIHgxPSIwIiB5MT0iMzAiIHgyPSI2MCIgeTI9IjMwIi8+PC9nPjwvc3ZnPg==')]"></div>
-        </div>
-
-        <div className="max-w-6xl mx-auto relative z-10">
-          <div className="text-center">
-            {/* Decorative Icon */}
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl mb-6 shadow-lg border border-white/30">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 font-arabic drop-shadow-lg">
-              {title}
-            </h1>
-            <h2 className="text-xl md:text-2xl lg:text-3xl text-amber-100 font-medium mb-6">
-              {subtitle}
-            </h2>
-            
-            {/* Decorative Line */}
-            <div className="flex justify-center items-center mb-4">
-              <div className="w-16 h-1 bg-white/60 rounded-full"></div>
-              <div className="w-3 h-3 mx-4 bg-white rounded-full"></div>
-              <div className="w-16 h-1 bg-white/60 rounded-full"></div>
-            </div>
-            
-            <p className="text-amber-100/90 text-lg max-w-2xl mx-auto leading-relaxed">
-              Authentic Islamic knowledge and guidance from qualified scholars
-            </p>
-          </div>
-        </div>
-      </div>
 
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="flex flex-col-reverse lg:grid-cols-4 gap-8">
