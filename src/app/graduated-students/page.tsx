@@ -9,10 +9,7 @@ export default function GraduationsPage() {
         title="Our Graduates"
         subtitle="Celebrating the remarkable achievements of our esteemed graduates"
         alignment="center"
-        cta={{
-          label: "View All Graduates",
-          href: "/graduated-students"
-        }}
+       
       />
       <div className="max-w-7xl mx-auto px-6 py-12">
         <GraduationsSection showAll={true} />

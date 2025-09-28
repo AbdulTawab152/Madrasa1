@@ -527,7 +527,7 @@ export class CoursesApi {
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.courses}/slug/${slug}`);
+    const result = await apiClient.get(`${endpoints.courses}/${slug}`);
     if (!result.success) {
       return {
         data: getFallbackData("courses")[0],

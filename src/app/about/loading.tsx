@@ -1,5 +1,6 @@
-import { SimplePageSkeleton } from "@/components/loading/PageSkeleton";
+// import { SimplePageSkeleton } from "@/components/loading/PageSkeleton";
+import PageSkeleton from "../../components/loading/PageSkeleton"
 
 export default function LoadingAboutPage() {
-  return <SimplePageSkeleton sections={3} />;
+  return <PageSkeleton sections={3} />;
 }

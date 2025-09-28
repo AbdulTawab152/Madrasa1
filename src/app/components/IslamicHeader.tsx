@@ -127,7 +127,7 @@ const themeClasses: Record<
   },
   indigo: {
     backgroundImage: "bg-[url('/image.png')]",
-    overlay: "bg-gradient-to-br from-indigo-900/80 via-violet-900/70 to-indigo-800/80",
+    overlay: "bg-gradient-to-br from-emerald-900/80 via-teal-900/70 to-emerald-800/80",
     accentText: "text-indigo-50",
   },
   slate: {

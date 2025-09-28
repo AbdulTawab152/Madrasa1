@@ -35,25 +35,25 @@ async function fetchCourseData(): Promise<CourseType[]> {
   } catch (error) {
     console.error("Error fetching courses:", error);
     // Return fallback data when API fails
-    return [
-      {
-        id: 1,
-        title: "Introduction to Islamic Studies",
-        slug: "intro-islamic-studies",
-        book_id: 1,
-        recorded_by_id: 1,
-        description: "Learn the fundamentals of Islamic knowledge.",
-        publish_date: new Date().toISOString(),
-        created_date: new Date().toISOString(),
-        is_published: 1,
-        duration: "2 hours",
-        video_quantity: 5,
-        resolution: "1080p",
-        space: "500MB",
-        short_video: "/placeholder-video.mp4",
-        image: "/placeholder-course.jpg",
-      },
-    ];
+    // return [
+    //   {
+    //     id: 1,
+    //     title: "Introduction to Islamic Studies",
+    //     slug: "intro-islamic-studies",
+    //     book_id: 1,
+    //     recorded_by_id: 1,
+    //     description: "Learn the fundamentals of Islamic knowledge.",
+    //     publish_date: new Date().toISOString(),
+    //     created_date: new Date().toISOString(),
+    //     is_published: 1,
+    //     duration: "2 hours",
+    //     video_quantity: 5,
+    //     resolution: "1080p",
+    //     space: "500MB",
+    //     short_video: "/placeholder-video.mp4",
+    //     image: "/placeholder-course.jpg",
+    //   },
+    // ];
   }
 }
 
@@ -70,7 +70,7 @@ export default async function HomePage() {
 
       {/* Courses Section */}
       <section className="py-6 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
+        {/* <div className="max-w-7xl mx-auto px-6">
           <Suspense
             fallback={
               <div className="flex items-center justify-center py-20">
@@ -81,8 +81,67 @@ export default async function HomePage() {
               </div>
             }
           >
-            <Course courses={courses} showAll={false} />
+          
           </Suspense>
+        </div> */}
+
+
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          {/* Simple Hero Text */}
+          <div className="mb-8">
+            <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
+              Explore Knowledge
+            </p>
+
+            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
+              Our <span className="text-amber-600">Popular Courses</span>
+            </h2>
+
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Discover our most popular courses, designed to provide authentic Islamic knowledge rooted in the{" "}
+              <span className="font-semibold text-amber-700">Qur'an</span> and{" "}
+              <span className="font-semibold text-amber-700">Sunnah</span>.
+            </p>
+          </div>
+
+          {/* Simple Courses Section */}
+          <div className="mt-8">
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center py-12">
+                  <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                  <span className="ml-3 text-gray-600">Loading courses...</span>
+                </div>
+              }
+            >
+              <div className="relative">
+                <Course courses={courses} showAll={false} />
+
+                {/* Simple Call to Action */}
+                <div className="mt-8 text-center">
+                  <Link
+                    href="/course"
+                    className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                  >
+                    <span>View All Courses</span>
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </Link>
+                </div>
+              </div>
+            </Suspense>
+          </div>
         </div>
       </section>
 
@@ -105,10 +164,6 @@ export default async function HomePage() {
           </Suspense>
         </div>
       </section>
-
-
-
-    
 
       {/* Books */}
 
@@ -257,6 +312,8 @@ export default async function HomePage() {
             <Blogs limit={3} homePage={true} />
           </Suspense>
         </div>
+
+        
       </section>
 
       {/* Articles Section */}
