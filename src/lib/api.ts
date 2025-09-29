@@ -398,7 +398,7 @@ export class BlogsApi {
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.blogs}/slug/${slug}`);
+    const result = await apiClient.get(`${endpoints.blogs}/${slug}`);
     if (!result.success) {
       return {
         data: getFallbackData("blogs")[0],
@@ -463,7 +463,7 @@ export class DonationApi {
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.donation}/slug/${slug}`);
+    const result = await apiClient.get(`${endpoints.donation}/${slug}`);
     if (!result.success) {
       return {
      
@@ -527,7 +527,7 @@ export class CoursesApi {
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.courses}/slug/${slug}`);
+    const result = await apiClient.get(`${endpoints.courses}/${slug}`);
     if (!result.success) {
       return {
         data: getFallbackData("courses")[0],
@@ -712,7 +712,7 @@ export class EventsApi {
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.events}/slug/${slug}`);
+    const result = await apiClient.get(`${endpoints.events}/${slug}`);
     if (!result.success) {
       return {
         data: getFallbackData("events")[0],
@@ -740,7 +740,7 @@ export class IftahApi {
   }
 
   static async getBySlug(slug: string) {
-    return apiClient.get(`${endpoints.iftah}/slug/${slug}`);
+    return apiClient.get(`${endpoints.iftah}/${slug}`);
   }
 
   static async getIftah(slug: string) {
@@ -764,7 +764,7 @@ export class ArticlesApi {
   }
 
   static async getBySlug(slug: string) {
-    return apiClient.get(`${endpoints.articles}/slug/${slug}`);
+    return apiClient.get(`${endpoints.articles}/${slug}`);
   }
 }
 
