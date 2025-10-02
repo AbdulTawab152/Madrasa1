@@ -5,8 +5,15 @@ import { NextRequest, NextResponse } from 'next/server';
 const API_BASE_URL = 'https://lawngreen-dragonfly-304220.hostingersite.com';
 const PLACEHOLDER_IMAGE = '/placeholder-gallery.jpg';
 
-const toArrayBuffer = (data: Uint8Array) =>
-  data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+const toArrayBuffer = (data: Uint8Array): ArrayBuffer => {
+  // Ensure we always return an ArrayBuffer, not SharedArrayBuffer
+  if (data instanceof Buffer) {
+    // Node.js Buffer
+    return data.buffer.slice(data.byteOffset, data.byteOffset + data.byteLength);
+  }
+  // Fallback for other Uint8Array
+  return Uint8Array.from(data).buffer;
+};
 
 const createImageResponse = (payload: ArrayBuffer, contentType?: string | null) =>
   new NextResponse(payload, {
@@ -33,10 +40,10 @@ const loadPlaceholderImage = async () => {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  context: { params: { path: string[] } }
 ) {
   try {
-    const { path } = params;
+    const { path } = context.params;
     const imagePath = path.join('/');
 
     // Construct the full image URL
