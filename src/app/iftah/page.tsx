@@ -1,5 +1,6 @@
 // app/iftah/page.tsx
-import IftahSection from "./../components/iftah/IftahSection";
+import IftahSection from "../components/iftah/IftahSection";
+import IftahQuestionFormInline from "../components/iftah/IftahQuestionFormInline";
 import { IftahApi } from "../../lib/api"; // مسیر درست API
 import Image from 'next/image';
 interface Author {
@@ -28,10 +29,10 @@ export default async function IftahPage() {
   const iftahItems = Array.isArray(res.data) ? (res.data as Iftah[]) : [];
 
   return (
-    <main className="max-w-full mt-24  ">
-  
-    
+    <main className="max-w-full mt-24">
       <IftahSection fatwas={iftahItems} showAll={true} />
+      <IftahQuestionFormInline />
     </main>
   );
+
 }

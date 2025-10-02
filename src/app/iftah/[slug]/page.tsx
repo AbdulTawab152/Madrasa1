@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 import { IftahApi } from "@/lib/api";
 import { buildStorageUrl } from "@/lib/utils";
 import {
@@ -54,7 +54,8 @@ interface Iftah {
 
 const buildAssetUrl = (path?: string | null) => buildStorageUrl(path) ?? undefined;
 
-export default function IftahDetailsPage({ params }: { params: { slug: string } }) {
+export default function IftahDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params);
   const [iftah, setIftah] = useState<Iftah | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -63,7 +64,7 @@ export default function IftahDetailsPage({ params }: { params: { slug: string } 
     const fetchData = async () => {
       try {
         setIsLoading(true);
-        const response = await IftahApi.getIftah(params.slug);
+        const response = await IftahApi.getIftah(slug);
         if (!isMounted) return;
 
         if (response.success) {
@@ -86,7 +87,7 @@ export default function IftahDetailsPage({ params }: { params: { slug: string } 
     return () => {
       isMounted = false;
     };
-  }, [params.slug]);
+  }, [slug]);
 
   if (isLoading) {
     return (

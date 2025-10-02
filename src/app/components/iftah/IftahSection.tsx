@@ -1,5 +1,6 @@
 // components/iftah/IftahSection.tsx
 import TraditionalContentSection from '../TraditionalContentSection';
+// import IftahQuestionForm from './IftahQuestionForm';
 
 interface Author {
   name: string;
@@ -34,11 +35,14 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
   const displayFatwas = showAll ? sortedFatwas : sortedFatwas.slice(0, 5);
 
   return (
-    <TraditionalContentSection 
-      fatwas={displayFatwas}
-      showAll={showAll}
-      title="جامعة العلوم الإسلامية"
-      subtitle="دار الافتاء"
-    />
+    <>
+      <TraditionalContentSection 
+        fatwas={displayFatwas}
+        showAll={showAll}
+        title="جامعة العلوم الإسلامية"
+        subtitle="دار الافتاء"
+      />
+      {/* <IftahQuestionForm /> */}
+    </>
   );
 }

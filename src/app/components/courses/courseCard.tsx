@@ -76,7 +76,7 @@ export default function CoursesSection({
 
   if (displayCourses.length === 0) {
     return (
-      <section className="py-16 text-center">
+      <section className="py- text-center">
         <div className="mx-auto max-w-2xl space-y-4 rounded-3xl border border-primary-100/60 bg-white/95 p-12 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.45)]">
           <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
             Coming soon

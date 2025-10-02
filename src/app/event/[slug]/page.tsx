@@ -265,7 +265,7 @@ export default async function EventDetailsPage({ params }: Params) {
                 <div className="space-y-4">
                   {relatedEvents.map((event) => (
                     <Link
-                      key={event.id}
+                     key={event.slug}
                       href={`/event/${event.slug}`}
                       className="block group outline-none focus:outline-none focus:ring-0"
                     >

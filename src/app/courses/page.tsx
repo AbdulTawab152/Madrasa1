@@ -42,13 +42,13 @@ export default function CoursesPage() {
       <IslamicHeader
         pageType="courses"
         alignment="center"
-        cta={{
-          label: "Explore All Courses",
-          href: "/courses",
-        }}
+        // cta={{
+        //   label: "Explore All Courses",
+        //   href: "/courses",
+        // }}
       />
 
-      <div className="w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-auto py-1 px-4 sm:px-6 lg:px-8">
         {isLoadingInitial ? (
           <PageSkeleton type="courses" showFilters={false} cardCount={6} />
         ) : error ? (

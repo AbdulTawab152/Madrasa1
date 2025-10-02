@@ -10,10 +10,10 @@ export default function BooksPage() {
         title="Our Books"
         subtitle="Discover our collection of Islamic books and literature"
         alignment="center"
-        cta={{
-          label: "Browse All Books",
-          href: "/book"
-        }}
+        // cta={{
+        //   label: "Browse All Books",
+        //   href: "/book"
+        // }}
       />
       <div className="max-w-7xl mx-auto px-6 py-12">
         <BooksSection showAll={true} />

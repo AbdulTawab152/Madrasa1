@@ -1,4 +1,6 @@
+
 import { apiConfig, endpoints } from "./config";
+
 import { getFallbackData } from "./fallbackData";
 
 // API Response Types
@@ -219,10 +221,15 @@ class ApiClient {
     for (let attempt = 1; attempt <= 3; attempt++) {
       try {
         const response = await fetch(url, config);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) { 
+          return {
+            success: false,
+            status: response.status,
+            message: `HTTP error! status: ${response.status}`,
+            data: null,
+          };
         }
+
 
         const rawPayload = await this.parseResponse<unknown>(response);
         let data = rawPayload as T;
@@ -475,6 +482,8 @@ export class DonationApi {
   }
 }
 
+
+
 export class CoursesApi {
   static async getAll(params: ListParams = {}) {
     const { page: rawPage, limit: rawLimit, ...rest } = params;
@@ -718,6 +727,22 @@ export class EventsApi {
         data: getFallbackData("events")[0],
         success: true,
         message: "Using fallback data due to API unavailability",
+      };
+    }
+    return result;
+  }
+}
+
+// ifah qustion
+
+export class IftahQuestionApi {
+  static async submit(payload: Record<string, unknown>) {
+    const result = await apiClient.post(endpoints.IftahQuestionForm, payload);
+    if (!result.success) {
+      return {
+        data: null,
+        success: false,
+        error: result.error,
       };
     }
     return result;

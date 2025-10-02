@@ -1,3 +1,5 @@
+import IftahQuestionForm from "@/app/components/iftah/IftahQuestionForm";
+
 // App Configuration
 export const appConfig = {
   name: process.env.NEXT_PUBLIC_APP_NAME || 'Anwarul Uloom',
@@ -36,7 +38,8 @@ export const endpoints = {
   authors: `${apiConfig.baseUrl}/authors`,
   books: `${apiConfig.baseUrl}/books`,
   book: `${apiConfig.baseUrl}/book`,
-  events: `${apiConfig.baseUrl}/events`,
+  events: `${apiConfig.baseUrl}/events`,  // لیست
+  event: `${apiConfig.baseUrl}/event`, 
   iftah: `${apiConfig.baseUrl}/iftah`,
   articles: `${apiConfig.baseUrl}/articles`,
   graduated: `${apiConfig.baseUrl}/graduations`,
@@ -45,6 +48,7 @@ export const endpoints = {
   donation: `${apiConfig.baseUrl}/donate-info-for-web`,
   tasawwuf: `${apiConfig.baseUrl}/tasawwuf`,
   contact: `${apiConfig.baseUrl}/contact`,
+  IftahQuestionForm: `${apiConfig.baseUrl}/iftah-question`,
 } as const;
 
 
