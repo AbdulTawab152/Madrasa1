@@ -31,7 +31,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
       try {
         const res = await GraduationsApi.getAll();
         let data: Graduation[] = Array.isArray(res?.data) ? res.data : [];
-        if (!showAll) data = data.slice(0, 4);
+        if (!showAll) data = data.slice(0, 3);
         setGraduations(data);
       } catch (err) {
         console.error(err);
@@ -136,7 +136,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
               }}
             >
               {/* Enhanced Card Container */}
-              <div className="relative bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-amber-100 hover:border-amber-200 transition-all duration-500 overflow-hidden group-hover:bg-gradient-to-br group-hover:from-amber-50/50 group-hover:to-orange-50/50 transform group-hover:-translate-y-2 h-full flex flex-col">
+              <div className="relative bg-white rounded-2xl shadow-sm hover:shadow-md border border-amber-100 hover:border-amber-200 transition-all duration-500 overflow-hidden group-hover:bg-gradient-to-br group-hover:from-amber-50/50 group-hover:to-orange-50/50 transform group-hover:-translate-y-2 h-full flex flex-col">
                 {/* Image Section */}
               <div className="relative h-56 overflow-hidden flex-shrink-0">
                 <Image

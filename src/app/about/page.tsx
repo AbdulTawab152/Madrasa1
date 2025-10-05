@@ -74,21 +74,29 @@ const AboutPage = () => {
       />
       
       {/* Stats */}
-      <section className="py-16 bg-gradient-to-b from-amber-50 to-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-12">
+      <section className="py-20 bg-gradient-to-b from-amber-50 to-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Our <span className="text-amber-600">Impact</span> in Numbers
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Six decades of dedicated service to Islamic education and community development
+            </p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
             {stats.map((stat, index) => (
               <div
                 key={index}
-                className="text-center p-4 bg-white rounded-xl shadow-sm border border-amber-100"
+                className="text-center p-8 bg-white rounded-2xl border-2 border-gray-100 hover:border-amber-200 transition-colors duration-300"
               >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-amber-100 rounded-xl mb-3">
-                  <stat.icon className="h-6 w-6 text-amber-600" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-amber-50 rounded-2xl mb-6">
+                  <stat.icon className="h-8 w-8 text-amber-600" />
                 </div>
-                <div className="text-2xl font-bold text-black mb-1">
+                <div className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">
                   {stat.value}
                 </div>
-                <div className="text-sm text-black">{stat.label}</div>
+                <div className="text-sm font-medium text-gray-600 uppercase tracking-wider">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -96,49 +104,59 @@ const AboutPage = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-12">
+      <section className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+              Our <span className="text-amber-600">Mission</span> & <span className="text-amber-600">Vision</span>
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Guided by our core principles, we strive to create a lasting impact in Islamic education and community development
+            </p>
+          </div>
+          <div className="grid lg:grid-cols-2 gap-16">
             {/* Mission */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
-                <Target className="h-4 w-4 mr-2" />
+            <div className="space-y-8">
+              <div className="inline-flex items-center px-4 py-2 bg-amber-50 text-amber-700 text-sm font-semibold rounded-full border border-amber-200">
+                <Target className="h-5 w-5 mr-2" />
                 Our Mission
               </div>
-              <h2 className="text-3xl font-bold text-black">
+              <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
                 Spreading <span className="text-amber-600">Authentic Knowledge</span>
-              </h2>
-              <p className="text-black leading-relaxed">
+              </h3>
+              <p className="text-lg text-gray-600 leading-relaxed">
                 Our mission is to provide authentic Islamic education rooted in the Qur'an and Sunnah, 
                 fostering spiritual growth, moral character, and intellectual excellence.
               </p>
-              <div className="space-y-2">
+              <div className="space-y-4">
                 {["Qur'an & Hadith Studies", "Islamic Jurisprudence", "Arabic Language", "Character Building"].map((feature, index) => (
-                  <div key={index} className="flex items-center space-x-2">
-                    <CheckCircle className="h-4 w-4 text-amber-600" />
-                    <span className="text-black text-sm">{feature}</span>
+                  <div key={index} className="flex items-center space-x-3">
+                    <div className="flex-shrink-0 w-6 h-6 bg-amber-100 rounded-full flex items-center justify-center">
+                      <CheckCircle className="h-4 w-4 text-amber-600" />
+                    </div>
+                    <span className="text-gray-700 font-medium">{feature}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Vision */}
-            <div className="space-y-6">
-              <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full mb-4">
-                <Lightbulb className="h-4 w-4 mr-2" />
+            <div className="space-y-8">
+              <div className="inline-flex items-center px-4 py-2 bg-amber-50 text-amber-700 text-sm font-semibold rounded-full border border-amber-200">
+                <Lightbulb className="h-5 w-5 mr-2" />
                 Our Vision
               </div>
-              <h3 className="text-3xl font-bold text-black">
+              <h3 className="text-3xl sm:text-4xl font-bold text-gray-900 leading-tight">
                 Building <span className="text-amber-600">Future Leaders</span>
               </h3>
-              <p className="text-black leading-relaxed">
+              <p className="text-lg text-gray-600 leading-relaxed">
                 We envision a world where Islamic knowledge is accessible to all, creating generations 
                 of scholars, leaders, and community builders who embody Islamic values.
               </p>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                 {["Global Reach", "Digital Learning", "Community Service", "Interfaith Dialogue"].map((goal, index) => (
-                  <div key={index} className="bg-amber-50 p-3 rounded-lg border border-amber-200">
-                    <div className="text-amber-700 font-medium text-center text-sm">{goal}</div>
+                  <div key={index} className="bg-amber-50 p-4 rounded-xl border border-amber-200 text-center">
+                    <div className="text-amber-700 font-semibold text-sm">{goal}</div>
                   </div>
                 ))}
               </div>

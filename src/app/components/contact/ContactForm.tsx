@@ -62,22 +62,22 @@ function Contact() {
             </p>
 
             <div className="flex gap-4 mb-8">
-              <a href="#" className="w-12 h-12 bg-amber-600 text-white rounded-xl flex items-center justify-center hover:bg-amber-700 transition-all transform hover:-translate-y-1 shadow-lg">
+              <a href="#" className="w-12 h-12 bg-amber-600 text-white rounded-xl flex items-center justify-center hover:bg-amber-700 transition-all transform hover:-translate-y-1 shadow-sm">
                 <FaFacebook className="text-xl" />
               </a>
-              <a href="#" className="w-12 h-12 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all transform hover:-translate-y-1 shadow-lg">
+              <a href="#" className="w-12 h-12 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all transform hover:-translate-y-1 shadow-sm">
                 <FaWhatsapp className="text-xl" />
               </a>
-              <a href="#" className="w-12 h-12 bg-red-600 text-white rounded-xl flex items-center justify-center hover:bg-red-700 transition-all transform hover:-translate-y-1 shadow-lg">
+              <a href="#" className="w-12 h-12 bg-red-600 text-white rounded-xl flex items-center justify-center hover:bg-red-700 transition-all transform hover:-translate-y-1 shadow-sm">
                 <FaYoutube className="text-xl" />
               </a>
-              <a href="#" className="w-12 h-12 bg-pink-500 text-white rounded-xl flex items-center justify-center hover:bg-pink-600 transition-all transform hover:-translate-y-1 shadow-lg">
+              <a href="#" className="w-12 h-12 bg-pink-500 text-white rounded-xl flex items-center justify-center hover:bg-pink-600 transition-all transform hover:-translate-y-1 shadow-sm">
                 <FaInstagram className="text-xl" />
               </a>
             </div>
 
             <div className="space-y-6">
-              <div className="flex items-start p-6 bg-white rounded-2xl shadow-lg border border-amber-100 transition-all hover:shadow-xl group">
+              <div className="flex items-start p-6 bg-white rounded-2xl shadow-sm border border-amber-100 transition-all ">
                 <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-amber-200 transition-colors">
                   <FaMapMarkerAlt className="w-5 h-5 text-amber-600" />
                 </div>
@@ -87,7 +87,7 @@ function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start p-6 bg-white rounded-2xl shadow-lg border border-amber-100 transition-all hover:shadow-xl group">
+              <div className="flex items-start p-6 bg-white rounded-2xl shadow-sm border border-amber-100 transition-all">
                 <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-amber-200 transition-colors">
                   <FaPhone className="w-5 h-5 text-amber-600" />
                 </div>
@@ -98,7 +98,7 @@ function Contact() {
                 </div>
               </div>
 
-              <div className="flex items-start p-6 bg-white rounded-2xl shadow-lg border border-amber-100 transition-all hover:shadow-xl group">
+              <div className="flex items-start p-6 bg-white rounded-2xl shadow-sm border border-amber-100 transition-all  group">
                 <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-4 group-hover:bg-amber-200 transition-colors">
                   <FaClock className="w-5 h-5 text-amber-600" />
                 </div>
@@ -113,7 +113,7 @@ function Contact() {
 
         {/* Right Form */}
         <div className="lg:w-1/2">
-          <div className="bg-white p-8 rounded-2xl shadow-xl border border-amber-100" id="contact-form">
+          <div className="bg-white p-8 rounded-2xl shadow-sm border border-amber-100" id="contact-form">
             <h3 className="text-3xl font-bold text-gray-900 mb-4">Send us a Message</h3>
             <p className="text-gray-600 mb-8">We'll respond as soon as possible</p>
           
@@ -173,7 +173,7 @@ function Contact() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 rounded-xl font-semibold hover:opacity-90 transition-all transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl disabled:opacity-70 disabled:transform-none flex items-center justify-center gap-2 text-lg"
+                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-4 rounded-xl font-semibold hover:opacity-90 transition-all transform hover:-translate-y-0.5 shadow-sm disabled:opacity-70 disabled:transform-none flex items-center justify-center gap-2 text-lg"
               >
                 {loading ? (
                   <>

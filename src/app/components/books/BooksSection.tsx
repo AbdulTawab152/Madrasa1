@@ -73,7 +73,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
             onMouseLeave={() => setHoveredBook(null)}
           >
             <div className="block h-full">
-              <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-3 border border-amber-100 overflow-hidden relative h-full flex flex-col group-hover:border-amber-200">
+              <div className="bg-white rounded-2xl shadow-sm hover:shadow-md  transition-all duration-500 transform hover:-translate-y-3 border border-amber-100 overflow-hidden relative h-full flex flex-col group-hover:border-amber-200">
                 {/* Book Image Container */}
                 
                 <div className="relative h-64 overflow-hidden flex-shrink-0">

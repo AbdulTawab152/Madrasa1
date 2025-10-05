@@ -75,8 +75,12 @@ export default function AwlyaaListPage() {
     return (
       <div className="min-h-screen flex items-center justify-center mt-32">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading Awlyaa...</p>
+          <div className="relative">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-100 border-t-orange-500 mx-auto"></div>
+            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-300 animate-spin mx-auto" style={{animationDirection: 'reverse', animationDuration: '1.5s'}}></div>
+          </div>
+          <h3 className="mt-6 text-xl font-semibold text-gray-800">Loading Awlyaa</h3>
+          <p className="mt-2 text-gray-600">Discovering our distinguished scholars...</p>
         </div>
       </div>
     );
@@ -84,15 +88,22 @@ export default function AwlyaaListPage() {
   if (error)
     return (
       <div className="min-h-screen flex items-center justify-center mt-32">
-        <div className="text-center p-6 bg-red-50 rounded-lg max-w-md mx-auto">
-          <div className="text-red-500 text-4xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            Error Loading Data
+        <div className="text-center p-8 bg-white rounded-3xl shadow-lg border border-red-100 max-w-lg mx-auto">
+          <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <div className="text-red-500 text-3xl">⚠️</div>
+          </div>
+          <h2 className="text-2xl font-bold text-gray-800 mb-3">
+            Unable to Load Awlyaa
           </h2>
-          <p className="text-gray-600 mb-4">{error}</p>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            We encountered an issue while loading the scholars' information. Please try again.
+          </p>
+          <p className="text-sm text-red-600 mb-6 p-3 bg-red-50 rounded-lg">
+            {error}
+          </p>
           <button
             onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-2xl hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
           >
             Try Again
           </button>
@@ -102,33 +113,69 @@ export default function AwlyaaListPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <IslamicHeader pageType="awlayaa" />
+      <IslamicHeader pageType="awlayaa" title="Awlyaa" />
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 pb-16 relative z-20">
+      
+
         {/* Search Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 bg-white rounded-2xl  p-6 border border-gray-100"
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mb-16"
         >
-          <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          
-
-            <div className="relative w-full md:w-auto">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <FaSearch className="text-gray-400" />
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-gradient-to-r from-white to-orange-50 rounded-3xl p-10 border border-orange-100">
+              <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mb-4 shadow-md">
+                  <FaSearch className="text-white text-3xl" />
+                </div>
+                <h2 className="text-3xl font-extrabold text-gray-800 mb-2 tracking-tight">Find Your Scholar</h2>
+                <p className="text-gray-600 text-lg">Search our collection of distinguished scholars by name, expertise, or location.</p>
               </div>
-              <input
-                type="text"
-                placeholder="Search by name or expertise..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full md:w-80 pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-orange-500 shadow-sm"
-              />
+              
+              <div className="relative max-w-3xl mx-auto">
+                <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
+                  <FaSearch className="text-orange-500 text-xl" />
+                </div>
+                <input
+                  type="text"
+                  placeholder="Search by name, expertise, or location..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-16 pr-6 py-5 border-2 border-orange-200 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-orange-400 text-lg transition-all duration-300 bg-white outline-none"
+                />
+                {searchTerm && (
+                  <div className="absolute inset-y-0 right-0 pr-6 flex items-center">
+                    <button
+                      onClick={() => setSearchTerm("")}
+                      className="text-gray-400 hover:text-orange-500 transition-colors"
+                      aria-label="Clear search"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                )}
+              </div>
+              
+              {searchTerm && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 text-center"
+                >
+                  <p className="text-orange-600 font-semibold text-base">
+                    {filteredAwlyaa.length} scholar{filteredAwlyaa.length !== 1 ? 's' : ''} found
+                  </p>
+                </motion.div>
+              )}
             </div>
           </div>
         </motion.div>
+
 
         {/* Awlyaa Grid */}
         {filteredAwlyaa.length > 0 ? (
@@ -141,9 +188,9 @@ export default function AwlyaaListPage() {
             {filteredAwlyaa.map((item) => (
               <motion.div key={item.id} variants={itemVariants}>
                 <Link href={`/awlayaa/${item.id}`}>
-                  <div className="bg-white rounded-2xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 border border-gray-100 group cursor-pointer h-full flex flex-col">
+                  <div className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 border border-gray-200 group cursor-pointer h-full flex flex-col transform hover:-translate-y-1">
                     {/* Image Section */}
-                    <div className="relative h-60 overflow-hidden">
+                    <div className="relative h-64 overflow-hidden">
                       {item.profile_image ? (
                         <img
                           src={
@@ -151,55 +198,76 @@ export default function AwlyaaListPage() {
                             "/placeholder-awlyaa.jpg"
                           }
                           alt={item.name}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-r from-orange-100 to-amber-100 flex items-center justify-center">
+                        <div className="w-full h-full bg-gradient-to-br from-orange-100 via-amber-50 to-orange-200 flex items-center justify-center">
                           <div className="relative">
-                            <FaUser className="text-5xl text-orange-400" />
-                            <div className="absolute -top-1 -right-2 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
-                              <FaStar className="text-white text-xs" />
+                            <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-amber-500 rounded-full flex items-center justify-center shadow-lg">
+                              <FaUser className="text-4xl text-white" />
+                            </div>
+                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                              <FaStar className="text-white text-sm" />
                             </div>
                           </div>
                         </div>
                       )}
-                      <div className="absolute top-4 right-4 p-2 bg-white/80 backdrop-blur-sm rounded-full hover:bg-white transition-colors">
-                        <FaHeart className="text-orange-500" />
+                      
+                      {/* Overlay Gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                      
+                      {/* Action Buttons */}
+                      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                        <div className="p-3 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors shadow-lg">
+                          <FaHeart className="text-orange-500 text-lg" />
+                        </div>
+                        <div className="p-3 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors shadow-lg">
+                          <FaUsers className="text-blue-500 text-lg" />
+                        </div>
                       </div>
 
-                      {/* Category Badge */}
-                      <div className="absolute bottom-4 left-4">
-                        <span className="px-3 py-1 bg-orange-500 text-white text-sm font-medium rounded-full">
-                          Expert
-                        </span>
-                      </div>
+                      {/* Expertise Badge */}
+                    
                     </div>
 
                     {/* Content Section */}
-                    <div className="p-6 flex flex-col flex-grow">
-                      <h2 className="text-lg font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
-                        {item.name}
-                      </h2>
+                    <div className="p-5 flex flex-col flex-grow">
+                      <div className="mb-4">
+                        <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
+                          {item.name}
+                        </h2>
+                        {item.nickname && (
+                          <p className="text-orange-600 font-medium text-sm mb-2">
+                            "{item.nickname}"
+                          </p>
+                        )}
+                        {item.title && (
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                            {item.title}
+                          </p>
+                        )}
+                      </div>
 
-                  
+                      {/* Age Information */}
+                      {/* {item.age_at_death && (
+                        <div className="mb-4 flex items-center justify-center">
+                          <div className="bg-gradient-to-r from-orange-100 to-amber-100 rounded-full px-4 py-2">
+                            <span className="text-orange-600 font-semibold text-sm">
+                              Age: {item.age_at_death} years
+                            </span>
+                          </div>
+                        </div>
+                      )} */}
 
-                      <p className="text-sm pt-2">
-                        <strong>Death:</strong>{" "}
-                        {item.death_date
-                          ? `${new Date(item.death_date).toDateString()} – ${
-                              item.death_place
-                            }, ${item.death_city}, ${item.death_country}`
-                          : "Still Alive"}
-                      </p>
-
-                      {/* Mock Expertise Tags */}
-
-                      <div className="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <span className="inline-flex items-center text-orange-600 text-sm font-medium">
-                          View Profile
-                        </span>
-                        <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center group-hover:bg-orange-500 transition-colors">
-                          <FaArrowRight className="text-orange-500 group-hover:text-white transition-colors text-sm" />
+                      {/* Action Button */}
+                      <div className="mt-auto pt-3 border-t border-gray-100">
+                        <div className="flex items-center justify-between">
+                          <span className="inline-flex items-center text-orange-600 text-sm font-medium">
+                            View Profile
+                          </span>
+                          <div className="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center group-hover:bg-orange-500 transition-all duration-300">
+                            <FaArrowRight className="text-orange-500 group-hover:text-white transition-colors text-xs transform group-hover:translate-x-1" />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -210,30 +278,30 @@ export default function AwlyaaListPage() {
           </motion.div>
         ) : (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-100"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            className="text-center py-20 bg-white rounded-3xl shadow-lg border border-gray-100"
           >
-            <div className="text-gray-300 text-6xl mb-4">🔍</div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
-              No Awlyaa Found
-            </h3>
-            <p className="text-gray-500">
-              Try adjusting your search terms or browse all members
-            </p>
-            <button
-              onClick={() => setSearchTerm("")}
-              className="mt-4 px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
-            >
-              View All Awlyaa
-            </button>
+            <div className="max-w-md mx-auto">
+              <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                <FaSearch className="text-4xl text-orange-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                No Awlyaa Found
+              </h3>
+              <p className="text-gray-600 mb-8 leading-relaxed">
+                We couldn't find any scholars matching your search criteria. Try adjusting your search terms or browse all our distinguished Awlyaa.
+              </p>
+              <button
+                onClick={() => setSearchTerm("")}
+                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-2xl hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+              >
+                View All Awlyaa
+              </button>
+            </div>
           </motion.div>
         )}
-
-    
-
-      
       </div>
     </div>
   );

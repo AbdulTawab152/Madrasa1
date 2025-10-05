@@ -75,14 +75,14 @@ export default function EventsSection({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 tracking-tight ">
+              <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight ">
                 <span className="relative z-10">
                   <span className="px-2 py-1 rounded-lg">
                     Discover Our
                   </span>
                 </span>
                 <span className="relative mt-3 z-10">
-                  <span className="bg-gradient-to-r from-amber-500 via-orange-400 to-orange-600 bg-clip-text text-transparent drop-shadow-lg text-5xl md:text-6xl font-black tracking-tight">
+                  <span className="bg-gradient-to-r from-amber-500 via-orange-400 to-orange-600 bg-clip-text text-transparent  text-4xl md:text-6xl font-black tracking-tight">
                     Events
                   </span>
                   <span className="absolute left-1/2 -translate-x-1/2 top-1/2 -z-10 w-40 h-10 bg-orange-100 rounded-full blur-2xl opacity-60"></span>
@@ -127,103 +127,104 @@ export default function EventsSection({
                 transition={{ duration: 0.6, delay: idx * 0.1 }}
                 className="group relative mb-12 pl-4 md:pl-24"
               >
-                <div className="pointer-events-none absolute -left-4 md:left-6 top-5 h-5 w-5 rounded-full border-4 border-white bg-primary-500 shadow-md transition-transform duration-300 group-hover:scale-110" />
+                <div className="pointer-events-none absolute -left-4 md:left-6 top-5 h-5 w-5 rounded-full border-4 border-white bg-primary-500" />
                 {idx < displayEvents.length - 1 ? (
                   <span className="pointer-events-none absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100" />
                 ) : null}
+                <Card className="relative flex w-full flex-col overflow-hidden bg-white/95 backdrop-blur md:flex-row  shadow-none hover:shadow-none">
 
-                <Card className="relative flex w-full flex-col overflow-hidden bg-white/95 backdrop-blur md:flex-row">
-                  <CardMedia className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3]">
-                    <Image
-                      src={coverImage}
-                      alt={event.title}
-                      fill
-                      sizes="(min-width: 1280px) 480px, (min-width: 768px) 50vw, 100vw"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                    <CardMedia className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3]">
+                      <Image
+                        src={coverImage}
+                        alt={event.title}
+                        fill
+                        sizes="(min-width: 1280px) 480px, (min-width: 768px) 50vw, 100vw"
+                              className="h-full w-full object-cover"
+                      />
 
-                    <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
-                      Community Event
-                    </CardBadge>
-                    {event.branch_name ? (
-                      <CardBadge className="absolute bottom-4 right-4 bg-primary-600 text-white">
-                        {event.branch_name}
+                      <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
+                        Community Event
                       </CardBadge>
-                    ) : null}
-                  </CardMedia>
+                      {event.branch_name ? (
+                        <CardBadge className="absolute bottom-4 right-4 bg-primary-600 text-white">
+                          {event.branch_name}
+                        </CardBadge>
+                      ) : null}
+                    </CardMedia>
 
-                  <CardContent className="w-full gap-6 p-6 md:w-1/2">
-                    <div className="space-y-4">
-                      <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">
-                        <Calendar className="h-4 w-4 text-primary-500" />
-                        <span>{eventDate}</span>
+                    <CardContent className="w-full gap-6 p-6 md:w-1/2">
+                      <div className="space-y-4">
+                        <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">
+                          <Calendar className="h-4 w-4 text-primary-500" />
+                          <span>{eventDate}</span>
+                        </div>
+
+                        <h3 className="text-2xl font-semibold leading-tight text-primary-900">
+                          {event.title}
+                        </h3>
+
+                        <p className="text-sm leading-relaxed text-primary-600 line-clamp-4">
+                          {stripHtml(event.description)}
+                        </p>
                       </div>
 
-                      <h3 className="text-2xl font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
-                        {event.title}
-                      </h3>
-
-                      <p className="text-sm leading-relaxed text-primary-600 line-clamp-4">
-                        {stripHtml(event.description)}
-                      </p>
-                    </div>
-
-                    <div className="grid gap-3 text-sm text-primary-700 md:grid-cols-2">
-                      <span className="inline-flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-primary-500" />
-                        <span className="line-clamp-1">{location}</span>
-                      </span>
-
-                      <span className="inline-flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-primary-500" />
-                        <span>{event.duration || "Flexible"}</span>
-                      </span>
-
-                      {event.contact ? (
+                      <div className="grid gap-3 text-sm text-primary-700 md:grid-cols-2">
                         <span className="inline-flex items-center gap-2">
-                          <Users className="h-4 w-4 text-primary-500" />
-                          <span className="line-clamp-1">{event.contact}</span>
+                          <MapPin className="h-4 w-4 text-primary-500" />
+                          <span className="line-clamp-1">{location}</span>
                         </span>
-                      ) : null}
 
-                      {event.live_link ? (
-                        <span className="inline-flex items-center gap-2 text-primary-600">
-                          <ArrowRight className="h-4 w-4" />
-                          <span>{liveLabel}</span>
+                        <span className="inline-flex items-center gap-2">
+                          <Clock className="h-4 w-4 text-primary-500" />
+                          <span>{event.duration || "Flexible"}</span>
                         </span>
-                      ) : null}
-                    </div>
 
-                    <CardFooter>
-                      <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-700">
-                        <Users className="h-4 w-4 text-primary-500" />
-                        Organized by Haq Madrasa
-                      </span>
-
-                      <div className="flex flex-wrap items-center gap-2">
-                        {event.live_link ? (
-                          <a
-                            href={event.live_link}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600 transition-colors duration-200 hover:bg-primary-100"
-                          >
-                            Join live
-                            <ArrowRight className="h-4 w-4" />
-                          </a>
+                        {event.contact ? (
+                          <span className="inline-flex items-center gap-2">
+                            <Users className="h-4 w-4 text-primary-500" />
+                            <span className="line-clamp-1">{event.contact}</span>
+                          </span>
                         ) : null}
 
-                        <Link
-                          href={`/event/${event.slug}`}
-                          className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-4 py-2 text-sm font-semibold text-white transition-colors duration-200 hover:bg-primary-700"
-                        >
-                          Event details
-                          <ArrowRight className="h-4 w-4" />
-                        </Link>
+                        {event.live_link ? (
+                          <span className="inline-flex items-center gap-2 text-primary-600">
+                            <ArrowRight className="h-4 w-4" />
+                            <span>{liveLabel}</span>
+                          </span>
+                        ) : null}
                       </div>
-                    </CardFooter>
-                  </CardContent>
-                </Card>
+
+                      <CardFooter>
+                        <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-700">
+                          <Users className="h-4 w-4 text-primary-500" />
+                          Organized by Haq Madrasa
+                        </span>
+
+                        <div className="flex flex-wrap items-center gap-2">
+                          {event.live_link ? (
+                            <a
+                              href={event.live_link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600"
+                            >
+                              Join live
+                              <ArrowRight className="h-4 w-4" />
+                            </a>
+                          ) : null}
+
+                          <Link
+                            href={`/event/${event.slug}`}
+                            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-5 py-2 text-sm font-semibold text-white shadow-md hover:from-primary-700 hover:to-amber-500 hover:scale-105 transition-all duration-200 border border-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
+                            style={{ minWidth: 0 }}
+                          >
+                            <span className="whitespace-nowrap">Event Details</span>
+                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                          </Link>
+                        </div>
+                      </CardFooter>
+                    </CardContent>
+                  </Card>
               </motion.div>
             );
           })}
@@ -233,7 +234,7 @@ export default function EventsSection({
           <div className="mt-12 text-center">
             <Link
               href="/event"
-              className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors shadow-sm hover:shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg border-2 border-amber-500"
             >
               <span>View All Events</span>
               <svg

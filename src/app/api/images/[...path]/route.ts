@@ -31,7 +31,7 @@ const loadPlaceholderImage = async () => {
   const filePath = join(process.cwd(), 'public', PLACEHOLDER_IMAGE.replace(/^\/+/, ''));
   try {
     const file = await fs.readFile(filePath);
-    return createImageResponse(toArrayBuffer(file), 'image/jpeg');
+    return createImageResponse(toArrayBuffer(file), 'image/jpg');
   } catch (error) {
     console.error('Failed to load placeholder image:', error);
     return NextResponse.json({ error: 'Image not available' }, { status: 404 });

@@ -1,4 +1,4 @@
-import IftahQuestionForm from "@/app/components/iftah/IftahQuestionForm";
+// import IftahQuestionForm from "@/app/components/iftah/IftahQuestionForm";
 
 // App Configuration
 export const appConfig = {
@@ -41,6 +41,8 @@ export const endpoints = {
   events: `${apiConfig.baseUrl}/events`,  // لیست
   event: `${apiConfig.baseUrl}/event`, 
   iftah: `${apiConfig.baseUrl}/iftah`,
+  IftahQuestionForm: `${apiConfig.baseUrl}/iftah-question`,
+  csrfCookie: `${apiConfig.baseUrl}/sanctum/csrf-cookie`,
   articles: `${apiConfig.baseUrl}/articles`,
   graduated: `${apiConfig.baseUrl}/graduations`,
   awlyaa: `${apiConfig.baseUrl}/awlyaa`,
@@ -48,7 +50,8 @@ export const endpoints = {
   donation: `${apiConfig.baseUrl}/donate-info-for-web`,
   tasawwuf: `${apiConfig.baseUrl}/tasawwuf`,
   contact: `${apiConfig.baseUrl}/contact`,
-  IftahQuestionForm: `${apiConfig.baseUrl}/iftah-question`,
+
+  awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
 } as const;
 
 
@@ -68,7 +71,7 @@ export const navigation = {
   
     { name: 'Article', href: '/articles', icon: 'article' },
     { name: 'Awalyaa', href: '/awlayaa', icon: 'awlayaa' },
-   
+    { name: 'Awlyaa Charts', href: '/awlyaa-charts', icon: 'chart' },
     { name: 'Books', href: '/book', icon: 'book' },
     { name: 'Donation', href: '/donation', icon: 'donation' },
     { name: 'Blogs', href: '/blogs', icon: 'blog' },

@@ -209,13 +209,15 @@ export interface Graduation extends BaseEntity {
 
 export interface Awlyaa extends BaseEntity {
   id: number;
+  type: string;
+  way: string;
   name: string;
   title: string;
   nickname: string;
-  birth_date: string;
-  birth_place: string;
-  birth_city: string;
-  birth_country: string;
+  birth_date: string | null;
+  birth_place: string | null;
+  birth_city: string | null;
+  birth_country: string | null;
   death_date: string | null;
   death_place: string | null;
   death_city: string | null;
@@ -274,6 +276,29 @@ export interface ContactForm {
 export interface NewsletterForm {
   email: string;
   name?: string;
+}
+
+// Awlyaa Charts types
+export interface AwlyaaChart {
+  id: number;
+  uniqu_id: string;
+  name: string;
+  image: string | null;
+  awlyaa_id: number | null;
+  created_at: string;
+  updated_at: string;
+  awlyaa: any | null;
+  children: AwlyaaChart[];
+  parents: AwlyaaChartParent[];
+}
+
+export interface AwlyaaChartParent {
+  id: number;
+  teacher_awlyaa_chart_id: number;
+  student_awlyaa_chart_id: number;
+  created_at: string;
+  updated_at: string;
+  teacher_chart: AwlyaaChart;
 }
 
 // Search types

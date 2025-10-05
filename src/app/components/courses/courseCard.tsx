@@ -138,9 +138,9 @@ export default function CoursesSection({
               <motion.article
                 key={course.id}
                 variants={cardVariants}
-                className="h-full"
+                className="h-full sm:px-4"
               >
-                <Card className="group flex h-full flex-col rounded-2xl border border-primary-100/60 bg-white/95 shadow-[0_14px_40px_-28px_rgba(15,23,42,0.35)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-[0_20px_48px_-24px_rgba(15,23,42,0.4)]">
+                <Card className="group flex  h-full flex-col rounded-2xl border border-primary-100/60 bg-white/95 shadow-[0_14px_40px_-28px_rgba(15,23,42,0.35)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
                   <CardMedia className="aspect-[16/9]" gradientOverlay={false}>
                     <Image
                       src={coverImage}
@@ -157,14 +157,14 @@ export default function CoursesSection({
                         {publishedOn}
                       </span>
 
-                      <Link
+                      {/* <Link
                         href={`/courses/${course.slug}`}
                         className="block outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                      >
+                      > */}
                         <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
                           {course.title}
                         </h3>
-                      </Link>
+                      {/* </Link> */}
 
                       <p className="text-sm leading-relaxed text-primary-600 line-clamp-2">
                         {stripHtml(course.description) ||
@@ -197,7 +197,7 @@ export default function CoursesSection({
 
                       <Link
                         href={`/courses/${course.slug}`}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-primary-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="inline-flex mt-4 items-center gap-1.5 rounded-full bg-primary-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                       >
                         View course
                         <ArrowUpRight className="h-4 w-4" />

@@ -1,0 +1,10 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="200" height="200" fill="#FEF3C7"/>
+  <circle cx="100" cy="80" r="40" fill="#F59E0B"/>
+  <path d="M100 140C100 140 80 120 60 140C60 140 80 160 100 140Z" fill="#F59E0B"/>
+  <path d="M100 140C100 140 120 120 140 140C140 140 120 160 100 140Z" fill="#F59E0B"/>
+  <circle cx="85" cy="70" r="3" fill="white"/>
+  <circle cx="115" cy="70" r="3" fill="white"/>
+  <path d="M90 85C90 85 100 95 110 85" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  <text x="100" y="180" text-anchor="middle" fill="#F59E0B" font-family="Arial" font-size="12" font-weight="bold">Awlyaa Scholar</text>
+</svg>
