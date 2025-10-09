@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
-import { FaList } from "react-icons/fa6";
+import { PiList } from "react-icons/pi";
 
 import { appConfig, navigation } from "@/lib/config";
 import RouteProgressBar from "@/components/RouteProgressBar";
 import { Suspense } from "react";
+import { FaListAlt } from "react-icons/fa";
 
 const PRIMARY_LINK_LIMIT = 7;
 
@@ -91,7 +92,7 @@ const Navbar = memo(function Navbar() {
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_rgba(255,255,255,0))]" aria-hidden="true" />
         <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
         <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-secondary-400/30 blur-2xl" aria-hidden="true" />
-        <div className="max-w-screen-xl relative mx-auto px-4 py-3">
+        <div className="max-w-screen-xl relative mx-auto px-4 py-2">
           <div className="hidden md:flex items-center justify-between text-sm text-primary-50/90">
             <span>{desktop}</span>
             <span className="arabic text-xl font-bold tracking-widest text-secondary-100 drop-shadow-sm">
@@ -123,11 +124,11 @@ const Navbar = memo(function Navbar() {
 
       <nav
         className={`relative bg-white/95 backdrop-blur transition-all duration-300 border-b border-primary-100/70 ${
-          hasScrolled ? "shadow-[0_12px_35px_-25px_rgba(4,22,19,0.55)]" : ""
+          hasScrolled ? "shadow-am" : ""
         }`}
         aria-label="Primary"
       >
-        <div className="max-w-screen-xl mx-auto px-4 lg:px-6 py-4">
+        <div className="max-w-screen-xl mx-auto px-4 lg:px-6 py-2">
           <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
@@ -225,11 +226,11 @@ const Navbar = memo(function Navbar() {
             <button
               type="button"
               onClick={toggleMobileMenu}
-              className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-primary-100 text-primary-700 hover:bg-primary-200 transition lg:hidden"
+              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 hover:bg-primary-100 border border-primary-200 shadow-sm transition-colors duration-200 lg:hidden"
               aria-label="Toggle navigation menu"
               aria-expanded={isMobileMenuOpen}
             >
-              <FaList size={20} />
+              <PiList size={22} className="text-primary-700" />
             </button>
           </div>
         </div>
