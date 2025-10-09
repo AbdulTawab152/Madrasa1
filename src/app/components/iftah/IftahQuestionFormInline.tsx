@@ -14,7 +14,9 @@ import {
   FaStar,
   FaClock,
   FaEye,
-  FaEyeSlash
+  FaEyeSlash,
+  FaArrowRight,
+  FaCalendar
 } from "react-icons/fa";
 
 export default function IftahQuestionFormInline() {
@@ -28,10 +30,8 @@ export default function IftahQuestionFormInline() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [showQuestionFormModal, setShowQuestionFormModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [submittedQuestions, setSubmittedQuestions] = useState<any[]>([]);
-  const [showRecentQuestions, setShowRecentQuestions] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -74,11 +74,10 @@ export default function IftahQuestionFormInline() {
         timestamp: new Date().toISOString(),
         status: 'pending'
       };
-      setSubmittedQuestions(prev => [newQuestion, ...prev]);
       
       // Show success modal
       setShowSuccessModal(true);
-      setShowModal(false);
+      setShowQuestionFormModal(false);
       
       // Auto-hide success modal after 5 seconds
       setTimeout(() => {
@@ -95,253 +94,277 @@ export default function IftahQuestionFormInline() {
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-12">
-      {/* Header Section */}
-      <div className="text-center mb-12">
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-amber-500 to-orange-500 rounded-full mb-6 shadow-lg">
-          <FaQuestionCircle className="text-white text-3xl" />
-        </div>
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-          Ask Islamic Scholars
-        </h1>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-          Get authentic answers to your Islamic questions from qualified scholars. 
-          Our experts are here to guide you with knowledge based on Quran and Sunnah.
-        </p>
-      </div>
-
-      {/* Stats Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-6 rounded-2xl border border-amber-200 text-center">
-          <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FaBookOpen className="text-white text-xl" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">500+</h3>
-          <p className="text-gray-600">Questions Answered</p>
-        </div>
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-200 text-center">
-          <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FaGraduationCap className="text-white text-xl" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">25+</h3>
-          <p className="text-gray-600">Qualified Scholars</p>
-        </div>
-        <div className="bg-gradient-to-r from-green-50 to-emerald-50 p-6 rounded-2xl border border-green-200 text-center">
-          <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-            <FaStar className="text-white text-xl" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">4.9/5</h3>
-          <p className="text-gray-600">Satisfaction Rate</p>
-        </div>
-      </div>
-
-      {/* Main Form Section */}
-      <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-        {/* Form Header */}
-        <div className="bg-gradient-to-r from-amber-500 to-orange-500 p-8 text-white">
-          <div className="flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold mb-2">Submit Your Question</h2>
-              <p className="text-amber-100">Get authentic Islamic guidance from qualified scholars</p>
-            </div>
-            <div className="hidden md:block">
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                <FaQuestionCircle className="text-white text-2xl" />
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Form Content */}
-        <div className="p-8">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Personal Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <FaUser className="text-amber-600" />
-                  Full Name *
-                </label>
-                <input 
-                  name="name" 
-                  value={form.name} 
-                  onChange={handleChange} 
-                  required 
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all shadow-sm hover:border-gray-300" 
-                  placeholder="Enter your full name"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <FaEnvelope className="text-amber-600" />
-                  Email Address *
-                </label>
-                <input 
-                  name="email" 
-                  type="email" 
-                  value={form.email} 
-                  onChange={handleChange} 
-                  required 
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all shadow-sm hover:border-gray-300" 
-                  placeholder="Enter your email"
-                />
-              </div>
-            </div>
-
-            {/* Contact Information */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <label className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <FaPhone className="text-amber-600" />
-                  Phone Number
-                </label>
-                <input 
-                  name="phone" 
-                  value={form.phone} 
-                  onChange={handleChange} 
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all shadow-sm hover:border-gray-300" 
-                  placeholder="Enter your phone number"
-                />
-              </div>
-              <div className="space-y-2">
-                <label className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                  <FaWhatsapp className="text-green-500" />
-                  WhatsApp
-                </label>
-                <input 
-                  name="whatsapp" 
-                  value={form.whatsapp} 
-                  onChange={handleChange} 
-                  className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all shadow-sm hover:border-gray-300" 
-                  placeholder="Enter your WhatsApp number"
-                />
-              </div>
-            </div>
-
-            {/* Question Section */}
-            <div className="space-y-2">
-              <label className="font-semibold text-gray-700 mb-2 flex items-center gap-2">
-                <FaQuestionCircle className="text-amber-600" />
-                Your Islamic Question *
-              </label>
-              <textarea 
-                name="question" 
-                value={form.question} 
-                onChange={handleChange}
-                onKeyPress={handleKeyPress}
-                required 
-                className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 min-h-[150px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all shadow-sm hover:border-gray-300 resize-none" 
-                placeholder="Please write your Islamic question here. Be specific and provide context if needed..."
-              />
-              <p className="text-sm text-gray-500 mt-2">
-                💡 Tip: Be specific about your question and provide any relevant context to get the best answer.
-              </p>
-            </div>
-
-            {/* Status Messages */}
-            {success && (
-              <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 flex items-center gap-3">
-                <FaCheckCircle className="text-green-500 text-xl flex-shrink-0" />
-                <p className="text-green-700 font-medium">{success}</p>
-              </div>
-            )}
-            {error && (
-              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
-                <p className="text-red-700 font-medium">{error}</p>
-              </div>
-            )}
-
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl text-lg transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-60 disabled:transform-none flex items-center justify-center gap-3"
-            >
-              {loading ? (
-                <>
-                  <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Submitting Question...
-                </>
-              ) : (
-                <>
-                  <FaQuestionCircle className="text-xl" />
-                  Submit Question
-                </>
-              )}
-            </button>
-          </form>
-        </div>
-      </div>
-
-      {/* Recent Questions Section */}
-      {submittedQuestions.length > 0 && (
-        <div className="mt-12">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-              <FaClock className="text-amber-500" />
-              Your Recent Questions
-            </h3>
-            <button
-              onClick={() => setShowRecentQuestions(!showRecentQuestions)}
-              className="flex items-center gap-2 text-amber-600 hover:text-amber-700 font-medium"
-            >
-              {showRecentQuestions ? <FaEyeSlash /> : <FaEye />}
-              {showRecentQuestions ? 'Hide' : 'Show'} Questions
-            </button>
-          </div>
-          
-          {showRecentQuestions && (
-            <div className="space-y-4">
-              {submittedQuestions.slice(0, 3).map((question, index) => (
-                <div key={question.id} className="bg-white rounded-xl border border-gray-200 p-6 shadow-sm">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                        <FaQuestionCircle className="text-amber-600" />
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{question.name}</h4>
-                        <p className="text-sm text-gray-500">{new Date(question.timestamp).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      question.status === 'pending' 
-                        ? 'bg-yellow-100 text-yellow-800' 
-                        : question.status === 'answered'
-                        ? 'bg-green-100 text-green-800'
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {question.status}
-                    </span>
-                  </div>
-                  <p className="text-gray-700 line-clamp-2">{question.question}</p>
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+      {/* Hero Section - Compact Design */}
+      <div className="relative mb-8 sm:mb-10 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100"></div>
+        <div className="absolute inset-0 opacity-30" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f59e0b' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}></div>
+        
+        <div className="relative bg-white rounded-2xl shadow-lg border border-amber-100 overflow-hidden">
+          {/* Header Section */}
+          <div className="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-6 py-8 sm:px-8 sm:py-10">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              {/* Left Content */}
+              <div className="flex-1 text-white">
+                <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-4 py-2 text-xs font-semibold mb-4 border border-white/30">
+                  <FaQuestionCircle className="mr-2 text-sm" />
+                  <span>Islamic Q&A</span>
+                  <div className="ml-2 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
                 </div>
-              ))}
+                
+                <h1 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">
+                  Seek Divine Guidance
+                </h1>
+                
+                <p className="text-sm sm:text-base mb-6 opacity-95 leading-relaxed max-w-lg">
+                  Get authentic Islamic answers from qualified scholars based on Quran and Sunnah.
+                </p>
+                
+                {/* Features */}
+                <div className="flex flex-wrap gap-4 text-xs sm:text-sm">
+                  <div className="flex items-center">
+                    <FaCheckCircle className="mr-1.5 text-green-300 text-xs" />
+                    <span className="opacity-90">Expert Scholars</span>
+                  </div>
+                  <div className="flex items-center">
+                    <FaCheckCircle className="mr-1.5 text-green-300 text-xs" />
+                    <span className="opacity-90">Quick Response</span>
+                  </div>
+                  <div className="flex items-center">
+                    <FaCheckCircle className="mr-1.5 text-green-300 text-xs" />
+                    <span className="opacity-90">Free Service</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Content - CTA */}
+              <div className="flex flex-col items-center md:items-end">
+                <div className="text-center md:text-right mb-4">
+                  <div className="text-4xl sm:text-5xl mb-2">📿</div>
+                  <h3 className="text-lg font-semibold mb-1">Ask Your Question</h3>
+                  <p className="text-amber-100 text-xs">Get personalized guidance</p>
+                </div>
+                
+                <button
+                  onClick={() => setShowQuestionFormModal(true)}
+                  className="flex items-center justify-center px-3 py-2 rounded-full bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-medium text-sm shadow-md hover:shadow-lg transition-all duration-100 border border-amber-200"
+                >
+                  <FaQuestionCircle className="mr-1 text-base" />
+                  <span className="">Ask a Question</span>
+                </button>
+                
+              
+              </div>
             </div>
-          )}
+          </div>
+
+          {/* Stats Section */}
+       
+        </div>
+      </div>
+
+      {/* Question Form Modal */}
+      {showQuestionFormModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-2 sm:p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg relative overflow-hidden border border-amber-100 animate-fadeInUp">
+            {/* Close Button */}
+            <button
+              onClick={() => setShowQuestionFormModal(false)}
+              className="absolute top-2 right-2 z-10 w-7 h-7 bg-white/90 hover:bg-white text-gray-500 hover:text-gray-700 rounded-full flex items-center justify-center transition-all duration-200 shadow-lg hover:shadow-xl"
+            >
+              <FaTimes className="text-xs" />
+            </button>
+
+            {/* Form Header */}
+            <div className="relative bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 px-4 py-6 sm:px-6 sm:py-8 text-white overflow-hidden">
+              {/* Background Pattern */}
+              <div className="absolute inset-0 opacity-40" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Ccircle cx='20' cy='20' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+              }}></div>
+              
+              <div className="relative text-center">
+                <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-2.5 py-1 text-xs font-semibold mb-2 border border-white/30">
+                  <FaQuestionCircle className="mr-1 text-xs" />
+                  <span>Ask Your Question</span>
+                  <div className="ml-1 w-1.5 h-1.5 bg-green-300 rounded-full animate-pulse"></div>
+                </div>
+                
+                <h2 className="text-base sm:text-xl font-bold mb-1 sm:mb-2">Seek Islamic Guidance</h2>
+                <p className="text-amber-100 text-xs sm:text-sm leading-relaxed">
+                  Get authentic answers from qualified Islamic scholars based on Quran and Sunnah.
+                </p>
+              </div>
+            </div>
+
+            {/* Form Content */}
+            <div className="px-4 py-4 sm:px-6 sm:py-6">
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+                {/* Personal Information */}
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+                  <div className="space-y-1">
+                    <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
+                      <div className="w-5 h-5 bg-amber-100 rounded-md flex items-center justify-center">
+                        <FaUser className="text-amber-600 text-xs" />
+                      </div>
+                      Full Name *
+                    </label>
+                    <input 
+                      name="name" 
+                      value={form.name} 
+                      onChange={handleChange} 
+                      required 
+                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
+                      <div className="w-5 h-5 bg-amber-100 rounded-md flex items-center justify-center">
+                        <FaEnvelope className="text-amber-600 text-xs" />
+                      </div>
+                      Email Address *
+                    </label>
+                    <input 
+                      name="email" 
+                      type="email" 
+                      value={form.email} 
+                      onChange={handleChange} 
+                      required 
+                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                </div>
+
+                {/* Contact Information */}
+                <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+                  <div className="space-y-1">
+                    <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
+                      <div className="w-5 h-5 bg-blue-100 rounded-md flex items-center justify-center">
+                        <FaPhone className="text-blue-600 text-xs" />
+                      </div>
+                      Phone Number
+                    </label>
+                    <input 
+                      name="phone" 
+                      value={form.phone} 
+                      onChange={handleChange} 
+                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                      placeholder="Enter phone number"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
+                      <div className="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center">
+                        <FaWhatsapp className="text-green-600 text-xs" />
+                      </div>
+                      WhatsApp
+                    </label>
+                    <input 
+                      name="whatsapp" 
+                      value={form.whatsapp} 
+                      onChange={handleChange} 
+                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                      placeholder="Enter WhatsApp number"
+                    />
+                  </div>
+                </div>
+
+                {/* Question Section */}
+                <div className="space-y-1">
+                  <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
+                    <div className="w-5 h-5 bg-purple-100 rounded-md flex items-center justify-center">
+                      <FaQuestionCircle className="text-purple-600 text-xs" />
+                    </div>
+                    Your Islamic Question *
+                  </label>
+                  <textarea 
+                    name="question" 
+                    value={form.question} 
+                    onChange={handleChange}
+                    onKeyPress={handleKeyPress}
+                    required 
+                    className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 min-h-[80px] sm:min-h-[100px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 resize-none text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                    placeholder="Please write your Islamic question here..."
+                  />
+               
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-2.5 sm:py-3 rounded-lg shadow-lg hover:shadow-xl text-xs sm:text-sm transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-60 disabled:transform-none flex items-center justify-center gap-2 relative overflow-hidden group"
+                >
+                  <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span className="relative z-10">Submitting...</span>
+                    </>
+                  ) : (
+                    <>
+                      <FaQuestionCircle className="text-xs sm:text-sm relative z-10" />
+                      <span className="relative z-10">Submit Question</span>
+                      <FaArrowRight className="text-xs relative z-10 group-hover:translate-x-1 transition-transform duration-200" />
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       )}
 
       {/* Success Modal */}
       {showSuccessModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 relative animate-fadeInUp border border-amber-100">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <FaCheckCircle className="text-green-500 text-2xl" />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full relative overflow-hidden border border-green-100 animate-fadeInUp">
+            {/* Background Pattern */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50"></div>
+            
+            <div className="relative px-6 py-8 text-center">
+              {/* Success Icon */}
+              <div className="relative mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+                  <FaCheckCircle className="text-white text-2xl" />
+                </div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full animate-ping"></div>
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full"></div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Question Submitted!</h3>
-              <p className="text-gray-600 mb-6">
-                Your Islamic question has been submitted successfully. Our scholars will review and respond to your question soon.
+              
+              {/* Success Content */}
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Question Submitted!</h3>
+              <p className="text-gray-600 mb-6 text-sm leading-relaxed">
+                Your Islamic question has been submitted successfully. Our scholars will review and provide authentic guidance.
               </p>
+              
+              {/* Features */}
+              <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg p-3 mb-6 border border-amber-100">
+                <div className="flex items-center justify-center gap-4 text-xs text-gray-600">
+                  <div className="flex items-center gap-1.5">
+                    <FaClock className="text-amber-500 text-xs" />
+                    <span>24-48 hours</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <FaStar className="text-amber-500 text-xs" />
+                    <span>Expert Review</span>
+                  </div>
+                </div>
+              </div>
+              
               <button
                 onClick={() => setShowSuccessModal(false)}
-                className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold py-3 px-6 rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all duration-300"
+                className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-2.5 px-4 rounded-lg transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm"
               >
-                Continue
+                <span>Continue</span>
+                <FaArrowRight className="text-xs" />
               </button>
             </div>
           </div>

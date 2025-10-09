@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getImageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Article {
   title: string;
@@ -102,7 +103,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
         {/* Article Header */}
         <article className="mb-16">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
-            {article.title}
+            {cleanText(article.title)}
           </h1>
 
           {(article.featuredImage || article.image) && (
@@ -121,7 +122,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
             </div>
           )}
 
-          <p>{article.description}</p>
+          <p>{cleanText(article.description)}</p>
         </article>
 
         {/* Related Articles */}
@@ -138,10 +139,10 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                   className="block bg-white border border-amber-100 rounded-xl p-6 shadow-sm hover:shadow-md transition"
                 >
                   <h3 className="text-lg font-semibold text-gray-900">
-                    {item.title}
+                    {cleanText(item.title)}
                   </h3>
                   <p className="text-sm text-gray-600 mt-2 line-clamp-2">
-                    {item.description || "Continue reading"}
+                    {cleanText(item.description) || "Continue reading"}
                   </p>
                 </Link>
               ))}

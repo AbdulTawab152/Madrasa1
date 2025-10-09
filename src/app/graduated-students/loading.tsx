@@ -1,13 +1,6 @@
 import IslamicHeader from "../components/IslamicHeader";
-import PageSkeleton from "@/components/loading/PageSkeleton";
+import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
 
 export default function LoadingGraduationsPage() {
-  return (
-    <main className="w-full">
-      <IslamicHeader pageType="graduated-students" />
-      <div className="pb-16">
-        <PageSkeleton type="authors" showFilters={false} cardCount={6} />
-      </div>
-    </main>
-  );
+  return <DetailPageSkeleton type="graduated-student" showSidebar={false} showComments={false} showRelated={false} />;
 }

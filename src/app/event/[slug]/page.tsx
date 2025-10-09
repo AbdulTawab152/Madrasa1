@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Event {
   id: number;
@@ -246,7 +247,7 @@ export default async function EventDetailsPage({ params }: Params) {
                       About This Event
                     </h2>
                     <div className="prose max-w-none text-gray-700">
-                      <p className="whitespace-pre-line">{event.description ?.replace(/<[^>]*>/g, "")}</p>
+                      <p className="whitespace-pre-line">{cleanText(event.description)}</p>
                     </div>
                   </div>
                 )}

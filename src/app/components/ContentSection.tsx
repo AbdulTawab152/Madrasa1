@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { getImageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Author {
   name: string;
@@ -416,7 +417,7 @@ export default function ContentSection({
                         </span>
                       </motion.div>
                       <p className="text-gray-800 font-medium leading-relaxed">
-                        {item.question}
+                        {cleanText(item.question)}
                       </p>
                     </div>
                   )}
@@ -432,7 +433,7 @@ export default function ContentSection({
                         </span>
                       </motion.div>
                       <p className="text-gray-600 leading-relaxed line-clamp-3">
-                        {item.description || item.answer}
+                        {cleanText(item.description || item.answer)}
                       </p>
                     </div>
                   )}

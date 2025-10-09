@@ -1,13 +1,5 @@
-import IslamicHeader from "../components/IslamicHeader";
-import PageSkeleton from "@/components/loading/PageSkeleton";
+import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
 
 export default function AuthorsLoading() {
-  return (
-    <main className="w-full">
-      <IslamicHeader pageType="authors" />
-      <div className="pb-16">
-        <PageSkeleton type="authors" showFilters={false} cardCount={6} />
-      </div>
-    </main>
-  );
+  return <DetailPageSkeleton type="author" showSidebar={false} showComments={false} showRelated={false} />;
 }

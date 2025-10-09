@@ -4,6 +4,7 @@ import { AwlyaaChartsApi } from "@/lib/api";
 import { AwlyaaChart } from "@/lib/types";
 import { FaUser, FaChevronDown, FaChevronUp, FaTimes, FaInfoCircle, FaCalendarAlt, FaIdCard, FaCrown, FaGraduationCap, FaExternalLinkAlt } from "react-icons/fa";
 import { apiConfig } from "@/lib/config";
+import { cleanText } from "@/lib/textUtils";
 
 export default function AwlyaaChartsSection() {
   const [charts, setCharts] = useState<AwlyaaChart[]>([]);
@@ -189,7 +190,7 @@ export default function AwlyaaChartsSection() {
             {/* Name Outside Card - Below */}
             <div className="text-center mt-2">
               <h3 className={`text-gray-800 font-bold ${isRoot ? 'text-xs sm:text-sm md:text-base lg:text-lg' : 'text-xs sm:text-sm md:text-base'} truncate max-w-full px-1`}>
-                {node.name}
+                {cleanText(node.name)}
               </h3>
             </div>
           </div>
@@ -350,8 +351,8 @@ export default function AwlyaaChartsSection() {
                       <FaUser className="text-white text-lg" />
                     </div>
                     <div>
-                      <h2 className="text-xl font-bold text-gray-900">{selectedChart.name}</h2>
-                      <p className="text-sm text-gray-600">ID: {selectedChart.uniqu_id}</p>
+                      <h2 className="text-xl font-bold text-gray-900">{cleanText(selectedChart.name)}</h2>
+                      <p className="text-sm text-gray-600">ID: {cleanText(selectedChart.uniqu_id)}</p>
                     </div>
                   </div>
                 </div>
@@ -379,7 +380,7 @@ export default function AwlyaaChartsSection() {
                   <div className="space-y-3">
                     <div className="flex justify-between">
                       <span className="font-medium text-gray-700">Unique ID:</span>
-                      <span className="text-gray-900 text-sm">{selectedChart.uniqu_id}</span>
+                      <span className="text-gray-900 text-sm">{cleanText(selectedChart.uniqu_id)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="font-medium text-gray-700">Created:</span>
@@ -418,8 +419,8 @@ export default function AwlyaaChartsSection() {
                         <div className="space-y-4">
                           {selectedChart.parents.map((parent, index) => (
                             <div key={index} className="bg-white rounded-xl p-4 shadow-sm border border-green-100">
-                              <h4 className="font-semibold text-gray-800 mb-2">{parent.teacher_chart.name}</h4>
-                              <p className="text-sm text-gray-600 mb-2">ID: {parent.teacher_chart.uniqu_id}</p>
+                              <h4 className="font-semibold text-gray-800 mb-2">{cleanText(parent.teacher_chart.name)}</h4>
+                              <p className="text-sm text-gray-600 mb-2">ID: {cleanText(parent.teacher_chart.uniqu_id)}</p>
                               <div className="flex items-center gap-2 text-sm text-gray-500">
                                 <FaCalendarAlt className="text-green-500" />
                                 <span>Added: {formatDate(parent.created_at)}</span>
@@ -442,7 +443,7 @@ export default function AwlyaaChartsSection() {
                           <div className="space-y-2">
                             {students.map((student, index) => (
                               <div key={student.id} className="bg-white rounded-lg p-3 shadow-sm border border-blue-100">
-                                <h4 className="font-semibold text-gray-800 text-sm">{student.name}</h4>
+                                <h4 className="font-semibold text-gray-800 text-sm">{cleanText(student.name)}</h4>
                               </div>
                             ))}
                           </div>

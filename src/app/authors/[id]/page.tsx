@@ -45,24 +45,30 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
       <div className="bg-white rounded-3xl overflow-hidden p-8">
         {/* Profile Image */}
         <div className="flex flex-col items-center text-center relative">
-          {author.image ? (
-            <Image
-              src={
-                getImageUrl(author.image, "/placeholder-author.jpg") ||
-                "/placeholder-author.jpg"
-              }
-              alt={`${author.first_name} ${author.last_name}`}
-              width={200}
-              height={200}
-              className="w-40 h-40 rounded-full object-cover border-4 border-amber-500 shadow-lg"
-            />
-          ) : (
-            <div className="w-40 h-40 flex items-center justify-center rounded-full bg-gray-300 text-gray-600">
-              No Image
-            </div>
-          )}
-
-          {/* Alive / Dead Dot on Image */}
+          <div className="relative w-40 h-40 rounded-full overflow-hidden border-4 border-amber-500 shadow-lg">
+            {author.image ? (
+              <Image
+                src={
+                  getImageUrl(author.image, "/placeholder-author.jpg") ||
+                  "/placeholder-author.jpg"
+                }
+                alt={`${author.first_name} ${author.last_name}`}
+                width={200}
+                height={200}
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-600">
+                No Image
+              </div>
+            )}
+            {/* Alive / Dead Dot on Image */}
+            <div
+              className={`absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white 
+                ${author.is_alive ? "bg-green-500 animate-pulse" : "bg-red-500"}
+              `}
+            ></div>
+          </div>
 
           {/* Name */}
           <h1 className="mt-6 text-3xl font-extrabold text-gray-900">
@@ -95,6 +101,8 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
               <strong>DOB:</strong> {author.dob ?.replace(/<[^>]*>/g, "")}
             </p>
           </div>
+     
+
 
           <div className="flex items-center gap-3 bg-gray-50 p-4 rounded-xl">
             <MapPin className="text-amber-500" size={20} />

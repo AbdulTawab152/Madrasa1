@@ -57,6 +57,12 @@ export default async function AuthorsPage() {
                         height={200}
                         className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       />
+                      {/* Live indicator dot */}
+                      <div
+                        className={`absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-white 
+                          ${author.is_alive ? "bg-green-500 animate-pulse" : "bg-red-500"}
+                        `}
+                      ></div>
                     </div>
                   </div>
 

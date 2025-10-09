@@ -1,5 +1,5 @@
-import { SimplePageSkeleton } from "@/components/loading/PageSkeleton";
+import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
 
 export default function LoadingRegistrationPage() {
-  return <SimplePageSkeleton sections={5} />;
+  return <DetailPageSkeleton type="article" showSidebar={false} showComments={false} showRelated={false} />;
 }

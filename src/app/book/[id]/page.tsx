@@ -5,6 +5,7 @@ import Link from "next/link";
 import { FaBook, FaCalendar, FaUser, FaArrowLeft, FaEye, FaHeart } from 'react-icons/fa';
 import { FaDownload, FaDownLong } from "react-icons/fa6";
 import { buildStorageUrl, getImageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -71,7 +72,7 @@ export default async function BookDetailsPage({ params }: Params) {
               </div>
               
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 text-gray-900">
-                {book.title}
+                {cleanText(book.title)}
               </h1>
               
               {/* Decorative line */}
@@ -186,7 +187,9 @@ export default async function BookDetailsPage({ params }: Params) {
                       text-gray-700 text-sm md:text-[20px] 
                       [&_*]:text-base [&_*]:md:text-xl
                     "
-                    dangerouslySetInnerHTML={{ __html: book.description }}
+                  >
+                    {cleanText(book.description)}
+                  </div>
                   />
              </div>
                 )}
@@ -204,7 +207,12 @@ export default async function BookDetailsPage({ params }: Params) {
               </h2>
               <div className="flex flex-col md:flex-row gap-10 items-center justify-center">
                 {book.author.image && (
+
                   <div className="w-32  h-32 rounded-full overflow-hidden border-2 border-amber-100">
+                     <Link
+                    href={`/authors/${book.author.id}`}
+                    className="inline-block"
+                  >
                     <Image
                       src={getImageUrl(book.author.image) || ""}
                       alt={`${book.author.first_name} ${book.author.last_name || ''}`}
@@ -212,18 +220,23 @@ export default async function BookDetailsPage({ params }: Params) {
                       height={80}
                       className="w-full h-full object-cover"
                     />
+                    </Link>
                   </div>
                 )}
                 <div className="flex-1">
-                  <h3 className="text-lg md:text-[20px] font-semibold text-gray-900 mb-2">
-                    {book.author.first_name} {book.author.last_name || ''}
-                  </h3>
+                 
+                    <h3 className="text-lg md:text-[20px] font-semibold text-gray-900 mb-2 hover:underline hover:text-amber-700 transition-colors">
+                      {cleanText(book.author.first_name)} {cleanText(book.author.last_name || '')}
+                    </h3>
+                  
                   {book.author.bio && (
                     <div
                         className=" text-gray-700 text-[10px] md:text-[20px] 
                           [&_*]:text-base [&_*]:md:text-md
                         "
-                        dangerouslySetInnerHTML={{ __html: book.author.bio }}
+                        >
+                          {cleanText(book.author.bio)}
+                        </div>
                       />
                   )}
                   <div className="flex flex-wrap gap-4 text-sm text-gray-500">

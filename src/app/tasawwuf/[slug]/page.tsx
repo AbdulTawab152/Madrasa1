@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import { TasawwufApi } from "@/lib/api";
 import { buildStorageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Tasawwuf {
   id: number;
@@ -42,7 +43,7 @@ export default async function TasawwufSinglePage({
     <main className="py-16 mt-20">
       <div className="max-w-3xl  mx-auto px-4">
         {/* Title */}
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">{post.title}</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-4">{cleanText(post.title)}</h1>
 
         {/* Meta info */}
         <div className="flex items-center justify-between text-sm text-gray-500 mb-6">
@@ -66,12 +67,12 @@ export default async function TasawwufSinglePage({
 
         {/* Description */}
         <article className="prose max-w-none text-gray-700 leading-relaxed">
-          {post.description?.replace(/<[^>]*>/g, "")}
+          {cleanText(post.description)}
         </article>
 
         {/* Footer */}
         <div className="mt-10 border-t pt-6 flex justify-between text-sm text-gray-600">
-          <span>Shared by: {post.shared_by || "Unknown"}</span>
+          <span>Shared by: {cleanText(post.shared_by || "Unknown")}</span>
           <span>📿 Tasawwuf</span>
         </div>
       </div>

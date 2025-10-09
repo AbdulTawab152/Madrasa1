@@ -1229,6 +1229,14 @@ export class ArticlesApi {
   static async getBySlug(slug: string) {
     return apiClient.get(`${endpoints.articles}/${slug}`);
   }
+
+  static async getCategories(): Promise<ApiResponse<ArticleCategory[]>> {
+    const result = await apiClient.get<ArticleCategory[]>(`${endpoints.articles}/category`);
+    if (!result.success) {
+      return { data: [], success: false, error: result.error || "Failed to fetch categories" };
+    }
+    return result;
+  }
 }
 
 export class GraduationsApi {

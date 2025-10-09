@@ -106,19 +106,21 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        console.log("🔍 Fetching categories from /api/articles/category");
-        const response = await fetch("/api/articles/category");
-        console.log("📡 Category API response:", response.status, response.ok);
+        console.log("🔍 Fetching categories from ArticlesApi");
+        const response = await ArticlesApi.getCategories();
         
-        if (response.ok) {
-          const data = (await response.json()) as ArticleCategory[];
+        if (response.success) {
+          const data = response.data;
           console.log("📋 Categories data:", data);
           setCategories(Array.isArray(data) ? data : []);
         } else {
-          console.error("❌ Category API failed:", response.status, response.statusText);
+          console.error("❌ Category API failed:", response.error);
+          // Optionally set an empty array or fallback categories on error
+          setCategories([]); 
         }
       } catch (err) {
         console.error("❌ Failed to fetch categories:", err);
+        setCategories([]);
       }
     };
 

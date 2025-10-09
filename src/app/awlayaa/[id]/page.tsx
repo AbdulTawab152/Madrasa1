@@ -2,6 +2,7 @@ import Image from "next/image";
 import { AwlyaaApi } from "../../../lib/api";
 import { Awlyaa } from "../../../lib/types";
 import { getImageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 import {
   User,
   Calendar,
@@ -74,13 +75,13 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
             {/* Name and Title */}
             <div className="text-center mt-6">
               <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-                {awlyaa.name}
+                {cleanText(awlyaa.name)}
               </h1>
               <p className="text-md md:text-xl text-amber-600 font-medium mt-2">
-                {awlyaa.title || "Distinguished Scholar"}
+                {cleanText(awlyaa.title || "Distinguished Scholar")}
               </p>
               {awlyaa.nickname && (
-                <p className="text-gray-500 mt-1">"{awlyaa.nickname}"</p>
+                <p className="text-gray-500 mt-1">"{cleanText(awlyaa.nickname)}"</p>
               )}
             </div>
           </div>
@@ -117,13 +118,13 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   className="font-semibold text-[12px] text-amber-700 hover:underline transition-colors outline-none focus:outline-none focus:ring-0"
                   title="View teacher details"
                 >
-                  {t.teacher?.name || "Unknown Teacher"}
+                  {cleanText(t.teacher?.name || "Unknown Teacher")}
                 </a>
                 
                   
                     ) : (
                       <span className="font-semibold text-[12px]">
-                        {t.teacher?.name || "Unknown Teacher"}
+                        {cleanText(t.teacher?.name || "Unknown Teacher")}
                       </span>
                     )}
                   </div>
@@ -161,11 +162,11 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                           className="font-semibold text-[12px] text-orange-700 hover:underline transition-colors outline-none focus:outline-none focus:ring-0"
                           title="View student details"
                         >
-                          {s.student?.name || "Unknown Student"}
+                          {cleanText(s.student?.name || "Unknown Student")}
                         </a>
                       ) : (
                         <span className="font-semibold text-[12px]">
-                          {s.student?.name || "Unknown Student"}
+                          {cleanText(s.student?.name || "Unknown Student")}
                         </span>
                       )}
                     </div>
@@ -193,7 +194,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   <div>
                     <p className="text-sm text-gray-500">Father's Name</p>
                     <p className="font-semibold">
-                      {awlyaa.father_name || "Not specified"}
+                      {cleanText(awlyaa.father_name || "Not specified")}
                     </p>
                   </div>
                 </div>
@@ -227,7 +228,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   <div>
                     <p className="text-sm font-semibold text-gray-500">Books Written</p>
                     <p className=" text-sm">
-                      {awlyaa.books_written || "Not specified"}
+                      {cleanText(awlyaa.books_written || "Not specified")}
                     </p>
                   </div>
                 </div>
@@ -252,13 +253,13 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                 <div className="flex items-center gap-2">
                   <MapPin className="text-gray-400" size={16} />
                   <span className="text-gray-700">
-                    {[
+                    {cleanText([
                       awlyaa.birth_place,
                       awlyaa.birth_city,
                       awlyaa.birth_country,
                     ]
                       .filter(Boolean)
-                      .join(", ") || "Not specified"}
+                      .join(", ") || "Not specified")}
                   </span>
                 </div>
               </div>
@@ -283,13 +284,13 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                   <div className="flex items-center gap-2">
                     <MapPin className="text-gray-400" size={16} />
                     <span className="text-gray-700">
-                      {[
+                      {cleanText([
                         awlyaa.death_place,
                         awlyaa.death_city,
                         awlyaa.death_country,
                       ]
                         .filter(Boolean)
-                        .join(", ") || "Not specified"}
+                        .join(", ") || "Not specified")}
                     </span>
                   </div>
                 </div>
@@ -304,7 +305,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                 <div className={`mb-6 ${awlyaa.lang === "fa" || awlyaa.lang === "ps" ? "text-right" : "text-left"}`}>
                     <p className="text-sm text-gray-500">Education</p>
                     <p className="font">
-                      {awlyaa.education || "Not specified"}
+                      {cleanText(awlyaa.education || "Not specified")}
                     </p>
                   </div>
 
@@ -328,7 +329,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                         className="text-amber-500 mt-1 flex-shrink-0"
                         size={16}
                       />
-                      <span className="font-medium">{work}</span>
+                      <span className="font-medium">{cleanText(work)}</span>
                     </div>
                   ))}
                 </div>
@@ -338,7 +339,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
                     className="text-amber-500 mt-1 flex-shrink-0"
                     size={16}
                   />
-                  <span className="font-semibold text-sm">{awlyaa.famous_works}</span>
+                  <span className="font-semibold text-sm">{cleanText(awlyaa.famous_works)}</span>
                 </div>
               ) : (
                 <p className="text-gray-500 italic">
@@ -357,7 +358,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
 
                 <div className="prose prose-gray max-w-none">
                   <p className="text-gray-700 leading-relaxed">
-                    {awlyaa.extra_information}
+                    {cleanText(awlyaa.extra_information)}
                   </p>
                 </div>
               </div>

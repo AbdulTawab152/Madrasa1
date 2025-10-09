@@ -73,6 +73,7 @@ export interface Author extends BaseEntity {
   father_name: string;
   grandfather_name: string;
   full_address: string;
+  book_count: number;
   dob: string;
   image?: string | null;
   bio: string;

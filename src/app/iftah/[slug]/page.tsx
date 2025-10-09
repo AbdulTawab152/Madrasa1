@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from "react";
 import { IftahApi } from "@/lib/api";
 import { buildStorageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 import {
   User,
   Calendar,
@@ -157,7 +158,7 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             {iftah.tag?.name || "General"}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-tight font-serif">
-            {iftah.title}
+            {cleanText(iftah.title)}
           </h1>
           <div className="flex flex-wrap items-center justify-center gap-5 text-gray-600">
             <span className="flex items-center bg-white py-1.5 px-3 rounded-lg shadow-sm border border-amber-100">
@@ -183,7 +184,7 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             <h2 className="text-lg font-semibold text-amber-600 flex items-center">
               <FileText className="w-5 h-5 mr-2" /> Question
             </h2>
-            <div className="text-gray-700 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: iftah.question }} />
+            <div className="text-gray-700 leading-relaxed prose max-w-none">{cleanText(iftah.question)}</div>
           </section>
 
           {/* Answer */}
@@ -191,7 +192,7 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             <h2 className="text-lg font-semibold text-amber-700 flex items-center">
               <CheckCircle2 className="w-5 h-5 mr-2" /> Answer
             </h2>
-            <div className="text-gray-800 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: iftah.answer }} />
+            <div className="text-gray-800 leading-relaxed prose max-w-none">{cleanText(iftah.answer)}</div>
           </section>
 
           {/* Note */}
@@ -200,7 +201,7 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
               <h2 className="text-lg font-semibold text-amber-800 flex items-center">
                 <Lightbulb className="w-5 h-5 mr-2" /> Additional Note
               </h2>
-              <div className="text-gray-700 leading-relaxed prose max-w-none" dangerouslySetInnerHTML={{ __html: iftah.note }} />
+              <div className="text-gray-700 leading-relaxed prose max-w-none">{cleanText(iftah.note)}</div>
             </section>
           )}
 
@@ -239,8 +240,8 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
                   <div className="w-20 h-20 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-3 border-4 border-amber-200">
                     <User className="w-9 h-9 text-amber-600" />
                   </div>
-                  <h3 className="font-bold text-gray-900 text-lg">{iftah.mufti.full_name}</h3>
-                  {iftah.mufti.father_name && <p className="text-sm text-gray-600">Son of {iftah.mufti.father_name}</p>}
+                  <h3 className="font-bold text-gray-900 text-lg">{cleanText(iftah.mufti.full_name)}</h3>
+                  {iftah.mufti.father_name && <p className="text-sm text-gray-600">Son of {cleanText(iftah.mufti.father_name)}</p>}
                 </div>
                 {iftah.mufti.address && (
                   <p className="text-sm text-gray-700 flex items-start">
@@ -260,7 +261,7 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
                 {iftah.mufti.biography && (
                   <div className="mt-4 pt-4 border-t border-amber-100">
                     <p className="font-medium text-gray-900 mb-2">Biography</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">{iftah.mufti.biography ?.replace(/<[^>]*>/g, "") }</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{cleanText(iftah.mufti.biography)}</p>
                   </div>
                 )}
               </div>

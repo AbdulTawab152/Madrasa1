@@ -1,6 +1,5 @@
-// import { SimplePageSkeleton } from "@/components/loading/PageSkeleton";
-import PageSkeleton from "../../components/loading/PageSkeleton"
+import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
 
 export default function LoadingAboutPage() {
-  return <PageSkeleton sections={3} />;
+  return <DetailPageSkeleton type="article" showSidebar={false} showComments={false} showRelated={false} />;
 }

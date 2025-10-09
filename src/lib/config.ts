@@ -32,7 +32,7 @@ export const apiConfig = {
 
 // Generate endpoints from base URL
 export const endpoints = {
-  blogs: `${apiConfig.baseUrl}/blogs`,
+  blogs: `${apiConfig.baseUrl}/blogs`, // Use external API temporarily
   courses: `${apiConfig.baseUrl}/courses`,
   // course: `${apiConfig.baseUrl}/course`,
   authors: `${apiConfig.baseUrl}/authors`,

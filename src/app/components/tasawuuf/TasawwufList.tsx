@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { TasawwufApi, extractArray } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Tasawwuf {
   id: number;
@@ -222,11 +223,11 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
         <div>
          
             <h3 className="text-xl font-semibold mb-3 text-gray-900 hover:text-amber-600 transition-colors line-clamp-2">
-              {post.title}
+              {cleanText(post.title)}
             </h3>
      
           <p className="text-gray-600 line-clamp-3 leading-relaxed mb-4">
-            {post.description?.replace(/<[^>]*>/g, "")}
+            {cleanText(post.description)}
           </p>
         </div>
         
@@ -236,7 +237,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
-              <span>{post.shared_by || "Unknown"}</span>
+              <span>{cleanText(post.shared_by || "Unknown")}</span>
             </div>
             <div className="flex items-center text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

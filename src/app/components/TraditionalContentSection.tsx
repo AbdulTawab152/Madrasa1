@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import IslamicHeader from "./IslamicHeader";
+import { cleanText } from "../../lib/textUtils";
 
 interface Author {
   name: string;
@@ -37,6 +38,7 @@ interface TraditionalContentSectionProps {
   subtitle?: string;
 }
 
+
 export default function TraditionalContentSection({ 
   articles = [], 
   fatwas = [], 
@@ -56,9 +58,13 @@ export default function TraditionalContentSection({
 
   // Filter content
   const filteredContent = allContent.filter(item => {
-    const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.question?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description?.toLowerCase().includes(searchTerm.toLowerCase());
+    const cleanTitle = cleanText(item.title);
+    const cleanQuestion = cleanText(item.question);
+    const cleanDescription = cleanText(item.description);
+    
+    const matchesSearch = cleanTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         cleanQuestion.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         cleanDescription.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = !selectedCategory || item.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
@@ -75,7 +81,7 @@ export default function TraditionalContentSection({
         <div className="flex flex-col-reverse lg:grid-cols-4 gap-8">
           {/* Main Content Area */}
           <div className="lg:col-span-3">
-            <div className="bg-white rounded-2xl shadow-xl border border-amber-100 overflow-hidden">
+            <div className="bg-white rounded-2xl shadow- border border-amber-100 overflow-hidden">
               {/* Enhanced Section Header */}
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-amber-200">
                 <div className="flex items-center justify-between">
@@ -118,7 +124,7 @@ export default function TraditionalContentSection({
                             </span>
                             {item.category && (
                               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                                {item.category}
+                                {cleanText(item.category)}
                               </span>
                             )}
                           </div>
@@ -127,12 +133,12 @@ export default function TraditionalContentSection({
                            
                             className="text-lg font-semibold text-amber-900 hover:text-orange-700 transition-colors leading-relaxed block mb-2"
                           >
-                            {item.title  ?.replace(/<[^>]*>/g, "")}
+                            {cleanText(item.title)}
                           </h1>
                           
                           {item.question && (
                             <p className="text-gray-600 text-sm leading-relaxed line-clamp-2 mb-3">
-                              {item.question  ?.replace(/<[^>]*>/g, "")}
+                              {cleanText(item.question)}
                             </p>
                           )}
                           
@@ -144,14 +150,14 @@ export default function TraditionalContentSection({
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                                   </svg>
                                 </div>
-                                <span>{typeof item.author === 'object' ? item.author?.name : item.author || item.mufti?.name || item.shared_by || "Anonymous"}</span>
+                                <span>{cleanText(typeof item.author === 'object' ? item.author?.name : item.author || item.mufti?.name || item.shared_by || "Anonymous")}</span>
                               </div>
                             )}
                             <div className="flex items-center">
                               <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                               </svg>
-                              <span>{item.published_at?.split('T')[0] || item.date || "Unknown date"}</span>
+                              <span>{cleanText(item.published_at?.split('T')[0] || item.date || "Unknown date")}</span>
                             </div>
                             {item.viewCount && (
                               <div className="flex items-center">
