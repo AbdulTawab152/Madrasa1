@@ -40,10 +40,10 @@ const loadPlaceholderImage = async () => {
 
 export async function GET(
   request: NextRequest,
-  context: { params: { path: string[] } }
+  context: { params: Promise<{ path: string[] }> }
 ) {
   try {
-    const { path } = context.params;
+    const { path } = await context.params;
     const imagePath = path.join('/');
 
     // Construct the full image URL

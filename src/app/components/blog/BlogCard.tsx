@@ -124,38 +124,18 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
 
   const curatedBlogs = useMemo(() => {
     if (homePage) {
-      // Debug: Show all blog data structure
-      console.log('=== FULL BLOG DATA DEBUG ===');
-      publishedBlogs.forEach((blog, index) => {
-        console.log(`Blog ${index + 1}:`, {
-          id: blog.id,
-          title: blog.title,
-          is_top: blog.is_top,
-          is_top_type: typeof blog.is_top,
-          is_published: blog.is_published,
-          all_fields: Object.keys(blog)
-        });
-      });
-      console.log('=== END FULL DEBUG ===');
-      
       // Filter for blogs where is_top is truthy (1, true, "1", etc.)
-      let topBlogs = publishedBlogs.filter((item) => {
-        const isTop = item.is_top === 1 || item.is_top === true || String(item.is_top) === "1";
-        console.log(`Blog "${item.title}" (ID: ${item.id}) - is_top: ${item.is_top} (${typeof item.is_top}) -> ${isTop ? 'INCLUDED' : 'EXCLUDED'}`);
-        return isTop;
-      });
+      const topBlogs = publishedBlogs.filter((item) => {
+        return item.is_top === 1 || item.is_top === true || String(item.is_top) === "1";
+      }).slice(0, 3);
       
-      // TEMPORARY FIX: If no top blogs found, show first 3 published blogs
+      // If no top blogs found, show first 3 published blogs as fallback
       if (topBlogs.length === 0) {
-        console.log('⚠️ No blogs with is_top=1 found. Showing first 3 published blogs as fallback.');
-        topBlogs = publishedBlogs.slice(0, 3);
-      } else {
-        topBlogs = topBlogs.slice(0, 3);
+        console.log('ℹ️ No featured blogs found. Showing first 3 published blogs.');
+        return publishedBlogs.slice(0, 3);
       }
       
-      console.log('Home page - Total published blogs:', publishedBlogs.length);
-      console.log('Home page - Top blogs found:', topBlogs.length);
-      
+      console.log(`✅ Found ${topBlogs.length} featured blogs for home page`);
       return topBlogs;
     }
     return publishedBlogs;

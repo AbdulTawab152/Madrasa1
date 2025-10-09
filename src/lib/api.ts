@@ -224,14 +224,15 @@ class ApiClient {
         if (!response.ok) { 
           // Log more details for debugging
           const errorText = await response.text();
-          console.error(`API Error ${response.status}:`, errorText);
-          return {
-            success: false,
-            status: response.status,
-            message: `HTTP error! status: ${response.status}`,
-            error: errorText,
-            data: null,
-          };
+          console.warn(`API Error ${response.status} (attempt ${attempt}/3):`, errorText);
+          
+          // If it's a 404 and we're on the last attempt, throw the error
+          if (attempt === 3) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          // For other attempts, continue to retry
+          continue;
         }
 
 
@@ -271,7 +272,7 @@ class ApiClient {
       }
     }
 
-    console.error(
+    console.warn(
       `API request failed for ${endpoint} after 3 attempts:`,
       lastError
     );
@@ -359,13 +360,40 @@ export class BlogsApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.blogs, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      console.log('🔄 Attempting to fetch blogs from API...');
+      const result = await apiClient.get(endpoints.blogs, {
+        params: { page, limit, ...rest },
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error('API request failed');
+      }
+
+      console.log('✅ Successfully fetched blogs from API');
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total,
+        }),
+      };
+    } catch (error) {
+      console.warn('⚠️ Blogs API failed, using fallback data:', error);
+      
       const fallback = getFallbackData("blogs");
       const data = fallback.slice(0, limit) as typeof fallback;
+      
+      console.log('📦 Using fallback data with', data.length, 'blogs');
       return {
         data,
         success: true,
@@ -377,47 +405,42 @@ export class BlogsApi {
         }),
       };
     }
-
-    if (result.pagination) {
-      return result;
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : limit;
-
-    return {
-      ...result,
-      pagination: createPaginationMeta({
-        page,
-        limit,
-        total,
-      }),
-    };
   }
 
   static async getById(id: string) {
-    const result = await apiClient.get(`${endpoints.blogs}/${id}`);
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.blogs}/${id}`);
+      if (!result.success) {
+        throw new Error('API request failed');
+      }
+      return result;
+    } catch (error) {
+      console.warn('⚠️ Blog getById API failed, using fallback data:', error);
+      const fallback = getFallbackData("blogs");
       return {
-        data: getFallbackData("blogs")[0],
+        data: fallback[0] || null,
         success: true,
         message: "Using fallback data due to API unavailability",
       };
     }
-    return result;
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.blogs}/${slug}`);
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.blogs}/${slug}`);
+      if (!result.success) {
+        throw new Error('API request failed');
+      }
+      return result;
+    } catch (error) {
+      console.warn('⚠️ Blog getBySlug API failed, using fallback data:', error);
+      const fallback = getFallbackData("blogs");
       return {
-        data: getFallbackData("blogs")[0],
+        data: fallback[0] || null,
         success: true,
         message: "Using fallback data due to API unavailability",
       };
     }
-    return result;
   }
 }
 
@@ -433,7 +456,7 @@ export class DonationApi {
     });
 
     if (!result.success) {
-      const fallback = getFallbackData("donation");
+      const fallback = getFallbackData("blogs");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
@@ -1230,8 +1253,8 @@ export class ArticlesApi {
     return apiClient.get(`${endpoints.articles}/${slug}`);
   }
 
-  static async getCategories(): Promise<ApiResponse<ArticleCategory[]>> {
-    const result = await apiClient.get<ArticleCategory[]>(`${endpoints.articles}/category`);
+  static async getCategories(): Promise<ApiResponse<any[]>> {
+    const result = await apiClient.get<any[]>(`${endpoints.articles}/category`);
     if (!result.success) {
       return { data: [], success: false, error: result.error || "Failed to fetch categories" };
     }

@@ -16,7 +16,7 @@ export default async function GalleryPage() {
 
   return (
     <div>
-      <IslamicHeader pageType="gallery" />
+      <IslamicHeader pageType="gallery" title="Photo Gallery" />
       <div className="pb-16">
         <Gallery initialImages={images} />
       </div>

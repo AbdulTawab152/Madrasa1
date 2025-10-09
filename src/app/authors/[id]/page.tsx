@@ -75,8 +75,9 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
             {author.first_name} {author.last_name}
           </h1>
           <div
-              className="text-gray-700 text-sm  [&_*]:text-[14px]" 
-              dangerouslySetInnerHTML={{ __html: (author.bio) }} />
+            className="text-gray-700 text-sm [&_*]:text-[14px]" 
+            dangerouslySetInnerHTML={{ __html: (author.bio) }}
+          />
         </div>
 
         {/* Info Grid */}

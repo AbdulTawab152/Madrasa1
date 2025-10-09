@@ -36,8 +36,8 @@ import {
   FaGraduationCap,
 } from "react-icons/fa";
 
-export default async function CourseDetailsPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function CourseDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
 
   // ✅ Fetch course by slug

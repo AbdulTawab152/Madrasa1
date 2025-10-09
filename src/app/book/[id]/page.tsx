@@ -183,14 +183,13 @@ export default async function BookDetailsPage({ params }: Params) {
                   <div>
                     <h2 className="text-xl font-semibold text-gray-900 mb-3">Description</h2>
                     <div
-                    className="
-                      text-gray-700 text-sm md:text-[20px] 
-                      [&_*]:text-base [&_*]:md:text-xl
-                    "
-                  >
-                    {cleanText(book.description)}
-                  </div>
-                  />
+                      className="
+                        text-gray-700 text-sm md:text-[20px] 
+                        [&_*]:text-base [&_*]:md:text-xl
+                      "
+                    >
+                      {cleanText(book.description)}
+                    </div>
              </div>
                 )}
 
@@ -231,13 +230,12 @@ export default async function BookDetailsPage({ params }: Params) {
                   
                   {book.author.bio && (
                     <div
-                        className=" text-gray-700 text-[10px] md:text-[20px] 
-                          [&_*]:text-base [&_*]:md:text-md
-                        "
-                        >
-                          {cleanText(book.author.bio)}
-                        </div>
-                      />
+                      className="text-gray-700 text-[10px] md:text-[20px] 
+                        [&_*]:text-base [&_*]:md:text-md
+                      "
+                    >
+                      {cleanText(book.author.bio)}
+                    </div>
                   )}
                   <div className="flex flex-wrap gap-4 text-sm text-gray-500">
                     {book.author.contact_no && (

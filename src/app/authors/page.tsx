@@ -30,7 +30,7 @@ export default async function AuthorsPage() {
 
   return (
     <main className="min-h-screen bg-background-primary">
-      <IslamicHeader pageType="authors" />
+      <IslamicHeader pageType="authors" title="Islamic Scholars & Authors" />
       <div className="max-w-7xl mx-auto px-6 space-y-12 pb-16">
         {authors.filter(isPublishedAndAlive).length === 0 ? (
           <div className="text-center rounded-2xl border border-primary-100/60 bg-white/90 p-10 shadow-soft">
