@@ -5,7 +5,7 @@ export default function AwlyaaChartsPage() {
   return (
     <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <IslamicHeader 
-        pageType="awlyaa" 
+        pageType="awlayaa" 
         title="Awlyaa Charts"
         subtitle="Explore the spiritual lineage and connections of our Islamic scholars"
         alignment="center"

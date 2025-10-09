@@ -4,10 +4,12 @@ import { GalleryApi, extractArray } from "@/lib/api";
 import Gallery from "./gallery/Gallery";
 
 interface GalleryItem {
-  id: number | string;
-  image?: string | null;
-  title?: string | null;
-  [key: string]: unknown;
+  id: number;
+  title: string;
+  description?: string;
+  category: string;
+  image: string;
+  featured?: boolean;
 }
 
 export default function LazyGallerySection() {
@@ -22,7 +24,15 @@ export default function LazyGallerySection() {
         const response = await GalleryApi.getAll();
         if (!isMounted) return;
 
-        const payload = extractArray<GalleryItem>(response.data);
+        const rawData = extractArray<any>(response.data);
+        const payload = rawData.map((item: any) => ({
+          id: Number(item.id),
+          title: item.title || "Untitled",
+          description: item.description || "",
+          category: item.category || "General",
+          image: item.image || "/placeholder-gallery.jpg",
+          featured: item.featured || false,
+        }));
 
         setImages(payload);
       } catch (error) {
@@ -31,8 +41,11 @@ export default function LazyGallerySection() {
           setImages([
             {
               id: 1,
-              image: "/placeholder-gallery.jpg",
               title: "Gallery temporarily unavailable",
+              description: "Please try again later",
+              category: "General",
+              image: "/placeholder-gallery.jpg",
+              featured: false,
             },
           ]);
         }

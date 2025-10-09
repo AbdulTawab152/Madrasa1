@@ -100,20 +100,20 @@ export default function Gallery({
 }: {
   initialImages: GalleryItem[];
 }) {
-  const [images] = useState<GalleryItem[]>(initialImages);
+  const [images] = useState<GalleryItem[]>(initialImages || []);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState("All");
 
   const [viewMode, setViewMode] = useState<"grid" | "slider">("grid");
 
   // Get unique categories
-  const categories = ["All", ...new Set(images.map((img) => img.category))];
+  const categories = ["All", ...new Set(images.filter(img => img && img.category).map((img) => img.category))];
 
   // Filter images by category
   const filteredImages =
     activeCategory === "All"
-      ? images
-      : images.filter((img) => img.category === activeCategory);
+      ? images.filter(img => img && img.image)
+      : images.filter((img) => img && img.category === activeCategory && img.image);
 
   // Create slider groups (each slider will have 3 images)
   const sliderGroups = [];

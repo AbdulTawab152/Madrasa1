@@ -157,7 +157,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
           published_at: item.created_at || item.date,
           image: item.image,
           slug: item.slug || `article-${item.id}`,
-          is_published: item.is_published !== false,
+          is_published: item.is_published === 1,
           is_top: Boolean(item.is_top),
         };
       });

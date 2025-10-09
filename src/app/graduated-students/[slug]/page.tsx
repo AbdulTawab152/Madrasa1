@@ -6,12 +6,12 @@ import { motion } from "framer-motion";
 import { GraduationsApi } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 
-async function getGraduation(slug: string) {
+async function getGraduation(slug: string): Promise<any> {
   const result = await GraduationsApi.getBySlug(slug);
   if (!result.success) {
     return null;
   }
-  return result.data;
+  return result.data as any;
 }
 
 export default function GraduationDetailPage({

@@ -34,7 +34,7 @@ async function fetchCourseData(): Promise<CourseType[]> {
     return extractArray<CourseType>(response.data);
   } catch (error) {
     console.error("Error fetching courses:", error);
-
+    return [];
   }
 }
 

@@ -27,7 +27,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
   const awlyaa: Awlyaa = res.data as Awlyaa;
 
   // Format date for display
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString: string | null) => {
     if (!dateString) return "N/A";
     const date = new Date(dateString);
     return date.toLocaleDateString("en-US", {
@@ -302,7 +302,7 @@ export default async function AwlyaaDetailPage({ params }: AwlyaaPageProps) {
           <div className="lg:col-span-2 space-y-6">
             {/* Teachers Section */}
       
-                <div className={`mb-6 ${awlyaa.lang === "fa" || awlyaa.lang === "ps" ? "text-right" : "text-left"}`}>
+                <div className="mb-6 text-left">
                     <p className="text-sm text-gray-500">Education</p>
                     <p className="font">
                       {cleanText(awlyaa.education || "Not specified")}

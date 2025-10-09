@@ -7,6 +7,7 @@ import { FaList } from "react-icons/fa6";
 
 import { appConfig, navigation } from "@/lib/config";
 import RouteProgressBar from "@/components/RouteProgressBar";
+import { Suspense } from "react";
 
 const PRIMARY_LINK_LIMIT = 7;
 
@@ -232,7 +233,9 @@ const Navbar = memo(function Navbar() {
             </button>
           </div>
         </div>
-        <RouteProgressBar />
+        <Suspense fallback={null}>
+          <RouteProgressBar />
+        </Suspense>
       </nav>
 
       <div
