@@ -32,7 +32,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
           alt={`Scrolling image ${index + 1}`}
           width={340}
           height={190}
-          className="w-[200px] h-[112px] sm:w-[340px] sm:h-[190px] rounded-lg object-cover"
+          className="w-[260px] h-[180px] sm:w-[340px] sm:h-[190px] rounded-lg object-cover"
         />
       ))}
     </motion.div>
