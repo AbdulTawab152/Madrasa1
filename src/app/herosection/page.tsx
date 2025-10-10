@@ -15,7 +15,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
 
   return (
     <motion.div
-      className="flex gap-6 w-max rotate-20deg"
+      className="flex gap-2 w-max rotate-[60deg]"
       animate={{ x: scrollX, y: scrollY }}
       transition={{
         repeat: Infinity,
@@ -32,7 +32,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
           alt={`Scrolling image ${index + 1}`}
           width={340}
           height={190}
-          className="w-[340px] h-[190px] rounded-lg object-cover"
+          className="w-[200px] h-[112px] sm:w-[340px] sm:h-[190px] rounded-lg object-cover"
         />
       ))}
     </motion.div>
@@ -41,10 +41,10 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
 
 const Hero = () => {
   return (
-    <div className="relative  bg-primary-900 overflow-hidden mt-[-40px] md:mt-[0px] space-y-6">
+    <div className="relative bg-primary-900 overflow-hidden mt-20 md:mt-[0px] space-y-6">
       <div className="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black via-black/10 to-transparent z-10 pointer-events-none blur-lg" />
 
-      <div className="space-y-4 relative z-20">
+      <div className="space-y-3 space-x-0 relative z-20">
         <ScrollingRow direction="left" delay={0} />
         <ScrollingRow direction="right" delay={1} />
         <ScrollingRow direction="left" delay={2} />

@@ -92,7 +92,7 @@ const Navbar = memo(function Navbar() {
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_rgba(255,255,255,0))]" aria-hidden="true" />
         <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
         <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-secondary-400/30 blur-2xl" aria-hidden="true" />
-        <div className="max-w-screen-xl relative mx-auto px-4 py-2">
+        <div className="max-w-screen-xl relative mx-auto px-4 py-2 md:py-4">
           <div className="hidden md:flex items-center justify-between text-sm text-primary-50/90">
             <span>{desktop}</span>
             <span className="arabic text-xl font-bold tracking-widest text-secondary-100 drop-shadow-sm">
@@ -140,7 +140,7 @@ const Navbar = memo(function Navbar() {
               {appConfig.name}
             </Link>
 
-            <div className="hidden lg:flex items-center justify-center flex-1">
+            <div className="hidden lg:flex py-3 items-center justify-center flex-1">
               <ul className="flex items-center gap-6">
                 {primaryLinks.map(({ href, name }) => {
                   const isActive = pathname === href;
@@ -148,7 +148,7 @@ const Navbar = memo(function Navbar() {
                     <li key={href} className="group relative">
                       <Link
                         href={href}
-                        className={`font-medium text-[15px] uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800  outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                        className={`font-medium text-[15px] uppercase tracking-wide transition-colors duration-200 py-2  text-primary-800  outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
                           isActive ? "text-primary-600" : ""
                         }`}
                       >
