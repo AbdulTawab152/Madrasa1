@@ -149,101 +149,78 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         <span className="text-black font-medium">{course.title}</span>
       </div>
 
-      {/* Hero Section */}
-      <div className="relative h-60 lg:h-72 bg-gradient-to-r from-amber-600 to-amber-700 overflow-hidden rounded-b-3xl">
-        {course.image && (
-          <Image
-            src={
-              getImageUrl(course.image, "/placeholder-course.jpg") ||
-              "/placeholder-course.jpg"
-            }
-            alt={course.title}
-            fill
-            className="object-cover opacity-30"
-          />
+      {/* Hero Section with Video */}
+      <div className="relative h-60 lg:h-96 bg-gradient-to-r from-amber-600 to-amber-700 overflow-hidden rounded-b-3xl">
+        {course.short_video && (
+          <div className="relative w-full h-full">
+            <video
+              autoPlay
+              muted
+              loop
+              className="w-full h-full object-cover"
+              poster={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+            >
+              <source src={getImageUrl(course.short_video)} type="video/mp4" />
+              <source src={getImageUrl(course.short_video)} type="video/webm" />
+              Your browser does not support the video tag.
+            </video>
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-600/80 to-amber-700/80"></div>
+            {/* Course Title Overlaid On Video */}
+            <div className="absolute inset-0 flex items-center pt-10  z-20">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4  px-5 text-center rounded-xl">
+                {course.title}
+              </h1>
+            </div>
+          </div>
+        )}
+        {!course.short_video && (
+          <div className="container pt-10 mx-auto px-4 h-full flex items-center relative z-10">
+            <div className="max-w-4xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                {course.title}
+              </h1>
+            </div>
+          </div>
         )}
         <div className="absolute inset-0 bg-primary-900/25"></div>
-        <div className="container pt-10 mx-auto px-4 h-full flex items-center relative z-10">
-          <div className="max-w-4xl">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-              {course.title}
-            </h1>
-          </div>
-        </div>
       </div>
 
-      {/* Main Content */}
-  <div className="max-w-7xl mx-auto px-4 py-12 lg:mt-8 relative flex flex-col lg:flex-row gap-8 items-start">
-        {/* Course Info */}
-        <div className="flex-1 bg-white rounded-2xl p-8 space-y-8 border-2 border-amber-100">
-          <div className="border-b border-amber-100 pb-6">
-            <h2 className="text-2xl font-bold text-black mb-4 flex items-center">
-              <FaGraduationCap className="mr-3 text-amber-600" />
-              About this Course
-            </h2>
-            {course.description ? (
-              <div
-                className="text-gray-700 leading-relaxed prose prose-amber max-w-none"
-                dangerouslySetInnerHTML={{ __html: course.description }}
-              />
-            ) : (
-              <p className="text-gray-700 leading-relaxed">
-                This course provides comprehensive knowledge and practical skills
-                in Islamic education. Designed to help you deepen your
-                understanding and strengthen your faith through structured
-                learning.
-              </p>
-            )}
+      <section className="rounded-2xl overflow-hidden  pt-6 px-6 sm:px-10 mb-8">
+        <header className="flex items-center gap-3 mb-4">
+          <div className="flex items-center justify-center w-12 h-12 bg-amber-100 rounded-full ">
+            <FaGraduationCap className="text-2xl text-amber-600" />
           </div>
-
-          {/* Book Info */}
-        
-
-          {/* Short Video */}
-          {course.short_video && (
-            <div className="rounded-2xl border-2 border-amber-200 bg-gradient-to-br from-amber-50 to-white p-8 shadow-sm">
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
-                  <FaVideo className="text-amber-600 text-xl" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Course Introduction</h3>
-                  <p className="text-gray-600 text-sm">Watch this short video to get an overview of the course</p>
-                </div>
-              </div>
-              
-              <div className="relative w-full bg-black rounded-xl overflow-hidden shadow-lg">
-                <video
-                  controls
-                  className="w-full h-auto max-h-96 object-cover"
-                  poster={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
-                >
-                  <source src={getImageUrl(course.short_video)} type="video/mp4" />
-                  <source src={getImageUrl(course.short_video)} type="video/webm" />
-                  Your browser does not support the video tag.
-                </video>
-                
-                {/* Video overlay for better UX */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none"></div>
-              </div>
-              
-              <div className="mt-4 flex items-center justify-between text-sm text-gray-600">
-                <span className="flex items-center gap-2">
-                  <FaPlay className="text-amber-600" />
-                  Introduction Video
-                </span>
-                <span className="bg-amber-100 text-amber-700 px-3 py-1 rounded-full text-xs font-medium">
-                  Preview
-                </span>
-              </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-primary-900 tracking-tight">
+            About this Course
+          </h2>
+        </header>
+        <div>
+          {course.description ? (
+            <div
+              className="prose prose-lg prose-amber max-w-none text-gray-800 leading-relaxed animate-fade-in"
+              dangerouslySetInnerHTML={{ __html: course.description }}
+            />
+          ) : (
+            <div className="bg-amber-50 border-l-4 border-amber-500 px-6 py-4 rounded-md animate-fade-in shadow-inner">
+              <p className="text-gray-700 leading-relaxed text-lg">
+                This course provides comprehensive knowledge and practical skills in Islamic education. 
+                Designed to help you deepen your understanding and strengthen your faith through structured learning.
+              </p>
             </div>
           )}
+        </div>
+      </section>
 
-          {/* Course Features */}
-         
+      {/* Main Content */}
+  <div className="max-w-7xl mx-auto px-4 py-12 lg:mt-8 relative flex flex-col-reverse lg:flex-row gap-8 items-start">
+        {/* Course Info */}
+        <div className="flex-1 rounded-2xl p-8 space-y-8 ">
+        
+
+       
             {book && (
-            <div className="rounded-xl border-2 border-amber-200 bg-amber-50 p-6 flex flex-col items-center md:flex-row md:items-start gap-6">
-              <div className="w-28 h-40 relative  flex-shrink-0 rounded-lg overflow-hidden border border-amber-100 bg-white">
+            <div className="p-6 flex flex-col md:flex-row md:items-start gap-6">
+              <div className="w-28 h-28 relative flex-shrink-0 rounded-full overflow-hidden">
                 <Image
                   src={getImageUrl(book.image, "/placeholder-book.jpg") || "/placeholder-book.jpg"}
                   alt={book.title}
@@ -274,8 +251,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
 
           {/* Recorder Info */}
           {recordedBy && (
-            <div className="rounded-xl border-2 border-amber-200 bg-amber-50 p-6 flex flex-col items-center md:flex-row md:items-start gap-6">
-              <div className="w-28 h-28 relative flex-shrink-0 rounded-full overflow-hidden border border-amber-100 bg-white">
+            <div className="p-6 flex flex-col  md:flex-row md:items-start gap-6">
+              <div className="w-28 h-28 relative flex-shrink-0 rounded-full overflow-hidden">
                 <Image
                   src={getImageUrl(recordedBy.image, "/placeholder-author.jpg") || "/placeholder-author.jpg"}
                   alt={recordedBy.first_name + ' ' + recordedBy.last_name}
@@ -300,6 +277,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
 
   {/* Sidebar */}
   <div className="lg:w-96 w-full bg-white p-6 rounded-2xl border-2 border-amber-100 lg:sticky lg:top-24 space-y-6 z-20">
+    
           <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white p-6 rounded-xl text-center">
             <div className="text-2xl font-bold mb-2">Get Course Info</div>
             <p className="mb-6 text-amber-100">

@@ -1,5 +1,6 @@
 // components/iftah/IftahSection.tsx
 import TraditionalContentSection from '../TraditionalContentSection';
+import IslamicHeader from '../IslamicHeader';
 // import IftahQuestionForm from './IftahQuestionForm';
 
 interface Author {
@@ -36,6 +37,13 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
 
   return (
     <>
+      <IslamicHeader
+        title="دار الافتاء"
+        subtitle="جامعة العلوم الإسلامية - استفسر عن المسائل الشرعية والحصول على الفتاوى من علمائنا"
+        pageType="iftah"
+        theme="slate"
+        alignment="center"
+      />
       <TraditionalContentSection 
         fatwas={displayFatwas}
         showAll={showAll}

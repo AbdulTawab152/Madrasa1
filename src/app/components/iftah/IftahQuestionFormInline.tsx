@@ -32,9 +32,23 @@ export default function IftahQuestionFormInline() {
   const [error, setError] = useState("");
   const [showQuestionFormModal, setShowQuestionFormModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    question: "",
+  });
+  const [submittedQuestions, setSubmittedQuestions] = useState<any[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [showQuestionsList, setShowQuestionsList] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof typeof errors]) {
+      setErrors({ ...errors, [name]: "" });
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -44,9 +58,45 @@ export default function IftahQuestionFormInline() {
     }
   };
 
+  const validateForm = () => {
+    const newErrors = {
+      name: "",
+      email: "",
+      question: "",
+    };
+
+    // Validate name
+    if (!form.name.trim()) {
+      newErrors.name = "Please enter your name";
+    }
+
+    // Validate email
+    if (!form.email.trim()) {
+      newErrors.email = "Please enter your email address";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    // Validate question
+    if (!form.question.trim()) {
+      newErrors.question = "Please enter your Islamic question";
+    } else if (form.question.trim().length < 10) {
+      newErrors.question = "Please provide a more detailed question (at least 10 characters)";
+    }
+
+    setErrors(newErrors);
+    return !Object.values(newErrors).some(error => error !== "");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Validate form before submitting
+    if (!validateForm()) {
+      setError("Please fill in all required fields correctly.");
+      return;
+    }
     
     console.log('🚀 Form submission started');
     console.log('📝 Form data being submitted:', form);
@@ -74,6 +124,9 @@ export default function IftahQuestionFormInline() {
         timestamp: new Date().toISOString(),
         status: 'pending'
       };
+      
+      // Store the submitted question
+      setSubmittedQuestions(prev => [newQuestion, ...prev]);
       
       // Show success modal
       setShowSuccessModal(true);
@@ -166,6 +219,98 @@ export default function IftahQuestionFormInline() {
         </div>
       </div>
 
+      {/* Questions List Section */}
+      {submittedQuestions.length > 0 && (
+        <div className="mb-8 sm:mb-10">
+          <div className="bg-white rounded-2xl shadow-lg border border-amber-100 overflow-hidden">
+            {/* Header */}
+            <div className="bg-gradient-to-r from-slate-50 to-gray-50 px-6 py-4 sm:px-8 sm:py-6 border-b border-gray-200">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Your Submitted Questions</h2>
+                  <p className="text-sm text-gray-600">Track your Islamic questions and their status</p>
+                </div>
+                <button
+                  onClick={() => setShowQuestionsList(!showQuestionsList)}
+                  className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg transition-colors text-sm font-medium"
+                >
+                  <FaEye className="text-sm" />
+                  {showQuestionsList ? "Hide Questions" : "View Questions"}
+                </button>
+              </div>
+            </div>
+
+            {/* Search Bar */}
+            {showQuestionsList && (
+              <div className="px-6 py-4 sm:px-8 sm:py-6 border-b border-gray-200">
+                <div className="relative">
+                  <input
+                    type="text"
+                    placeholder="Search your questions..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-sm"
+                  />
+                  <FaQuestionCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
+                </div>
+              </div>
+            )}
+
+            {/* Questions List */}
+            {showQuestionsList && (
+              <div className="px-6 py-4 sm:px-8 sm:py-6">
+                <div className="space-y-4">
+                  {submittedQuestions
+                    .filter(question => 
+                      question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                      question.name.toLowerCase().includes(searchTerm.toLowerCase())
+                    )
+                    .map((question) => (
+                      <div key={question.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                        <div className="flex items-start justify-between gap-4">
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-2">
+                              <span className="text-xs font-medium text-gray-500">
+                                {new Date(question.timestamp).toLocaleDateString()}
+                              </span>
+                              <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                                question.status === 'pending' 
+                                  ? 'bg-yellow-100 text-yellow-800' 
+                                  : 'bg-green-100 text-green-800'
+                              }`}>
+                                {question.status}
+                              </span>
+                            </div>
+                            <h3 className="font-semibold text-gray-900 mb-2 text-sm sm:text-base">
+                              {question.question}
+                            </h3>
+                            <div className="flex items-center gap-4 text-xs text-gray-500">
+                              <span>By: {question.name}</span>
+                              {question.email && <span>Email: {question.email}</span>}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  
+                  {submittedQuestions.filter(question => 
+                    question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                    question.name.toLowerCase().includes(searchTerm.toLowerCase())
+                  ).length === 0 && (
+                    <div className="text-center py-8">
+                      <FaQuestionCircle className="mx-auto text-gray-300 text-4xl mb-4" />
+                      <p className="text-gray-500 text-sm">
+                        {searchTerm ? "No questions found matching your search." : "No questions submitted yet."}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Question Form Modal */}
       {showQuestionFormModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-2 sm:p-4">
@@ -201,6 +346,12 @@ export default function IftahQuestionFormInline() {
 
             {/* Form Content */}
             <div className="px-4 py-4 sm:px-6 sm:py-6">
+              {error && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs sm:text-sm flex items-center gap-2">
+                  <span>⚠️</span>
+                  {error}
+                </div>
+              )}
               <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 {/* Personal Information */}
                 <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
@@ -216,9 +367,17 @@ export default function IftahQuestionFormInline() {
                       value={form.name} 
                       onChange={handleChange} 
                       required 
-                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                      className={`w-full border-2 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
+                        errors.name ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                      }`}
                       placeholder="Enter your full name"
                     />
+                    {errors.name && (
+                      <p className="text-red-500 text-xs flex items-center gap-1">
+                        <span>⚠️</span>
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
@@ -233,9 +392,17 @@ export default function IftahQuestionFormInline() {
                       value={form.email} 
                       onChange={handleChange} 
                       required 
-                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                      className={`w-full border-2 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
+                        errors.email ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                      }`}
                       placeholder="Enter your email"
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-xs flex items-center gap-1">
+                        <span>⚠️</span>
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -287,9 +454,17 @@ export default function IftahQuestionFormInline() {
                     onChange={handleChange}
                     onKeyPress={handleKeyPress}
                     required 
-                    className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 min-h-[80px] sm:min-h-[100px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 resize-none text-xs sm:text-sm bg-gray-50 focus:bg-white" 
+                    className={`w-full border-2 rounded-lg px-2.5 py-2 min-h-[80px] sm:min-h-[100px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 resize-none text-xs sm:text-sm bg-gray-50 focus:bg-white ${
+                      errors.question ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                    }`}
                     placeholder="Please write your Islamic question here..."
                   />
+                  {errors.question && (
+                    <p className="text-red-500 text-xs flex items-center gap-1">
+                      <span>⚠️</span>
+                      {errors.question}
+                    </p>
+                  )}
                
                 </div>
 

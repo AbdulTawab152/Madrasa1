@@ -93,7 +93,7 @@ export default function CoursesSection({
   }
 
   return (
-    <section className="px-4 pb-16 pt-24 sm:px-6 lg:px-8">
+    <section className="px-4 pb-16 pt-2 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-10">
         {heading ? (
           <motion.header
@@ -124,7 +124,7 @@ export default function CoursesSection({
           initial="hidden"
           animate="visible"
           transition={{ staggerChildren: 0.1, delayChildren: 0.08 }}
-          className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3"
+          className="grid gap-5  sm:px-0 sm:grid-cols-2 lg:grid-cols-3"
         >
           {displayCourses.map((course) => {
             const coverImage =

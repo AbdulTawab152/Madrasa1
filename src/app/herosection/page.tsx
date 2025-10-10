@@ -44,7 +44,7 @@ const Hero = () => {
     <div className="relative bg-primary-900 overflow-hidden mt-20 md:mt-[0px] space-y-6">
       <div className="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black via-black/10 to-transparent z-10 pointer-events-none blur-lg" />
 
-      <div className="space-y-3 space-x-0 relative z-20">
+      <div className="space-y-4 space-x-0 relative z-20">
         <ScrollingRow direction="left" delay={0} />
         <ScrollingRow direction="right" delay={1} />
         <ScrollingRow direction="left" delay={2} />

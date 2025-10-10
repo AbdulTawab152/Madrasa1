@@ -117,17 +117,17 @@ const themeClasses: Record<
 > = {
   amber: {
     backgroundImage: "bg-[url('/image.png')]",
-    overlay: "bg-gradient-to-br from-amber-900/80 via-orange-900/70 to-amber-800/80",
+    overlay: "bg-gradient-to-br from-amber-900/80 sm:py-20 via-orange-900/70 to-amber-800/80",
     accentText: "text-amber-50",
   },
   emerald: {
     backgroundImage: "bg-[url('/image.png')]",
-    overlay: "bg-gradient-to-br from-emerald-900/80 via-teal-900/70 to-emerald-800/80",
+    overlay: "bg-gradient-to-br from-emerald-900/80 sm:py-20  via-teal-900/70 to-emerald-800/80",
     accentText: "text-emerald-50",
   },
   indigo: {
     backgroundImage: "bg-[url('/image.png')]",
-    overlay: "bg-gradient-to-br from-emerald-900/80 via-teal-900/70 to-emerald-800/80",
+    overlay: "bg-gradient-to-br from-emerald-900/80  sm:py-20 via-teal-900/70 to-emerald-800/80",
     accentText: "text-indigo-50",
   },
   slate: {
@@ -168,7 +168,7 @@ export default function IslamicHeader({
         <div className={`absolute inset-0 ${themeCfg.overlay}`}></div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-6xl sm:pt-20 px-4 sm:px-6">
         <div className={`flex flex-col gap-4 ${alignmentClasses}`}>
           <div className="flex flex-col gap-3">
             <h1 className="text-3xl font-bold text-white drop-shadow-sm sm:text-4xl lg:text-5xl">
