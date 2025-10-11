@@ -81,7 +81,7 @@ export const navigation = {
     { name: 'Tasawof', href: '/tasawwuf', icon: 'tasawwuf' },
     { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
   
-    {name : "contact" ,  href: "/contact"}
+    { name: 'Contact', href: '/contact', icon: 'contact' },
   
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],

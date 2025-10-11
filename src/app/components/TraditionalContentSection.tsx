@@ -259,61 +259,7 @@ export default function TraditionalContentSection({
                     </div>
                   </div>
 
-                  {/* Fatwa Number (for Q&A) */}
-                    {/* {fatwas.length > 0 && (
-                      <div>
-                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                          Fatwa Number
-                        </label>
-                        <input
-                          type="text"
-                          placeholder="Enter fatwa number..."
-                          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                        />
-                      </div>
-                    )} */}
-
-                  {/* Category Selection */}
-                  {/* <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Select Category
-                    </label>
-                    <select
-                      value={selectedCategory}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                    >
-                      <option value="">All Categories</option>
-                      {categories.map(category => (
-                        <option key={category} value={category}>{category}</option>
-                      ))}
-                    </select>
-                  </div> */}
-
-                  {/* Book Selection */}
-                  {/* <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Select Book
-                    </label>
-                    <select
-                      value={selectedBook}
-                      onChange={(e) => setSelectedBook(e.target.value)}
-                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                    >
-                      <option value="">All Books</option>
-                      {books.map(book => (
-                        <option key={book} value={book}>{book}</option>
-                      ))}
-                    </select>
-                  </div> */}
-
-                  {/* Search Button */}
-                  {/* <button className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center">
-                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                    Search
-                  </button> */}
+                  
                 </div>
               </div>
 

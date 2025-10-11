@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { PiList } from "react-icons/pi";
@@ -132,12 +133,28 @@ const Navbar = memo(function Navbar() {
           <div className="flex items-center justify-between gap-4">
             <Link
               href="/"
-              className="flex items-center gap-3 text-2xl font-semibold text-primary-900 hover:text-primary-700 transition-colors duration-200"
+              className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
             >
-              <span className="hidden sm:inline-block rounded-full bg-primary-800/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
-                مؤسسة
-              </span>
-              {appConfig.name}
+              <div className="flex items-center gap-3">
+                <div className="relative w-12 h-12 sm:w-14 sm:h-14">
+                  <Image
+                    src="/logo.png"
+                    alt="Anwarul Uloom Logo"
+                    fill
+                    className="object-contain"
+                    priority
+                  />
+                </div>
+              
+              </div>
+              <div className="">
+                <div className="text-lg font-bold text-primary-900">
+                  {appConfig.name}
+                </div>
+                <div className="text-xs text-primary-600 font-medium">
+                  Islamic Learning Platform
+                </div>
+              </div>
             </Link>
 
             <div className="hidden lg:flex py-3 items-center justify-center flex-1">
@@ -148,7 +165,7 @@ const Navbar = memo(function Navbar() {
                     <li key={href} className="group relative">
                       <Link
                         href={href}
-                        className={`font-medium text-[15px] uppercase tracking-wide transition-colors duration-200 py-2  text-primary-800  outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                        className={`font-medium text-[13px] uppercase tracking-wide transition-colors duration-200 py-2  text-primary-800  outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
                           isActive ? "text-primary-600" : ""
                         }`}
                       >
@@ -169,7 +186,7 @@ const Navbar = memo(function Navbar() {
                     <button
                       type="button"
                       onClick={toggleMoreMenu}
-                      className="flex items-center gap-2 font-medium text-[15px] uppercase tracking-wide text-primary-800 hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:outline-none"
+                      className="flex items-center gap-2 font-medium text-[13px] uppercase tracking-wide text-primary-800 hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:outline-none"
                       aria-haspopup="true"
                       aria-expanded={isMoreMenuOpen}
                     >
@@ -205,7 +222,7 @@ const Navbar = memo(function Navbar() {
                           <Link
                             href={href}
                             onClick={closeMoreMenu}
-                            className={`block px-4 py-3 uppercase text-sm transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
+                            className={`block px-4 py-3 uppercase text-xs transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
                               isActive
                                 ? "bg-primary-50 font-semibold text-primary-700"
                                 : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
@@ -254,7 +271,18 @@ const Navbar = memo(function Navbar() {
         aria-label="Mobile navigation"
       >
         <div className="flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100">
-          <span className="text-lg font-semibold text-primary-900 tracking-wide">{appConfig.name}</span>
+          <div className="flex items-center gap-3">
+            <div className="relative w-10 h-10">
+              <Image
+                src="/logo.png"
+                alt="Anwarul Uloom Logo"
+                fill
+                className="object-contain"
+                priority
+              />
+            </div>
+            <span className="text-lg font-semibold text-primary-900 tracking-wide">{appConfig.name}</span>
+          </div>
           <button
             type="button"
             onClick={closeMobileMenu}
@@ -287,18 +315,13 @@ const Navbar = memo(function Navbar() {
                   key={href}
                   href={href}
                   onClick={closeMobileMenu}
-                  className={`flex items-center justify-between rounded-xl p-4 text-lg font-medium transition-all duration-200 shadow-sm ${
+                  className={`flex items-center justify-between rounded-xl p-4 text-sm font-medium transition-all duration-200 shadow-sm ${
                     isActive
                       ? "border-l-4 border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900"
                       : "text-primary-800/90 hover:bg-primary-100/40"
                   }`}
                 >
                   <span>{name}</span>
-                  {isActive && (
-                    <span className="rounded-full bg-primary-600 px-2 py-0.5 text-xs font-semibold text-primary-50">
-                      Active
-                    </span>
-                  )}
                 </Link>
               );
             })}
@@ -308,7 +331,7 @@ const Navbar = memo(function Navbar() {
                 <button
                   type="button"
                   onClick={toggleMoreMenu}
-                  className="flex w-full items-center justify-between rounded-xl bg-primary-100/40 p-4 text-lg font-semibold text-primary-800 hover:bg-primary-100/60 transition-all duration-200 focus:outline-none focus-visible:outline-none"
+                  className="flex w-full items-center justify-between rounded-xl bg-primary-100/40 p-4 text-sm font-semibold text-primary-800 hover:bg-primary-100/60 transition-all duration-200 focus:outline-none focus-visible:outline-none"
                   aria-expanded={isMoreMenuOpen}
                 >
                   <span className="flex items-center gap-3">
@@ -359,7 +382,7 @@ const Navbar = memo(function Navbar() {
                           closeMobileMenu();
                           closeMoreMenu();
                         }}
-                        className={`block rounded-lg p-3 text-base font-medium transition-all duration-200 ${
+                        className={`block rounded-lg p-3 text-sm font-medium transition-all duration-200 ${
                           isActive
                             ? "bg-primary-100/50 text-primary-900"
                             : "text-primary-700 hover:bg-primary-100/30"

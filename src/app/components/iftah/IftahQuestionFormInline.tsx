@@ -35,20 +35,28 @@ export default function IftahQuestionFormInline() {
   const [errors, setErrors] = useState({
     name: "",
     email: "",
+    phone: "",
+    whatsapp: "",
     question: "",
   });
   const [submittedQuestions, setSubmittedQuestions] = useState<any[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
   const [showQuestionsList, setShowQuestionsList] = useState(false);
+
+  // Helper function to check if form is valid
+  const isFormValid = () => {
+    return form.name.trim().length >= 2 && 
+           /^[a-zA-Z\s\u0600-\u06FF]+$/.test(form.name.trim()) &&
+           form.email.trim() && 
+           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
+           form.question.trim().length >= 15 &&
+           form.question.trim().length <= 1000 &&
+           (!form.phone.trim() || /^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.phone.trim())) &&
+           (!form.whatsapp.trim() || /^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.whatsapp.trim()));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
-    
-    // Clear error when user starts typing
-    if (errors[name as keyof typeof errors]) {
-      setErrors({ ...errors, [name]: "" });
-    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -62,30 +70,60 @@ export default function IftahQuestionFormInline() {
     const newErrors = {
       name: "",
       email: "",
+      phone: "",
+      whatsapp: "",
       question: "",
     };
 
+    let isValid = true;
+
     // Validate name
     if (!form.name.trim()) {
-      newErrors.name = "Please enter your name";
+      newErrors.name = "Please add your name";
+      isValid = false;
+    } else if (form.name.trim().length < 2) {
+      newErrors.name = "Name must be at least 2 characters";
+      isValid = false;
+    } else if (!/^[a-zA-Z\s\u0600-\u06FF]+$/.test(form.name.trim())) {
+      newErrors.name = "Name can only contain letters and spaces";
+      isValid = false;
     }
 
     // Validate email
     if (!form.email.trim()) {
-      newErrors.email = "Please enter your email address";
+      newErrors.email = "Please add your email address";
+      isValid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = "Please enter a valid email address";
+      isValid = false;
+    }
+
+    // Validate phone (optional but if provided, must be valid)
+    if (form.phone.trim() && !/^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.phone.trim())) {
+      newErrors.phone = "Please add a valid phone number";
+      isValid = false;
+    }
+
+    // Validate WhatsApp (optional but if provided, must be valid)
+    if (form.whatsapp.trim() && !/^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.whatsapp.trim())) {
+      newErrors.whatsapp = "Please add a valid WhatsApp number";
+      isValid = false;
     }
 
     // Validate question
     if (!form.question.trim()) {
-      newErrors.question = "Please enter your Islamic question";
-    } else if (form.question.trim().length < 10) {
-      newErrors.question = "Please provide a more detailed question (at least 10 characters)";
+      newErrors.question = "Please add your Islamic question";
+      isValid = false;
+    } else if (form.question.trim().length < 15) {
+      newErrors.question = "Please write a more detailed question (at least 15 characters)";
+      isValid = false;
+    } else if (form.question.trim().length > 1000) {
+      newErrors.question = "Question is too long (maximum 1000 characters)";
+      isValid = false;
     }
 
     setErrors(newErrors);
-    return !Object.values(newErrors).some(error => error !== "");
+    return isValid;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -240,32 +278,12 @@ export default function IftahQuestionFormInline() {
               </div>
             </div>
 
-            {/* Search Bar */}
-            {showQuestionsList && (
-              <div className="px-6 py-4 sm:px-8 sm:py-6 border-b border-gray-200">
-                <div className="relative">
-                  <input
-                    type="text"
-                    placeholder="Search your questions..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all text-sm"
-                  />
-                  <FaQuestionCircle className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 text-sm" />
-                </div>
-              </div>
-            )}
 
             {/* Questions List */}
             {showQuestionsList && (
               <div className="px-6 py-4 sm:px-8 sm:py-6">
                 <div className="space-y-4">
-                  {submittedQuestions
-                    .filter(question => 
-                      question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                      question.name.toLowerCase().includes(searchTerm.toLowerCase())
-                    )
-                    .map((question) => (
+                  {submittedQuestions.map((question) => (
                       <div key={question.id} className="bg-gray-50 rounded-lg p-4 border border-gray-200">
                         <div className="flex items-start justify-between gap-4">
                           <div className="flex-1">
@@ -293,14 +311,11 @@ export default function IftahQuestionFormInline() {
                       </div>
                     ))}
                   
-                  {submittedQuestions.filter(question => 
-                    question.question.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    question.name.toLowerCase().includes(searchTerm.toLowerCase())
-                  ).length === 0 && (
+                  {submittedQuestions.length === 0 && (
                     <div className="text-center py-8">
                       <FaQuestionCircle className="mx-auto text-gray-300 text-4xl mb-4" />
                       <p className="text-gray-500 text-sm">
-                        {searchTerm ? "No questions found matching your search." : "No questions submitted yet."}
+                        No questions submitted yet.
                       </p>
                     </div>
                   )}
@@ -350,6 +365,22 @@ export default function IftahQuestionFormInline() {
                 <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs sm:text-sm flex items-center gap-2">
                   <span>⚠️</span>
                   {error}
+                </div>
+              )}
+
+              {/* Form Validation Summary */}
+              {Object.values(errors).some(error => error !== "") && (
+                <div className="mb-3 p-2 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs">
+                  <div className="flex items-center gap-2">
+                    <span className="text-red-600">⚠️</span>
+                    <div className="flex flex-wrap gap-1">
+                      {errors.name && <span className="bg-red-100 px-2 py-1 rounded text-xs">{errors.name}</span>}
+                      {errors.email && <span className="bg-red-100 px-2 py-1 rounded text-xs">{errors.email}</span>}
+                      {errors.phone && <span className="bg-red-100 px-2 py-1 rounded text-xs">{errors.phone}</span>}
+                      {errors.whatsapp && <span className="bg-red-100 px-2 py-1 rounded text-xs">{errors.whatsapp}</span>}
+                      {errors.question && <span className="bg-red-100 px-2 py-1 rounded text-xs">{errors.question}</span>}
+                    </div>
+                  </div>
                 </div>
               )}
               <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
@@ -419,9 +450,17 @@ export default function IftahQuestionFormInline() {
                       name="phone" 
                       value={form.phone} 
                       onChange={handleChange} 
-                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
-                      placeholder="Enter phone number"
+                      className={`w-full border-2 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
+                        errors.phone ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                      }`}
+                      placeholder="Enter phone number (optional)"
                     />
+                    {errors.phone && (
+                      <p className="text-red-500 text-xs flex items-center gap-1">
+                        <span>⚠️</span>
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <label className="font-semibold text-gray-800 mb-1 flex items-center gap-2 text-xs">
@@ -434,9 +473,17 @@ export default function IftahQuestionFormInline() {
                       name="whatsapp" 
                       value={form.whatsapp} 
                       onChange={handleChange} 
-                      className="w-full border-2 border-gray-200 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white" 
-                      placeholder="Enter WhatsApp number"
+                      className={`w-full border-2 rounded-lg px-2.5 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
+                        errors.whatsapp ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                      }`}
+                      placeholder="Enter WhatsApp number (optional)"
                     />
+                    {errors.whatsapp && (
+                      <p className="text-red-500 text-xs flex items-center gap-1">
+                        <span>⚠️</span>
+                        {errors.whatsapp}
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -448,17 +495,26 @@ export default function IftahQuestionFormInline() {
                     </div>
                     Your Islamic Question *
                   </label>
-                  <textarea 
-                    name="question" 
-                    value={form.question} 
-                    onChange={handleChange}
-                    onKeyPress={handleKeyPress}
-                    required 
-                    className={`w-full border-2 rounded-lg px-2.5 py-2 min-h-[80px] sm:min-h-[100px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 resize-none text-xs sm:text-sm bg-gray-50 focus:bg-white ${
-                      errors.question ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
-                    }`}
-                    placeholder="Please write your Islamic question here..."
-                  />
+                  <div className="relative">
+                    <textarea 
+                      name="question" 
+                      value={form.question} 
+                      onChange={handleChange}
+                      onKeyPress={handleKeyPress}
+                      required 
+                      maxLength={1000}
+                      className={`w-full border-2 rounded-lg px-2.5 py-2 min-h-[80px] sm:min-h-[100px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 resize-none text-xs sm:text-sm bg-gray-50 focus:bg-white pr-12 ${
+                        errors.question ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                      }`}
+                      placeholder="Please write your Islamic question here (minimum 15 characters)..."
+                    />
+                    {/* Character Counter */}
+                    <div className="absolute bottom-2 right-2 text-xs text-gray-400">
+                      <span className={form.question.length > 900 ? "text-red-500" : form.question.length > 800 ? "text-yellow-500" : ""}>
+                        {form.question.length}/1000
+                      </span>
+                    </div>
+                  </div>
                   {errors.question && (
                     <p className="text-red-500 text-xs flex items-center gap-1">
                       <span>⚠️</span>

@@ -114,10 +114,10 @@ const About = () => {
             </svg>
           </Link>
           <Link
-            href="/courses"
+            href="/contact"
             className="inline-flex items-center justify-center px-6 py-3 border border-amber-600 text-amber-600 font-medium rounded-lg hover:bg-amber-50 transition-colors"
           >
-            Our Courses
+            Contact Us
           </Link>
         </div>
       </div>

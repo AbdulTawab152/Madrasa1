@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getImageUrl } from "@/lib/utils";
 import type { Course } from "@/lib/types";
+import VideoPlayer from "../../components/VideoPlayer";
 
 
 interface Book {
@@ -149,41 +150,126 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         <span className="text-black font-medium">{course.title}</span>
       </div>
 
-      {/* Hero Section with Video */}
-      <div className="relative h-60 lg:h-96 bg-gradient-to-r from-amber-600 to-amber-700 overflow-hidden rounded-b-3xl">
-        {course.short_video && (
-          <div className="relative w-full h-full">
-            <video
-              autoPlay
-              muted
-              loop
-              className="w-full h-full object-cover"
-              poster={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
-            >
-              <source src={getImageUrl(course.short_video)} type="video/mp4" />
-              <source src={getImageUrl(course.short_video)} type="video/webm" />
-              Your browser does not support the video tag.
-            </video>
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-600/80 to-amber-700/80"></div>
-            {/* Course Title Overlaid On Video */}
-            <div className="absolute inset-0 flex items-center pt-10  z-20">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4  px-5 text-center rounded-xl">
-                {course.title}
+      {/* Hero Section with Full Width Image */}
+      <div className="relative h-48 lg:h-80 overflow-hidden rounded-b-[40px] sm:rounded-b-[80px] ">
+        {/* Full Width Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+            alt={course.title}
+            fill
+            className="object-cover"
+            priority
+          />
+        </div>
+
+        {/* Content Overlay */}
+        <div className="absolute inset-0">
+          {/* Full-width darker green shadow overlay */}
+          <div className="absolute inset-0 z-0 pointer-events-none">
+            {/* Make green overlay much darker and more saturated */}
+            <div className="absolute inset-0 bg-gradient-to-br from-green-900/90 via-emerald-900/80 to-teal-900/90 mix-blend-multiply"></div>
+            <div
+              className="absolute -inset-0"
+              style={{
+                background:
+                  'radial-gradient(ellipse 90% 70% at 50% 60%, rgba(6, 95, 70, 0.50), transparent 85%)',
+              }}
+            />
+            <div
+              className="absolute -inset-0.5"
+              style={{
+                pointerEvents: 'none',
+                borderRadius: '2.5rem',
+                boxShadow: "0 0 120px 70px rgba(6, 78, 59, 0.35)",
+              }}
+            />
+          </div>
+          <div className="container mx-auto px-4 h-full flex items-center relative z-10">
+            <div className="w-full max-w-4xl">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
+                <span className="drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] shadow-[0_0_30px_rgba(6,78,59,0.45)]">
+                  {course.title}
+                </span>
               </h1>
+              
+              {/* Course Meta Info */}
+            
+
+              {/* Course Description Preview */}
+           
             </div>
           </div>
-        )}
-        {!course.short_video && (
-          <div className="container pt-10 mx-auto px-4 h-full flex items-center relative z-10">
-            <div className="max-w-4xl">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                {course.title}
-              </h1>
-            </div>
-          </div>
-        )}
-        <div className="absolute inset-0 bg-primary-900/25"></div>
+        </div>
       </div>
+
+      {/* Video Section - Enhanced Design */}
+      {course.short_video && (
+        <section className="relative w-full py-12 sm:py-16 bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
+          {/* Background Pattern */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute inset-0" style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+            }} />
+          </div>
+
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Section Header */}
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <FaVideo className="w-4 h-4" />
+                Course Preview
+              </div>
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+                Watch & Learn
+              </h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Get a preview of what you'll learn in this comprehensive course
+              </p>
+            </div>
+
+            {/* Video Card */}
+            <div className="relative group">
+              <div className="bg-white rounded-3xl shadow-2xl shadow-emerald-500/10 border border-emerald-100/50 overflow-hidden transform group-hover:scale-[1.02] transition-all duration-500">
+                {/* Video Container */}
+                <div className="relative aspect-video bg-black">
+                  <VideoPlayer
+                    videoUrl={course.short_video}
+                    posterUrl={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+                    title=""
+                  />
+                  
+                  {/* Video Overlay Info */}
+                  <div className="absolute top-4 left-4 z-20">
+                    <div className="flex items-center gap-2 bg-black/70 backdrop-blur-sm rounded-full px-3 py-1.5 text-white text-sm">
+                      <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
+                      <span className="font-medium">Live Preview</span>
+                    </div>
+                  </div>
+
+                  {/* Video Duration Badge */}
+                  <div className="absolute bottom-4 right-4 z-20">
+                    <div className="bg-black/70 backdrop-blur-sm rounded-lg px-3 py-1.5 text-white text-sm font-medium">
+                      <FaClock className="inline w-3 h-3 mr-1" />
+                      2:30
+                    </div>
+                  </div>
+                </div>
+
+                {/* Video Info Section */}
+             
+              </div>
+
+              {/* Decorative Elements */}
+              <div className="absolute -top-4 -right-4 w-24 h-24 bg-emerald-200/20 rounded-full blur-xl group-hover:scale-110 transition-transform duration-500"></div>
+              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-emerald-300/10 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
+            </div>
+
+            {/* Additional Info Cards */}
+           
+          </div>
+        </section>
+      )}
 
       <section className="rounded-2xl overflow-hidden  pt-6 px-6 sm:px-10 mb-8">
         <header className="flex items-center gap-3 mb-4">

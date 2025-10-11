@@ -66,7 +66,7 @@ const MiniSlider = ({
           e.stopPropagation();
           prevSlide();
         }}
-        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-100 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-white hover:scale-110"
       >
         <ChevronLeft size={16} className="text-gray-800" />
       </button>
@@ -76,7 +76,7 @@ const MiniSlider = ({
           e.stopPropagation();
           nextSlide();
         }}
-        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+        className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 rounded-full flex items-center justify-center opacity-100 group-hover:opacity-100 transition-opacity shadow-lg hover:bg-white hover:scale-110"
       >
         <ChevronRight size={16} className="text-gray-800" />
       </button>
@@ -103,6 +103,7 @@ export default function Gallery({
   const [images] = useState<GalleryItem[]>(initialImages || []);
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState("All");
+  const [showAllImages, setShowAllImages] = useState(false);
 
   const [viewMode, setViewMode] = useState<"grid" | "slider">("grid");
 
@@ -182,10 +183,114 @@ export default function Gallery({
 
         {/* Grid View */}
         {viewMode === "grid" && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="space-y-6">
+            {/* Mobile: Show only slider and 3 images */}
+            <div className="md:hidden space-y-4">
+              {/* Main slider */}
+              <div
+                className="h-64 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                onClick={() => openLightbox(0)}
+              >
+                <MiniSlider
+                  images={filteredImages.slice(0, 6)}
+                  title="Featured Collection"
+                />
+              </div>
+
+              {/* Three more images */}
+              <div className="grid grid-cols-1 gap-4">
+                {filteredImages.slice(0, 3).map((img, index) => (
+                  <div
+                    key={`mobile-item-${img.id}-${index}`}
+                    className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
+                    onClick={() => openLightbox(index)}
+                  >
+                    <div className="relative h-full overflow-hidden">
+                      <img
+                        src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                        alt={img.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute bottom-4 left-4 right-4">
+                          <p className="font-semibold text-white text-sm mb-1">
+                            {img.title}
+                          </p>
+                          <p className="text-xs text-white/80">{img.category}</p>
+                        </div>
+                      </div>
+
+                      {img.featured && (
+                        <div className="absolute top-3 left-3">
+                          <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
+                            Featured
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Show All Button */}
+           
+
+              {/* Mobile: Show all images when button is clicked */}
+              {showAllImages && (
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <button
+                      onClick={() => setShowAllImages(false)}
+                      className="bg-gray-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                    >
+                      Show Less
+                    </button>
+                  </div>
+                  
+                  <div className="grid grid-cols-1 gap-4">
+                    {filteredImages.slice(3).map((img, index) => (
+                      <div
+                        key={`mobile-all-item-${img.id}-${index + 3}`}
+                        className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
+                        onClick={() => openLightbox(index + 3)}
+                      >
+                        <div className="relative h-full overflow-hidden">
+                          <img
+                            src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                            alt={img.title}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute bottom-4 left-4 right-4">
+                              <p className="font-semibold text-white text-sm mb-1">
+                                {img.title}
+                              </p>
+                              <p className="text-xs text-white/80">{img.category}</p>
+                            </div>
+                          </div>
+
+                          {img.featured && (
+                            <div className="absolute top-3 left-3">
+                              <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
+                                Featured
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Desktop: Full grid layout */}
+            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* First item - large slider */}
             <div
-              className=" row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
               onClick={() => openLightbox(0)}
             >
               <MiniSlider
@@ -198,10 +303,10 @@ export default function Gallery({
             {filteredImages.slice(0, 3).map((img, index) => (
               <div
                 key={`grid-item-${img.id}-${index}`}
-                className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl "
+                  className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                 onClick={() => openLightbox(index)}
               >
-                <div className="relative  overflow-hidden">
+                  <div className="relative overflow-hidden">
           <img
             src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
                     alt={img.title}
@@ -215,8 +320,6 @@ export default function Gallery({
                       </p>
                       <p className="text-xs text-white/80">{img.category}</p>
                     </div>
-
-
                   </div>
 
                   {img.featured && (
@@ -307,6 +410,7 @@ export default function Gallery({
                 </div>
               </div>
             ))}
+            </div>
           </div>
         )}
 
