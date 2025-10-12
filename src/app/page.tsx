@@ -88,7 +88,7 @@ export default async function HomePage() {
                 {/* Simple Call to Action */}
                 <div className="mt- text-center">
                   <Link
-                    href="/course"
+                    href="/courses"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
                     <span>View All Courses</span>

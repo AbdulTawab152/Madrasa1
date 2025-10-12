@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { getImageUrl } from "@/lib/utils";
 
 interface VideoPlayerProps {
@@ -10,76 +10,65 @@ interface VideoPlayerProps {
 }
 
 export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerProps) {
-  const [muted, setMuted] = useState(true);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
-  // Toggle handler
-  const toggleMute = () => {
-    setMuted((prev) => !prev);
-  };
-
-  // Sync muted state with video element
+  // Set video to unmuted by default
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = muted;
+      videoRef.current.muted = false;
     }
-  }, [muted]);
+  }, []);
+
+  // Handle click to play/pause
+  const handleVideoClick = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        videoRef.current.play();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  // Handle video play/pause events
+  const handlePlay = () => setIsPlaying(true);
+  const handlePause = () => setIsPlaying(false);
 
   return (
-    <div className="relative w-full h-full">
+    <div className="relative w-full h-full cursor-pointer" onClick={handleVideoClick}>
       <video
         ref={videoRef}
         autoPlay
         loop
         controls
-        muted={muted}
+        muted={false}
         className="w-full h-full object-cover"
         poster={posterUrl || "/placeholder-course.jpg"}
+        onPlay={handlePlay}
+        onPause={handlePause}
       >
         <source src={getImageUrl(videoUrl)} type="video/mp4" />
         <source src={getImageUrl(videoUrl)} type="video/webm" />
         Your browser does not support the video tag.
       </video>
       
-      {/* Mute/Unmute button */}
-      <button
-        type="button"
-        onClick={toggleMute}
-        aria-label={muted ? "Unmute video" : "Mute video"}
-        className="absolute top-4 right-4 z-30 rounded-full bg-black/70 hover:bg-black/90 text-white p-3 transition-all duration-200 hover:scale-110 shadow-lg"
-      >
-        {muted ? (
-          // Speaker off icon
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-6 h-6"
-          >
-            <path d="M9 9v6h4l5 5V4l-5 5H9z" />
-            <line x1="1" y1="1" x2="23" y2="23" />
-          </svg>
-        ) : (
-          // Speaker on icon
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2.5}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="w-6 h-6"
-          >
-            <polygon points="11 5 6 9H2v6h4l5 4V5z" />
-            <path d="M19 12c0-3.31-2.69-6-6-6v12a6 6 0 0 0 6-6z" />
-          </svg>
-        )}
-      </button>
+      {/* Click to play/pause indicator */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+        <div className={`transition-all duration-300 ${isPlaying ? 'opacity-0 scale-75' : 'opacity-80 scale-100'}`}>
+          <div className="w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center">
+            <svg 
+              className="w-8 h-8 text-white ml-1" 
+              fill="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path d="M8 5v14l11-7z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
 
       {/* Enhanced shadow overlays for better text readability */}
       <div className="absolute inset-0 pointer-events-none">

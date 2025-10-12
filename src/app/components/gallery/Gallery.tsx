@@ -193,12 +193,12 @@ export default function Gallery({
               >
                 <MiniSlider
                   images={filteredImages.slice(0, 6)}
-                  title="Featured Collection"
+                  title=""
                 />
               </div>
 
               {/* Three more images */}
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-4 bg-black/5 p-2 rounded-xl">
                 {filteredImages.slice(0, 3).map((img, index) => (
                   <div
                     key={`mobile-item-${img.id}-${index}`}
@@ -215,19 +215,13 @@ export default function Gallery({
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                         <div className="absolute bottom-4 left-4 right-4">
                           <p className="font-semibold text-white text-sm mb-1">
-                            {img.title}
+                          
                           </p>
                           <p className="text-xs text-white/80">{img.category}</p>
                         </div>
                       </div>
 
-                      {img.featured && (
-                        <div className="absolute top-3 left-3">
-                          <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
-                            Featured
-                          </span>
-                        </div>
-                      )}
+                     
                     </div>
                   </div>
                 ))}
@@ -264,20 +258,12 @@ export default function Gallery({
 
                           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                             <div className="absolute bottom-4 left-4 right-4">
-                              <p className="font-semibold text-white text-sm mb-1">
-                                {img.title}
-                              </p>
+                             
                               <p className="text-xs text-white/80">{img.category}</p>
                             </div>
                           </div>
 
-                          {img.featured && (
-                            <div className="absolute top-3 left-3">
-                              <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
-                                Featured
-                              </span>
-                            </div>
-                          )}
+                       
                         </div>
                       </div>
                     ))}
