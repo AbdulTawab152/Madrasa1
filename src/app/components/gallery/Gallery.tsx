@@ -41,11 +41,19 @@ const MiniSlider = ({
     return () => clearInterval(interval);
   }, [nextSlide]);
 
+  if (!images || images.length === 0 || !images[currentSlide]) {
+    return (
+      <div className="relative h-full w-full overflow-hidden rounded-2xl group bg-gray-200 flex items-center justify-center">
+        <p className="text-gray-500">No images available</p>
+      </div>
+    );
+  }
+
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl group">
       <img
         src={getImageUrlWithFallback(images[currentSlide].image, "/placeholder-gallery.jpg")}
-        alt={images[currentSlide].title}
+        alt={images[currentSlide].title || "Gallery image"}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
 
@@ -56,7 +64,7 @@ const MiniSlider = ({
             {title}
           </div>
           <p className="text-white font-semibold text-sm">
-            {images[currentSlide].title}
+            {images[currentSlide].title || "Untitled"}
           </p>
         </div>
       </div>
@@ -113,8 +121,8 @@ export default function Gallery({
   // Filter images by category
   const filteredImages =
     activeCategory === "All"
-      ? images.filter(img => img && img.image)
-      : images.filter((img) => img && img.category === activeCategory && img.image);
+      ? images.filter(img => img && img.image && img.title)
+      : images.filter((img) => img && img.category === activeCategory && img.image && img.title);
 
   // Create slider groups (each slider will have 3 images)
   const sliderGroups = [];
@@ -199,32 +207,35 @@ export default function Gallery({
 
               {/* Three more images */}
               <div className="grid grid-cols-1 gap-4 bg-black/5 p-2 rounded-xl">
-                {filteredImages.slice(0, 3).map((img, index) => (
-                  <div
-                    key={`mobile-item-${img.id}-${index}`}
-                    className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
-                    onClick={() => openLightbox(index)}
-                  >
-                    <div className="relative h-full overflow-hidden">
-                      <img
-                        src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
-                        alt={img.title}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      />
+                {filteredImages.slice(0, 3).map((img, index) => {
+                  if (!img) return null;
+                  return (
+                    <div
+                      key={`mobile-item-${img.id}-${index}`}
+                      className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
+                      onClick={() => openLightbox(index)}
+                    >
+                      <div className="relative h-full overflow-hidden">
+                        <img
+                          src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                          alt={img.title || "Gallery image"}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
 
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <p className="font-semibold text-white text-sm mb-1">
-                          
-                          </p>
-                          <p className="text-xs text-white/80">{img.category}</p>
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <p className="font-semibold text-white text-sm mb-1">
+                              {img.title || "Untitled"}
+                            </p>
+                            <p className="text-xs text-white/80">{img.category || "General"}</p>
+                          </div>
                         </div>
-                      </div>
 
-                     
+                       
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
 
               {/* Show All Button */}
@@ -243,30 +254,35 @@ export default function Gallery({
                   </div>
                   
                   <div className="grid grid-cols-1 gap-4">
-                    {filteredImages.slice(3).map((img, index) => (
-                      <div
-                        key={`mobile-all-item-${img.id}-${index + 3}`}
-                        className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
-                        onClick={() => openLightbox(index + 3)}
-                      >
-                        <div className="relative h-full overflow-hidden">
-                          <img
-                            src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
-                            alt={img.title}
-                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                          />
+                    {filteredImages.slice(3).map((img, index) => {
+                      if (!img) return null;
+                      return (
+                        <div
+                          key={`mobile-all-item-${img.id}-${index + 3}`}
+                          className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
+                          onClick={() => openLightbox(index + 3)}
+                        >
+                          <div className="relative h-full overflow-hidden">
+                            <img
+                              src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                              alt={img.title || "Gallery image"}
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                            />
 
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div className="absolute bottom-4 left-4 right-4">
-                             
-                              <p className="text-xs text-white/80">{img.category}</p>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <div className="absolute bottom-4 left-4 right-4">
+                                <p className="font-semibold text-white text-sm mb-1">
+                                  {img.title || "Untitled"}
+                                </p>
+                                <p className="text-xs text-white/80">{img.category || "General"}</p>
+                              </div>
                             </div>
-                          </div>
 
-                       
+                           
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -286,38 +302,41 @@ export default function Gallery({
             </div>
 
             {/* First three regular image items */}
-            {filteredImages.slice(0, 3).map((img, index) => (
-              <div
-                key={`grid-item-${img.id}-${index}`}
-                  className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
-                onClick={() => openLightbox(index)}
-              >
+            {filteredImages.slice(0, 3).map((img, index) => {
+              if (!img) return null;
+              return (
+                <div
+                  key={`grid-item-${img.id}-${index}`}
+                    className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                  onClick={() => openLightbox(index)}
+                >
                   <div className="relative overflow-hidden">
-          <img
-            src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
-                    alt={img.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
+            <img
+              src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                      alt={img.title || "Gallery image"}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <p className="font-semibold text-white text-sm mb-1">
-                        {img.title}
-                      </p>
-                      <p className="text-xs text-white/80">{img.category}</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <p className="font-semibold text-white text-sm mb-1">
+                          {img.title || "Untitled"}
+                        </p>
+                        <p className="text-xs text-white/80">{img.category || "General"}</p>
+                      </div>
                     </div>
+
+                    {img.featured && (
+                      <div className="absolute top-3 left-3">
+                        <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
+                          Featured
+                        </span>
+                      </div>
+                    )}
                   </div>
-
-                  {img.featured && (
-                    <div className="absolute top-3 left-3">
-                      <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
-                        Featured
-                      </span>
-                    </div>
-                  )}
                 </div>
-              </div>
-            ))}
+              );
+            })}
 
             {/* Fourth item - second slider */}
             <div
@@ -331,6 +350,7 @@ export default function Gallery({
             </div>
 
             {filteredImages.slice(4, 8).map((img, index) => {
+              if (!img) return null;
               // image #5 overall → index 1 in this slice
               const isBig = index === 2;
 
@@ -345,16 +365,16 @@ export default function Gallery({
                   <div className="relative w-full h-full overflow-hidden">
                     <img
                       src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
-                      alt={img.title}
+                      alt={img.title || "Gallery image"}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
 
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
-                          {img.title}
+                          {img.title || "Untitled"}
                         </p>
-                        <p className="text-xs text-white/80">{img.category}</p>
+                        <p className="text-xs text-white/80">{img.category || "General"}</p>
                       </div>
 
                       
@@ -373,35 +393,38 @@ export default function Gallery({
             })}
 
             {/* Final images (8-10) */}
-            {filteredImages.slice(8, 11).map((img, index) => (
-              <div
-                key={`grid-item-${img.id}-${index + 8}`}
-                className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-64"
-                onClick={() => openLightbox(index + 8)}
-              >
-                <div className="relative h-64 w-full overflow-hidden">
-                  <img
-                    src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
-                    alt={img.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="absolute bottom-4 left-4 right-4">
-                      <p className="font-semibold text-white text-sm mb-1">
-                        {img.title}
-                      </p>
-                      <p className="text-xs text-white/80">{img.category}</p>
+            {filteredImages.slice(8, 11).map((img, index) => {
+              if (!img) return null;
+              return (
+                <div
+                  key={`grid-item-${img.id}-${index + 8}`}
+                  className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-64"
+                  onClick={() => openLightbox(index + 8)}
+                >
+                  <div className="relative h-64 w-full overflow-hidden">
+                    <img
+                      src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                      alt={img.title || "Gallery image"}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute bottom-4 left-4 right-4">
+                        <p className="font-semibold text-white text-sm mb-1">
+                          {img.title || "Untitled"}
+                        </p>
+                        <p className="text-xs text-white/80">{img.category || "General"}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
             </div>
           </div>
         )}
 
         {/* Lightbox */}
-        {currentIndex !== null && (
+        {currentIndex !== null && filteredImages[currentIndex] && (
       <div className="fixed inset-0 bg-primary-950/90 flex items-center justify-center z-50 p-4">
             {/* Close button */}
             <button
@@ -430,17 +453,17 @@ export default function Gallery({
             <div className="relative max-h-[85vh] max-w-4xl w-full">
               <img
                 src={getImageUrlWithFallback(filteredImages[currentIndex].image, "/placeholder-gallery.jpg")}
-                alt={filteredImages[currentIndex].title}
+                alt={filteredImages[currentIndex].title || "Gallery image"}
                 className="max-h-[85vh] max-w-full mx-auto object-contain rounded-lg"
               />
 
               {/* Image info */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
                 <h3 className="text-xl font-bold mb-1">
-                  {filteredImages[currentIndex].title}
+                  {filteredImages[currentIndex].title || "Untitled"}
                 </h3>
                 <p className="text-sm text-white/80 mb-3">
-                  {filteredImages[currentIndex].category}
+                  {filteredImages[currentIndex].category || "General"}
                 </p>
                 {filteredImages[currentIndex].description && (
                   <p className="text-sm">
