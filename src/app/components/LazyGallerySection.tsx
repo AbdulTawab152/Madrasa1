@@ -24,16 +24,43 @@ export default function LazyGallerySection() {
         const response = await GalleryApi.getAll();
         if (!isMounted) return;
 
-        const rawData = extractArray<any>(response.data);
-        const payload = rawData.map((item: any) => ({
-          id: Number(item.id),
-          title: item.title || "Untitled",
-          description: item.description || "",
-          category: item.category || "General",
-          image: item.image || "/placeholder-gallery.jpg",
-          featured: item.featured || false,
-        }));
+        if (!response || !response.data) {
+          throw new Error("Invalid API response");
+        }
 
+        const rawData = extractArray<any>(response.data);
+        if (!Array.isArray(rawData)) {
+          throw new Error("Invalid data format");
+        }
+
+        const payload = rawData
+          .filter((item: any) => {
+            const isValid = item && typeof item === 'object';
+            if (!isValid) {
+              console.warn('Filtered out invalid gallery item:', item);
+            }
+            return isValid;
+          })
+          .map((item: any) => {
+            const mappedItem = {
+              id: Number(item.id) || Math.random(), // Ensure we have a valid ID
+              title: item.title || "Untitled",
+              description: item.description || "",
+              category: item.category || "General",
+              image: item.image || "/placeholder-gallery.jpg",
+              featured: item.featured || false,
+            };
+            return mappedItem;
+          })
+          .filter((item: GalleryItem) => {
+            const hasRequiredFields = item.image && item.title;
+            if (!hasRequiredFields) {
+              console.warn('Filtered out gallery item missing required fields:', item);
+            }
+            return hasRequiredFields;
+          });
+
+        console.log('Gallery payload processed:', payload.length, 'items');
         setImages(payload);
       } catch (error) {
         console.error("Error fetching gallery:", error);

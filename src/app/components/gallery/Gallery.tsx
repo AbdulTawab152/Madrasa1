@@ -108,7 +108,29 @@ export default function Gallery({
 }: {
   initialImages: GalleryItem[];
 }) {
-  const [images] = useState<GalleryItem[]>(initialImages || []);
+  const [images] = useState<GalleryItem[]>(() => {
+    // Ensure we have a valid array and filter out any invalid items
+    if (!Array.isArray(initialImages)) {
+      console.warn('Gallery received non-array initialImages:', initialImages);
+      return [];
+    }
+    
+    const validImages = initialImages.filter(item => {
+      const isValid = item && 
+        typeof item === 'object' && 
+        item.image && 
+        item.title;
+      
+      if (!isValid) {
+        console.warn('Gallery filtered out invalid item:', item);
+      }
+      
+      return isValid;
+    });
+    
+    console.log('Gallery initialized with', validImages.length, 'valid images');
+    return validImages;
+  });
   const [currentIndex, setCurrentIndex] = useState<number | null>(null);
   const [activeCategory, setActiveCategory] = useState("All");
   const [showAllImages, setShowAllImages] = useState(false);
@@ -162,6 +184,27 @@ export default function Gallery({
 
 
 
+
+  // Early return if no valid images
+  if (!images || images.length === 0) {
+    return (
+      <section className="py-16 mt-[100px] bg-gradient-to-br from-orange-50 via-white to-amber-50 min-h-screen">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
+              Madrasa{" "}
+              <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
+                Collection
+              </span>
+            </h2>
+            <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+              Gallery is currently unavailable. Please check back later.
+            </p>
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 mt-[100px] bg-gradient-to-br from-orange-50 via-white to-amber-50 min-h-screen">
