@@ -110,8 +110,8 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
             <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-xl mb-10 group">
               <Image
                 src={
-                  getImageUrl(article.featuredImage || article.image, "/placeholder.jpg") ||
-                  "/placeholder.jpg"
+                  getImageUrl(article.featuredImage || article.image, "/placeholder-blog.jpg") ||
+                  "/placeholder-blog.jpg"
                 }
                 alt={article.title}
                 fill

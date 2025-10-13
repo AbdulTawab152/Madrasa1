@@ -24,12 +24,12 @@ export const getImageUrlWithFallback = (
  */
 export const getPlaceholderImageUrl = (type: 'article' | 'course' | 'author' | 'book' | 'event' | 'default' = 'default'): string => {
   const placeholders = {
-    article: '/placeholder-article.jpg',
+    article: '/placeholder-blog.jpg',
     course: '/placeholder-course.jpg', 
     author: '/placeholder-author.jpg',
     book: '/placeholder-book.jpg',
     event: '/placeholder-event.jpg',
-    default: '/placeholder-default.jpg'
+    default: '/placeholder-gallery.jpg'
   };
   
   return placeholders[type];

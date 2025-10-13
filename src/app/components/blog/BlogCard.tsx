@@ -270,6 +270,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                     width={720}
                     height={480}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    priority={homePage}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/20 to-transparent" />
                   <div className="absolute top-4 left-4 inline-flex gap-2">

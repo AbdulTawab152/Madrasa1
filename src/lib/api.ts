@@ -222,12 +222,25 @@ class ApiClient {
       try {
         const response = await fetch(url, config);
         if (!response.ok) { 
-          // Log more details for debugging
+          // Only log errors for server errors (5xx) or on final attempt
           const errorText = await response.text();
-          console.warn(`API Error ${response.status} (attempt ${attempt}/3):`, errorText);
           
-          // If it's a 404 and we're on the last attempt, throw the error
+          // Don't retry for client errors (4xx) except 408, 429
+          if (response.status >= 400 && response.status < 500 && response.status !== 408 && response.status !== 429) {
+            // Suppress 404 errors completely - they're expected for missing content
+            // This prevents console spam when users visit non-existent blog/article URLs
+            if (response.status !== 404) {
+              console.warn(`API Error ${response.status} (attempt ${attempt}/3):`, errorText);
+            }
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          // If it's the last attempt, throw the error
           if (attempt === 3) {
+            // Only log non-404 errors on final attempt
+            if (response.status !== 404) {
+              console.warn(`API Error ${response.status} (final attempt):`, errorText);
+            }
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           
@@ -272,10 +285,13 @@ class ApiClient {
       }
     }
 
-    console.warn(
-      `API request failed for ${endpoint} after 3 attempts:`,
-      lastError
-    );
+    // Only log non-404 errors to reduce console noise
+    if (lastError && !lastError.message.includes('404')) {
+      console.warn(
+        `API request failed for ${endpoint} after 3 attempts:`,
+        lastError
+      );
+    }
     return {
       data: null as T,
       success: false,
@@ -388,12 +404,18 @@ export class BlogsApi {
         }),
       };
     } catch (error) {
-      console.warn('⚠️ Blogs API failed, using fallback data:', error);
+      // Only log in development mode, suppress in production
+      if (process.env.NODE_ENV === 'development') {
+        console.warn('⚠️ Blogs API failed, using fallback data:', error);
+      }
       
       const fallback = getFallbackData("blogs");
       const data = fallback.slice(0, limit) as typeof fallback;
       
-      console.log('📦 Using fallback data with', data.length, 'blogs');
+      // Only log in development mode
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📦 Using fallback data with', data.length, 'blogs');
+      }
       return {
         data,
         success: true,
@@ -415,12 +437,16 @@ export class BlogsApi {
       }
       return result;
     } catch (error) {
-      console.warn('⚠️ Blog getById API failed, using fallback data:', error);
+      // Suppress 404 errors completely - they're expected for missing blog IDs
+      const is404Error = error instanceof Error && error.message.includes('404');
+      if (!is404Error) {
+        console.warn('⚠️ Blog getById API failed, using fallback data:', error);
+      }
       const fallback = getFallbackData("blogs");
       return {
         data: fallback[0] || null,
         success: true,
-        message: "Using fallback data due to API unavailability",
+        pagination: null,
       };
     }
   }
@@ -429,16 +455,31 @@ export class BlogsApi {
     try {
       const result = await apiClient.get(`${endpoints.blogs}/${slug}`);
       if (!result.success) {
+        // Check if it's a 404 error before throwing
+        const is404Error = result.error && result.error.includes('404');
+        if (is404Error) {
+          // For 404 errors, silently return fallback data
+          const fallback = getFallbackData("blogs");
+          return {
+            data: fallback[0] || null,
+            success: true,
+            pagination: null,
+          };
+        }
         throw new Error('API request failed');
       }
       return result;
     } catch (error) {
-      console.warn('⚠️ Blog getBySlug API failed, using fallback data:', error);
+      // Only log non-404 errors
+      const is404Error = error instanceof Error && error.message.includes('404');
+      if (!is404Error) {
+        console.warn('⚠️ Blog getBySlug API failed, using fallback data:', error);
+      }
       const fallback = getFallbackData("blogs");
       return {
         data: fallback[0] || null,
         success: true,
-        message: "Using fallback data due to API unavailability",
+        pagination: null,
       };
     }
   }
@@ -1285,7 +1326,10 @@ export class ArticlesApi {
       } else if (data && Array.isArray(data.data)) {
         return { data: data.data, success: true };
       } else {
-        console.warn('⚠️ Unexpected categories data format:', data);
+        // Only log in development mode
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('⚠️ Unexpected categories data format:', data);
+        }
         const fallbackCategories = [
           { id: 1, name: 'General' },
           { id: 2, name: 'Islamic Studies' },

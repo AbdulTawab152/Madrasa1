@@ -158,8 +158,8 @@ export default async function BlogDetailsPage({ params }: Params) {
             <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg mb-10 group">
               <Image
                 src={
-                  getImageUrl(blog.featuredImage || blog.image, "/placeholder.jpg") ||
-                  "/placeholder.jpg"
+                  getImageUrl(blog.featuredImage || blog.image, "/placeholder-blog.jpg") ||
+                  "/placeholder-blog.jpg"
                 }
                 alt={blog.title}
                 fill
@@ -242,13 +242,14 @@ export default async function BlogDetailsPage({ params }: Params) {
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
                       src={
-                        getImageUrl(rb.featuredImage || rb.image, "/placeholder.jpg") ||
-                        "/placeholder.jpg"
+                        getImageUrl(rb.featuredImage || rb.image, "/placeholder-blog.jpg") ||
+                        "/placeholder-blog.jpg"
                       }
                       alt={rb.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      priority={false}
                     />
                     {rb.is_top && (
                       <span className="absolute top-3 left-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">

@@ -27,6 +27,7 @@ export default function BlogCard({ blog }: { blog: Blog }) {
           fill
           sizes="(min-width: 1280px) 340px, (min-width: 768px) 45vw, 90vw"
           className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          priority={false}
         />
 
         <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
