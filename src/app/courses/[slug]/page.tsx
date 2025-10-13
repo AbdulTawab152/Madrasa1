@@ -271,6 +271,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   <VideoPlayer
                     videoUrl={course.short_video}
                     posterUrl={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+                    title={course.title}
                   />
                 </div>
               </div>
