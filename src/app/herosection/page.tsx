@@ -33,7 +33,7 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
       alt={`Scrolling image ${index + 1}`}
       width={340}
       height={190}
-      className="w-[260px] h-[180px] md:w-[360px] md:h-[210px] rounded-lg object-cover"
+      className="w-[260px] h-[180px] md:w-[320px] md:h-[190px] rounded-lg object-cover"
     />
   ))}
 </motion.div>
@@ -56,7 +56,7 @@ const Hero = () => {
       </div>
 <div className="absolute  top-1/3 mt-10 sm:top-1/3  left-4 sm:left-10 lg:left-40 max-w-[90%] sm:max-w-[600px] space-y-4 z-30">
   {/* Tagline */}
-  <p className="text-sm sm:text-base md:text-lg text-orange-400 font-semibold uppercase tracking-wider bg-orange-500/40 px-3 py-1.5 rounded-full w-fit shadow-md animate-pulse">
+  <p className="text-sm sm:text-base md:text-lg text-orange-400 font-semibold uppercase tracking-wider bg-orange-500/20 px-3 py-1.5 rounded-full w-fit shadow-md animate-pulse">
     ✦ Knowledge • Faith • Leadership ✦
   </p>
 
@@ -110,7 +110,7 @@ const Hero = () => {
 
       {/* Radial Gradient Overlay */}
       <div className="absolute inset-0 z-20 pointer-events-none">
-        <div className="w-full h-full bg-gradient-to-tr from-black/70 via-yellow-1bg-[linear-gradient(to_top_right,_black,_rgba(255,255,0,0.1)2%,_rgba(255,255,0,0.4)_5%,_transparent)] " />
+        <div className="w-full h-full bg-gradient-to-tr from-black/20 via-yellow-1bg-[linear-gradient(to_top_right,_black,_rgba(255,255,0,0.1)20%,_rgba(255,255,0,0.4)_5%,_transparent)] " />
       </div>
     </div>
   );
