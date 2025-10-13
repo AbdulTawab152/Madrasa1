@@ -16,6 +16,7 @@ interface Blog {
 const fallbackImage = "/placeholder-blog.jpg";
 
 export default function BlogCard({ blog }: { blog: Blog }) {
+  if (!blog) return null;
   const imageUrl = getImageUrl(blog.image, fallbackImage) ?? fallbackImage;
 
   return (

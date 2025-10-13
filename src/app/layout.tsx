@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import Navbar from "../component/navbar";
 import Footer from "@/component/footer";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
   title: "Madsreqa - Islamic Learning Platform",
@@ -19,9 +20,11 @@ export default function RootLayout({
       <body >
         <Navbar />
         
-        <main>
-          {children}
-        </main>
+        <ErrorBoundary>
+          <main>
+            {children}
+          </main>
+        </ErrorBoundary>
         <Footer/>
       </body>
     </html>

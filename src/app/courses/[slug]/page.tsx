@@ -156,7 +156,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         <div className="absolute inset-0 z-0">
           {/* Backdrop Image */}
           <Image
-            src={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+            src={course?.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
             alt={course.title}
             fill
             sizes="100vw"
@@ -339,8 +339,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             <div className="flex flex-col md:flex-row gap-8 p-6 rounded-2xl shadow-sm bg-gradient-to-br from-white via-amber-50 to-amber-100/60 border border-amber-200">
               <div className="w-32 h-32 relative rounded-xl overflow-hidden flex-shrink-0 border-2 border-amber-300 bg-white/50 shadow">
                 <Image
-                  src={getImageUrl(book.image, "/placeholder-book.jpg")}
-                  alt={book.title}
+                  src={getImageUrl(book?.image, "/placeholder-book.jpg")}
+                  alt={book?.title || 'Book'}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="object-cover"
@@ -377,8 +377,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             <div className="flex flex-col md:flex-row gap-8 p-6 rounded-2xl shadow-sm bg-gradient-to-br from-white via-emerald-50 to-emerald-100/70 border border-emerald-100">
               <div className="w-32 h-32 relative rounded-xl overflow-hidden flex-shrink-0 border-2 border-emerald-300 bg-white/50 shadow">
                 <Image
-                  src={getImageUrl(recordedBy.image, "/placeholder-author.jpg")}
-                  alt={`${recordedBy.first_name} ${recordedBy.last_name}`}
+                  src={getImageUrl(recordedBy?.image, "/placeholder-author.jpg")}
+                  alt={`${recordedBy?.first_name || ''} ${recordedBy?.last_name || ''}`}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="object-cover"

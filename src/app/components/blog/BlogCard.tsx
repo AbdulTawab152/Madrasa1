@@ -76,7 +76,12 @@ function formatDate(value?: string | null) {
 
 export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const [mounted, setMounted] = useState(false);
   const enablePagination = !homePage;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const fetchBlogs = useCallback(
     (params: Record<string, unknown>) =>
@@ -257,21 +262,23 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
               },
             }}
           >
-            {filteredBlogs.map((item) => (
-              <motion.article
-                key={item.slug}
-                variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
-                className="group flex h-full flex-col overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
-              >
-                <div className="relative h-52 overflow-hidden">
-                  <Image
-                    src={resolveCoverImage(item.image)}
-                    alt={item.title}
-                    width={720}
-                    height={480}
-                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    priority={homePage}
-                  />
+            {filteredBlogs.map((item) => {
+              if (!item) return null;
+              return (
+                <motion.article
+                  key={item.slug}
+                  variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
+                  className="group flex h-full flex-col overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
+                >
+                  <div className="relative h-52 overflow-hidden">
+                    <Image
+                      src={resolveCoverImage(item.image)}
+                      alt={item.title || 'Blog post'}
+                      width={720}
+                      height={480}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      priority={homePage}
+                    />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/20 to-transparent" />
                   <div className="absolute top-4 left-4 inline-flex gap-2">
                     <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
@@ -306,7 +313,8 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                   </div>
                 </div>
               </motion.article>
-            ))}
+              );
+            })}
           </motion.div>
         )}
 

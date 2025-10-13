@@ -52,8 +52,8 @@ const MiniSlider = ({
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl group">
       <img
-        src={getImageUrlWithFallback(images[currentSlide].image, "/placeholder-gallery.jpg")}
-        alt={images[currentSlide].title || "Gallery image"}
+        src={getImageUrlWithFallback(images[currentSlide]?.image, "/placeholder-gallery.jpg")}
+        alt={images[currentSlide]?.title || "Gallery image"}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
 
@@ -116,10 +116,12 @@ export default function Gallery({
     }
     
     const validImages = initialImages.filter(item => {
-      const isValid = item && 
-        typeof item === 'object' && 
-        item.image && 
-        item.title;
+  const isValid = item && 
+    typeof item === 'object' && 
+    item.image && 
+    item.title &&
+    item.image !== null &&
+    item.image !== undefined;
       
       if (!isValid) {
         console.warn('Gallery filtered out invalid item:', item);
