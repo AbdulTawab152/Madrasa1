@@ -398,7 +398,7 @@ export default function Gallery({
               return (
                 <div
                   key={`grid-item-${img.id}-${index + 8}`}
-                  className="relative group overflow-hidden rounded-2xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-64"
+                  className="relative group overflow-hidden rounded-4xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-64"
                   onClick={() => openLightbox(index + 8)}
                 >
                   <div className="relative h-64 w-full overflow-hidden">
