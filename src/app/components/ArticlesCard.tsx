@@ -234,7 +234,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
-      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="mb-8">
         
         </div>
@@ -424,7 +424,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
             isBusy={isFetchingMore}
           />
         )}
+        </div>
       </div>
-    </div>
   );
 }

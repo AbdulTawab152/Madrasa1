@@ -218,58 +218,58 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
 
   return (
     <section id="blogs" className="bg-background-primary py-16">
-      <div className="max-w-7xl mx-auto px-6 space-y-10">
-        {!homePage && categories.length > 1 && (
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 border ${
-                  selectedCategory === category
-                    ? "bg-primary-600 text-white border-primary-600 shadow-md"
-                    : "bg-white text-primary-700 border-primary-100 hover:border-primary-300"
-                }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {filteredBlogs.length === 0 ? (
-          <div className="rounded-3xl border border-primary-100/60 bg-white/95 p-10 text-center shadow-soft">
-            <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
-              Coming soon
-            </p>
-            <h2 className="mt-3 text-2xl font-semibold text-primary-900">
-              No blogs available in this category yet.
-            </h2>
-            <p className="mt-2 text-primary-600">
-              Check back soon for the latest articles and announcements.
-            </p>
-          </div>
-        ) : (
-          <motion.div
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: {
-                opacity: 1,
-                transition: { staggerChildren: 0.08 },
-              },
-            }}
-          >
-            {filteredBlogs.map((item) => {
-              if (!item) return null;
-              return (
-                <motion.article
-                  key={item.slug}
-                  variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
-                  className="group flex h-full flex-col overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
+        <div className="max-w-7xl mx-auto px-6 space-y-10">
+          {!homePage && categories.length > 1 && (
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setSelectedCategory(category)}
+                  className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 border ${
+                    selectedCategory === category
+                      ? "bg-primary-600 text-white border-primary-600 shadow-md"
+                      : "bg-white text-primary-700 border-primary-100 hover:border-primary-300"
+                  }`}
                 >
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {filteredBlogs.length === 0 ? (
+            <div className="rounded-3xl border border-primary-100/60 bg-white/95 p-10 text-center shadow-soft">
+              <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
+                Coming soon
+              </p>
+              <h2 className="mt-3 text-2xl font-semibold text-primary-900">
+                No blogs available in this category yet.
+              </h2>
+              <p className="mt-2 text-primary-600">
+                Check back soon for the latest articles and announcements.
+              </p>
+            </div>
+          ) : (
+            <motion.div
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: { staggerChildren: 0.08 },
+                },
+              }}
+            >
+              {filteredBlogs.map((item) => {
+                if (!item) return null;
+                return (
+                  <motion.article
+                    key={item.slug}
+                    variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
+                    className="group flex h-full flex-col overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
+                  >
                   <div className="relative h-52 overflow-hidden">
                     <Image
                       src={resolveCoverImage(item.image)}
@@ -279,57 +279,57 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       priority={homePage}
                     />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/20 to-transparent" />
-                  <div className="absolute top-4 left-4 inline-flex gap-2">
-                    <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
-                      {item.category?.name || "General"}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex h-full flex-col gap-5 p-6">
-                  <div className="space-y-3">
-                    <h2 className="text-xl font-semibold text-primary-900 line-clamp-2">
-                      {item.title}
-                    </h2>
-                    <p className="text-primary-600 text-sm leading-relaxed line-clamp-3">
-                      {item.description?.replace(/<[^>]*>/g, "") ||
-                        "No summary available."}
-                    </p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/20 to-transparent" />
+                    <div className="absolute top-4 left-4 inline-flex gap-2">
+                      <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
+                        {item.category?.name || "General"}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="mt-auto flex items-center justify-between border-t border-primary-100/60 pt-4 text-sm text-primary-700">
-                    <span className="inline-flex items-center gap-2">
-                      <CalendarDays className="h-4 w-4 text-primary-500" />
-                      <span>{formatDate(item.published_at || item.created_at)}</span>
-                    </span>
-                    <Link
-                      href={`/blogs/${item.slug}`}
-                      className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition-colors duration-200 hover:bg-primary-100"
-                    >
-                      Read more
-                      <ArrowUpRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </div>
-              </motion.article>
-              );
-            })}
-          </motion.div>
-        )}
+                  <div className="flex h-full flex-col gap-5 p-6">
+                    <div className="space-y-3">
+                      <h2 className="text-xl font-semibold text-primary-900 line-clamp-2">
+                        {item.title}
+                      </h2>
+                      <p className="text-primary-600 text-sm leading-relaxed line-clamp-3">
+                        {item.description?.replace(/<[^>]*>/g, "") ||
+                          "No summary available."}
+                      </p>
+                    </div>
 
-        {enablePagination && filteredBlogs.length > 0 && (
-          <PaginationControls
-            className="mt-12 w-full"
-            page={page}
-            totalPages={totalPages}
-            hasNextPage={hasNextPage}
-            hasPrevPage={hasPreviousPage}
-            onPageChange={(target) => void goToPage(target)}
-            isBusy={isFetchingMore}
-          />
-        )}
-      </div>
-    </section>
+                    <div className="mt-auto flex items-center justify-between border-t border-primary-100/60 pt-4 text-sm text-primary-700">
+                      <span className="inline-flex items-center gap-2">
+                        <CalendarDays className="h-4 w-4 text-primary-500" />
+                        <span>{formatDate(item.published_at || item.created_at)}</span>
+                      </span>
+                      <Link
+                        href={`/blogs/${item.slug}`}
+                        className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition-colors duration-200 hover:bg-primary-100"
+                      >
+                        Read more
+                        <ArrowUpRight className="h-4 w-4" />
+                      </Link>
+                    </div>
+                  </div>
+                </motion.article>
+                );
+              })}
+            </motion.div>
+          )}
+
+          {enablePagination && filteredBlogs.length > 0 && (
+            <PaginationControls
+              className="mt-12 w-full"
+              page={page}
+              totalPages={totalPages}
+              hasNextPage={hasNextPage}
+              hasPrevPage={hasPreviousPage}
+              onPageChange={(target) => void goToPage(target)}
+              isBusy={isFetchingMore}
+            />
+          )}
+        </div>
+      </section>
   );
 }

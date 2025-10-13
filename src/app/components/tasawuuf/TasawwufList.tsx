@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { TasawwufApi, extractArray } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
@@ -124,10 +124,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
         <div className="relative rounded-2xl overflow-hidden shadow-lg group">
           {featured.image && (
             <Image
-              src={
-                getImageUrl(featured.image, "/placeholder-tasawwuf.jpg") ||
-                "/placeholder-tasawwuf.jpg"
-              }
+              src={getImageUrl(featured.image, "/placeholder-tasawwuf.jpg")}
               alt={featured.title}
               width={1200}
               height={500}
@@ -201,16 +198,13 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
       {/* Image */}
       {post.image && (
         <div className="relative w-full md:w-2/5 lg:w-1/3 h-52 rounded-lg overflow-hidden shadow-sm">
-          <Image
-            src={
-              getImageUrl(post.image, "/placeholder-tasawwuf.jpg") ||
-              "/placeholder-tasawwuf.jpg"
-            }
-            alt={post.title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-            className="object-cover hover:scale-105 transition-transform duration-500"
-          />
+                  <Image
+                    src={getImageUrl(post.image, "/placeholder-tasawwuf.jpg")}
+                    alt={post.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                    className="object-cover hover:scale-105 transition-transform duration-500"
+                  />
           <div className="absolute top-3 left-3">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm text-amber-700">
               {post.category?.name || "Spirituality"}
@@ -285,6 +279,6 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
           </Link>
         </div>
       )}
-    </section>
+      </section>
   );
 }

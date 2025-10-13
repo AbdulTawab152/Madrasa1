@@ -28,19 +28,20 @@ async function fetchCourseData(): Promise<CourseType[]> {
   try {
     const response = await CoursesApi.getAll();
     if (!response.success) {
-      throw new Error(response.error || "Failed to load courses");
+      console.warn("Courses API failed, using fallback data:", response.error);
+      return [];
     }
 
     return extractArray<CourseType>(response.data);
   } catch (error) {
-    console.error("Error fetching courses:", error);
+    console.warn("Error fetching courses, using fallback data:", error);
     return [];
   }
 }
 
 export default async function HomePage() {
-  // Only fetch essential data for initial page load
-  const courses = await fetchCourseData();
+  // Temporarily disable API calls to test if they're causing the 500 error
+  const courses: CourseType[] = [];
   return (
     <div className="min-h-screen bg-white">
       <Hero />
@@ -119,17 +120,17 @@ export default async function HomePage() {
       <section className="py-10 ">
         <div className="max-w-7xl mx-auto px-6">
           <Suspense
-            fallback={
-              <div className="flex items-center justify-center py-20">
-                <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-                <span className="ml-4 text-gray-600 font-medium">
-                  Loading events...
-                </span>
-              </div>
-            }
-          >
-            <LazyEventSection />
-          </Suspense>
+          fallback={
+            <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+              <span className="ml-4 text-gray-600 font-medium">
+                Loading events...
+              </span>
+            </div>
+          }
+        >
+          <LazyEventSection />
+        </Suspense>
         </div>
       </section>
 

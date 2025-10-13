@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa6";
 
-const images = ["/1.jpg", "/2.jpg", "/3.jpg", "/4.jpg"];
+const images = ["/hero1.jpg", "/hero2.jpg", "/hero3.jpg", "/hero4.jpg","/hero5.jpg", "/hero6.jpg", "/hero7.jpg", ];
 
 
 const ScrollingRow = ({ direction = "left", delay = 0 }) => {
@@ -14,35 +14,39 @@ const ScrollingRow = ({ direction = "left", delay = 0 }) => {
   const repeatedImages = [...images, ...images, ...images, ...images];
 
   return (
-    <motion.div
-      className="flex gap-2 w-max "
-      animate={{ x: scrollX, y: scrollY }}
-      transition={{
-        repeat: Infinity,
-        repeatType: "loop",
-        duration: 80,
-        ease: "linear",
-        delay,
-      }}
-    >
-      {repeatedImages.map((img, index) => (
-        <Image
-          key={index}
-          src={img}
-          alt={`Scrolling image ${index + 1}`}
-          width={340}
-          height={190}
-          className="w-[260px] h-[180px] sm:w-[340px] sm:h-[190px] rounded-lg object-cover"
-        />
-      ))}
-    </motion.div>
+<motion.div
+  className="flex gap-2 w-max "
+  animate={{ x: scrollX, }}
+  transition={{
+    repeat: Infinity,
+    repeatType: "loop",
+    duration: 100,
+    ease: "linear",
+    delay,
+  }}
+>
+  {/* The images should move smoothly in a straight line without shifting up or down or affecting the spacing between them */}
+  {repeatedImages.map((img, index) => (
+    <Image
+      key={index}
+      src={img}
+      alt={`Scrolling image ${index + 1}`}
+      width={340}
+      height={190}
+      className="w-[260px] h-[180px] md:w-[360px] md:h-[210px] rounded-lg object-cover"
+    />
+  ))}
+</motion.div>
+
+
+
   );
 };
 
 const Hero = () => {
   return (
-    <div className="relative bg-primary-900 overflow-hidden mt-20 md:mt-[0px] space-y-6">
-      <div className="absolute bottom-0 left-0 w-full h-[300px] bg-gradient-to-t from-black via-black/10 to-transparent z-10 pointer-events-none blur-lg" />
+    <div className="relative bg-primary-800 overflow-hidden mt-20 md:mt-[0px] space-y-6">
+      <div className="absolute bottom-0 left-0 w-full h-[300px]  to-transparent z-10 pointer-events-none blur-lg" />
 
       <div className="space-y-3 space-x-0 relative z-20">
         <ScrollingRow direction="left" delay={0} />
@@ -52,7 +56,7 @@ const Hero = () => {
       </div>
 <div className="absolute  top-1/3 mt-10 sm:top-1/3  left-4 sm:left-10 lg:left-40 max-w-[90%] sm:max-w-[600px] space-y-4 z-30">
   {/* Tagline */}
-  <p className="text-sm sm:text-base md:text-lg text-orange-400 font-semibold uppercase tracking-wider bg-orange-500/10 px-3 py-1.5 rounded-full w-fit shadow-md animate-pulse">
+  <p className="text-sm sm:text-base md:text-lg text-orange-400 font-semibold uppercase tracking-wider bg-orange-500/40 px-3 py-1.5 rounded-full w-fit shadow-md animate-pulse">
     ✦ Knowledge • Faith • Leadership ✦
   </p>
 
@@ -106,7 +110,7 @@ const Hero = () => {
 
       {/* Radial Gradient Overlay */}
       <div className="absolute inset-0 z-20 pointer-events-none">
-        <div className="w-full h-full bg-gradient-to-tr from-black via-yellow-1bg-[linear-gradient(to_top_right,_black,_rgba(255,255,0,0.2)5%,_rgba(255,255,0,0.2)_55%,_transparent)] blur-md" />
+        <div className="w-full h-full bg-gradient-to-tr from-black/70 via-yellow-1bg-[linear-gradient(to_top_right,_black,_rgba(255,255,0,0.1)2%,_rgba(255,255,0,0.4)_5%,_transparent)] " />
       </div>
     </div>
   );

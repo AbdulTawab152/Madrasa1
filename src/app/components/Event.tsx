@@ -116,7 +116,7 @@ interface EventSectionProps {
   limit?: number;
 }
 
-export function EventSection({ limit = events.length }: EventSectionProps) {
+export default function EventSection({ limit = events.length }: EventSectionProps) {
   const displayedEvents = events.slice(0, limit);
 
   return (
@@ -141,16 +141,14 @@ export function EventSection({ limit = events.length }: EventSectionProps) {
             >
               {/* Image Container */}
               <div className="relative w-full md:w-1/2 h-80 rounded-2xl overflow-hidden shadow-md transform transition-transform duration-500 hover:scale-105">
-                <Image
-                  src={event.image}
-                  alt={event.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover rounded-2xl"
-                  placeholder="blur"
-                  blurDataURL="/placeholder.svg?height=10&width=16&text=..."
-                  priority={index === 0}
-                />
+                  <Image
+                    src={event.image || "/placeholder-event.jpg"}
+                    alt={event.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    className="object-cover rounded-2xl"
+                    priority={index === 0}
+                  />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent rounded-2xl"></div>
               </div>
 
@@ -204,9 +202,7 @@ export function EventSection({ limit = events.length }: EventSectionProps) {
             </Link>
           </div>
         )}
-      </div>
-    </section>
+        </div>
+      </section>
   );
 }
-
-export default EventSection;
