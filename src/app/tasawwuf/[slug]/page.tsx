@@ -61,6 +61,7 @@ export default async function TasawwufSinglePage({
               src={buildImageUrl(post.image) || "/placeholder-tasawwuf.jpg"}
               alt={post.title}
               fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
               className="object-cover"
             />
           </div>

@@ -163,6 +163,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                 }
                 alt={blog.title}
                 fill
+                sizes="100vw"
                 className="object-cover group-hover:scale-103 transition-transform duration-700"
                 priority
               />
@@ -246,6 +247,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                       }
                       alt={rb.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     {rb.is_top && (

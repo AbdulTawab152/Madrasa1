@@ -141,6 +141,7 @@ const Navbar = memo(function Navbar() {
                     src="/logo.png"
                     alt="Anwarul Uloom Logo"
                     fill
+                    sizes="(max-width: 768px) 120px, 150px"
                     className="object-contain"
                     priority
                   />
@@ -277,6 +278,7 @@ const Navbar = memo(function Navbar() {
                 src="/logo.png"
                 alt="Anwarul Uloom Logo"
                 fill
+                sizes="(max-width: 768px) 120px, 150px"
                 className="object-contain"
                 priority
               />

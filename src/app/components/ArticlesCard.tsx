@@ -309,6 +309,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
                         src={imageUrl}
                         alt={article.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-500"
                         onError={(event) => {
                           event.currentTarget.style.display = "none";

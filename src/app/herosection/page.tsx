@@ -99,6 +99,7 @@ const Hero = () => {
         src="/ship.png"
         alt="A ship navigating the sea"
         fill
+        sizes="100vw"
         priority
         className="object-cover absolute inset-0 z-10"
       />

@@ -159,6 +159,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             src={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
             alt={course.title}
             fill
+            sizes="100vw"
             className="object-cover scale-105 brightness-90 transition-all duration-700"
             priority
           />
@@ -341,6 +342,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   src={getImageUrl(book.image, "/placeholder-book.jpg")}
                   alt={book.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="object-cover"
                   priority
                 />
@@ -378,6 +380,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   src={getImageUrl(recordedBy.image, "/placeholder-author.jpg")}
                   alt={`${recordedBy.first_name} ${recordedBy.last_name}`}
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   className="object-cover"
                   priority
                 />

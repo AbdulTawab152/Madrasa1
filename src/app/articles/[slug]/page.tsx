@@ -115,6 +115,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                 }
                 alt={article.title}
                 fill
+                sizes="100vw"
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
                 priority
               />
