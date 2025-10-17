@@ -10,8 +10,11 @@ import PaginationControls from "@/components/PaginationControls";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { CoursesApi } from "@/lib/api";
 import type { Course as CourseType } from "@/lib/types";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function CoursesPage() {
+  const { t } = useTranslation('common', { useSuspense: false });
+  
   const {
     items,
     isLoadingInitial,
@@ -41,7 +44,7 @@ export default function CoursesPage() {
     <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <IslamicHeader
         pageType="courses"
-        title="Islamic Courses"
+        title={t('courses.title')}
         alignment="center"
         // cta={{
         //   label: "Explore All Courses",
@@ -55,16 +58,16 @@ export default function CoursesPage() {
         ) : error ? (
           <div className="max-w-3xl mx-auto text-center bg-red-50 border border-red-100 rounded-3xl p-10 shadow-soft">
             <h2 className="text-2xl font-semibold text-red-700 mb-4">
-              Unable to load courses
+              {t('courses.unableToLoad')}
             </h2>
             <p className="text-red-600 mb-6">
-              {error}. Please try refreshing the page.
+              {error}. {t('courses.retryMessage')}
             </p>
             <button
               onClick={() => void reload()}
               className="inline-flex items-center rounded-full bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
             >
-              Retry loading courses
+              {t('courses.retryButton')}
             </button>
           </div>
         ) : (

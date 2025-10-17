@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "../globals.css";
 import Navbar from "../component/navbar";
 import Footer from "@/component/footer";
+import I18nProvider from "@/components/I18nProvider";
 
 export const metadata: Metadata = {
   title: "Madsreqa - Islamic Learning Platform",
@@ -15,13 +16,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body >
-        <Navbar />
-        <main>
-          {children}
-        </main>
-        <Footer/>
+    <html data-scroll-behavior="smooth" dir="rtl" lang="ps">
+      <body>
+        <I18nProvider>
+          <Navbar />
+          <main>
+            {children}
+          </main>
+          <Footer/>
+        </I18nProvider>
       </body>
     </html>
   );

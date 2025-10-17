@@ -5,6 +5,7 @@ import Link from "next/link";
 import { getImageUrl } from "@/lib/utils";
 import type { Course } from "@/lib/types";
 import VideoPlayer from "../../components/VideoPlayer";
+import { getTranslation } from "@/lib/translations";
 
 
 interface Book {
@@ -39,6 +40,31 @@ import {
 
 export default async function CourseDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
+  
+  // For server-side rendering, default to Pashto
+  // Client-side language switching will handle the rest
+  const currentLang = 'ps';
+  
+  const t = (key: string) => getTranslation(key, currentLang);
+  
+  // Helper function to translate course data values
+  const translateCourseValue = (value: string, type: 'duration' | 'quality' | 'size') => {
+    if (!value) return value;
+    
+    switch (type) {
+      case 'duration':
+        return value.replace(/hours?/gi, t('courses.hours'));
+      case 'quality':
+        return value.replace(/hd/gi, t('courses.hd'))
+                   .replace(/sd/gi, t('courses.sd'))
+                   .replace(/fullhd/gi, t('courses.fullHd'))
+                   .replace(/4k/gi, t('courses.ultraHd'));
+      case 'size':
+        return value.replace(/gb/gi, t('courses.gb'));
+      default:
+        return value;
+    }
+  };
 
 
   // ✅ Fetch course by slug
@@ -71,15 +97,15 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
     return (
       <div className="min-h-screen mt-24 flex items-center justify-center bg-gradient-to-b from-amber-50 to-white">
         <div className="text-center p-8 bg-white rounded-xl max-w-md w-full border-2 border-amber-200">
-          <h2 className="text-2xl font-bold text-black mb-4">Course Not Found</h2>
+          <h2 className="text-2xl font-bold text-black mb-4">{t('courses.courseNotFound')}</h2>
           <p className="text-gray-600 mb-6">
-            The course you're looking for doesn't exist.
+            {t('courses.courseNotFoundMessage')}
           </p>
           <Link
             href="/courses"
             className="inline-block bg-amber-600 text-white px-6 py-3 rounded-lg"
           >
-            Browse All Courses
+            {t('courses.browseAllCourses')}
           </Link>
         </div>
       </div>
@@ -113,7 +139,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           >
             <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
           </svg>
-          Home
+          {t('courses.home')}
         </Link>
 
         <svg
@@ -132,7 +158,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           href="/courses"
           className="inline-flex items-center text-amber-700 hover:text-amber-900 transition-colors font-medium"
         >
-          Courses
+          {t('courses.title')}
         </Link>
 
         <svg
@@ -252,13 +278,13 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             <div className="text-center mb-12">
               <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
                 <FaVideo className="w-4 h-4" />
-                Course Preview
+                {t('courses.coursePreview')}
               </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                Watch & Learn
+                {t('courses.watchAndLearn')}
               </h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Get a preview of what you'll learn in this comprehensive course
+                {t('courses.previewDescription')}
               </p>
             </div>
             
@@ -290,9 +316,9 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           {/* Mobile Get Course Info (only visible on mobile, before Book and Recorder Card) */}
           <div className="block lg:hidden mb-8">
             <div className="bg-gradient-to-r from-amber-600 to-amber-700 text-white py-7 px-5 rounded-2xl text-center shadow-lg border-amber-200 border">
-              <div className="text-2xl font-extrabold mb-3 tracking-tight">Get Course Info</div>
+              <div className="text-2xl font-extrabold mb-3 tracking-tight">{t('courses.getCourseInfo')}</div>
               <p className="mb-6 text-white/90 text-base">
-                Contact us for enrollment details
+                {t('courses.enrollmentMessage')}
               </p>
               <a
                 href={`https://wa.me/+1234567890?text=${encodeURIComponent(
@@ -303,7 +329,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 className="w-full bg-white/95 hover:bg-amber-50 transition text-amber-700 font-bold py-3 rounded-lg flex items-center justify-center gap-3 shadow"
               >
                 <FaPlay className="text-amber-600 text-lg" />
-                Enroll Now
+                {t('courses.enrollNow')}
               </a>
             </div>
           </div>
@@ -315,7 +341,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 <FaGraduationCap className="text-2xl text-amber-600" />
               </div>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-primary-900 tracking-tight">
-                About this Course
+                {t('courses.aboutThisCourse')}
               </h2>
             </header>
             <div>
@@ -327,8 +353,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
               ) : (
                 <div className="bg-amber-50 border-l-4 border-amber-500 px-6 py-4 rounded-md animate-fade-in shadow-inner">
                   <p className="text-gray-700 leading-relaxed text-lg">
-                    This course provides comprehensive knowledge and practical skills in Islamic education. 
-                    Designed to help you deepen your understanding and strengthen your faith through structured learning.
+                    {t('courses.defaultDescription')}
                   </p>
                 </div>
               )}
@@ -354,9 +379,9 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   <span className="font-extrabold text-xl text-primary-900">{book.title}</span>
                 </div>
                 <div className="flex flex-wrap items-center gap-4 text-amber-700/90 text-sm font-medium mb-2">
-                  <span>Edition: <span className="font-semibold">{book.edition || "N/A"}</span></span>
-                  <span>| Pages: <span className="font-semibold">{book.pages || "N/A"}</span></span>
-                  <span>| Year: <span className="font-semibold">{book.written_year || "N/A"}</span></span>
+                  <span>{t('courses.edition')}: <span className="font-semibold">{book.edition || "N/A"}</span></span>
+                  <span>| {t('courses.pages')}: <span className="font-semibold">{book.pages || "N/A"}</span></span>
+                  <span>| {t('courses.year')}: <span className="font-semibold">{book.written_year || "N/A"}</span></span>
                 </div>
                 <div className="text-gray-700 text-base leading-relaxed mb-3">{book.description}</div>
                 {book.pdf_file && (
@@ -367,7 +392,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                     className="inline-flex items-center gap-2 px-4 py-2 bg-amber-600 hover:bg-amber-700 transition text-white rounded-lg font-semibold shadow"
                   >
                     <FaBook className="text-white opacity-80" />
-                    Download PDF
+                    {t('courses.downloadPdf')}
                   </a>
                 )}
               </div>
@@ -431,7 +456,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 className="w-full bg-white/95 hover:bg-amber-50 transition text-amber-700 font-bold py-3 rounded-lg flex items-center justify-center gap-3 shadow"
               >
                 <FaPlay className="text-amber-600 text-lg" />
-                Enroll Now
+                {t('courses.enrollNow')}
               </a>
             </div>
           </div>
@@ -440,24 +465,24 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           <div className="space-y-5 bg-white/90 p-6 rounded-2xl border border-amber-100 shadow-sm">
             <h3 className="text-xl font-bold text-amber-800 mb-4 tracking-tight flex items-center gap-2">
               <FaGraduationCap className="text-xl text-amber-500" />
-              Course Details
+              {t('courses.courseDetails')}
             </h3>
             <ul className="space-y-4">
               {course.duration && (
                 <li className="flex justify-between items-center border-b border-dashed border-amber-50 pb-2">
-                  <span className="text-gray-600">Duration</span>
-                  <span className="font-semibold text-amber-900">{course.duration}</span>
+                  <span className="text-gray-600">{t('courses.duration')}</span>
+                  <span className="font-semibold text-amber-900">{translateCourseValue(course.duration, 'duration')}</span>
                 </li>
               )}
               {course.video_quantity && (
                 <li className="flex justify-between items-center border-b border-dashed border-amber-50 pb-2">
-                  <span className="text-gray-600">Videos</span>
+                  <span className="text-gray-600">{t('courses.videos')}</span>
                   <span className="font-semibold text-amber-900">{course.video_quantity}</span>
                 </li>
               )}
               {course.publish_date && (
                 <li className="flex justify-between items-center border-b border-dashed border-amber-50 pb-2">
-                  <span className="text-gray-600">Published</span>
+                  <span className="text-gray-600">{t('courses.published')}</span>
                   <span className="font-semibold text-amber-900">
                     {new Date(course.publish_date).toLocaleDateString()}
                   </span>
@@ -465,23 +490,23 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
               )}
               {course.resolution && (
                 <li className="flex justify-between items-center border-b border-dashed border-amber-50 pb-2">
-                  <span className="text-gray-600">Quality</span>
-                  <span className="font-semibold text-amber-900">{course.resolution}</span>
+                  <span className="text-gray-600">{t('courses.quality')}</span>
+                  <span className="font-semibold text-amber-900">{translateCourseValue(course.resolution, 'quality')}</span>
                 </li>
               )}
               {course.space && (
                 <li className="flex justify-between items-center border-b border-dashed border-amber-50 pb-2">
-                  <span className="text-gray-600">Size</span>
-                  <span className="font-semibold text-amber-900">{course.space}</span>
+                  <span className="text-gray-600">{t('courses.size')}</span>
+                  <span className="font-semibold text-amber-900">{translateCourseValue(course.space, 'size')}</span>
                 </li>
               )}
               {course.short_video && (
                 <li className="flex justify-between items-center">
                   <span className="text-gray-600 flex items-center gap-2">
                     <FaVideo className="text-amber-600" />
-                    Intro Video
+                    {t('courses.introVideo')}
                   </span>
-                  <span className="font-semibold text-emerald-600 animate-pulse">Available</span>
+                  <span className="font-semibold text-emerald-600 animate-pulse">{t('courses.available')}</span>
                 </li>
               )}
             </ul>

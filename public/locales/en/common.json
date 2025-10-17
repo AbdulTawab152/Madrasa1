@@ -1,0 +1,105 @@
+{
+  "navbar": {
+    "home": "Home",
+    "courses": "Courses",
+    "iftah": "Iftah",
+    "article": "Article",
+    "awlayaa": "Awalyaa",
+    "awlyaacharts": "Awlyaa Charts",
+    "books": "Books",
+    "donation": "Donation",
+    "blogs": "Blogs",
+    "author": "Author",
+    "event": "Event",
+    "tasawwuf": "Tasawof",
+    "graduation": "Graduation",
+    "contact": "Contact",
+    "islamicLearningPlatform": "Islamic Learning Platform",
+    "more": "More",
+    "moreOptions": "More options"
+  },
+  "hero": {
+    "tagline": "✦ Knowledge • Faith • Leadership ✦",
+    "title": "Anwarul Uloom Madrasa",
+    "subtitle": "Illuminating Young Minds",
+    "description": "Shaping the future with wisdom, values, and faith. Join our programs and courses designed to inspire bright young minds.",
+    "learnMore": "Learn More",
+    "viewCourses": "View Courses"
+  },
+  "about": {
+    "title": "About Anwarul Uloom",
+    "subtitle": "Center of Islamic Education",
+    "description": "For over six decades, we have been dedicated to spreading authentic Islamic knowledge and nurturing hearts and minds.",
+    "founderTitle": "Sheikh of Quran and Hadith, Anwar al-Mashayikh",
+    "founderName": "Hajj Khalifa Sahib Fazluddin (RA) - Known as Khalifa Sahib Arghandi",
+    "founderDescription": "A center of Islamic education and spiritual growth that has been serving the stages of knowledge and wisdom in various regions of Afghanistan since 1963",
+    "stats": {
+      "title": "Our Service Statistics",
+      "description": "A brief overview of our achievements over 63 years of service",
+      "years": "Years of Service",
+      "graduates": "Graduates",
+      "students": "Students per Year",
+      "scholars": "Scholars"
+    },
+    "values": {
+      "title": "Our",
+      "subtitle": "Values",
+      "description": "These principles guide our approach to Islamic education",
+      "authenticKnowledge": "Authentic Knowledge",
+      "authenticKnowledgeDesc": "Guarantee of pure Islamic teachings based on Quran and Sunnah.",
+      "excellence": "Excellence",
+      "excellenceDesc": "Maintaining high standards of Islamic knowledge and moral development.",
+      "faithAndCharacter": "Faith and Character",
+      "faithAndCharacterDesc": "Nurturing Islamic values, respect and sincerity.",
+      "community": "Community",
+      "communityDesc": "Serving Muslim communities with dedication and care."
+    },
+    "subjects": {
+      "tajweed": "Tajweed",
+      "hifz": "Memorization",
+      "tafsir": "Tafsir",
+      "hadith": "Hadith",
+      "fiqh": "Fiqh",
+      "usulFiqh": "Usul al-Fiqh",
+      "logic": "Logic",
+      "maani": "Maani",
+      "sarf": "Sarf",
+      "nahw": "Nahw",
+      "hikmat": "Hikmat",
+      "mathematics": "Mathematics",
+      "english": "English",
+      "arabic": "Arabic",
+      "rhetoric": "Rhetoric"
+    },
+    "timeline": {
+      "1963": "First Foundation",
+      "1963Desc": "Sheikh Khalifa Sahib Arghandi established the first madrasa in Arghandi, Kabul",
+      "1970s": "30 Years of Teaching",
+      "1970sDesc": "Dedicated teaching of hadith, tafsir and Islamic sciences",
+      "1985": "Migration and Second Foundation",
+      "1985Desc": "During migration, established Anwarul Uloom in Miranshah, Pakistan",
+      "2005": "Re-establishment",
+      "2005Desc": "The madrasa was re-established in Arghandi by the Sheikh's family and students",
+      "2024": "Legacy Continues",
+      "2024Desc": "Continued service in Islamic education and spiritual guidance"
+    },
+    "teachers": "Teachers and Scholars",
+    "teachersDesc": "Holders of High Academic Degrees",
+    "academicServices": "Academic Services",
+    "academicServicesDesc": "Center for Teaching Islamic and Modern Sciences",
+    "callToAction": {
+      "title": "Join Our Community",
+      "description": "Be part of our legacy of Islamic education and spiritual development.",
+      "viewCourses": "View Courses",
+      "contactUs": "Contact Us"
+    },
+    "biography": {
+      "introduction": "Anwar al-Mashayikh, the respected Maulana Khalifa Sahib Fazluddin (RA), known as Khalifa Sahib Arghandi, was one of Afghanistan's renowned scholars and great mystics.",
+      "father": "His father was named Muhammad Zarin, a virtuous and pious man. He studied reading and writing for about 6 years in his village school.",
+      "education": "He then completed the traditional religious sciences in various religious schools in Afghanistan. For the study of tafsir, he became a student of Sheikh al-Hadith Maulana Abdul Ghaffar Nangarhari, and studied under Sheikh al-Hadith Maulana Nasiruddin Gharghashtai (RA) at the Noor al-Madaris school in Ghazni.",
+      "educationJourney": "Education Journey",
+      "gallery": "Memories Gallery",
+      "galleryDescription": "Memories of Sheikh Khalifa Sahib Arghandi's (RA) life and Anwarul Uloom's history"
+    }
+  }
+}

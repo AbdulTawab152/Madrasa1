@@ -10,6 +10,7 @@ import { ArrowUpRight, BookOpen, Clock, UserRound } from "lucide-react";
 import { Card, CardContent, CardFooter, CardMedia } from "../Card";
 import { getImageUrl } from "@/lib/utils";
 import type { Course as CourseType } from "@/lib/types";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface CoursesSectionProps {
   courses: CourseType[];
@@ -34,10 +35,10 @@ const stripHtml = (value?: string | null) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const formatDate = (value?: string | null) => {
-  if (!value) return "Recently updated";
+const formatDate = (value?: string | null, t?: (key: string) => string) => {
+  if (!value) return t ? t('courses.recentlyUpdated') : "Recently updated";
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return "Recently updated";
+  if (Number.isNaN(date.getTime())) return t ? t('courses.recentlyUpdated') : "Recently updated";
   return date.toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
@@ -57,6 +58,7 @@ export default function CoursesSection({
   showAll = false,
   heading,
 }: CoursesSectionProps) {
+  const { t } = useTranslation('common', { useSuspense: false });
   const publishedCourses = (courses || [])
     .filter((course) => Number(course.is_published) === 1)
     .sort((a, b) => {
@@ -79,13 +81,13 @@ export default function CoursesSection({
       <section className="py- text-center">
         <div className="mx-auto max-w-2xl space-y-4 rounded-3xl border border-primary-100/60 bg-white/95 p-12 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.45)]">
           <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
-            Coming soon
+            {t('courses.comingSoon')}
           </p>
           <h2 className="text-2xl font-semibold text-primary-900">
-            Fresh courses are on the way
+            {t('courses.freshCourses')}
           </h2>
           <p className="text-primary-600">
-            We are curating new learning experiences. Please check back shortly.
+            {t('courses.curatingMessage')}
           </p>
         </div>
       </section>
@@ -132,6 +134,7 @@ export default function CoursesSection({
               fallbackCourseImage;
             const publishedOn = formatDate(
               course.publish_date || course.created_date || course.created_at,
+              t
             );
 
             return (
@@ -168,21 +171,21 @@ export default function CoursesSection({
 
                       <p className="text-sm leading-relaxed text-primary-600 line-clamp-2">
                         {stripHtml(course.description) ||
-                          "An immersive learning journey curated by our scholars."}
+                          t('courses.immersiveLearning')}
                       </p>
                     </div>
 
                     <div className="grid grid-cols-1 gap-2.5 text-[13px] font-medium text-primary-700 sm:grid-cols-2">
                       <CourseMetaItem
                         icon={<Clock className="h-3.5 w-3.5" />}
-                        label={course.duration || "Self paced"}
+                        label={course.duration || t('courses.selfPaced')}
                       />
                       <CourseMetaItem
                         icon={<BookOpen className="h-3.5 w-3.5" />}
                         label={
                           course.video_quantity
-                            ? `${course.video_quantity} lessons`
-                            : "Flexible learning"
+                            ? `${course.video_quantity} ${t('courses.lessons')}`
+                            : t('courses.flexibleLearning')
                         }
                       />
                     </div>
@@ -199,7 +202,7 @@ export default function CoursesSection({
                         href={`/courses/${course.slug}`}
                         className="inline-flex mt-4 items-center gap-1.5 rounded-full bg-primary-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                       >
-                        View course
+                        {t('courses.viewCourse')}
                         <ArrowUpRight className="h-4 w-4" />
                       </Link>
                     </CardFooter>

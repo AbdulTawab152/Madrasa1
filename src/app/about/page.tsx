@@ -3,6 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import IslamicHeader from "../components/IslamicHeader";
 import { BookOpen, Award, Heart, Users, Sparkles, Clock, GraduationCap, Target, Lightbulb, Star, CheckCircle, Quote, Trophy } from "lucide-react";
+import { useTranslation } from '@/hooks/useTranslation';
+import { getLanguageDirection } from '@/lib/i18n';
 import img from "../../../public/1.jpg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -44,22 +46,25 @@ const CustomPrevArrow = ({ onClick }: { onClick?: () => void }) => (
 );
 
 const AboutPage = () => {
+  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+
   const subjects = [
-    { name: "تجوید", icon: "📖", color: "bg-blue-500" },
-    { name: "حفظ", icon: "💎", color: "bg-green-500" },
-    { name: "تفسیر", icon: "🔍", color: "bg-purple-500" },
-    { name: "حدیث", icon: "📚", color: "bg-amber-500" },
-    { name: "فقه", icon: "⚖️", color: "bg-red-500" },
-    { name: "اصول الفقه", icon: "📋", color: "bg-indigo-500" },
-    { name: "منطق", icon: "🧠", color: "bg-pink-500" },
-    { name: "معاني", icon: "💭", color: "bg-teal-500" },
-    { name: "صرف", icon: "✍️", color: "bg-orange-500" },
-    { name: "نحو", icon: "📝", color: "bg-cyan-500" },
-    { name: "حکمت", icon: "🌟", color: "bg-yellow-500" },
-    { name: "ریاضي", icon: "🔢", color: "bg-gray-500" },
-    { name: "انګلیسي", icon: "🌍", color: "bg-blue-600" },
-    { name: "عربي", icon: "🕌", color: "bg-green-600" },
-    { name: "فن بیان", icon: "🎤", color: "bg-purple-600" }
+    { name: t('about.subjects.tajweed'), icon: "📖", color: "bg-blue-500" },
+    { name: t('about.subjects.hifz'), icon: "💎", color: "bg-green-500" },
+    { name: t('about.subjects.tafsir'), icon: "🔍", color: "bg-purple-500" },
+    { name: t('about.subjects.hadith'), icon: "📚", color: "bg-amber-500" },
+    { name: t('about.subjects.fiqh'), icon: "⚖️", color: "bg-red-500" },
+    { name: t('about.subjects.usulFiqh'), icon: "📋", color: "bg-indigo-500" },
+    { name: t('about.subjects.logic'), icon: "🧠", color: "bg-pink-500" },
+    { name: t('about.subjects.maani'), icon: "💭", color: "bg-teal-500" },
+    { name: t('about.subjects.sarf'), icon: "✍️", color: "bg-orange-500" },
+    { name: t('about.subjects.nahw'), icon: "📝", color: "bg-cyan-500" },
+    { name: t('about.subjects.hikmat'), icon: "🌟", color: "bg-yellow-500" },
+    { name: t('about.subjects.mathematics'), icon: "🔢", color: "bg-gray-500" },
+    { name: t('about.subjects.english'), icon: "🌍", color: "bg-blue-600" },
+    { name: t('about.subjects.arabic'), icon: "🕌", color: "bg-green-600" },
+    { name: t('about.subjects.rhetoric'), icon: "🎤", color: "bg-purple-600" }
   ];
 
   // Slick Slider settings
@@ -109,58 +114,58 @@ const AboutPage = () => {
   const values = [
     {
       icon: BookOpen,
-      title: "اصلي علم",
-      description: "د قرآن او سنت پر بنسټ، د پاکو اسلامي تعلیماتو ضمانت."
+      title: t('about.values.authenticKnowledge'),
+      description: t('about.values.authenticKnowledgeDesc')
     },
     {
       icon: Award,
-      title: "برترۍ",
-      description: "د اسلامي علم او اخلاقي ودې د لوړو معیارونو ساتنه."
+      title: t('about.values.excellence'),
+      description: t('about.values.excellenceDesc')
     },
     {
       icon: Heart,
-      title: "ایمان او څیرې",
-      description: "د اسلامي ارزښتونو، د درناوي او صمیمیت روزنه."
+      title: t('about.values.faithAndCharacter'),
+      description: t('about.values.faithAndCharacterDesc')
     },
     {
       icon: Users,
-      title: "ټولنه",
-      description: "د مسلمانانو ټولنو ته د وقف او پاملرنې سره خدمت."
+      title: t('about.values.community'),
+      description: t('about.values.communityDesc')
     }
   ];
 
   const stats = [
-    { icon: Clock, value: "63+", label: "کلونه" },
-    { icon: GraduationCap, value: "500+", label: "فارغان" },
-    { icon: Sparkles, value: "100%", label: "اصلي" },
-    { icon: Award, value: "50+", label: "علماء" }
+    { icon: Clock, value: "63+", label: t('about.stats.years') },
+    { icon: GraduationCap, value: "500+", label: t('about.stats.graduates') },
+    { icon: Sparkles, value: "100%", label: t('about.stats.scholars') },
+    { icon: Award, value: "50+", label: t('about.stats.scholars') }
   ];
 
   const timeline = [
     {
       year: "1963",
-      title: "لومړی بنسټ",
-      description: "شیخ خلیفه صاحب ارغندی د کابل په ارغندي کې لومړی مدرسه جوړه کړه"
+      title: t('about.timeline.1963'),
+      description: t('about.timeline.1963Desc')
     },
     {
       year: "1970s",
-      title: "د 30 کلونو تدریس",
-      description: "د حدیثو، تفسیر او اسلامي علومو ته وقف تدریس"
+      title: t('about.timeline.1970s'),
+      description: t('about.timeline.1970sDesc')
     },
     {
       year: "1985",
-      title: "هجرت او دوهم بنسټ",
-      description: "د هجرت په وخت کې د پاکستان په میرانشاه کې انوارالعلوم جوړ کړ"
+      title: t('about.timeline.1985'),
+      description: t('about.timeline.1985Desc')
     },
     {
       year: "2005",
-      title: "بیاځلي بنسټ",
-      description: "د شیخ د کورنۍ او شاګردانو لخوا د ارغندي کې مدرسه بیاځلي جوړه شوه"
+      title: t('about.timeline.2005'),
+      description: t('about.timeline.2005Desc')
     },
     {
       year: "2024",
-      title: "د میراث دوام",
-      description: "د اسلامي تعلیماتو او روحاني لارښوونو کې دوامداره خدمت"
+      title: t('about.timeline.2024'),
+      description: t('about.timeline.2024Desc')
     }
   ];
 
@@ -200,29 +205,33 @@ const AboutPage = () => {
           {/* Header Section */}
           <div className="text-center mb-12 sm:mb-16 md:mb-20">
             <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-amber-50 text-amber-700 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-              <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 mr-1.5 sm:mr-2" />
-              د اسلامي تعلیماتو مرکز
+              <BookOpen className={`h-3 w-3 sm:h-4 sm:w-4 ${isRTL ? 'ml-1.5 sm:ml-2' : 'mr-1.5 sm:mr-2'}`} />
+              {t('about.subtitle')}
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight">
-              د <span className="text-amber-600">انوارالعلوم</span> په اړه
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight text-center">
+              {t('about.title')}
             </h1>
             <div className="w-24 sm:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full mb-6 sm:mb-8"></div>
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 max-w-4xl mx-auto leading-relaxed">
-              شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)
+            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 max-w-4xl mx-auto leading-relaxed text-center">
+              {t('about.founderTitle')}
             </h2>
-            <p className="text-base sm:text-lg md:text-xl text-amber-700 font-medium mb-4 sm:mb-6">
-              مشهور (په ارغندي خلیفه صاحب) قدس الله سره
+            <p className="text-base sm:text-lg md:text-xl text-amber-700 font-medium mb-4 sm:mb-6 text-center">
+              {t('about.founderName')}
             </p>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-5xl mx-auto leading-relaxed">
-              د اسلامي تعلیماتو او روحاني رشد مرکز چې د ۱۹۶۳ کال راهیسې د افغانستان په مختلفو سیمو کې د علم او معرفت د پړاوونو خدمت کوي
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-5xl mx-auto leading-relaxed text-center">
+              {t('about.founderDescription')}
             </p>
           </div>
 
           {/* Stats Section with Background Shapes */}
           <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 border border-white/50">
             <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">زموږ د خدمتونو احصائیه</h3>
-              <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">د ۶۳ کلونو د خدمت په ترڅ کې د زموږ د بریاوو لنډه احصائیه</p>
+              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
+                {t('about.stats.title')}
+              </h3>
+              <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto text-center">
+                {t('about.stats.description')}
+              </p>
             </div>
             
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
@@ -231,8 +240,8 @@ const AboutPage = () => {
                   <Clock className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">63+</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium">کلونه خدمت</p>
-                <p className="text-xs text-gray-500 mt-1">د ۱۹۶۳ راهیسې</p>
+                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.years')}</p>
+                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.since1963')}</p>
               </div>
               
               <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
@@ -240,8 +249,8 @@ const AboutPage = () => {
                   <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">700+</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium">فارغان</p>
-                <p className="text-xs text-gray-500 mt-1">د پنځلسو کلونو په ترڅ کې</p>
+                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.graduates')}</p>
+                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.fifteenYears')}</p>
               </div>
               
               <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
@@ -249,8 +258,8 @@ const AboutPage = () => {
                   <Users className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">500-700</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium">د کال شاګردان</p>
-                <p className="text-xs text-gray-500 mt-1">د لیلي شاګردانو شمیر</p>
+                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.students')}</p>
+                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.nightStudents')}</p>
               </div>
               
               <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
@@ -258,9 +267,9 @@ const AboutPage = () => {
                   <Award className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
                 </div>
                 <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">50+</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium">علماء</p>
-                <p className="text-xs text-gray-500 mt-1">د لوړو درجو څښتنان</p>
-                </div>
+                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.scholars')}</p>
+                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.highDegreeHolders')}</p>
+              </div>
               </div>
           </div>
         </div>
@@ -296,11 +305,11 @@ const AboutPage = () => {
                   </div>
                   */}
                 </div>
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3">
-                  شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)
+                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 text-center">
+                  {t('about.biography.introduction')}
                 </h3>
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-amber-700 font-medium mb-3 sm:mb-4">
-                  مشهور (په ارغندي خلیفه صاحب) قدس الله سره
+                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-amber-700 font-medium mb-3 sm:mb-4 text-center">
+                  {t('about.founderName')}
                 </p>
                 <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-amber-500 to-amber-600 mx-auto rounded-full"></div>
               </div>
@@ -308,240 +317,212 @@ const AboutPage = () => {
               <div className="space-y-4 sm:space-y-6 text-gray-700 leading-relaxed">
                 {/* Optionally, add a horizontal image here for more visual */}
                 {/* Introduction */}
-                <div className="p-3 sm:p-4 md:p-6 rounded-lg">
-                  <p className="text-sm sm:text-base md:text-lg font-medium mb-3 sm:mb-4">
-                    <strong className="text-amber-700">انوار المشایخ جناب حضرت مولانا مؤید الدین خلیفه صاحب فضل الدین</strong> مشهور په خلیفه صاحب د ارغندی رحمه الله د افغانستان له نومياليو عالمانو او لویو عارفانو څخه ؤ.
+                <div className="p-3 sm:p-4 md:p-6 rounded-lg text-center">
+                  <p className="text-sm sm:text-base md:text-lg font-medium mb-3 sm:mb-4 text-center">
+                    <strong className="text-amber-700">{t('about.biography.introduction')}</strong>
                   </p>
-                  <p className="text-xs sm:text-sm md:text-base">
-                    پلار یې محمد زرين نومېده چې یو نیک خویه او متقی انسان و. نوموړي تقريبا (۶) کاله د خپل کلي په ښوونځي کې ليک لوست زده کړه. بیا ېې د افغانستان په مختلفو ديني مدارسو کې مروجه دينـي عـلـوم سـرته ورسول د تفسیر د زده کړې دپاره د جناب شیخ الحدیث حضرت مولانا عبدالغفار ننگرهاری نوموړي د شیخ الحدیث حضرت مولانـا نـصـير الـدين غرغشتوی قدس سره شاګرد او د غزني په نورالمدارس مدرسه کې شیخ الحديث ؤ.
+                  <p className="text-xs sm:text-sm md:text-base text-center">
+                    {t('about.biography.father')} {t('about.biography.education')}
                   </p>
                 </div>
 
                 {/* Education Journey */}
-                <div>
-                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
+                <div className="text-center">
+                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center justify-center">
                     <div className="w-1.5 sm:w-2 h-4 sm:h-6 bg-amber-500 rounded-full mr-2 sm:mr-3"></div>
-                    د علمي سفر کیسه
+                    {t('about.biography.educationJourney')}
                   </h4>
-                  <p className="text-xs sm:text-sm md:text-base">
-                    ده ته ورغی او د تفسیر علم یې ترېنه حاصل کړ بیا د حديثو د زده کړې لپاره کابل ته راغی او د شیخ الحدیث حضرت مولانا سلطان جان صاحب نه يي سند او اجازه د حدیثو واخیسته او په ۱۳۳۶هـ.ش کال د قلعـه جـواد کې د حضرت صاحب د مدرسې نه فارغ شو.
+                  <p className="text-xs sm:text-sm md:text-base text-center">
+                    {t('about.biography.educationJourneyDesc')}
                   </p>
                 </div>
 
                 {/* Optionally, add another image between journey */}
                 {/* Spiritual Journey */}
-                <div>
-                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center">
+                <div className="text-center">
+                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center justify-center">
                     <div className="w-1.5 sm:w-2 h-4 sm:h-6 bg-amber-500 rounded-full mr-2 sm:mr-3"></div>
-                    د روحاني سفر کیسه
+                    {t('about.biography.spiritualJourney')}
                   </h4>
-                  <p className="text-xs sm:text-sm md:text-base">
-                    خليفـه صـاحب قدس الله سره د طـالـب علمـی پـه دوران کی د حضرت نورالمشايخ فضل عمر مجددي قدس الله سره سره بيعت وکړ بیا چی کله حضرت نورالمشایخ صاحب نور الله مرقده وفات شو نو د بیعت تجديد يې له حضرت ضياء المشايخ محمد ابراهیم جان مجددی قدس الله سره وکړ او په ۱۳۴۹هـ.ش کال د علم باطن نه فارغ اود سلوک منازل يې سرته ورسول اود جناب حضرت ضياء المشايخ صاحب په مبارکو لاسونو ورته د خلافت دستار وتړل شـو.
+                  <p className="text-xs sm:text-sm md:text-base text-center">
+                    {t('about.biography.spiritualJourneyDesc')}
                   </p>
                 </div>
 
                 {/* First Madrasa Establishment - inset image on side for more visual */}
-                <div className="p-6 rounded-lg flex flex-col lg:flex-row gap-6 items-center">
+                <div className={`p-6 rounded-lg flex flex-col lg:flex-row gap-6 items-center ${isRTL ? 'lg:flex-row-reverse' : ''}`}>
                   <div className="flex-shrink-0">
                     <Image
                       src="/hero1.jpg"
-                      alt="مدرسه ارغندي بنسټ"
+                      alt={t('about.biography.firstMadrasa')}
                       width={176}
                       height={128}
                       className="rounded-xl w-44 h-32 object-cover shadow-lg border border-amber-100"
                     />
                   </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-amber-800 mb-4">د ارغندی مدرسې بنسټ اېښودنه</h4>
-                    <p className="mb-4">
-                      كلـه چې حضرت خلیفه صاحب قدس سره د ظاهري او باطنی علومو څخه فارغ شو نو په تدريس يې شروع وکړه د میدان ولایت د چارکی په مدرسه کې يې څه موده تیره کړه بیاله هغه ځایه د کابل ولایت پغمان ولسوالی برې ارغندۍ د بازید خيلو ته لاړهلته یې په لومړی ځل مدرسه تأسیس کړه:
+                  <div className="text-center">
+                    <h4 className="text-xl font-bold text-amber-800 mb-4 text-center">{t('about.biography.firstMadrasa')}</h4>
+                    <p className="mb-4 text-center">
+                      {t('about.biography.firstMadrasaDesc')}
                     </p>
                     <div className="p-4 rounded-lg text-center mb-4">
-                      <p className="text-xl font-bold text-amber-600 mb-1">٦ / ١ / ١٣٨٣ هـ ق</p>
-                      <p className="text-lg text-gray-600 mb-1">٨ / ٣ / ١٣٤٢ هـ ش</p>
-                      <p className="text-lg text-gray-600">٢٩ / ٥ / ١٩٦٣ م</p>
+                      <p className="text-xl font-bold text-amber-600 mb-1">{t('about.biography.firstMadrasaDate')}</p>
+                      <p className="text-lg text-gray-600 mb-1">{t('about.biography.firstMadrasaDateShamsi')}</p>
+                      <p className="text-lg text-gray-600">{t('about.biography.firstMadrasaDateMiladi')}</p>
                     </div>
-                    <p>
-                      اوهلته يې تقریبا (۳۰) کاله مروجه دینی علوم ، حدیث او تفسیر درس کړل د ليرو لیرو ځایونو څخه به طالبان ورته راتلل او د حديثو د فراغت سند او اجازه بـه یـې ترینه اخیستله د دې ترڅنګ د باطنی علومو طالبانو به يې لاس نیوی کاوه او د سلوک منازل به یې سرته رسول.
+                    <p className="text-center">
+                      {t('about.biography.firstMadrasaTeaching')}
                     </p>
                   </div>
                 </div>
 
                 {/* Migration Period */}
-                <div className="flex flex-col lg:flex-row-reverse gap-6 items-center">
+                <div className={`flex flex-col lg:flex-row-reverse gap-6 items-center ${isRTL ? 'lg:flex-row' : ''}`}>
                   <div className="flex-shrink-0">
                     <Image
                       src="/1.jpg"
-                      alt="هجرت دوره خلیفه صاحب"
+                      alt={t('about.biography.migration')}
                       width={176}
                       height={128}
                       className="rounded-xl w-44 h-32 object-cover shadow-lg border border-gray-100"
                     />
                   </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
+                  <div className="text-center">
+                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center justify-center">
                       <div className="w-2 h-6 bg-amber-500 rounded-full mr-3"></div>
-                      د هجرت دوره
+                      {t('about.biography.migration')}
                     </h4>
-                    <p className="mb-4">
-                      نوموړي د تره کي د حکومت په دوره کې له خپل ګران هیواد څخه هجرت وکړ او د پاکستان په شمالی وزیرستان میرانشاه کې يې استوګنه غوره کړه د هجرت په ټاټوبي کې يې یوه ستره ديني مدرسه د انوار العلوم الاسلامیة په نامه دوهم ځل په میرانشاه کې په کال:
+                    <p className="mb-4 text-center">
+                      {t('about.biography.migrationDesc')}
                     </p>
                     <div className="p-4 rounded-lg text-center mb-4">
-                      <p className="text-lg font-bold text-gray-700 mb-1">٦ / ٩ / ١٤٠٥ هـ ق</p>
-                      <p className="text-base text-gray-600">۴ / ۳ / ۱۳۶۴ هـ ش</p>
+                      <p className="text-lg font-bold text-gray-700 mb-1">{t('about.biography.migrationDate')}</p>
+                      <p className="text-base text-gray-600">{t('about.biography.migrationDateShamsi')}</p>
                     </div>
-                    <p className="mb-4">
-                      جوړه کړه چې په سلګونو طالبانو به په کې ديني علوم زده کول. لنډه دا چې خپـل پـاتـې عـمـر يـې هم د هجرت په کور کې په تدریس ، تبلیغ ، دعوت ، ارشاد او د طريقې په تلقین کې تیر کړ. ډير زیات شمیر مسلمانان د ده له برکته د معنوی فیوضاتو څخه برخمن شول.
+                    <p className="mb-4 text-center">
+                      {t('about.biography.migrationTeaching')}
                     </p>
-                    <p className="mb-4">
-                      خليفـه صـاحب د صـوري او معنـوي فضايلو او کمالاتو خاوند و. په صرف ، نحو ، منطق ، ادب ، اصولو ، حدیثو ، تفسیر ، کلام او فقه کې د خپلی زمانې پیاوړی او برلاسی عالم و او زیات شمیر شاگردان یې درلودل په طریقت او معرفت کې د خپلې زمانې بزرگ. د خدای پیژندني په ډیرو اسرارو او رموزو پوه او پرهیز ګاره شخصیت و زیات شمیر مریدان او شاگردان پرې راټول ؤ.
-            </p>
-          </div>
+                    <p className="mb-4 text-center">
+                      {t('about.biography.migrationLegacy')}
+                    </p>
+                  </div>
                 </div>
 
                 {/* Death and Legacy */}
-                <div className="p-6 rounded-lg flex flex-col md:flex-row items-center gap-6">
+                <div className={`p-6 rounded-lg flex flex-col md:flex-row items-center gap-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
                   <div className="flex-shrink-0">
                     <Image
                       src="/about2.jpg"
-                      alt="خلیفه صاحب په وروستیو کلونو کې"
+                      alt={t('about.biography.death')}
                       width={128}
                       height={128}
                       className="rounded-xl w-32 h-32 object-cover shadow-md border border-gray-200"
                     />
-              </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-gray-900 mb-4">د وفات او میراث</h4>
-                    <p className="mb-4">
-                      حضرت انوار المشائخ خلیفه صاحب ارغندي قدس الله سره، تـه پـه وروستيو کالو کې سخته مريضي ور پېښه شوه او د هماغې مريضي نـه پـه ۱۹۹۵م كـال وفـات شـو او د میرانشاه د شهیدانو په هدیره کې خاورو ته وسپارل شو.
+                  </div>
+                  <div className="text-center">
+                    <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.death')}</h4>
+                    <p className="mb-4 text-center">
+                      {t('about.biography.deathDesc')}
                     </p>
-                    <p className="mb-4">
-                      وايي چې د ده په جنازه کې په زرګونو مسلمانانو شرکت کړی ؤ چې زياتره يـې عالمان او دينې طالبان ؤ د ده څخه وروسـتـه جنـاب تاج المشائخ خلیفه سـدوزی غریقي صـاحب د ده پـه ځـای کیناست او د ظاهري او باطني علومـو ښـوونه اوروزنه یې طالبانو ته کوله.
+                    <p className="mb-4 text-center">
+                      {t('about.biography.funeral')}
                     </p>
-                    <p className="italic text-gray-600">
-                      تاج المشائخ رحمه الله به ویل چې د ده د مرګ په ورځ یو شخص خوب لیدلی ؤ چې خليفه صاحب ورته وايي: "طالبانه ، مخلصانه ، عاشقانه میرویم - د ده روح دې تر قيـامـتـه ښـاد وي او د ده فيض دې جـاري وي."
+                    <p className="italic text-gray-600 text-center">
+                      {t('about.biography.dream')}
                     </p>
                   </div>
                 </div>
 
                 {/* Family */}
-                <div>
-                  <h4 className="text-xl font-bold text-gray-900 mb-4">د کورنۍ پېژندنه</h4>
-              <div className="space-y-4">
+                <div className="text-center">
+                  <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.family')}</h4>
+                  <div className="space-y-4">
                     <div>
-                      <h5 className="font-bold text-gray-800 mb-2">دوه وروڼه:</h5>
-                      <p>• محترم احمدزی - ښو اخلاقوڅښتن اومتقی شخص</p>
-                      <p>• جناب تاج المشائخ خلیفه صاحب سدوزی غریقي رحمه الله - د وخت جید عالم، مدرس، پیاوړۍ مجاهد او لـوی عـارف</p>
+                      <h5 className="font-bold text-gray-800 mb-2 text-center">{t('about.biography.twoBrothers')}</h5>
+                      <p className="text-center">{t('about.biography.brother1')}</p>
+                      <p className="text-center">{t('about.biography.brother2')}</p>
                     </div>
                     <div>
-                      <h5 className="font-bold text-gray-800 mb-2">پنځه زامن:</h5>
+                      <h5 className="font-bold text-gray-800 mb-2 text-center">{t('about.biography.fiveSons')}</h5>
                       <div className="space-y-2 text-sm">
-                        <p>• <strong>جناب الحاج قاری صاحب عبدالعلیم فضلي</strong> - د ښواخلاقو څښتن اوزړه سواند شخصیت</p>
-                        <p>• <strong>جناب الحاج خلیفه صاحب نعمت الله فضلي</strong> - د قوي عزم خاوند، د تصوف او سلوک په ډګر کې د جناب قطب المشائخ لخوا ورته د خلافت دستار ور په سر کړل شو</p>
-                        <p>• <strong>انجینر رحمت الله فضلي</strong> - دحلم او زغم نمونه</p>
-                        <p>• <strong>جناب قلب المشائخ الحاج خلیفه صاحب محمدشفیق فضلي</strong> - دام الله حیاته وفیوضاته جید عالم او کامل متبع د شریعت</p>
+                        <p className="text-center">• <strong>{t('about.biography.son1')}</strong></p>
+                        <p className="text-center">• <strong>{t('about.biography.son2')}</strong></p>
+                        <p className="text-center">• <strong>{t('about.biography.son3')}</strong></p>
+                        <p className="text-center">• <strong>{t('about.biography.son4')}</strong></p>
                       </div>
                     </div>
                   </div>
-                    </div>
+                </div>
 
                 {/* Famous Khalifas */}
-                <div className="p-6 rounded-lg">
-                  <h4 className="text-xl font-bold text-gray-900 mb-4">د مشهورو خلیفه ګانو نوملړ</h4>
+                <div className="p-6 rounded-lg text-center">
+                  <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.famousKhalifas')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    {[
-                      "سراج المشائخ خلیفه صاحب احمد ضیا قدس الله سره - میدان وردګو ولایت جغتو ولسوالی",
-                      "قطب المشائخ خلیفه صاحب دین محمد قدس الله - پکتیا ولایت زرمت ولسوالی",
-                      "جناب أبو الحسن خليفـه صـاحب مشهور په صوفي صاحب - لوګر ولایت",
-                      "جناب عبد الستار خلیفه صاحب - د وخت جـيـد عـالـم او لوی روحاني شخصیت - لوګر ولایت",
-                      "جناب عبد الرشيد خليفه صاحب - لوګر ولایت",
-                      "جناب ملا كل خلیفه صاحب - لوګر ولایت",
-                      "جناب نعمت الله خلیفه صاحب - لوګر ولایت",
-                      "جناب عثمان غنی خلیفه صاحب - اصلا دغزنی ولایت اندړو ولسوالی، فعلاً دپکتیکا ولایت نکه ولسوالی"
-                    ].map((khalifa, index) => (
-                      <div key={index} className="flex items-start space-x-2">
+                    {(t('about.biography.famousKhalifasList', { returnObjects: true }) as string[]).map((khalifa: string, index: number) => (
+                      <div key={index} className="flex items-start justify-center space-x-2">
                         <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-gray-700">{khalifa}</span>
+                        <span className="text-gray-700 text-center">{khalifa}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
                 {/* Successor Khalifas */}
-                <div className="p-6 rounded-lg">
-                  <h4 className="text-xl font-bold text-gray-900 mb-4">د ځای ناستو خلیفه ګانو نوملړ</h4>
+                <div className="p-6 rounded-lg text-center">
+                  <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.successorKhalifas')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                    {[
-                      "تاج المشائخ خلیفه صاحب سدوزی غریقي رحمه الله",
-                      "جناب خلیفه صاحب نعمت الله فضلي حفظه الله",
-                      "شمس المشائخ خلیفه صاحب دین محمد حفظه الله",
-                      "نجم المشائخ خلیفه صاحب داد محمد نوري حفظه الله",
-                      "روح المشائخ خلیفه صاحب عبدالحی فقیرالله حفظه الله",
-                      "قطب المشائخ خلیفه صاحب محمد انور ابو زبېرحفظه الله",
-                      "محب المشائخ خلیفه صاحب محمد معراج روحاني رحمه الله",
-                      "جناب خلیفه صاحب محمد عباس حفظه الله",
-                      "فخر المشائخ جناب خلیفه صاحب محمد اکرم خادم حفظه الله",
-                      "جناب خلیفه صاحب محمد هاشم حفظه الله",
-                      "جناب خلیفه صاحب عزت الله حفظه الله",
-                      "جناب خلیفه صاحب عاشق الرحمن حفظه الله",
-                      "جناب خلیفه صاحب اسماعیل جان حفظه الله",
-                      "جناب خلیفه صاحب سید محمد حفظه الله",
-                      "جناب خلیفه صاحب بهادر رحمه الله",
-                      "جناب خلیفه صاحب فهیم حفظه الله",
-                      "جناب خلیفه صاحب حمید الله حفظه الله",
-                      "جناب خلیفه صاحب رسول محمد حفظه الله",
-                      "جناب خلیفه صاحب وزیر حفظه الله"
-                    ].map((successor, index) => (
-                      <div key={index} className="flex items-start space-x-2">
+                    {(t('about.biography.successorKhalifasList', { returnObjects: true }) as string[]).map((successor: string, index: number) => (
+                      <div key={index} className="flex items-start justify-center space-x-2">
                         <span className="text-amber-600 font-bold text-xs mt-1">{index + 1}.</span>
-                        <span className="text-gray-700">{successor}</span>
+                        <span className="text-gray-700 text-center">{successor}</span>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
                 {/* Re-establishment */}
-                <div className="p-6 rounded-lg flex flex-col md:flex-row gap-6 items-center">
+                <div className={`p-6 rounded-lg flex flex-col md:flex-row gap-6 items-center ${isRTL ? 'md:flex-row-reverse' : ''}`}>
                   <div className="flex-shrink-0">
                     <Image
                       src="/about3.jpg"
-                      alt="د مدرسې بیا ځلي بنسټ اېښودنه"
+                      alt={t('about.biography.reestablishment')}
                       width={144}
                       height={96}
                       className="rounded-xl w-36 h-24 object-cover shadow-md border border-amber-100"
                     />
-          </div>
-                  <div>
-                    <h4 className="text-xl font-bold text-amber-800 mb-4">د مدرسې بیاځلي بنسټ اېښودنه</h4>
-                    <p className="mb-4">
-                      دجناب ارغندی خلیفه صاحب کورنی دهجرت له دیارڅخه چې کله بېرته راستنه شوه نو په دوهم ځل یې دکابل پغمان ارغندی بازید خېل سیمه کې دمدرسې بنیاد دجناب تاج المشائخ خلیفه صاحب سدوزی غریقی. او دارغندی خلیفه صاحب د زامنو، علماءو او دمخورو په لاس په تاریخ:
+                  </div>
+                  <div className="text-center">
+                    <h4 className="text-xl font-bold text-amber-800 mb-4 text-center">{t('about.biography.reestablishment')}</h4>
+                    <p className="mb-4 text-center">
+                      {t('about.biography.reestablishmentDesc')}
                     </p>
                     <div className="p-4 rounded-lg text-center mb-4">
-                      <p className="text-xl font-bold text-amber-600 mb-1">۱۷ / ٦ / ١٤٢٦ هـ ق</p>
-                      <p className="text-lg text-gray-600">۱ / ۵ / ١٣٨۴ هـ ش</p>
-          </div>
+                      <p className="text-xl font-bold text-amber-600 mb-1">{t('about.biography.reestablishmentDate')}</p>
+                      <p className="text-lg text-gray-600 mb-1">{t('about.biography.reestablishmentDateShamsi')}</p>
+                      <p className="text-lg text-gray-600">{t('about.biography.reestablishmentDateMiladi')}</p>
+                    </div>
                     <p className="text-center font-medium text-amber-800">
-                      کې ښود ل شو. او لله الحمد چې په علمی او روحانی ډګر کې یې خدمات تراوسه لاجاری دی، الله ج دې ترقیامته پورې دا پور نوره روانه بېړی. روانه لری
-              </p>
-            </div>
-              </div>
+                      {t('about.biography.reestablishmentPrayer')}
+                    </p>
+                  </div>
+                </div>
             </div>
           </div>
 
             {/* Enhanced Academic Services with Slider */}
             <div className="rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
-              <div className="flex items-center mb-4 sm:mb-6">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mr-3 sm:mr-4">
+              <div className={`flex items-center mb-4 sm:mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center ${isRTL ? 'ml-3 sm:ml-4' : 'mr-3 sm:mr-4'}`}>
                   <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900">د جامعې علمي خدمتونه</h3>
-                  <p className="text-sm sm:text-base text-blue-600 font-medium">د اسلامي او عصري علومو د تدریس مرکز</p>
+                <div className={isRTL ? 'text-right' : 'text-left'}>
+                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.academicServices')}</h3>
+                  <p className={`text-sm sm:text-base text-blue-600 font-medium ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.academicServicesDesc')}</p>
                 </div>
               </div>
               
-              <p className="text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed">
-                په نوموړې مدرسه کې د ديني او عصري علومو تدریس په منظم ډول تر سره کېږي، چې مهمې څانګې یې دا دي:
+              <p className={`text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
+                {t('about.biography.subjectsDescription')}
               </p>
               
               {/* Slick Slider */}
@@ -564,85 +545,76 @@ const AboutPage = () => {
               </div>
 
               <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 mt-4 sm:mt-6">
-                <p className="text-center text-xs sm:text-sm text-gray-600 italic">
-                  <span className="font-bold text-blue-600">دغه علوم په درجوي (صنفي) او متفرقه ډول تدریس کېږي.</span>
+                <p className={`text-center text-xs sm:text-sm text-gray-600 italic ${isRTL ? 'text-right' : 'text-left'}`}>
+                  <span className="font-bold text-blue-600">{t('about.biography.subjectsNote')}</span>
                 </p>
               </div>
             </div>
 
             {/* Enhanced Teachers Section */}
             <div className="rounded-2xl p-8">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center mr-4">
+              <div className={`flex items-center mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <div className={`w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4'}`}>
                   <Users className="h-6 w-6 text-white" />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900">د جامعې مشایخ او استادان</h3>
-                  <p className="text-green-600 font-medium">د لوړو علمي درجو څښتنان</p>
-        </div>
-          </div>
+                <div className={isRTL ? 'text-right' : 'text-left'}>
+                  <h3 className={`text-2xl font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.teachers')}</h3>
+                  <p className={`text-green-600 font-medium ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.teachersDesc')}</p>
+                </div>
+              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {[
-                  { name: "خلیفه صاحب محمد شفیق فضلي", title: "حفظه‌الله", type: "خلیفه" },
-                  { name: "مفتي صاحب محمد حسن حسان", title: "حفظه‌الله", type: "مفتي" },
-                  { name: "مفتي صاحب سیف الرحمن سعید", title: "حفظه‌الله", type: "مفتي" },
-                  { name: "الحاج مولوي محمد پزیر فاروقي", title: "حفظه‌الله", type: "مولوي" },
-                  { name: "مولوي صاحب محب‌الله", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب شفیق الرحمن اخوند زاده", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب احمد نبي", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب صادق سکندر", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب طاهر بلال", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب رفیع‌الله ابوالسیف", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب محمد شریف عمر فضلي", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب ضیاءالله عمري", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب سمیع‌الله فهام", title: "", type: "مولوي" },
-                  { name: "مولوي صاحب سمیع‌الله راشد", title: "", type: "مولوي" },
-                  { name: "قاري صاحب محمد میرویس تحسین", title: "", type: "قاري" },
-                  { name: "حافظ صاحب رحمن‌الله قائد", title: "", type: "حافظ" },
-                  { name: "حافظ صاحب صدیق‌الله", title: "", type: "حافظ" }
-                ].map((teacher, index) => (
-                  <div key={index} className="bg-white rounded-xl p-4 hover:bg-gray-50 transition-all duration-300">
-                    <div className="flex items-start space-x-3">
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                        teacher.type === 'خلیفه' ? 'bg-amber-500' :
-                        teacher.type === 'مفتي' ? 'bg-blue-500' :
-                        teacher.type === 'مولوي' ? 'bg-green-500' :
-                        teacher.type === 'قاري' ? 'bg-purple-500' :
-                        'bg-gray-500'
-                      }`}>
-                        <span className="text-white text-sm font-bold">
-                          {teacher.type === 'خلیفه' ? 'خ' :
-                           teacher.type === 'مفتي' ? 'م' :
-                           teacher.type === 'مولوي' ? 'م' :
-                           teacher.type === 'قاري' ? 'ق' :
-                           'ح'}
-                        </span>
-                </div>
-                      <div className="flex-1 min-w-0">
-                        <h4 className="font-bold text-sm text-gray-800 leading-tight">
-                          {teacher.name}
-                </h4>
-                        {teacher.title && (
-                          <p className="text-xs text-green-600 font-medium mt-1">
-                            {teacher.title}
-                          </p>
-                        )}
-                        <div className="mt-2">
-                          <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                            teacher.type === 'خلیفه' ? 'bg-amber-100 text-amber-700' :
-                            teacher.type === 'مفتي' ? 'bg-blue-100 text-blue-700' :
-                            teacher.type === 'مولوي' ? 'bg-green-100 text-green-700' :
-                            teacher.type === 'قاري' ? 'bg-purple-100 text-purple-700' :
-                            'bg-gray-100 text-gray-700'
-                          }`}>
-                            {teacher.type}
+                {t('about.biography.teachersList', { returnObjects: true }).map((teacher: string, index: number) => {
+                  const teacherData = teacher.split(' - ');
+                  const name = teacherData[0];
+                  const title = teacherData[1] || '';
+                  const type = name.includes('خلیفه') ? 'خلیفه' : 
+                             name.includes('مفتي') ? 'مفتي' : 
+                             name.includes('مولوي') ? 'مولوي' : 
+                             name.includes('قاري') ? 'قاري' : 'حافظ';
+                  return (
+                    <div key={index} className="bg-white rounded-xl p-4 hover:bg-gray-50 transition-all duration-300">
+                      <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} space-x-3`}>
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
+                          type === 'خلیفه' ? 'bg-amber-500' :
+                          type === 'مفتي' ? 'bg-blue-500' :
+                          type === 'مولوي' ? 'bg-green-500' :
+                          type === 'قاري' ? 'bg-purple-500' :
+                          'bg-gray-500'
+                        }`}>
+                          <span className="text-white text-sm font-bold">
+                            {type === 'خلیفه' ? 'خ' :
+                             type === 'مفتي' ? 'م' :
+                             type === 'مولوي' ? 'م' :
+                             type === 'قاري' ? 'ق' :
+                             'ح'}
                           </span>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <h4 className={`font-bold text-sm text-gray-800 leading-tight ${isRTL ? 'text-right' : 'text-left'}`}>
+                            {name}
+                          </h4>
+                          {title && (
+                            <p className={`text-xs text-green-600 font-medium mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
+                              {title}
+                            </p>
+                          )}
+                          <div className="mt-2">
+                            <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
+                              type === 'خلیفه' ? 'bg-amber-100 text-amber-700' :
+                              type === 'مفتي' ? 'bg-blue-100 text-blue-700' :
+                              type === 'مولوي' ? 'bg-green-100 text-green-700' :
+                              type === 'قاري' ? 'bg-purple-100 text-purple-700' :
+                              'bg-gray-100 text-gray-700'
+                            }`}>
+                              {type}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
-              </div>
-            ))}
+                  );
+                })}
               </div>
             </div>
 

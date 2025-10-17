@@ -43,8 +43,8 @@ export default function TraditionalContentSection({
   articles = [], 
   fatwas = [], 
   showAll = false, 
-  title = "جامعة العلوم الإسلامية",
-  subtitle = "دار الافتاء"
+  title = "Islamic University",
+  subtitle = "Fatwa Department"
 }: TraditionalContentSectionProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");

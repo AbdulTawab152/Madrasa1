@@ -1,9 +1,17 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart } from "lucide-react";
+import { useTranslation } from '@/hooks/useTranslation';
+import { getLanguageDirection } from '@/lib/i18n';
 
-const Footer = () => (
+const Footer = () => {
+  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+
+  return (
   <footer className="bg-gradient-to-br mt-10 from-orange-50 to-amber-50 pt-16 pb-8">
     <div className="max-w-7xl mx-auto px-6">
       {/* Main Footer Content */}
@@ -20,12 +28,12 @@ const Footer = () => (
               style={{ width: "auto", height: "auto" }}
             />
             <div>
-              <h3 className="text-xl font-bold text-gray-900">Madrasa</h3>
-              <p className="text-sm text-gray-600">Knowledge for Everyone</p>
+              <h3 className="text-xl font-bold text-gray-900">{t('footer.brandName')}</h3>
+              <p className="text-sm text-gray-600">{t('footer.tagline')}</p>
             </div>
           </div>
           <p className="text-gray-600 text-sm">
-            Dedicated to spreading knowledge and guidance through quality education and community service.
+            {t('footer.description')}
           </p>
           <div className="flex gap-3">
             <button className="p-2 bg-orange-100 text-orange-600 rounded-lg hover:bg-orange-500 hover:text-white transition-colors">
@@ -45,7 +53,7 @@ const Footer = () => (
 
         {/* Quick Links */}
         <div className="space-y-4">
-  <h4 className="text-lg font-semibold text-gray-900">Quick Links</h4>
+          <h4 className="text-lg font-semibold text-gray-900">{t('footer.quickLinks')}</h4>
   <ul className="grid  grid-cols-2 gap-2">
     <li>
       <Link href="/blogs" className="text-gray-600 hover:text-orange-600 transition-colors">
@@ -98,7 +106,7 @@ const Footer = () => (
 
         {/* Contact Info */}
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-gray-900">Contact Info</h4>
+          <h4 className="text-lg font-semibold text-gray-900">{t('footer.contactInfo')}</h4>
           <ul className="space-y-3">
             <li className="flex items-center gap-2 text-gray-600">
               <MapPin className="h-4 w-4 text-orange-500" />
@@ -117,21 +125,21 @@ const Footer = () => (
 
         {/* Newsletter */}
         <div className="space-y-4">
-          <h4 className="text-lg font-semibold text-gray-900">Newsletter</h4>
+          <h4 className="text-lg font-semibold text-gray-900">{t('footer.newsletter')}</h4>
           <p className="text-gray-600 text-sm">
-            Subscribe for updates and announcements.
+            {t('footer.newsletterDesc')}
           </p>
           <form className="space-y-3">
             <input 
               type="email" 
-              placeholder="Enter your email" 
+              placeholder={t('footer.emailPlaceholder')} 
               className="w-full px-3 py-2 bg-white border border-orange-200 rounded-lg text-gray-800 placeholder-gray-500 focus:outline-none focus:border-orange-400"
             />
             <button 
               type="submit" 
               className="w-full px-4 py-2 bg-orange-500 text-white font-medium rounded-lg hover:bg-orange-600 transition-colors"
             >
-              Subscribe
+{t('footer.subscribe')}
             </button>
           </form>
         </div>
@@ -141,17 +149,18 @@ const Footer = () => (
       <div className="border-t border-orange-200 pt-6">
         <div className="flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2 text-gray-600">
-            <span className="text-sm">&copy; {new Date().getFullYear()} Madrasa. All rights reserved.</span>
+            <span className="text-sm">&copy; {new Date().getFullYear()} {t('footer.copyright')}</span>
             <Heart className="h-4 w-4 text-orange-500" />
           </div>
           <div className="flex items-center gap-6 text-sm text-gray-600">
-            <button className="hover:text-orange-600 transition-colors">Privacy Policy</button>
-            <button className="hover:text-orange-600 transition-colors">Terms of Service</button>
+            <button className="hover:text-orange-600 transition-colors">{t('footer.privacyPolicy')}</button>
+            <button className="hover:text-orange-600 transition-colors">{t('footer.termsOfService')}</button>
           </div>
         </div>
       </div>
     </div>
   </footer>
-);
+  );
+};
 
 export default Footer;

@@ -5,9 +5,12 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { PiList } from "react-icons/pi";
+import { useTranslation } from '@/hooks/useTranslation';
+import { getLanguageDirection } from '@/lib/i18n';
 
 import { appConfig, navigation } from "@/lib/config";
 import RouteProgressBar from "@/components/RouteProgressBar";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Suspense } from "react";
 import { FaListAlt } from "react-icons/fa";
 
@@ -15,9 +18,12 @@ const PRIMARY_LINK_LIMIT = 7;
 
 const Navbar = memo(function Navbar() {
   const pathname = usePathname();
+  const { t, i18n } = useTranslation('common', { useSuspense: false });
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  
+  const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
 
   useEffect(() => {
     const handleScroll = () => setHasScrolled(window.scrollY > 10);
@@ -68,12 +74,18 @@ const Navbar = memo(function Navbar() {
   }, []);
 
   const primaryLinks = useMemo(
-    () => navigation.main.slice(0, PRIMARY_LINK_LIMIT),
-    []
+    () => navigation.main.slice(0, PRIMARY_LINK_LIMIT).map(link => ({
+      ...link,
+      name: t(`navbar.${link.name.toLowerCase()}`)
+    })),
+    [t]
   );
   const secondaryLinks = useMemo(
-    () => navigation.main.slice(PRIMARY_LINK_LIMIT),
-    []
+    () => navigation.main.slice(PRIMARY_LINK_LIMIT).map(link => ({
+      ...link,
+      name: t(`navbar.${link.name.toLowerCase()}`)
+    })),
+    [t]
   );
 
   const toggleMobileMenu = useCallback(() => {
@@ -94,8 +106,8 @@ const Navbar = memo(function Navbar() {
         <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
         <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-secondary-400/30 blur-2xl" aria-hidden="true" />
         <div className="max-w-screen-xl relative mx-auto px-4 py-2 md:py-4">
-          <div className="hidden md:flex items-center justify-between text-sm text-primary-50/90">
-            <span>{desktop}</span>
+          <div className={`hidden md:flex items-center justify-between text-sm text-primary-50/90 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <span className={isRTL ? 'text-right' : 'text-left'}>{desktop}</span>
             <span className="arabic text-xl font-bold tracking-widest text-secondary-100 drop-shadow-sm">
               بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
             </span>
@@ -130,12 +142,12 @@ const Navbar = memo(function Navbar() {
         aria-label="Primary"
       >
         <div className="max-w-screen-xl mx-auto px-4 lg:px-6 py-2">
-          <div className="flex items-center justify-between gap-4">
+          <div className={`flex items-center justify-between gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <Link
               href="/"
-              className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200"
+              className={`flex items-center gap-3 hover:opacity-80 transition-opacity duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
             >
-              <div className="flex items-center gap-3">
+              <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 <div className="relative w-12 h-12 sm:w-14 sm:h-14">
                   <Image
                     src="/logo.png"
@@ -148,32 +160,34 @@ const Navbar = memo(function Navbar() {
                 </div>
               
               </div>
-              <div className="">
+              <div className={isRTL ? 'text-right' : 'text-left'}>
                 <div className="text-lg font-bold text-primary-900">
                   {appConfig.name}
                 </div>
                 <div className="text-xs text-primary-600 font-medium">
-                  Islamic Learning Platform
+                  {t('navbar.islamicLearningPlatform')}
                 </div>
               </div>
             </Link>
 
             <div className="hidden lg:flex py-3 items-center justify-center flex-1">
-              <ul className="flex items-center gap-6">
+              <ul className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 {primaryLinks.map(({ href, name }) => {
                   const isActive = pathname === href;
                   return (
                     <li key={href} className="group relative">
                       <Link
                         href={href}
-                        className={`font-medium text-[13px] uppercase tracking-wide transition-colors duration-200 py-2  text-primary-800  outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                        className={`font-medium text-[13px] uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
                           isActive ? "text-primary-600" : ""
-                        }`}
+                        } ${isRTL ? 'text-right' : 'text-left'}`}
                       >
                         {name}
                       </Link>
                       <span
-                        className={`absolute -bottom-1 left-0 h-0.5 w-full rounded-full bg-secondary-500 transition-opacity duration-200 ${
+                        className={`absolute -bottom-1 h-0.5 w-full rounded-full bg-secondary-500 transition-opacity duration-200 ${
+                          isRTL ? 'right-0' : 'left-0'
+                        } ${
                           isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                         }`}
                         aria-hidden="true"
@@ -191,7 +205,7 @@ const Navbar = memo(function Navbar() {
                       aria-haspopup="true"
                       aria-expanded={isMoreMenuOpen}
                     >
-                      More
+                      {t('navbar.more')}
                       <svg
                         className={`h-4 w-4 transition-transform ${
                           isMoreMenuOpen ? "rotate-180" : ""
@@ -208,7 +222,9 @@ const Navbar = memo(function Navbar() {
                       </svg>
                     </button>
                 <div
-                  className={`absolute left-1/2 top-full mt-3 w-56 -translate-x-1/2 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
+                  className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
+                    isRTL ? 'right-0' : 'left-1/2 -translate-x-1/2'
+                  } ${
                     isMoreMenuOpen
                       ? "visible opacity-100"
                       : "invisible -translate-y-2 opacity-0"
@@ -224,6 +240,8 @@ const Navbar = memo(function Navbar() {
                             href={href}
                             onClick={closeMoreMenu}
                             className={`block px-4 py-3 uppercase text-xs transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
+                              isRTL ? 'text-right' : 'text-left'
+                            } ${
                               isActive
                                 ? "bg-primary-50 font-semibold text-primary-700"
                                 : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
@@ -241,15 +259,18 @@ const Navbar = memo(function Navbar() {
               </ul>
             </div>
 
-            <button
-              type="button"
-              onClick={toggleMobileMenu}
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 hover:bg-primary-100 border border-primary-200 shadow-sm transition-colors duration-200 lg:hidden"
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMobileMenuOpen}
-            >
-              <PiList size={22} className="text-primary-700" />
-            </button>
+            <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <LanguageSwitcher />
+              <button
+                type="button"
+                onClick={toggleMobileMenu}
+                className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 hover:bg-primary-100 border border-primary-200 shadow-sm transition-colors duration-200 lg:hidden"
+                aria-label="Toggle navigation menu"
+                aria-expanded={isMobileMenuOpen}
+              >
+                <PiList size={22} className="text-primary-700" />
+              </button>
+            </div>
           </div>
         </div>
         <Suspense fallback={null}>
@@ -266,13 +287,15 @@ const Navbar = memo(function Navbar() {
       />
 
       <aside
-        className={`lg:hidden fixed inset-y-0 left-0 z-50 w-4/5 max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
-          isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
+        className={`lg:hidden fixed inset-y-0 z-50 w-4/5 max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
+          isRTL 
+            ? (isMobileMenuOpen ? "translate-x-0" : "translate-x-full") 
+            : (isMobileMenuOpen ? "translate-x-0" : "-translate-x-full")
+        } ${isRTL ? 'right-0' : 'left-0'}`}
         aria-label="Mobile navigation"
       >
-        <div className="flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100">
-          <div className="flex items-center gap-3">
+        <div className={`flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
             <div className="relative w-10 h-10">
               <Image
                 src="/logo.png"
@@ -283,7 +306,7 @@ const Navbar = memo(function Navbar() {
                 priority
               />
             </div>
-            <span className="text-lg font-semibold text-primary-900 tracking-wide">{appConfig.name}</span>
+            <span className={`text-lg font-semibold text-primary-900 tracking-wide ${isRTL ? 'text-right' : 'text-left'}`}>{appConfig.name}</span>
           </div>
           <button
             type="button"
@@ -351,7 +374,7 @@ const Navbar = memo(function Navbar() {
                         d="M4 6h16M4 12h16m-7 6h7"
                       />
                     </svg>
-                    More options
+                    {t('navbar.moreOptions')}
                   </span>
                   <svg
                     className={`h-4 w-4 text-primary-500 transition-transform ${

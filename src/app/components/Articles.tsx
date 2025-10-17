@@ -86,8 +86,8 @@ export default async function ArticlesPreview({ limit }: ArticlesPreviewProps) {
     <TraditionalContentSection 
       articles={displayArticles}
       showAll={!limit}
-      title="جامعة العلوم الإسلامية"
-      subtitle="دار الافتاء"
+      title="Islamic University"
+      subtitle="Fatwa Department"
     />
   );
 }

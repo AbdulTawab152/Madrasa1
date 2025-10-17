@@ -38,8 +38,8 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
   return (
     <>
       <IslamicHeader
-        title="دار الافتاء"
-        subtitle="جامعة العلوم الإسلامية - استفسر عن المسائل الشرعية والحصول على الفتاوى من علمائنا"
+        title="Fatwa Department"
+        subtitle="Islamic University - Ask about Islamic matters and get fatwas from our scholars"
         pageType="iftah"
         theme="slate"
         alignment="center"
@@ -47,8 +47,8 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
       <TraditionalContentSection 
         fatwas={displayFatwas}
         showAll={showAll}
-        title="جامعة العلوم الإسلامية"
-        subtitle="دار الافتاء"
+        title="Islamic University"
+        subtitle="Fatwa Department"
       />
       {/* <IftahQuestionForm /> */}
     </>

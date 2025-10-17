@@ -9,6 +9,8 @@ import { Event } from "../../../lib/types";
 import { FaSearchLocation, FaTimes } from "react-icons/fa";
 import { FaBuildingCircleExclamation, FaClock, FaTimeline } from "react-icons/fa6";
 import { Card, CardBadge, CardContent, CardFooter, CardMedia } from "../Card";
+import { useTranslation } from "@/hooks/useTranslation";
+import { getLanguageDirection } from "@/lib/i18n";
 
 interface EventsSectionProps {
   events: Event[];
@@ -43,6 +45,9 @@ export default function EventsSection({
   heroTitle = "Our Events",
   heroSubtitle = "Join our community gatherings and experiences",
 }: EventsSectionProps) {
+  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+  
   const sortedEvents =
     events
       ?.filter((event) => event.created_at)
@@ -78,18 +83,18 @@ export default function EventsSection({
               <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight ">
                 <span className="relative z-10">
                   <span className="px-2 py-1 rounded-lg">
-                    Discover Our
+                    {t('events.discoverOur')}
                   </span>
                 </span>
                 <span className="relative mt-3 z-10">
                   <span className="bg-gradient-to-r from-amber-500 via-orange-400 to-orange-600 bg-clip-text text-transparent  text-4xl md:text-6xl font-black tracking-tight">
-                    Events
+                    {t('events.events')}
                   </span>
                   <span className="absolute left-1/2 -translate-x-1/2 top-1/2 -z-10 w-40 h-10 bg-orange-100 rounded-full blur-2xl opacity-60"></span>
                 </span>
               </h2>
               <p className="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
-                Join our vibrant community gatherings, lectures, and special experiences.
+                {t('events.description')}
               </p>
             </motion.div>
           )}
@@ -103,18 +108,18 @@ export default function EventsSection({
               getImageUrl(event.image, fallbackEventImage) ?? fallbackEventImage;
             const eventDate = formatEventDate(event.created_at);
             const location =
-              event.address || event.branch_name || event.country || "Location coming soon";
+              event.address || event.branch_name || event.country || t('events.locationComingSoon');
 
             const liveLabel = (() => {
               switch (event.live_link_type) {
                 case "facebook":
-                  return "Facebook Live";
+                  return t('events.facebookLive');
                 case "youtube":
-                  return "YouTube Live";
+                  return t('events.youtubeLive');
                 case "zoom":
-                  return "Zoom Meeting";
+                  return t('events.zoomMeeting');
                 default:
-                  return "Join live";
+                  return t('events.joinLive');
               }
             })();
 
@@ -143,7 +148,7 @@ export default function EventsSection({
                       />
 
                       <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
-                        Community Event
+                        {t('events.communityEvent')}
                       </CardBadge>
                       {event.branch_name ? (
                         <CardBadge className="absolute bottom-4 right-4 bg-primary-600 text-white">
@@ -176,7 +181,7 @@ export default function EventsSection({
 
                         <span className="inline-flex items-center gap-2">
                           <Clock className="h-4 w-4 text-primary-500" />
-                          <span>{event.duration || "Flexible"}</span>
+                          <span>{event.duration || t('events.flexible')}</span>
                         </span>
 
                         {event.contact ? (
@@ -197,7 +202,7 @@ export default function EventsSection({
                       <CardFooter>
                         <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-700">
                           <Users className="h-4 w-4 text-primary-500" />
-                          Organized by Haq Madrasa
+                          {t('events.organizedBy')}
                         </span>
 
                         <div className="flex flex-wrap items-center gap-2">
@@ -208,7 +213,7 @@ export default function EventsSection({
                               rel="noreferrer"
                               className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600"
                             >
-                              Join live
+                              {t('events.joinLive')}
                               <ArrowRight className="h-4 w-4" />
                             </a>
                           ) : null}
@@ -218,7 +223,7 @@ export default function EventsSection({
                             className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-5 py-2 text-sm font-semibold text-white shadow-md hover:from-primary-700 hover:to-amber-500 hover:scale-105 transition-all duration-200 border border-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
                             style={{ minWidth: 0 }}
                           >
-                            <span className="whitespace-nowrap">Event Details</span>
+                            <span className="whitespace-nowrap">{t('events.eventDetails')}</span>
                             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </Link>
                         </div>
@@ -236,7 +241,7 @@ export default function EventsSection({
               href="/event"
               className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg border-2 border-amber-500"
             >
-              <span>View All Events</span>
+              <span>{t('events.viewAllEvents')}</span>
               <svg
                 className="w-4 h-4"
                 fill="none"

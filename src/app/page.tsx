@@ -4,7 +4,8 @@ import About from "./components/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Link from "next/link";
-import Contact from "../app/components/contact/ContactForm"
+import Contact from "../app/components/contact/ContactForm";
+import { getTranslation } from "@/lib/translations";
 
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
@@ -40,6 +41,12 @@ async function fetchCourseData(): Promise<CourseType[]> {
 }
 
 export default async function HomePage() {
+  // For server-side rendering, default to Pashto
+  // Client-side language switching will handle the rest
+  const currentLang = 'ps';
+  
+  const t = (key: string) => getTranslation(key, currentLang);
+  
   // Temporarily disable API calls to test if they're causing the 500 error
   const courses: CourseType[] = [];
   return (
@@ -59,17 +66,17 @@ export default async function HomePage() {
           {/* Simple Hero Text */}
           <div className="mb-8">
             <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
-              Explore Knowledge
+              {t('home.exploreKnowledge')}
             </p>
 
             <h2 className="text-3xl md:text-5xl font-bold text-black mb-4">
-              Our <span className="text-amber-600">Popular Courses</span>
+              {t('home.popularCourses')} <span className="text-amber-600">{t('home.popularCoursesHighlight')}</span>
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto sm:text-sm">
-              Discover our most popular courses, designed to provide authentic Islamic knowledge rooted in the{" "}
-              <span className="font-semibold text-amber-700">Qur'an</span> and{" "}
-              <span className="font-semibold text-amber-700">Sunnah</span>.
+              {t('home.coursesDescription')}{" "}
+              <span className="font-semibold text-amber-700">{t('home.quran')}</span> {t('home.and')}{" "}
+              <span className="font-semibold text-amber-700">{t('home.sunnah')}</span>.
             </p>
           </div>
 
@@ -79,7 +86,7 @@ export default async function HomePage() {
               fallback={
                 <div className="flex items-center justify-center py-12">
                   <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-                  <span className="ml-3 text-gray-600">Loading courses...</span>
+                  <span className="ml-3 text-gray-600">{t('home.loadingCourses')}</span>
                 </div>
               }
             >
@@ -92,7 +99,7 @@ export default async function HomePage() {
                     href="/courses"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
-                    <span>View All Courses</span>
+                    <span>{t('home.viewAllCourses')}</span>
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -124,7 +131,7 @@ export default async function HomePage() {
             <div className="flex items-center justify-center py-20">
               <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
               <span className="ml-4 text-gray-600 font-medium">
-                Loading events...
+                {t('home.loadingEvents')}
               </span>
             </div>
           }
@@ -141,18 +148,17 @@ export default async function HomePage() {
           {/* Simple Hero Text */}
           <div className="mb-8">
             <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
-              Explore Knowledge
+              {t('home.exploreKnowledge')}
             </p>
 
             <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
-              Our <span className="text-amber-600">Books</span>
+              {t('home.ourBooks')} <span className="text-amber-600">{t('home.booksHighlight')}</span>
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Rooted in the{" "}
-              <span className="font-semibold text-amber-700">Qur'an</span> and{" "}
-              <span className="font-semibold text-amber-700">Sunnah</span>, our
-              books provide authentic Islamic knowledge.
+              {t('home.booksDescription')}{" "}
+              <span className="font-semibold text-amber-700">{t('home.quran')}</span> {t('home.and')}{" "}
+              <span className="font-semibold text-amber-700">{t('home.sunnah')}</span>, {t('home.booksDescriptionEnd')}
             </p>
           </div>
 
@@ -162,7 +168,7 @@ export default async function HomePage() {
               fallback={
                 <div className="flex items-center justify-center py-12">
                   <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-                  <span className="ml-3 text-gray-600">Loading books...</span>
+                  <span className="ml-3 text-gray-600">{t('home.loadingBooks')}</span>
                 </div>
               }
             >
@@ -175,7 +181,7 @@ export default async function HomePage() {
                     href="/book"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
-                    <span>View All Books</span>
+                    <span>{t('home.viewAllBooks')}</span>
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -203,7 +209,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-center py-20">
             <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
             <span className="ml-4 text-gray-600 font-medium">
-              Loading gallery...
+              {t('home.loadingGallery')}
             </span>
           </div>
         }
@@ -230,17 +236,16 @@ export default async function HomePage() {
           {/* Hero Text */}
           <div className="mb-14">
             <div className="inline-flex items-center px-5 py-2 bg-orange-100 text-orange-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
-              🎓 Celebrating Success
+              🎓 {t('home.celebratingSuccess')}
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-              Our{" "}
+              {t('home.ourGraduates')}{" "}
               <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">
-                Graduates
+                {t('home.graduatesHighlight')}
               </span>
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
-              Highlighting the achievements and journeys of students who have
-              successfully completed their courses{" "}
+              {t('home.graduatesDescription')}{" "}
               <span className="inline-block animate-bounce">🌟</span>
             </p>
           </div>
@@ -251,7 +256,7 @@ export default async function HomePage() {
                 <div className="flex items-center justify-center py-16">
                   <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
                   <span className="ml-4 text-gray-600 font-medium">
-                    Loading graduates...
+                    {t('home.loadingGraduates')}
                   </span>
                 </div>
               }
@@ -265,7 +270,7 @@ export default async function HomePage() {
                     href="/graduated-students"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
-                    <span>View All Graduation</span>
+                    <span>{t('home.viewAllGraduation')}</span>
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -308,16 +313,16 @@ export default async function HomePage() {
     {/* Hero Text */}
     <div className="mb-14">
       <div className="inline-flex items-center px-5 py-2 bg-orange-100 text-orange-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
-        📝 Read Our Blog
+        📝 {t('home.readOurBlog')}
       </div>
       <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-        Explore Our{" "}
+        {t('home.exploreOurBlog')}{" "}
         <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">
-          Blog
+          {t('home.blogHighlight')}
         </span>
       </h2>
       <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
-        Discover the latest articles, insights, and stories from our students{" "}
+        {t('home.blogDescription')}{" "}
         <span className="inline-block animate-bounce">🌟</span>
       </p>
     </div>
@@ -329,7 +334,7 @@ export default async function HomePage() {
           <div className="flex items-center justify-center py-16">
             <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
             <span className="ml-4 text-gray-600 font-medium">
-              Loading blog posts...
+              {t('home.loadingBlogPosts')}
             </span>
           </div>
         }
@@ -342,7 +347,7 @@ export default async function HomePage() {
                     href="/blogs"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
-                    <span>View All Blogs</span>
+                    <span>{t('home.viewAllBlogs')}</span>
                     <svg
                       className="w-4 h-4"
                       fill="none"
@@ -377,32 +382,31 @@ export default async function HomePage() {
 
         <div className="max-w-6xl mx-auto text-center px-6 relative z-10">
           <div className="inline-flex items-center px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-4 backdrop-blur-sm">
-            💝 Support Our Mission
+            💝 {t('home.supportOurMission')}
           </div>
           <h2 className="text-3xl font-bold text-white mb-4">
-            Help Us Continue Our Work
+            {t('home.helpUsContinue')}
           </h2>
           <p className="text-gray-100 mb-8 max-w-2xl mx-auto">
-            Your generous support helps us provide authentic Islamic education
-            to future generations and maintain our beautiful campus
+            {t('home.donationDescription')}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {[
               {
                 amount: "$50",
-                period: "Monthly Support",
-                desc: "Help a student monthly",
+                period: t('home.monthlySupport'),
+                desc: t('home.helpStudentMonthly'),
               },
               {
                 amount: "$100",
-                period: "Quarterly Donation",
-                desc: "Support our programs",
+                period: t('home.quarterlyDonation'),
+                desc: t('home.supportPrograms'),
               },
               {
                 amount: "$500",
-                period: "Annual Contribution",
-                desc: "Transform lives yearly",
+                period: t('home.annualContribution'),
+                desc: t('home.transformLivesYearly'),
               },
             ].map((tier, index) => (
               <div
@@ -421,7 +425,7 @@ export default async function HomePage() {
           </div>
 
           <button className="px-6 py-3 bg-white text-amber-600 font-semibold text-sm rounded-lg hover:bg-amber-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
-            Donate Now
+            {t('home.donateNow')}
           </button>
         </div>
       </section>
@@ -515,3 +519,4 @@ export default async function HomePage() {
     </div>
   );
 }
+
