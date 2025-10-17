@@ -8,6 +8,8 @@ import {
   Sparkles,
 } from "lucide-react";
 import { getImageUrlWithFallback } from "@/lib/utils";
+import { useTranslation } from '@/hooks/useTranslation';
+import { getTranslation } from '@/lib/translations';
 
 interface GalleryItem {
   id: number;
@@ -22,9 +24,11 @@ interface GalleryItem {
 const MiniSlider = ({
   images,
   title,
+  translate,
 }: {
   images: GalleryItem[];
   title: string;
+  translate: (key: string) => string;
 }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -44,7 +48,7 @@ const MiniSlider = ({
   if (!images || images.length === 0 || !images[currentSlide]) {
     return (
       <div className="relative h-full w-full overflow-hidden rounded-2xl group bg-gray-200 flex items-center justify-center">
-        <p className="text-gray-500">No images available</p>
+        <p className="text-gray-500">{translate('about.gallerySection.noImagesAvailable')}</p>
       </div>
     );
   }
@@ -52,7 +56,7 @@ const MiniSlider = ({
   return (
     <div className="relative h-full w-full overflow-hidden rounded-2xl group">
       <img
-        src={getImageUrlWithFallback(images[currentSlide]?.image, "/placeholder-gallery.jpg")}
+        src={getImageUrlWithFallback(images[currentSlide]?.image, "/placeholder-about.gallerySection.jpg")}
         alt={images[currentSlide]?.title || "Gallery image"}
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
       />
@@ -64,7 +68,7 @@ const MiniSlider = ({
             {title}
           </div>
           <p className="text-white font-semibold text-sm">
-            {images[currentSlide].title || "Untitled"}
+            {images[currentSlide].title || translate('about.gallerySection.untitled')}
           </p>
         </div>
       </div>
@@ -108,6 +112,35 @@ export default function Gallery({
 }: {
   initialImages: GalleryItem[];
 }) {
+  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  
+  // Create a more reliable translation function
+  const translate = (key: string) => {
+    // Try multiple ways to get the current language
+    const currentLang = i18n?.language || 
+                       (typeof window !== 'undefined' ? localStorage.getItem('language') : null) || 
+                       'ps';
+    
+    console.log('Current language:', currentLang);
+    console.log('i18n object:', i18n);
+    
+    // Test with a simple key first
+    const testTranslation = getTranslation('about.title', 'ps');
+    console.log('Test translation (about.title):', testTranslation);
+    
+    const translation = getTranslation(key, currentLang);
+    console.log(`Translation for ${key} in ${currentLang}:`, translation);
+    
+    // If translation returns the key, try with different language
+    if (translation === key) {
+      console.log('Translation failed, trying with fallback languages...');
+      const fallbackTranslation = getTranslation(key, 'ps');
+      console.log('Fallback translation:', fallbackTranslation);
+      return fallbackTranslation;
+    }
+    
+    return translation;
+  };
   const [images] = useState<GalleryItem[]>(() => {
     // Ensure we have a valid array and filter out any invalid items
     if (!Array.isArray(initialImages)) {
@@ -194,13 +227,13 @@ export default function Gallery({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-              Madrasa{" "}
+              {translate('about.gallerySection.title')}{" "}
               <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
-                Collection
+                {translate('about.gallerySection.collection')}
               </span>
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-              Gallery is currently unavailable. Please check back later.
+              {translate('about.gallerySection.unavailable') || 'ګالري اوس مهال شتون نلري. مهرباني وکړئ وروسته بیا وګورئ.'}
             </p>
           </div>
         </div>
@@ -215,9 +248,9 @@ export default function Gallery({
         <div className="text-center mb-12">
   {/* Title */}
   <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-    Madrasa{" "}
+    {translate('about.gallerySection.title') || 'مدرسه'}{" "}
     <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
-      Collection
+      {translate('about.gallerySection.collection') || 'ګالري'}
     </span>
   </h2>
 
@@ -226,8 +259,7 @@ export default function Gallery({
 
   {/* Description */}
   <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-    Explore the timeless knowledge and spiritual teachings of our madrasa, 
-    nurturing minds and hearts to build a brighter and enlightened future.
+    {translate('about.gallerySection.description') || 'زموږ د مدرسې د بیاځلي علم او روحاني تعلیماتو د ښکلا کشف وکړئ، چې د ذهنونو او زړونو روزنې ته وقف دي ترڅو د رښتیني او روښانه راتلونکي جوړولو لپاره.'}
   </p>
 </div>
 
@@ -247,6 +279,7 @@ export default function Gallery({
                 <MiniSlider
                   images={filteredImages.slice(0, 6)}
                   title=""
+                  translate={translate}
                 />
               </div>
 
@@ -262,7 +295,7 @@ export default function Gallery({
                     >
                       <div className="relative h-full overflow-hidden">
                         <img
-                          src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                          src={getImageUrlWithFallback(img.image, "/placeholder-about.gallerySection.jpg")}
                           alt={img.title || "Gallery image"}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                         />
@@ -270,9 +303,9 @@ export default function Gallery({
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                           <div className="absolute bottom-4 left-4 right-4">
                             <p className="font-semibold text-white text-sm mb-1">
-                              {img.title || "Untitled"}
+                              {img.title || translate('about.gallerySection.untitled')}
                             </p>
-                            <p className="text-xs text-white/80">{img.category || "General"}</p>
+                            <p className="text-xs text-white/80">{img.category || translate('about.gallerySection.general')}</p>
                           </div>
                         </div>
 
@@ -294,7 +327,7 @@ export default function Gallery({
                       onClick={() => setShowAllImages(false)}
                       className="bg-gray-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
                     >
-                      Show Less
+                      {translate('about.gallerySection.showLess')}
                     </button>
                   </div>
                   
@@ -309,7 +342,7 @@ export default function Gallery({
                         >
                           <div className="relative h-full overflow-hidden">
                             <img
-                              src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                              src={getImageUrlWithFallback(img.image, "/placeholder-about.gallerySection.jpg")}
                               alt={img.title || "Gallery image"}
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                             />
@@ -317,9 +350,9 @@ export default function Gallery({
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <div className="absolute bottom-4 left-4 right-4">
                                 <p className="font-semibold text-white text-sm mb-1">
-                                  {img.title || "Untitled"}
+                                  {img.title || translate('about.gallerySection.untitled')}
                                 </p>
-                                <p className="text-xs text-white/80">{img.category || "General"}</p>
+                                <p className="text-xs text-white/80">{img.category || translate('about.gallerySection.general')}</p>
                               </div>
                             </div>
 
@@ -342,7 +375,8 @@ export default function Gallery({
             >
               <MiniSlider
                 images={filteredImages.slice(0, 6)}
-                title="Featured Collection"
+                title={translate('about.gallerySection.featuredCollection')}
+                translate={translate}
               />
             </div>
 
@@ -357,7 +391,7 @@ export default function Gallery({
                 >
                   <div className="relative overflow-hidden">
             <img
-              src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+              src={getImageUrlWithFallback(img.image, "/placeholder-about.gallerySection.jpg")}
                       alt={img.title || "Gallery image"}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -365,16 +399,16 @@ export default function Gallery({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
-                          {img.title || "Untitled"}
+                          {img.title || translate('about.gallerySection.untitled')}
                         </p>
-                        <p className="text-xs text-white/80">{img.category || "General"}</p>
+                        <p className="text-xs text-white/80">{img.category || translate('about.gallerySection.general')}</p>
                       </div>
                     </div>
 
                     {img.featured && (
                       <div className="absolute top-3 left-3">
                         <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
-                          Featured
+                          {translate('about.gallerySection.featured')}
                         </span>
                       </div>
                     )}
@@ -390,7 +424,8 @@ export default function Gallery({
             >
               <MiniSlider
                 images={filteredImages.slice(4, 7)}
-                title="Production Process"
+                title={translate('about.gallerySection.productionProcess')}
+                translate={translate}
               />
             </div>
 
@@ -409,7 +444,7 @@ export default function Gallery({
                 >
                   <div className="relative w-full h-full overflow-hidden">
                     <img
-                      src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                      src={getImageUrlWithFallback(img.image, "/placeholder-about.gallerySection.jpg")}
                       alt={img.title || "Gallery image"}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
@@ -417,9 +452,9 @@ export default function Gallery({
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
-                          {img.title || "Untitled"}
+                          {img.title || translate('about.gallerySection.untitled')}
                         </p>
-                        <p className="text-xs text-white/80">{img.category || "General"}</p>
+                        <p className="text-xs text-white/80">{img.category || translate('about.gallerySection.general')}</p>
                       </div>
 
                       
@@ -428,7 +463,7 @@ export default function Gallery({
                     {img.featured && (
                       <div className="absolute top-3 left-3">
                         <span className="px-2 py-1 bg-orange-500 text-white text-xs font-bold rounded-full">
-                          Featured
+                          {translate('about.gallerySection.featured')}
                         </span>
                       </div>
                     )}
@@ -448,16 +483,16 @@ export default function Gallery({
                 >
                   <div className="relative h-64 w-full overflow-hidden">
                     <img
-                      src={getImageUrlWithFallback(img.image, "/placeholder-gallery.jpg")}
+                      src={getImageUrlWithFallback(img.image, "/placeholder-about.gallerySection.jpg")}
                       alt={img.title || "Gallery image"}
                       className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
-                          {img.title || "Untitled"}
+                          {img.title || translate('about.gallerySection.untitled')}
                         </p>
-                        <p className="text-xs text-white/80">{img.category || "General"}</p>
+                        <p className="text-xs text-white/80">{img.category || translate('about.gallerySection.general')}</p>
                       </div>
                     </div>
                   </div>
@@ -497,7 +532,7 @@ export default function Gallery({
             {/* Main image */}
             <div className="relative max-h-[85vh] max-w-4xl w-full">
               <img
-                src={getImageUrlWithFallback(filteredImages[currentIndex].image, "/placeholder-gallery.jpg")}
+                src={getImageUrlWithFallback(filteredImages[currentIndex].image, "/placeholder-about.gallerySection.jpg")}
                 alt={filteredImages[currentIndex].title || "Gallery image"}
                 className="max-h-[85vh] max-w-full mx-auto object-contain rounded-lg"
               />
@@ -505,10 +540,10 @@ export default function Gallery({
               {/* Image info */}
               <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 text-white">
                 <h3 className="text-xl font-bold mb-1">
-                  {filteredImages[currentIndex].title || "Untitled"}
+                  {filteredImages[currentIndex].title || translate('about.gallerySection.untitled')}
                 </h3>
                 <p className="text-sm text-white/80 mb-3">
-                  {filteredImages[currentIndex].category || "General"}
+                  {filteredImages[currentIndex].category || translate('about.gallerySection.general')}
                 </p>
                 {filteredImages[currentIndex].description && (
                   <p className="text-sm">
@@ -532,8 +567,8 @@ export default function Gallery({
                 >
                 <img
                   src={
-                    getImageUrl(img.image, "/placeholder-gallery.jpg") ||
-                    "/placeholder-gallery.jpg"
+                    getImageUrl(img.image, "/placeholder-about.gallerySection.jpg") ||
+                    "/placeholder-about.gallerySection.jpg"
                   }
                     alt={img.title}
                     className="w-full h-full object-cover"
@@ -544,7 +579,7 @@ export default function Gallery({
 
             {/* Image counter */}
             <div className="absolute top-5 left-5 text-white/80 text-sm">
-              {currentIndex + 1} / {filteredImages.length}
+              {currentIndex + 1} {translate('about.gallerySection.of')} {filteredImages.length}
             </div>
           </div>
         )}

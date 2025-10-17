@@ -65,23 +65,23 @@ export const features = {
 // Navigation Configuration
 export const navigation = {
   main: [
-    { name: 'Home', href: '/', icon: 'home' },
-    { name: 'Courses', href: '/courses', icon: 'course' },
+    { name: 'home', href: '/', icon: 'home' },
+    { name: 'courses', href: '/courses', icon: 'course' },
     { name: 'iftah', href: '/iftah', icon: 'fatwa' },
   
-    { name: 'Article', href: '/articles', icon: 'article' },
-    { name: 'Awalyaa', href: '/awlayaa', icon: 'awlayaa' },
-    { name: 'Awlyaa Charts', href: '/awlyaa-charts', icon: 'chart' },
-    { name: 'Books', href: '/book', icon: 'book' },
-    { name: 'Donation', href: '/donation', icon: 'donation' },
-    { name: 'Blogs', href: '/blogs', icon: 'blog' },
-    { name: 'Author', href: '/authors', icon: 'author' },
+    { name: 'article', href: '/articles', icon: 'article' },
+    { name: 'awlayaa', href: '/awlayaa', icon: 'awlayaa' },
+    { name: 'awlyaacharts', href: '/awlyaa-charts', icon: 'chart' },
+    { name: 'books', href: '/book', icon: 'book' },
+    { name: 'donation', href: '/donation', icon: 'donation' },
+    { name: 'blogs', href: '/blogs', icon: 'blog' },
+    { name: 'author', href: '/authors', icon: 'author' },
 
-    { name: 'Event', href: '/event', icon: 'event' },
-    { name: 'Tasawof', href: '/tasawwuf', icon: 'tasawwuf' },
-    { name: 'Graduation', href: '/graduated-students', icon: 'graduation' },
+    { name: 'event', href: '/event', icon: 'event' },
+    { name: 'tasawwuf', href: '/tasawwuf', icon: 'tasawwuf' },
+    { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
   
-    { name: 'Contact', href: '/contact', icon: 'contact' },
+    { name: 'contact', href: '/contact', icon: 'contact' },
   
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],

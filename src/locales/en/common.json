@@ -181,7 +181,23 @@
         "Hafiz Sahib Sadiqullah"
       ],
       "gallery": "Memories Gallery",
-      "galleryDescription": "Memories of Sheikh Khalifa Sahib Arghandi's (RA) life and Anwarul Uloom's history"
+      "galleryDescription": "Memories of Sheikh Khalifa Sahib Arghandi's (RA) life and Anwarul Uloom's history",
+      "gallerySection": {
+      "title": "Madrasa",
+      "collection": "Collection",
+      "description": "Explore the timeless knowledge and spiritual teachings of our madrasa, nurturing minds and hearts to build a brighter and enlightened future.",
+      "unavailable": "Gallery is currently unavailable. Please check back later.",
+      "noImagesAvailable": "No images available",
+      "untitled": "Untitled",
+      "general": "General",
+      "featured": "Featured",
+      "featuredCollection": "Featured Collection",
+      "productionProcess": "Production Process",
+      "showLess": "Show Less",
+      "showAll": "Show All",
+      "imageCounter": "images",
+      "of": "of"
+      }
     }
   },
   "footer": {

@@ -123,13 +123,13 @@ const Hero = () => {
 
           <div className="flex flex-wrap gap-4 justify-center mt-8">
             <Link href="/about">
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-300">
+              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-16 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-300">
                 {t("hero.aboutUs")} <FaArrowRight />
               </button>
             </Link>
             
             <Link href="/courses">
-              <button className="border-2 border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 hover:bg-orange-500/25 hover:text-white hover:shadow-2xl px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
+              <button className="border-2 border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 hover:bg-orange-500/25 hover:text-white hover:shadow-2xl px-16 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
                 {t("hero.ourCourses")}
               </button>
             </Link>

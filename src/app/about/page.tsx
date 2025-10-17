@@ -458,7 +458,7 @@ const AboutPage = () => {
                 <div className="p-6 rounded-lg text-center">
                   <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.famousKhalifas')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    {(t('about.biography.famousKhalifasList', { returnObjects: true }) as string[]).map((khalifa: string, index: number) => (
+                    {(t('about.biography.famousKhalifasList', { returnObjects: true }) as unknown as string[]).map((khalifa: string, index: number) => (
                       <div key={index} className="flex items-start justify-center space-x-2">
                         <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-gray-700 text-center">{khalifa}</span>
@@ -471,7 +471,7 @@ const AboutPage = () => {
                 <div className="p-6 rounded-lg text-center">
                   <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.successorKhalifas')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                    {(t('about.biography.successorKhalifasList', { returnObjects: true }) as string[]).map((successor: string, index: number) => (
+                    {(t('about.biography.successorKhalifasList', { returnObjects: true }) as unknown as string[]).map((successor: string, index: number) => (
                       <div key={index} className="flex items-start justify-center space-x-2">
                         <span className="text-amber-600 font-bold text-xs mt-1">{index + 1}.</span>
                         <span className="text-gray-700 text-center">{successor}</span>
