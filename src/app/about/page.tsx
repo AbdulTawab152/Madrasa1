@@ -47,8 +47,14 @@ const CustomPrevArrow = ({ onClick }: { onClick?: () => void }) => (
 );
 
 const AboutPage = () => {
-  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+  
+  // Create a string-safe wrapper function
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
 
   const subjects = [
     { name: t('about.subjects.tajweed'), icon: "📖", color: "bg-blue-500" },

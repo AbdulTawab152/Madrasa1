@@ -8,8 +8,14 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { getLanguageDirection } from '@/lib/i18n';
 
 const Footer = () => {
-  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
 
   return (
   <footer className="bg-gradient-to-br mt-10 from-orange-50 to-amber-50 pt-16 pb-8">

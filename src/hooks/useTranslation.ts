@@ -34,7 +34,7 @@ export function useTranslation(namespace: string = 'common', options: { useSuspe
   }, []);
 
   // Create a custom t function that handles hydration
-  const t = (key: string, options?: { returnObjects?: boolean }) => {
+  const t = (key: string, options?: { returnObjects?: boolean }): string | string[] => {
     const language = !isHydrated ? 'ps' : currentLanguage;
     const translation = getTranslation(key, language);
     
@@ -56,7 +56,13 @@ export function useTranslation(namespace: string = 'common', options: { useSuspe
       }
     }
     
-    return translation;
+    // Ensure we always return a string for non-array contexts
+    if (typeof translation === 'string') {
+      return translation;
+    }
+    
+    // If translation is not a string, return the key as fallback
+    return key;
   };
 
   const i18n = {
