@@ -183,20 +183,20 @@
       "gallery": "Memories Gallery",
       "galleryDescription": "Memories of Sheikh Khalifa Sahib Arghandi's (RA) life and Anwarul Uloom's history",
       "gallerySection": {
-      "title": "Madrasa",
-      "collection": "Collection",
-      "description": "Explore the timeless knowledge and spiritual teachings of our madrasa, nurturing minds and hearts to build a brighter and enlightened future.",
-      "unavailable": "Gallery is currently unavailable. Please check back later.",
-      "noImagesAvailable": "No images available",
-      "untitled": "Untitled",
-      "general": "General",
-      "featured": "Featured",
-      "featuredCollection": "Featured Collection",
-      "productionProcess": "Production Process",
-      "showLess": "Show Less",
-      "showAll": "Show All",
-      "imageCounter": "images",
-      "of": "of"
+        "title": "Madrasa",
+        "collection": "Collection",
+        "description": "Explore the timeless knowledge and spiritual teachings of our madrasa, nurturing minds and hearts to build a brighter and enlightened future.",
+        "unavailable": "Gallery is currently unavailable. Please check back later.",
+        "noImagesAvailable": "No images available",
+        "untitled": "Untitled",
+        "general": "General",
+        "featured": "Featured",
+        "featuredCollection": "Featured Collection",
+        "productionProcess": "Production Process",
+        "showLess": "Show Less",
+        "showAll": "Show All",
+        "imageCounter": "images",
+        "of": "of"
       }
     }
   },
@@ -214,6 +214,114 @@
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
   },
+  "iftah": {
+    "title": "Fatwa Department",
+    "subtitle": "Islamic University - Ask about Islamic matters and get fatwas from our scholars",
+    "universityTitle": "Islamic University",
+    "departmentSubtitle": "Fatwa Department",
+    "form": {
+      "islamicQA": "Islamic Q&A",
+      "seekDivineGuidance": "Seek Divine Guidance",
+      "getAuthenticAnswers": "Get authentic Islamic answers from qualified scholars based on Quran and Sunnah.",
+      "expertScholars": "Expert Scholars",
+      "quickResponse": "Quick Response",
+      "freeService": "Free Service",
+      "askYourQuestion": "Ask Your Question",
+      "getPersonalizedGuidance": "Get personalized guidance",
+      "askAQuestion": "Ask a Question",
+      "seekIslamicGuidance": "Seek Islamic Guidance",
+      "fullName": "Full Name",
+      "emailAddress": "Email Address",
+      "phoneNumber": "Phone Number",
+      "whatsapp": "WhatsApp",
+      "yourIslamicQuestion": "Your Islamic Question",
+      "enterFullName": "Enter your full name",
+      "enterEmail": "Enter your email",
+      "enterPhoneOptional": "Enter phone number (optional)",
+      "enterWhatsappOptional": "Enter WhatsApp number (optional)",
+      "writeQuestionHere": "Please write your Islamic question here (minimum 15 characters)...",
+      "submitting": "Submitting...",
+      "submitQuestion": "Submit Question",
+      "questionSubmitted": "Question Submitted!",
+      "questionSubmittedSuccess": "Your Islamic question has been submitted successfully. Our scholars will review and provide authentic guidance.",
+      "hoursResponse": "24-48 hours",
+      "expertReview": "Expert Review",
+      "continue": "Continue",
+      "validation": {
+        "pleaseEnterFullName": "Please enter your full name",
+        "nameMinLength": "Name must be at least 2 characters",
+        "nameLettersOnly": "Name can only contain letters and spaces",
+        "pleaseEnterEmail": "Please enter your email address",
+        "validEmailAddress": "Please enter a valid email address",
+        "validPhoneNumber": "Please enter a valid phone number",
+        "validWhatsappNumber": "Please enter a valid WhatsApp number",
+        "phoneNumbersOnly": "Please enter only numbers for phone number",
+        "whatsappNumbersOnly": "Please enter only numbers for WhatsApp number",
+        "writeIslamicQuestion": "Please write your Islamic question",
+        "moreDetailedQuestion": "Please write a more detailed question (at least 15 characters)",
+        "questionTooLong": "Question is too long (maximum 1000 characters)",
+        "completeRequiredFields": "Please complete all required fields: Name, Email, and Question.",
+        "completeFollowingFields": "Please complete the following required fields:"
+      }
+    }
+  },
+  "blog": {
+    "loading": "Loading",
+    "preparingStories": "Preparing inspiring stories …",
+    "fetchingUpdates": "We are fetching the latest updates for you.",
+    "unableToLoad": "Unable to load blogs",
+    "tryRefreshing": "Please try refreshing the page.",
+    "retryLoading": "Retry loading blogs",
+    "comingSoon": "Coming soon",
+    "noBlogsAvailable": "No blogs available in this category yet.",
+    "checkBackSoon": "Check back soon for the latest articles and announcements.",
+    "readMore": "Read more",
+    "noSummaryAvailable": "No summary available.",
+    "recentlyUpdated": "Recently updated",
+    "general": "General",
+    "all": "All"
+  },
+  "books": {
+    "loadingCollection": "Loading our collection...",
+    "preparingBooks": "Preparing the best Islamic books for you",
+    "noBooksAvailable": "No Books Available",
+    "workingOnAdding": "We're working on adding more books to our collection.",
+    "bookCover": "Book Cover",
+    "book": "Book",
+    "viewDetails": "View Details",
+    "pages": "pages",
+    "nA": "N/A",
+    "failedToFetch": "Failed to fetch books"
+  },
+  "contact": {
+    "getInTouch": "Get in Touch",
+    "loveToHear": "We'd love to hear from you. Send us a message and we'll respond as soon as possible.",
+    "address": "Address",
+    "contact": "Contact",
+    "openingHours": "Opening Hours",
+    "sendMessage": "Send us a Message",
+    "respondSoon": "We'll respond as soon as possible",
+    "yourName": "Your Name",
+    "yourEmail": "Your Email",
+    "yourPhone": "Your Phone Number",
+    "yourMessage": "Your Message",
+    "sending": "Sending...",
+    "sendMessageButton": "Send Message",
+    "messageSentSuccess": "Message sent successfully!",
+    "failedToSend": "Failed to send message. Please try again.",
+    "fillRequiredFields": "Please fill in all required fields correctly.",
+    "validation": {
+      "pleaseEnterName": "Please enter your name",
+      "pleaseEnterEmail": "Please enter your email address",
+      "validEmailAddress": "Please enter a valid email address",
+      "pleaseEnterMessage": "Please enter your message"
+    },
+    "addressDetails": "410 Sandtown, California 94001, USA",
+    "phoneNumber": "888-123-4567",
+    "emailAddress": "info@example.com",
+    "openingHoursDetails": "Mon - Fri: 10:30am - 7:00pm",
+    "somethingWentWrong": "Something went wrong"
+  },
   "courses": {
     "title": "Islamic Courses",
     "unableToLoad": "Unable to load courses",
@@ -228,6 +336,7 @@
     "lessons": "lessons",
     "viewCourse": "View course",
     "recentlyUpdated": "Recently updated",
+    "instructorFallback": "Haq Madrasa",
     "courseNotFound": "Course Not Found",
     "courseNotFoundMessage": "The course you're looking for doesn't exist.",
     "browseAllCourses": "Browse All Courses",
@@ -261,7 +370,7 @@
   },
   "home": {
     "exploreKnowledge": "Explore Knowledge",
-    "popularCourses": "Our Popular Courses",
+    "popularCourses": "Popular Courses",
     "popularCoursesHighlight": "Popular Courses",
     "coursesDescription": "Discover our most popular courses, designed to provide authentic Islamic knowledge rooted in the",
     "quran": "Qur'an",
@@ -270,7 +379,7 @@
     "loadingCourses": "Loading courses...",
     "viewAllCourses": "View All Courses",
     "loadingEvents": "Loading events...",
-    "ourBooks": "Our Books",
+    "ourBooks": "Books",
     "booksHighlight": "Books",
     "booksDescription": "Rooted in the",
     "booksDescriptionEnd": "our books provide authentic Islamic knowledge.",
@@ -284,7 +393,7 @@
     "loadingGraduates": "Loading graduates...",
     "viewAllGraduation": "View All Graduation",
     "readOurBlog": "Read Our Blog",
-    "exploreOurBlog": "Explore Our Blog",
+    "exploreOurBlog": "Blog",
     "blogHighlight": "Blog",
     "blogDescription": "Discover the latest articles, insights, and stories from our students",
     "loadingBlogPosts": "Loading blog posts...",
@@ -314,5 +423,71 @@
     "organizedBy": "Organized by Anwarul Uloom Madrasa",
     "eventDetails": "Event Details",
     "viewAllEvents": "View All Events"
+  },
+  "header": {
+    "courses": {
+      "title": "Islamic Courses",
+      "subtitle": "Explore our comprehensive Islamic education programs and courses"
+    },
+    "articles": {
+      "title": "Islamic Articles",
+      "subtitle": "Read insightful articles on Islamic teachings and contemporary issues"
+    },
+    "blogs": {
+      "title": "Islamic Blogs",
+      "subtitle": "Stay updated with our latest Islamic blog posts and insights"
+    },
+    "events": {
+      "title": "Islamic Events",
+      "subtitle": "Join our upcoming Islamic events, seminars, and gatherings"
+    },
+    "books": {
+      "title": "Islamic Books",
+      "subtitle": "Discover our collection of Islamic books and literature"
+    },
+    "authors": {
+      "title": "Islamic Authors",
+      "subtitle": "Meet our esteemed Islamic scholars and authors"
+    },
+    "awlayaa": {
+      "title": "Awliya Allah",
+      "subtitle": "Learn about the lives and teachings of the Friends of Allah"
+    },
+    "tasawwuf": {
+      "title": "Tasawwuf",
+      "subtitle": "Explore the spiritual dimensions of Islamic practice"
+    },
+    "gallery": {
+      "title": "Gallery",
+      "subtitle": "View photos from our Islamic events and activities"
+    },
+    "about": {
+      "title": "About Us",
+      "subtitle": "Learn about our mission and vision in Islamic education"
+    },
+    "contact": {
+      "title": "Contact Us",
+      "subtitle": "Get in touch with us for any inquiries or support"
+    },
+    "donation": {
+      "title": "Support Our Mission",
+      "subtitle": "Help us continue spreading Islamic knowledge and education"
+    },
+    "registration": {
+      "title": "Registration",
+      "subtitle": "Join our Islamic courses and educational programs"
+    },
+    "graduatedStudents": {
+      "title": "Graduated Students",
+      "subtitle": "Celebrating our successful graduates and their achievements"
+    },
+    "iftah": {
+      "title": "Iftah",
+      "subtitle": "Explore our Iftah program and spiritual guidance"
+    },
+    "default": {
+      "title": "Islamic Education",
+      "subtitle": "Welcome to our comprehensive Islamic learning platform"
+    }
   }
 }

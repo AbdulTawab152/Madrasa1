@@ -1,3 +1,5 @@
+"use client";
+
 import { Suspense, lazy } from "react";
 import Hero from "../app/herosection/page";
 import About from "./components/about/page";
@@ -5,7 +7,7 @@ import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Link from "next/link";
 import Contact from "../app/components/contact/ContactForm";
-import { getTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
@@ -17,35 +19,10 @@ const LazyGallerySection = lazy(
 );
 const BooksSection = lazy(() => import("./components/books/BooksSection"));
 
-// import { ArticlesApi } from "../lib/api"; // move your fetch function to lib
-// import ArticlesList from "./components/Articles";
-
-// Removed getImages function - now handled by LazyGallerySection
-
-import { CoursesApi, extractArray } from "../lib/api";
 import { Course as CourseType } from "../lib/types";
 
-async function fetchCourseData(): Promise<CourseType[]> {
-  try {
-    const response = await CoursesApi.getAll();
-    if (!response.success) {
-      console.warn("Courses API failed, using fallback data:", response.error);
-      return [];
-    }
-
-    return extractArray<CourseType>(response.data);
-  } catch (error) {
-    console.warn("Error fetching courses, using fallback data:", error);
-    return [];
-  }
-}
-
-export default async function HomePage() {
-  // For server-side rendering, default to Pashto
-  // Client-side language switching will handle the rest
-  const currentLang = 'ps';
-  
-  const t = (key: string) => getTranslation(key, currentLang);
+export default function HomePage() {
+  const { t } = useTranslation('common', { useSuspense: false });
   
   // Temporarily disable API calls to test if they're causing the 500 error
   const courses: CourseType[] = [];
@@ -70,7 +47,7 @@ export default async function HomePage() {
             </p>
 
             <h2 className="text-3xl md:text-5xl font-bold text-black mb-4">
-              {t('home.popularCourses')} <span className="text-amber-600">{t('home.popularCoursesHighlight')}</span>
+              {t('home.popularCourses')}
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto sm:text-sm">
@@ -152,7 +129,7 @@ export default async function HomePage() {
             </p>
 
             <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
-              {t('home.ourBooks')} <span className="text-amber-600">{t('home.booksHighlight')}</span>
+              {t('home.ourBooks')}
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto">
@@ -239,10 +216,7 @@ export default async function HomePage() {
               🎓 {t('home.celebratingSuccess')}
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-              {t('home.ourGraduates')}{" "}
-              <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">
-                {t('home.graduatesHighlight')}
-              </span>
+              {t('home.ourGraduates')}
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
               {t('home.graduatesDescription')}{" "}
@@ -316,10 +290,7 @@ export default async function HomePage() {
         📝 {t('home.readOurBlog')}
       </div>
       <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-        {t('home.exploreOurBlog')}{" "}
-        <span className="bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600 bg-clip-text text-transparent">
-          {t('home.blogHighlight')}
-        </span>
+        {t('home.exploreOurBlog')}
       </h2>
       <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
         {t('home.blogDescription')}{" "}

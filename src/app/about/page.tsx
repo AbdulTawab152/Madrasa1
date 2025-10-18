@@ -5,6 +5,7 @@ import IslamicHeader from "../components/IslamicHeader";
 import { BookOpen, Award, Heart, Users, Sparkles, Clock, GraduationCap, Target, Lightbulb, Star, CheckCircle, Quote, Trophy } from "lucide-react";
 import { useTranslation } from '@/hooks/useTranslation';
 import { getLanguageDirection } from '@/lib/i18n';
+import { getTranslation } from '@/lib/translations';
 import img from "../../../public/1.jpg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -458,7 +459,7 @@ const AboutPage = () => {
                 <div className="p-6 rounded-lg text-center">
                   <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.famousKhalifas')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    {(t('about.biography.famousKhalifasList', { returnObjects: true }) as unknown as string[]).map((khalifa: string, index: number) => (
+                    {(t('about.biography.famousKhalifasList', { returnObjects: true }) as string[]).map((khalifa: string, index: number) => (
                       <div key={index} className="flex items-start justify-center space-x-2">
                         <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
                         <span className="text-gray-700 text-center">{khalifa}</span>
@@ -471,7 +472,7 @@ const AboutPage = () => {
                 <div className="p-6 rounded-lg text-center">
                   <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.successorKhalifas')}</h4>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                    {(t('about.biography.successorKhalifasList', { returnObjects: true }) as unknown as string[]).map((successor: string, index: number) => (
+                    {(t('about.biography.successorKhalifasList', { returnObjects: true }) as string[]).map((successor: string, index: number) => (
                       <div key={index} className="flex items-start justify-center space-x-2">
                         <span className="text-amber-600 font-bold text-xs mt-1">{index + 1}.</span>
                         <span className="text-gray-700 text-center">{successor}</span>
@@ -564,7 +565,7 @@ const AboutPage = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {t('about.biography.teachersList', { returnObjects: true }).map((teacher: string, index: number) => {
+                {(t('about.biography.teachersList', { returnObjects: true }) as string[]).map((teacher: string, index: number) => {
                   const teacherData = teacher.split(' - ');
                   const name = teacherData[0];
                   const title = teacherData[1] || '';

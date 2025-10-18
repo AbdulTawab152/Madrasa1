@@ -34,12 +34,29 @@ export function useTranslation(namespace: string = 'common', options: { useSuspe
   }, []);
 
   // Create a custom t function that handles hydration
-  const t = (key: string) => {
-    if (!isHydrated) {
-      // Use simple translation during SSR to prevent hydration mismatch
-      return getTranslation(key, 'ps');
+  const t = (key: string, options?: { returnObjects?: boolean }) => {
+    const language = !isHydrated ? 'ps' : currentLanguage;
+    const translation = getTranslation(key, language);
+    
+    // If returnObjects is true, ensure we return an array for known array keys
+    if (options?.returnObjects) {
+      const arrayKeys = [
+        'about.biography.famousKhalifasList',
+        'about.biography.successorKhalifasList', 
+        'about.biography.teachersList'
+      ];
+      
+      if (arrayKeys.includes(key)) {
+        // If translation is already an array, return it
+        if (Array.isArray(translation)) {
+          return translation;
+        }
+        // If translation is not an array, return empty array as fallback
+        return [];
+      }
     }
-    return getTranslation(key, currentLanguage);
+    
+    return translation;
   };
 
   const i18n = {

@@ -5,11 +5,20 @@ import { FaFacebook, FaWhatsapp, FaMapMarkerAlt, FaClock, FaPhone, FaEnvelope, F
 import { FiUser, FiMail, FiPhone, FiMessageSquare, FiSend, FiMapPin, FiClock } from "react-icons/fi";
 import { FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa6";
 import { ContactApi } from "@/lib/api";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Mock FAQ data (replace with your actual FAQDate import)
 
 
 function Contact() {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -46,19 +55,19 @@ function Contact() {
 
     // Validate name
     if (!formData.name.trim()) {
-      newErrors.name = "Please enter your name";
+      newErrors.name = t('contact.validation.pleaseEnterName');
     }
 
     // Validate email
     if (!formData.email.trim()) {
-      newErrors.email = "Please enter your email address";
+      newErrors.email = t('contact.validation.pleaseEnterEmail');
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t('contact.validation.validEmailAddress');
     }
 
     // Validate message
     if (!formData.message.trim()) {
-      newErrors.message = "Please enter your message";
+      newErrors.message = t('contact.validation.pleaseEnterMessage');
     }
 
     setErrors(newErrors);
@@ -70,7 +79,7 @@ function Contact() {
     
     // Validate form before submitting
     if (!validateForm()) {
-      setStatus("❌ Please fill in all required fields correctly.");
+      setStatus("❌ " + t('contact.fillRequiredFields'));
       return;
     }
 
@@ -84,7 +93,7 @@ function Contact() {
         throw new Error(response.error || "Something went wrong");
       }
 
-      setStatus("✅ Message sent successfully!");
+      setStatus("✅ " + t('contact.messageSentSuccess'));
       // Clear form after successful submission
       setFormData({
         name: "",
@@ -94,7 +103,7 @@ function Contact() {
       });
    
     } catch (err) {
-      setStatus("❌ Failed to send message. Please try again.");
+      setStatus("❌ " + t('contact.failedToSend'));
     } finally {
       setLoading(false);
     }
@@ -109,9 +118,9 @@ function Contact() {
         {/* Left Info */}
         <div className="lg:w-1/2 space-y-6 sm:space-y-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Get in Touch</h2>
+            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">{t('contact.getInTouch')}</h2>
             <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
-              We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+              {t('contact.loveToHear')}
             </p>
 
             <div className="flex gap-3 sm:gap-4 mb-6 sm:mb-8">
@@ -135,7 +144,7 @@ function Contact() {
                   <FaMapMarkerAlt className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">Address</h3>
+                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">{t('contact.address')}</h3>
                   <p className="text-sm sm:text-base text-gray-600">410 Sandtown, California 94001, USA</p>
                 </div>
               </div>
@@ -145,7 +154,7 @@ function Contact() {
                   <FaPhone className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">Contact</h3>
+                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">{t('contact.contact')}</h3>
                   <p className="text-sm sm:text-base text-gray-600 mb-1">888-123-4567</p>
                   <p className="text-sm sm:text-base text-gray-600">info@example.com</p>
                 </div>
@@ -156,7 +165,7 @@ function Contact() {
                   <FaClock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
                 </div>
                 <div>
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">Opening Hours</h3>
+                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">{t('contact.openingHours')}</h3>
                   <p className="text-sm sm:text-base text-gray-600">Mon - Fri: 10:30am - 7:00pm</p>
                 </div>
               </div>
@@ -167,8 +176,8 @@ function Contact() {
         {/* Right Form */}
         <div className="lg:w-1/2">
           <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-sm border border-amber-100" id="contact-form">
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">Send us a Message</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">We'll respond as soon as possible</p>
+            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">{t('contact.sendMessage')}</h3>
+            <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">{t('contact.respondSoon')}</p>
           
             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
               <div className="relative">
@@ -176,7 +185,7 @@ function Contact() {
                 <input
                   type="text"
                   name="name"
-                  placeholder="Your Name*"
+                  placeholder={t('contact.yourName') + '*'}
                   value={formData.name}
                   onChange={handleChange}
                   required
@@ -197,7 +206,7 @@ function Contact() {
                 <input
                   type="email"
                   name="email"
-                  placeholder="Your Email*"
+                  placeholder={t('contact.yourEmail') + '*'}
                   value={formData.email}
                   onChange={handleChange}
                   required
@@ -218,7 +227,7 @@ function Contact() {
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="Your Phone Number"
+                  placeholder={t('contact.yourPhone')}
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white text-sm sm:text-base"
@@ -229,7 +238,7 @@ function Contact() {
                 <FiMessageSquare className="absolute left-3 sm:left-4 top-3 sm:top-4 text-gray-400 z-10" />
                 <textarea
                   name="message"
-                  placeholder="Your Message*"
+                  placeholder={t('contact.yourMessage') + '*'}
                   rows={4}
                   value={formData.message}
                   onChange={handleChange}
@@ -258,12 +267,12 @@ function Contact() {
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Sending...
+                    {t('contact.sending')}
                   </>
                 ) : (
                   <>
                     <FiSend className="text-base sm:text-lg" />
-                    Send Message
+                    {t('contact.sendMessageButton')}
                   </>
                 )}
               </button>

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type Alignment = "center" | "left";
 type Theme = "amber" | "emerald" | "indigo" | "slate";
@@ -20,86 +21,86 @@ export interface IslamicHeaderProps {
   };
 }
 
-const getPageDefaults = (pageType: PageType) => {
+const getPageDefaults = (pageType: PageType, t: (key: string) => string) => {
   const defaults = {
     courses: {
-      title: "Islamic Courses",
-      subtitle: "Explore our comprehensive Islamic education programs and courses",
+      title: t('header.courses.title'),
+      subtitle: t('header.courses.subtitle'),
       theme: "amber" as Theme,
     },
     articles: {
-      title: "Islamic Articles",
-      subtitle: "Read insightful articles on Islamic teachings and contemporary issues",
+      title: t('header.articles.title'),
+      subtitle: t('header.articles.subtitle'),
       theme: "emerald" as Theme,
     },
     blogs: {
-      title: "Islamic Blogs",
-      subtitle: "Stay updated with our latest Islamic blog posts and insights",
+      title: t('header.blogs.title'),
+      subtitle: t('header.blogs.subtitle'),
       theme: "indigo" as Theme,
     },
     events: {
-      title: "Islamic Events",
-      subtitle: "Join our upcoming Islamic events, seminars, and gatherings",
+      title: t('header.events.title'),
+      subtitle: t('header.events.subtitle'),
       theme: "amber" as Theme,
     },
     books: {
-      title: "Islamic Books",
-      subtitle: "Discover our collection of Islamic books and literature",
+      title: t('header.books.title'),
+      subtitle: t('header.books.subtitle'),
       theme: "emerald" as Theme,
     },
     authors: {
-      title: "Islamic Authors",
-      subtitle: "Meet our esteemed Islamic scholars and authors",
+      title: t('header.authors.title'),
+      subtitle: t('header.authors.subtitle'),
       theme: "indigo" as Theme,
     },
     awlayaa: {
-      title: "Awliya Allah",
-      subtitle: "Learn about the lives and teachings of the Friends of Allah",
+      title: t('header.awlayaa.title'),
+      subtitle: t('header.awlayaa.subtitle'),
       theme: "slate" as Theme,
     },
     tasawwuf: {
-      title: "Tasawwuf",
-      subtitle: "Explore the spiritual dimensions of Islamic practice",
+      title: t('header.tasawwuf.title'),
+      subtitle: t('header.tasawwuf.subtitle'),
       theme: "slate" as Theme,
     },
     gallery: {
-      title: "Gallery",
-      subtitle: "View photos from our Islamic events and activities",
+      title: t('header.gallery.title'),
+      subtitle: t('header.gallery.subtitle'),
       theme: "amber" as Theme,
     },
     about: {
-      title: "About Us",
-      subtitle: "Learn about our mission and vision in Islamic education",
+      title: t('header.about.title'),
+      subtitle: t('header.about.subtitle'),
       theme: "emerald" as Theme,
     },
     contact: {
-      title: "Contact Us",
-      subtitle: "Get in touch with us for any inquiries or support",
+      title: t('header.contact.title'),
+      subtitle: t('header.contact.subtitle'),
       theme: "indigo" as Theme,
     },
     donation: {
-      title: "Support Our Mission",
-      subtitle: "Help us continue spreading Islamic knowledge and education",
+      title: t('header.donation.title'),
+      subtitle: t('header.donation.subtitle'),
       theme: "amber" as Theme,
     },
     registration: {
-      title: "Registration",
-      subtitle: "Join our Islamic courses and educational programs",
+      title: t('header.registration.title'),
+      subtitle: t('header.registration.subtitle'),
       theme: "emerald" as Theme,
     },
     "graduated-students": {
-      title: "Graduated Students",
-      subtitle: "Celebrating our successful graduates and their achievements",
+      title: t('header.graduatedStudents.title'),
+      subtitle: t('header.graduatedStudents.subtitle'),
       theme: "indigo" as Theme,
     },
     iftah: {
-      title: "Iftah",
-      subtitle: "Explore our Iftah program and spiritual guidance",
+      title: t('header.iftah.title'),
+      subtitle: t('header.iftah.subtitle'),
       theme: "slate" as Theme,
     },
     default: {
-      title: "Islamic Education",
-      subtitle: "Welcome to our comprehensive Islamic learning platform",
+      title: t('header.default.title'),
+      subtitle: t('header.default.subtitle'),
       theme: "amber" as Theme,
     },
   };
@@ -146,8 +147,16 @@ export default function IslamicHeader({
   className = "",
   cta,
 }: IslamicHeaderProps) {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
   // Get defaults based on page type
-  const pageDefaults = getPageDefaults(pageType);
+  const pageDefaults = getPageDefaults(pageType, t);
   
   // Use provided props or fall back to page defaults
   const finalTitle = title || pageDefaults.title;

@@ -1,6 +1,9 @@
+"use client";
+
 // components/iftah/IftahSection.tsx
 import TraditionalContentSection from '../TraditionalContentSection';
 import IslamicHeader from '../IslamicHeader';
+import { useTranslation } from '@/hooks/useTranslation';
 // import IftahQuestionForm from './IftahQuestionForm';
 
 interface Author {
@@ -28,6 +31,14 @@ interface IftahSectionProps {
 }
 
 export default function IftahSection({ fatwas, showAll = false }: IftahSectionProps) {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+  
   const sortedFatwas =
     fatwas
       ?.filter(iftah => iftah.is_published)
@@ -38,8 +49,8 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
   return (
     <>
       <IslamicHeader
-        title="Fatwa Department"
-        subtitle="Islamic University - Ask about Islamic matters and get fatwas from our scholars"
+        title={t('iftah.title')}
+        subtitle={t('iftah.subtitle')}
         pageType="iftah"
         theme="slate"
         alignment="center"
@@ -47,8 +58,8 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
       <TraditionalContentSection 
         fatwas={displayFatwas}
         showAll={showAll}
-        title="Islamic University"
-        subtitle="Fatwa Department"
+        title={t('iftah.universityTitle')}
+        subtitle={t('iftah.departmentSubtitle')}
       />
       {/* <IftahQuestionForm /> */}
     </>

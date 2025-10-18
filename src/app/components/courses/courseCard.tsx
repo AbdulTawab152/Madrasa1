@@ -35,10 +35,10 @@ const stripHtml = (value?: string | null) =>
     .replace(/\s+/g, " ")
     .trim();
 
-const formatDate = (value?: string | null, t?: (key: string) => string) => {
-  if (!value) return t ? t('courses.recentlyUpdated') : "Recently updated";
+const formatDate = (t: (key: string) => string, value?: string | null) => {
+  if (!value) return t('courses.recentlyUpdated');
   const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return t ? t('courses.recentlyUpdated') : "Recently updated";
+  if (Number.isNaN(date.getTime())) return t('courses.recentlyUpdated');
   return date.toLocaleDateString(undefined, {
     month: "short",
     day: "numeric",
@@ -46,11 +46,11 @@ const formatDate = (value?: string | null, t?: (key: string) => string) => {
   });
 };
 
-const instructorName = (course: CourseType) => {
+const instructorName = (course: CourseType, t: (key: string) => string) => {
   const { recorded_by: instructor } = course;
-  if (!instructor) return "Haq Madrasa";
+  if (!instructor) return t('courses.instructorFallback');
   const parts = [instructor.first_name, instructor.last_name].filter(Boolean);
-  return parts.length > 0 ? parts.join(" ") : "Haq Madrasa";
+  return parts.length > 0 ? parts.join(" ") : t('courses.instructorFallback');
 };
 
 export default function CoursesSection({
@@ -58,7 +58,13 @@ export default function CoursesSection({
   showAll = false,
   heading,
 }: CoursesSectionProps) {
-  const { t } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
   const publishedCourses = (courses || [])
     .filter((course) => Number(course.is_published) === 1)
     .sort((a, b) => {
@@ -133,8 +139,8 @@ export default function CoursesSection({
               getImageUrl(course.image, fallbackCourseImage) ??
               fallbackCourseImage;
             const publishedOn = formatDate(
-              course.publish_date || course.created_date || course.created_at,
-              t
+              t,
+              course.publish_date || course.created_date || course.created_at
             );
 
             return (
@@ -195,7 +201,7 @@ export default function CoursesSection({
                         <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-primary-600 shadow-inner shadow-primary-100/70 ring-1 ring-primary-100/70">
                           <UserRound className="h-4 w-4" />
                         </span>
-                        <span>{instructorName(course)}</span>
+                        <span>{instructorName(course, t)}</span>
                       </div>
 
                       <Link

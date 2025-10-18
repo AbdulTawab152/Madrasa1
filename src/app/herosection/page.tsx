@@ -16,43 +16,53 @@ const images = [
   "/hero5.jpg",
   "/hero6.jpg",
   "/hero7.jpg",
-  "/hero8].jpg",
 ];
 
 const Ship = "/ship.png";
 
-// ✅ Scrolling row — works for all languages (4 rows)
+// ✅ Scrolling row — smooth and natural animation
 const ScrollingRow = ({
   direction = "left",
-  delay = 20,
+  delay = 0,
 }: {
   direction?: "left" | "right";
   delay?: number;
 }) => {
-  const scrollX = direction === "left" ? ["0%", "-50%"] : ["-50%", "0%"];
-  const repeatedImages = [...images, ...images, ...images , ...images,...images,...images];
+  // Create a seamless loop by duplicating images
+  const repeatedImages = [...images, ...images];
+  
+  // Calculate the total width for seamless looping
+  const imageWidth = 320; // Base width
+  const gap = 8; // Gap between images
+  const totalWidth = (imageWidth + gap) * images.length;
 
   return (
     <motion.div
-      className="flex gap-2  w-max"
-      animate={{ x: scrollX }}
+      className="flex gap-2 w-max"
+      animate={{ 
+        x: direction === "left" ? [-totalWidth, 0] : [0, -totalWidth]
+      }}
       transition={{
         repeat: Infinity,
         repeatType: "loop",
-        duration: 200,
+        duration: 120, // Faster movement (smaller duration = faster)
         ease: "linear",
         delay,
       }}
+      style={{
+        width: totalWidth * 2, // Double width for seamless loop
+        willChange: "transform", // Optimize for smooth animation
+      }}
     >
       {repeatedImages.map((img, index) => (
-            <Image
-              key={index}
-              src={img}
-              alt={`scrolling-${index}`}
-              width={320}
-              height={210}
-              className="w-[220px] h-[140px] sm:w-[250px] sm:h-[180px] lg:w-[320px] lg:h-[210px] rounded-lg object-cover shadow-2xl drop-shadow-[8px_8px_16px_rgba(0,0,0,0.8)] hover:shadow-3xl transition-shadow duration-300"
-            />
+        <Image
+          key={`${img}-${index}`}
+          src={img}
+          alt={`scrolling-${index}`}
+          width={320}
+          height={210}
+          className="w-[220px] h-[140px] sm:w-[250px] sm:h-[180px] lg:w-[320px] lg:h-[210px] rounded-lg object-cover shadow-2xl drop-shadow-[8px_8px_16px_rgba(0,0,0,0.8)] hover:shadow-3xl transition-shadow duration-300 flex-shrink-0"
+        />
       ))}
     </motion.div>
   );
@@ -85,19 +95,19 @@ const Hero = () => {
       {/* Custom Gradient Overlay */}
       <div className="w-full h-full bg-gradient-to-tr from-black via-yellow-100 to-transparent blur-md absolute inset-0 z-22" />
 
-      {/* Scrolling Rows — 4 rows stacked vertically */}
+      {/* Scrolling Rows — 4 rows stacked vertically with smooth animation */}
       <div className="relative z-30 flex flex-col space-y-2 py-30">
         <div className="overflow-hidden">
           <ScrollingRow direction="left" delay={0} />
         </div>
         <div className="overflow-hidden">
-          <ScrollingRow direction="right" delay={2} />
+          <ScrollingRow direction="right" delay={1} />
         </div>
         <div className="overflow-hidden">
-          <ScrollingRow direction="left" delay={3} />
+          <ScrollingRow direction="left" delay={2} />
         </div>
         <div className="overflow-hidden">
-          <ScrollingRow direction="right" delay={4} />
+          <ScrollingRow direction="right" delay={3} />
         </div>
       </div>
 
@@ -123,21 +133,19 @@ const Hero = () => {
 
           <div className="flex flex-wrap gap-4 justify-center mt-8">
             <Link href="/about">
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-16 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-300">
+              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-300">
                 {t("hero.aboutUs")} <FaArrowRight />
               </button>
             </Link>
             
             <Link href="/courses">
-              <button className="border-2 border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 hover:bg-orange-500/25 hover:text-white hover:shadow-2xl px-16 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
+              <button className="border-2 border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 hover:bg-orange-500/25 hover:text-white hover:shadow-2xl px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
                 {t("hero.ourCourses")}
               </button>
             </Link>
           </div>
 
-          <div className="w-full h-full bg-gradient-to-tr from-black via-yellow-1bg-[linear-gradient(to_top_right,_black,_rgba(255,255,0,0.2)5%,_rgba(255,255,0,0.2)_55%,_transparent)]
- 00 to-transparent blur-md
- " />
+          <div className="w-full h-full bg-gradient-to-tr from-black via-yellow-100 to-transparent blur-md" />
         </div>
      
 

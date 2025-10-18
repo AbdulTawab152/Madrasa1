@@ -183,20 +183,20 @@
       "gallery": "گالری خاطرات",
       "galleryDescription": "خاطرات زندگی شیخ خلیفه صاحب ارغندی (رح) و تاریخ انوارالعلوم",
       "gallerySection": {
-      "title": "مدرسه",
-      "collection": "گالری",
-      "description": "زیبایی دانش جاودانه و تعالیم معنوی مدرسه ما را کشف کنید که برای پرورش ذهن‌ها و قلب‌ها برای ساختن آینده‌ای روشن‌تر و آگاه‌تر طراحی شده است.",
-      "unavailable": "گالری در حال حاضر در دسترس نیست. لطفاً بعداً مراجعه کنید.",
-      "noImagesAvailable": "هیچ تصویری موجود نیست",
-      "untitled": "بدون عنوان",
-      "general": "عمومی",
-      "featured": "ویژه",
-      "featuredCollection": "مجموعه ویژه",
-      "productionProcess": "فرآیند تولید",
-      "showLess": "کمتر نشان بده",
-      "showAll": "همه را نشان بده",
-      "imageCounter": "تصاویر",
-      "of": "از"
+        "title": "مدرسه",
+        "collection": "گالری",
+        "description": "زیبایی دانش جاودانه و تعالیم معنوی مدرسه ما را کشف کنید که برای پرورش ذهن‌ها و قلب‌ها برای ساختن آینده‌ای روشن‌تر و آگاه‌تر طراحی شده است.",
+        "unavailable": "گالری در حال حاضر در دسترس نیست. لطفاً بعداً مراجعه کنید.",
+        "noImagesAvailable": "هیچ تصویری موجود نیست",
+        "untitled": "بدون عنوان",
+        "general": "عمومی",
+        "featured": "ویژه",
+        "featuredCollection": "مجموعه ویژه",
+        "productionProcess": "فرآیند تولید",
+        "showLess": "کمتر نشان بده",
+        "showAll": "همه را نشان بده",
+        "imageCounter": "تصاویر",
+        "of": "از"
       }
     }
   },
@@ -214,6 +214,114 @@
     "privacyPolicy": "سیاست حریم خصوصی",
     "termsOfService": "شرایط خدمات"
   },
+  "iftah": {
+    "title": "بخش فتوا",
+    "subtitle": "دانشگاه اسلامی - در مورد مسائل اسلامی سوال کنید و از علمای ما فتوا دریافت کنید",
+    "universityTitle": "دانشگاه اسلامی",
+    "departmentSubtitle": "بخش فتوا",
+    "form": {
+      "islamicQA": "پرسش و پاسخ اسلامی",
+      "seekDivineGuidance": "جستجوی راهنمایی الهی",
+      "getAuthenticAnswers": "پاسخ‌های اصیل اسلامی از علمای واجد شرایط بر اساس قرآن و سنت دریافت کنید.",
+      "expertScholars": "علمای متخصص",
+      "quickResponse": "پاسخ سریع",
+      "freeService": "خدمات رایگان",
+      "askYourQuestion": "سوال خود را بپرسید",
+      "getPersonalizedGuidance": "راهنمایی شخصی دریافت کنید",
+      "askAQuestion": "سوال بپرسید",
+      "seekIslamicGuidance": "جستجوی راهنمایی اسلامی",
+      "fullName": "نام کامل",
+      "emailAddress": "آدرس ایمیل",
+      "phoneNumber": "شماره تلفن",
+      "whatsapp": "واتساپ",
+      "yourIslamicQuestion": "سوال اسلامی شما",
+      "enterFullName": "نام کامل خود را وارد کنید",
+      "enterEmail": "ایمیل خود را وارد کنید",
+      "enterPhoneOptional": "شماره تلفن وارد کنید (اختیاری)",
+      "enterWhatsappOptional": "شماره واتساپ وارد کنید (اختیاری)",
+      "writeQuestionHere": "لطفاً سوال اسلامی خود را اینجا بنویسید (حداقل ۱۵ کاراکتر)...",
+      "submitting": "در حال ارسال...",
+      "submitQuestion": "ارسال سوال",
+      "questionSubmitted": "سوال ارسال شد!",
+      "questionSubmittedSuccess": "سوال اسلامی شما با موفقیت ارسال شد. علمای ما آن را بررسی کرده و راهنمایی اصیل ارائه خواهند داد.",
+      "hoursResponse": "۲۴-۴۸ ساعت",
+      "expertReview": "بررسی متخصص",
+      "continue": "ادامه",
+      "validation": {
+        "pleaseEnterFullName": "لطفاً نام کامل خود را وارد کنید",
+        "nameMinLength": "نام باید حداقل ۲ کاراکتر باشد",
+        "nameLettersOnly": "نام فقط می‌تواند شامل حروف و فاصله باشد",
+        "pleaseEnterEmail": "لطفاً آدرس ایمیل خود را وارد کنید",
+        "validEmailAddress": "لطفاً آدرس ایمیل معتبر وارد کنید",
+        "validPhoneNumber": "لطفاً شماره تلفن معتبر وارد کنید",
+        "validWhatsappNumber": "لطفاً شماره واتساپ معتبر وارد کنید",
+        "phoneNumbersOnly": "لطفاً برای شماره تلفن فقط عدد وارد کنید",
+        "whatsappNumbersOnly": "لطفاً برای شماره واتساپ فقط عدد وارد کنید",
+        "writeIslamicQuestion": "لطفاً سوال اسلامی خود را بنویسید",
+        "moreDetailedQuestion": "لطفاً سوال مفصل‌تری بنویسید (حداقل ۱۵ کاراکتر)",
+        "questionTooLong": "سوال خیلی طولانی است (حداکثر ۱۰۰۰ کاراکتر)",
+        "completeRequiredFields": "لطفاً تمام فیلدهای الزامی را تکمیل کنید: نام، ایمیل و سوال.",
+        "completeFollowingFields": "لطفاً فیلدهای الزامی زیر را تکمیل کنید:"
+      }
+    }
+  },
+  "blog": {
+    "loading": "در حال بارگذاری",
+    "preparingStories": "آماده‌سازی داستان‌های الهام‌بخش...",
+    "fetchingUpdates": "ما آخرین به‌روزرسانی‌ها را برای شما دریافت می‌کنیم.",
+    "unableToLoad": "نمی‌توان وبلاگ‌ها را بارگذاری کرد",
+    "tryRefreshing": "لطفاً صفحه را تازه کنید.",
+    "retryLoading": "تلاش مجدد برای بارگذاری وبلاگ‌ها",
+    "comingSoon": "به زودی",
+    "noBlogsAvailable": "هنوز وبلاگی در این دسته‌بندی موجود نیست.",
+    "checkBackSoon": "برای آخرین مقالات و اعلانات به زودی بازگردید.",
+    "readMore": "بیشتر بخوانید",
+    "noSummaryAvailable": "خلاصه‌ای موجود نیست.",
+    "recentlyUpdated": "اخیراً به‌روزرسانی شده",
+    "general": "عمومی",
+    "all": "همه"
+  },
+  "books": {
+    "loadingCollection": "در حال بارگذاری مجموعه ما...",
+    "preparingBooks": "بهترین کتاب‌های اسلامی را برای شما آماده می‌کنیم",
+    "noBooksAvailable": "هیچ کتابی موجود نیست",
+    "workingOnAdding": "ما در حال اضافه کردن کتاب‌های بیشتر به مجموعه خود هستیم.",
+    "bookCover": "جلد کتاب",
+    "book": "کتاب",
+    "viewDetails": "مشاهده جزئیات",
+    "pages": "صفحه",
+    "nA": "موجود نیست",
+    "failedToFetch": "دریافت کتاب‌ها ناموفق بود"
+  },
+  "contact": {
+    "getInTouch": "تماس بگیرید",
+    "loveToHear": "ما دوست داریم از شما بشنویم. پیام بفرستید و ما در اسرع وقت پاسخ خواهیم داد.",
+    "address": "آدرس",
+    "contact": "تماس",
+    "openingHours": "ساعات کاری",
+    "sendMessage": "پیام بفرستید",
+    "respondSoon": "ما در اسرع وقت پاسخ خواهیم داد",
+    "yourName": "نام شما",
+    "yourEmail": "ایمیل شما",
+    "yourPhone": "شماره تلفن شما",
+    "yourMessage": "پیام شما",
+    "sending": "در حال ارسال...",
+    "sendMessageButton": "ارسال پیام",
+    "messageSentSuccess": "پیام با موفقیت ارسال شد!",
+    "failedToSend": "ارسال پیام ناموفق بود. لطفاً دوباره تلاش کنید.",
+    "fillRequiredFields": "لطفاً تمام فیلدهای الزامی را به درستی پر کنید.",
+    "validation": {
+      "pleaseEnterName": "لطفاً نام خود را وارد کنید",
+      "pleaseEnterEmail": "لطفاً آدرس ایمیل خود را وارد کنید",
+      "validEmailAddress": "لطفاً آدرس ایمیل معتبر وارد کنید",
+      "pleaseEnterMessage": "لطفاً پیام خود را وارد کنید"
+    },
+    "addressDetails": "۴۱۰ سندتاون، کالیفرنیا ۹۴۰۰۱، ایالات متحده",
+    "phoneNumber": "۸۸۸-۱۲۳-۴۵۶۷",
+    "emailAddress": "info@example.com",
+    "openingHoursDetails": "دوشنبه - جمعه: ۱۰:۳۰ صبح - ۷:۰۰ عصر",
+    "somethingWentWrong": "مشکلی پیش آمد"
+  },
   "courses": {
     "title": "دوره‌های اسلامی",
     "unableToLoad": "نمی‌توان دوره‌ها را بارگذاری کرد",
@@ -228,6 +336,7 @@
     "lessons": "درس‌ها",
     "viewCourse": "مشاهده دوره",
     "recentlyUpdated": "اخیراً به‌روزرسانی شده",
+    "instructorFallback": "حق مدرسه",
     "courseNotFound": "دوره یافت نشد",
     "courseNotFoundMessage": "دوره‌ای که دنبال آن می‌گردید وجود ندارد.",
     "browseAllCourses": "مشاهده همه دوره‌ها",
@@ -261,8 +370,8 @@
   },
   "home": {
     "exploreKnowledge": "کاوش دانش",
-    "popularCourses": "دوره‌های محبوب ما",
-    "popularCoursesHighlight": "دوره‌های محبوب",
+    "popularCourses": "دوره‌های محبوب",
+    "popularCoursesHighlight": "محبوب",
     "coursesDescription": "دوره‌های محبوب ما را کشف کنید، که برای ارائه دانش اصیل اسلامی طراحی شده‌اند که بر اساس",
     "quran": "قرآن",
     "and": "و",
@@ -270,7 +379,7 @@
     "loadingCourses": "بارگذاری دوره‌ها...",
     "viewAllCourses": "مشاهده همه دوره‌ها",
     "loadingEvents": "بارگذاری رویدادها...",
-    "ourBooks": "کتاب‌های ما",
+    "ourBooks": "کتاب‌ها",
     "booksHighlight": "کتاب‌ها",
     "booksDescription": "بر اساس",
     "booksDescriptionEnd": "، کتاب‌های ما دانش اصیل اسلامی ارائه می‌دهند.",
@@ -278,13 +387,13 @@
     "viewAllBooks": "مشاهده همه کتاب‌ها",
     "loadingGallery": "بارگذاری گالری...",
     "celebratingSuccess": "جشن موفقیت",
-    "ourGraduates": "فارغ‌التحصیلان ما",
+    "ourGraduates": "فارغ‌التحصیلان",
     "graduatesHighlight": "فارغ‌التحصیلان",
     "graduatesDescription": "برجسته کردن دستاوردها و سفرهای دانشجویانی که با موفقیت دوره‌های خود را تکمیل کرده‌اند",
     "loadingGraduates": "بارگذاری فارغ‌التحصیلان...",
     "viewAllGraduation": "مشاهده همه فارغ‌التحصیلی‌ها",
     "readOurBlog": "وبلاگ ما را بخوانید",
-    "exploreOurBlog": "وبلاگ ما را کاوش کنید",
+    "exploreOurBlog": " بلاگ",
     "blogHighlight": "وبلاگ",
     "blogDescription": "آخرین مقالات، بینش‌ها و داستان‌های دانشجویان ما را کشف کنید",
     "loadingBlogPosts": "بارگذاری پست‌های وبلاگ...",
@@ -314,5 +423,71 @@
     "organizedBy": "سازماندهی شده توسط مدرسه انوارالعلوم",
     "eventDetails": "جزئیات رویداد",
     "viewAllEvents": "مشاهده همه رویدادها"
+  },
+  "header": {
+    "courses": {
+      "title": "دوره‌های اسلامی",
+      "subtitle": "برنامه‌ها و دوره‌های جامع آموزش اسلامی ما را کاوش کنید"
+    },
+    "articles": {
+      "title": "مقالات اسلامی",
+      "subtitle": "مقالات بصیرت‌آمیز در مورد تعالیم اسلامی و مسائل معاصر بخوانید"
+    },
+    "blogs": {
+      "title": "وبلاگ‌های اسلامی",
+      "subtitle": "با آخرین پست‌ها و بینش‌های وبلاگ اسلامی ما به‌روز بمانید"
+    },
+    "events": {
+      "title": "رویدادهای اسلامی",
+      "subtitle": "در رویدادها، سمینارها و گردهمایی‌های اسلامی آینده ما شرکت کنید"
+    },
+    "books": {
+      "title": "کتاب‌های اسلامی",
+      "subtitle": "مجموعه کتاب‌ها و ادبیات اسلامی ما را کشف کنید"
+    },
+    "authors": {
+      "title": "نویسندگان اسلامی",
+      "subtitle": "با دانشمندان و نویسندگان برجسته اسلامی ما آشنا شوید"
+    },
+    "awlayaa": {
+      "title": "اولیاء الله",
+      "subtitle": "درباره زندگی و تعالیم دوستان خدا بیاموزید"
+    },
+    "tasawwuf": {
+      "title": "تصوف",
+      "subtitle": "ابعاد معنوی عمل اسلامی را کاوش کنید"
+    },
+    "gallery": {
+      "title": "گالری",
+      "subtitle": "عکس‌هایی از رویدادها و فعالیت‌های اسلامی ما را مشاهده کنید"
+    },
+    "about": {
+      "title": "درباره ما",
+      "subtitle": "درباره ماموریت و چشم‌انداز ما در آموزش اسلامی بیاموزید"
+    },
+    "contact": {
+      "title": "تماس با ما",
+      "subtitle": "برای هرگونه سوال یا پشتیبانی با ما تماس بگیرید"
+    },
+    "donation": {
+      "title": "ماموریت ما را پشتیبانی کنید",
+      "subtitle": "به ما کمک کنید تا دانش و آموزش اسلامی را گسترش دهیم"
+    },
+    "registration": {
+      "title": "ثبت‌نام",
+      "subtitle": "در دوره‌ها و برنامه‌های آموزشی اسلامی ما شرکت کنید"
+    },
+    "graduatedStudents": {
+      "title": "فارغ‌التحصیلان",
+      "subtitle": "جشن فارغ‌التحصیلان موفق و دستاوردهای آن‌ها"
+    },
+    "iftah": {
+      "title": "افتاح",
+      "subtitle": "برنامه افتاح و راهنمایی معنوی ما را کاوش کنید"
+    },
+    "default": {
+      "title": "آموزش اسلامی",
+      "subtitle": "به پلتفرم جامع یادگیری اسلامی ما خوش آمدید"
+    }
   }
 }

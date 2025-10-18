@@ -17,6 +17,7 @@ import PaginationControls from "@/components/PaginationControls";
 import { BlogsApi } from "@/lib/api";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { getImageUrl } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface BlogItem {
   id: number;
@@ -61,11 +62,11 @@ function resolveCoverImage(img?: string | null) {
   return getImageUrl(img, fallbackImage) || fallbackImage;
 }
 
-function formatDate(value?: string | null) {
-  if (!value) return "Recently updated";
+function formatDate(value?: string | null, t?: (key: string) => string) {
+  if (!value) return t ? t('blog.recentlyUpdated') : "Recently updated";
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) {
-    return "Recently updated";
+    return t ? t('blog.recentlyUpdated') : "Recently updated";
   }
   return date.toLocaleDateString(undefined, {
     year: "numeric",
@@ -75,7 +76,15 @@ function formatDate(value?: string | null) {
 }
 
 export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>("All");
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
+  const [selectedCategory, setSelectedCategory] = useState<string>(t('blog.all'));
   const [mounted, setMounted] = useState(false);
   const enablePagination = !homePage;
 
@@ -149,24 +158,24 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
   const categories = useMemo(
     () =>
       [
-        "All",
+        t('blog.all'),
         ...new Set(
-          publishedBlogs.map((item) => item.category?.name || "General")
+          publishedBlogs.map((item) => item.category?.name || t('blog.general'))
         ),
       ],
-    [publishedBlogs]
+    [publishedBlogs, t]
   );
 
   const filteredBlogs = useMemo(() => {
     let next = [...curatedBlogs];
-    if (!homePage && selectedCategory !== "All") {
+    if (!homePage && selectedCategory !== t('blog.all')) {
       next = next.filter((item) => item.category?.name === selectedCategory);
     }
     if (limit) {
       next = next.slice(0, limit);
     }
     return next;
-  }, [curatedBlogs, homePage, limit, selectedCategory]);
+  }, [curatedBlogs, homePage, limit, selectedCategory, t]);
 
   if (isLoadingInitial && filteredBlogs.length === 0) {
     return (
@@ -174,13 +183,13 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
         <div className="max-w-7xl mx-auto px-6 space-y-10">
           <header className="text-center space-y-3">
             <p className="text-sm uppercase tracking-[0.35em] text-primary-600">
-              Loading
+              {t('blog.loading')}
             </p>
             <h2 className="text-3xl font-semibold text-primary-900">
-              Preparing inspiring stories …
+              {t('blog.preparingStories')}
             </h2>
             <p className="text-primary-600">
-              We are fetching the latest updates for you.
+              {t('blog.fetchingUpdates')}
             </p>
           </header>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -199,16 +208,16 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
         <div className="max-w-3xl mx-auto px-6 text-center">
           <div className="rounded-3xl border border-red-100 bg-red-50 p-10 shadow-soft">
             <p className="text-xl font-semibold text-red-700 mb-4">
-              Unable to load blogs
+              {t('blog.unableToLoad')}
             </p>
             <p className="text-red-600 mb-6">
-              {error}. Please try refreshing the page.
+              {error}. {t('blog.tryRefreshing')}
             </p>
             <button
               onClick={() => void reload()}
               className="inline-flex items-center rounded-full bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
             >
-              Retry loading blogs
+              {t('blog.retryLoading')}
             </button>
           </div>
         </div>
@@ -240,13 +249,13 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
           {filteredBlogs.length === 0 ? (
             <div className="rounded-3xl border border-primary-100/60 bg-white/95 p-10 text-center shadow-soft">
               <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
-                Coming soon
+                {t('blog.comingSoon')}
               </p>
               <h2 className="mt-3 text-2xl font-semibold text-primary-900">
-                No blogs available in this category yet.
+                {t('blog.noBlogsAvailable')}
               </h2>
               <p className="mt-2 text-primary-600">
-                Check back soon for the latest articles and announcements.
+                {t('blog.checkBackSoon')}
               </p>
             </div>
           ) : (
@@ -282,7 +291,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                     <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/20 to-transparent" />
                     <div className="absolute top-4 left-4 inline-flex gap-2">
                       <span className="rounded-full bg-white/90 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-primary-700">
-                        {item.category?.name || "General"}
+                        {item.category?.name || t('blog.general')}
                       </span>
                     </div>
                   </div>
@@ -294,20 +303,20 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                       </h2>
                       <p className="text-primary-600 text-sm leading-relaxed line-clamp-3">
                         {item.description?.replace(/<[^>]*>/g, "") ||
-                          "No summary available."}
+                          t('blog.noSummaryAvailable')}
                       </p>
                     </div>
 
                     <div className="mt-auto flex items-center justify-between border-t border-primary-100/60 pt-4 text-sm text-primary-700">
                       <span className="inline-flex items-center gap-2">
                         <CalendarDays className="h-4 w-4 text-primary-500" />
-                        <span>{formatDate(item.published_at || item.created_at)}</span>
+                        <span>{formatDate(item.published_at || item.created_at, t)}</span>
                       </span>
                       <Link
                         href={`/blogs/${item.slug}`}
                         className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-700 transition-colors duration-200 hover:bg-primary-100"
                       >
-                        Read more
+                        {t('blog.readMore')}
                         <ArrowUpRight className="h-4 w-4" />
                       </Link>
                     </div>

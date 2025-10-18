@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { IftahQuestionApi } from "@/lib/api";
+import { useTranslation } from "@/hooks/useTranslation";
 import { 
   FaQuestionCircle, 
   FaUser, 
@@ -15,6 +16,14 @@ import {
 } from "react-icons/fa";
 
 export default function IftahQuestionFormInline() {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -72,46 +81,46 @@ export default function IftahQuestionFormInline() {
 
     // Validate name
     if (!form.name.trim()) {
-      newErrors.name = "Please enter your full name";
+      newErrors.name = t('iftah.form.validation.pleaseEnterFullName');
       isValid = false;
     } else if (form.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters";
+      newErrors.name = t('iftah.form.validation.nameMinLength');
       isValid = false;
     } else if (!/^[a-zA-Z\s\u0600-\u06FF]+$/.test(form.name.trim())) {
-      newErrors.name = "Name can only contain letters and spaces";
+      newErrors.name = t('iftah.form.validation.nameLettersOnly');
       isValid = false;
     }
 
     // Validate email
     if (!form.email.trim()) {
-      newErrors.email = "Please enter your email address";
+      newErrors.email = t('iftah.form.validation.pleaseEnterEmail');
       isValid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Please enter a valid email address";
+      newErrors.email = t('iftah.form.validation.validEmailAddress');
       isValid = false;
     }
 
     // Validate phone (optional but if provided, must be valid)
     if (form.phone.trim() && !/^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.phone.trim())) {
-      newErrors.phone = "Please enter a valid phone number";
+      newErrors.phone = t('iftah.form.validation.validPhoneNumber');
       isValid = false;
     }
 
     // Validate WhatsApp (optional but if provided, must be valid)
     if (form.whatsapp.trim() && !/^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.whatsapp.trim())) {
-      newErrors.whatsapp = "Please enter a valid WhatsApp number";
+      newErrors.whatsapp = t('iftah.form.validation.validWhatsappNumber');
       isValid = false;
     }
 
     // Validate question
     if (!form.question.trim()) {
-      newErrors.question = "Please write your Islamic question";
+      newErrors.question = t('iftah.form.validation.writeIslamicQuestion');
       isValid = false;
     } else if (form.question.trim().length < 15) {
-      newErrors.question = "Please write a more detailed question (at least 15 characters)";
+      newErrors.question = t('iftah.form.validation.moreDetailedQuestion');
       isValid = false;
     } else if (form.question.trim().length > 1000) {
-      newErrors.question = "Question is too long (maximum 1000 characters)";
+      newErrors.question = t('iftah.form.validation.questionTooLong');
       isValid = false;
     }
 
@@ -125,7 +134,7 @@ export default function IftahQuestionFormInline() {
     
     // Validate form before submitting
     if (!validateForm()) {
-      setError("Please complete all required fields: Name, Email, and Question.");
+      setError(t('iftah.form.validation.completeRequiredFields'));
       return;
     }
     
@@ -145,7 +154,7 @@ export default function IftahQuestionFormInline() {
       }
       
       console.log('✅ Form submitted successfully');
-      setSuccess("Your question has been submitted successfully!");
+      setSuccess(t('iftah.form.questionSubmittedSuccess'));
       setForm({ name: "", email: "", phone: "", whatsapp: "", question: "" });
       
       
@@ -189,31 +198,31 @@ export default function IftahQuestionFormInline() {
               <div className="flex-1 text-white text-center md:text-left">
                 <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-4 border border-white/30 shadow-sm">
                   <FaQuestionCircle className="mr-1.5 text-sm" />
-                  <span>Islamic Q&A</span>
+                  <span>{t('iftah.form.islamicQA')}</span>
                   <div className="ml-1.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
                 </div>
                 
                 <h1 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">
-                  Seek Divine Guidance
+                  {t('iftah.form.seekDivineGuidance')}
                 </h1>
                 
                 <p className="text-sm sm:text-base mb-6 opacity-95 leading-relaxed max-w-lg mx-auto md:mx-0">
-                  Get authentic Islamic answers from qualified scholars based on Quran and Sunnah.
+                  {t('iftah.form.getAuthenticAnswers')}
                 </p>
                 
                 {/* Features */}
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs sm:text-sm">
                   <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
-                    <span className="opacity-95 font-medium">Expert Scholars</span>
+                    <span className="opacity-95 font-medium">{t('iftah.form.expertScholars')}</span>
                   </div>
                   <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
-                    <span className="opacity-95 font-medium">Quick Response</span>
+                    <span className="opacity-95 font-medium">{t('iftah.form.quickResponse')}</span>
                   </div>
                   <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
-                    <span className="opacity-95 font-medium">Free Service</span>
+                    <span className="opacity-95 font-medium">{t('iftah.form.freeService')}</span>
                   </div>
                 </div>
               </div>
@@ -222,8 +231,8 @@ export default function IftahQuestionFormInline() {
               <div className="flex flex-col items-center md:items-end">
                 <div className="text-center md:text-right mb-4">
                   <div className="text-4xl sm:text-5xl mb-2">📿</div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-1">Ask Your Question</h3>
-                  <p className="text-amber-100 text-xs sm:text-sm">Get personalized guidance</p>
+                  <h3 className="text-lg sm:text-xl font-bold mb-1">{t('iftah.form.askYourQuestion')}</h3>
+                  <p className="text-amber-100 text-xs sm:text-sm">{t('iftah.form.getPersonalizedGuidance')}</p>
                 </div>
                 
                 <button
@@ -231,7 +240,7 @@ export default function IftahQuestionFormInline() {
                   className="group flex items-center justify-center px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm"
                 >
                   <FaQuestionCircle className="mr-1.5 text-sm group-hover:rotate-12 transition-transform duration-300" />
-                  <span>Ask a Question</span>
+                  <span>{t('iftah.form.askAQuestion')}</span>
                   <FaArrowRight className="ml-1.5 text-xs group-hover:translate-x-1 transition-transform duration-300" />
                 </button>
               </div>
@@ -267,13 +276,13 @@ export default function IftahQuestionFormInline() {
               <div className="relative text-center">
                 <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-3 border border-white/30 shadow-sm">
                   <FaQuestionCircle className="mr-1.5 text-sm" />
-                  <span>Ask Your Question</span>
+                  <span>{t('iftah.form.askYourQuestion')}</span>
                   <div className="ml-1.5 w-1.5 h-1.5 bg-green-300 rounded-full animate-pulse"></div>
                 </div>
                 
-                <h2 className="text-xl sm:text-2xl font-bold mb-2">Seek Islamic Guidance</h2>
+                <h2 className="text-xl sm:text-2xl font-bold mb-2">{t('iftah.form.seekIslamicGuidance')}</h2>
                 <p className="text-amber-100 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
-                  Get authentic answers from qualified Islamic scholars based on Quran and Sunnah.
+                  {t('iftah.form.getAuthenticAnswers')}
                 </p>
               </div>
             </div>
@@ -293,7 +302,7 @@ export default function IftahQuestionFormInline() {
                   <div className="flex items-start gap-2">
                     <span className="text-red-600 text-sm">⚠️</span>
                     <div className="flex-1">
-                      <p className="font-semibold mb-2 text-sm">Please complete the following required fields:</p>
+                      <p className="font-semibold mb-2 text-sm">{t('iftah.form.validation.completeFollowingFields')}</p>
                       <div className="flex flex-wrap gap-1">
                         {errors.name && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.name}</span>}
                         {errors.email && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.email}</span>}
@@ -313,7 +322,7 @@ export default function IftahQuestionFormInline() {
                       <div className="w-5 h-5 bg-amber-100 rounded-md flex items-center justify-center shadow-sm">
                         <FaUser className="text-amber-600 text-xs" />
                       </div>
-                      Full Name *
+                      {t('iftah.form.fullName')} *
                     </label>
                     <input 
                       name="name" 
@@ -323,7 +332,7 @@ export default function IftahQuestionFormInline() {
                       className={`w-full border-2 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
                         errors.name ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
-                      placeholder="Enter your full name"
+                      placeholder={t('iftah.form.enterFullName')}
                     />
                     {errors.name && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -337,7 +346,7 @@ export default function IftahQuestionFormInline() {
                       <div className="w-5 h-5 bg-amber-100 rounded-md flex items-center justify-center shadow-sm">
                         <FaEnvelope className="text-amber-600 text-xs" />
                       </div>
-                      Email Address *
+                      {t('iftah.form.emailAddress')} *
                     </label>
                     <input 
                       name="email" 
@@ -348,7 +357,7 @@ export default function IftahQuestionFormInline() {
                       className={`w-full border-2 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
                         errors.email ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
-                      placeholder="Enter your email"
+                      placeholder={t('iftah.form.enterEmail')}
                     />
                     {errors.email && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -366,7 +375,7 @@ export default function IftahQuestionFormInline() {
                       <div className="w-5 h-5 bg-blue-100 rounded-md flex items-center justify-center shadow-sm">
                         <FaPhone className="text-blue-600 text-xs" />
                       </div>
-                      Phone Number
+                      {t('iftah.form.phoneNumber')}
                     </label>
                     <input 
                       name="phone" 
@@ -375,7 +384,7 @@ export default function IftahQuestionFormInline() {
                       className={`w-full border-2 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
                         errors.phone ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
-                      placeholder="Enter phone number (optional)"
+                      placeholder={t('iftah.form.enterPhoneOptional')}
                     />
                     {errors.phone && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -389,7 +398,7 @@ export default function IftahQuestionFormInline() {
                       <div className="w-5 h-5 bg-green-100 rounded-md flex items-center justify-center shadow-sm">
                         <FaWhatsapp className="text-green-600 text-xs" />
                       </div>
-                      WhatsApp
+                      {t('iftah.form.whatsapp')}
                     </label>
                     <input 
                       name="whatsapp" 
@@ -399,7 +408,7 @@ export default function IftahQuestionFormInline() {
                       className={`w-full border-2 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
                         errors.whatsapp ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
-                      placeholder="Enter WhatsApp number (optional)"
+                      placeholder={t('iftah.form.enterWhatsappOptional')}
                     />
                     {errors.whatsapp && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -416,7 +425,7 @@ export default function IftahQuestionFormInline() {
                     <div className="w-5 h-5 bg-purple-100 rounded-md flex items-center justify-center shadow-sm">
                       <FaQuestionCircle className="text-purple-600 text-xs" />
                     </div>
-                    Your Islamic Question *
+                    {t('iftah.form.yourIslamicQuestion')} *
                   </label>
                   <div className="relative">
                     <textarea 
@@ -429,7 +438,7 @@ export default function IftahQuestionFormInline() {
                       className={`w-full border-2 rounded-lg px-3 py-2 min-h-[80px] sm:min-h-[100px] focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 resize-none text-xs sm:text-sm bg-gray-50 focus:bg-white pr-12 ${
                         errors.question ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
-                      placeholder="Please write your Islamic question here (minimum 15 characters)..."
+                      placeholder={t('iftah.form.writeQuestionHere')}
                     />
                     {/* Character Counter */}
                     <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-white/80 px-1.5 py-0.5 rounded">
@@ -459,12 +468,12 @@ export default function IftahQuestionFormInline() {
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
-                      <span className="relative z-10">Submitting...</span>
+                      <span className="relative z-10">{t('iftah.form.submitting')}</span>
                     </>
                   ) : (
                     <>
                       <FaQuestionCircle className="text-sm relative z-10 group-hover:rotate-12 transition-transform duration-300" />
-                      <span className="relative z-10">Submit Question</span>
+                      <span className="relative z-10">{t('iftah.form.submitQuestion')}</span>
                       <FaArrowRight className="text-xs relative z-10 group-hover:translate-x-1 transition-transform duration-200" />
                     </>
                   )}
@@ -493,9 +502,9 @@ export default function IftahQuestionFormInline() {
               </div>
               
               {/* Success Content */}
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Question Submitted!</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{t('iftah.form.questionSubmitted')}</h3>
               <p className="text-gray-600 mb-6 text-sm leading-relaxed">
-                Your Islamic question has been submitted successfully. Our scholars will review and provide authentic guidance.
+                {t('iftah.form.questionSubmittedSuccess')}
               </p>
               
               {/* Features */}
@@ -503,11 +512,11 @@ export default function IftahQuestionFormInline() {
                 <div className="flex items-center justify-center gap-4 text-xs text-gray-600">
                   <div className="flex items-center gap-1.5">
                     <FaClock className="text-amber-500 text-sm" />
-                    <span className="font-medium">24-48 hours</span>
+                    <span className="font-medium">{t('iftah.form.hoursResponse')}</span>
                   </div>
                   <div className="flex items-center gap-1.5">
                     <FaStar className="text-amber-500 text-sm" />
-                    <span className="font-medium">Expert Review</span>
+                    <span className="font-medium">{t('iftah.form.expertReview')}</span>
                   </div>
                 </div>
               </div>
@@ -516,7 +525,7 @@ export default function IftahQuestionFormInline() {
                 onClick={() => setShowSuccessModal(false)}
                 className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm"
               >
-                <span>Continue</span>
+                <span>{t('iftah.form.continue')}</span>
                 <FaArrowRight className="text-xs" />
               </button>
             </div>
