@@ -1,4 +1,4 @@
-import GraduationsSection from "../components/graduation/TopGraduations.tsx";
+import GraduationsSection from "../components/graduation/TopGraduations";
 import IslamicHeader from "../components/IslamicHeader";
 
 export default function GraduationsPage() {

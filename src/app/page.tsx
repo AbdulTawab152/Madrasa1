@@ -12,7 +12,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
 const GraduationsSection = lazy(
-  () => import("./components/graduation/TopGraduations.tsx")
+  () => import("./components/graduation/TopGraduations")
 );
 const LazyGallerySection = lazy(
   () => import("./components/LazyGallerySection")
