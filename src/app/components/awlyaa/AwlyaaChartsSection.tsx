@@ -5,8 +5,17 @@ import { AwlyaaChart } from "@/lib/types";
 import { FaUser, FaChevronDown, FaChevronUp, FaTimes, FaInfoCircle, FaCalendarAlt, FaIdCard, FaCrown, FaGraduationCap, FaExternalLinkAlt } from "react-icons/fa";
 import { apiConfig } from "@/lib/config";
 import { cleanText } from "@/lib/textUtils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export default function AwlyaaChartsSection() {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
   const [charts, setCharts] = useState<AwlyaaChart[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -232,7 +241,7 @@ export default function AwlyaaChartsSection() {
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex items-center justify-center py-20">
             <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-            <span className="ml-4 text-gray-600 font-medium text-lg">Loading Awlyaa Charts...</span>
+            <span className="ml-4 text-gray-600 font-medium text-lg">{t('awlyaaCharts.loading')}</span>
           </div>
         </div>
       </div>
@@ -247,7 +256,7 @@ export default function AwlyaaChartsSection() {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <FaInfoCircle className="text-red-500 text-2xl" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">Unable to Load Charts</h3>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">{t('awlyaaCharts.unableToLoad')}</h3>
             <p className="text-gray-600">{error}</p>
           </div>
         </div>
@@ -280,8 +289,8 @@ export default function AwlyaaChartsSection() {
                 <div className="w-24 h-24 bg-gradient-to-r from-amber-100 to-orange-100 rounded-full flex items-center justify-center mx-auto mb-8 shadow-xl">
                   <FaUser className="text-amber-500 text-4xl" />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-700 mb-4">No Master Teachers Found</h3>
-                <p className="text-gray-500 max-w-lg mx-auto text-lg">No root teachers are available in the current data.</p>
+                <h3 className="text-2xl font-bold text-gray-700 mb-4">{t('awlyaaCharts.noMasterTeachers')}</h3>
+                <p className="text-gray-500 max-w-lg mx-auto text-lg">{t('awlyaaCharts.noMasterTeachersDesc')}</p>
               </div>
             )}
 
@@ -294,11 +303,11 @@ export default function AwlyaaChartsSection() {
                     disabled={currentPage === 1}
                     className="px-3 sm:px-4 py-2 bg-amber-100 hover:bg-amber-200 disabled:bg-gray-100 disabled:text-gray-400 text-amber-700 font-semibold rounded-lg sm:rounded-xl transition-all duration-300 disabled:cursor-not-allowed text-sm sm:text-base"
                   >
-                    Previous
+                    {t('awlyaaCharts.previous')}
                   </button>
                   
                   <span className="px-3 sm:px-4 py-2 bg-amber-500 text-white font-semibold rounded-lg sm:rounded-xl text-sm sm:text-base">
-                    {currentPage} of {totalPages}
+                    {currentPage} {t('awlyaaCharts.of')} {totalPages}
                   </span>
                   
                   <button
@@ -306,7 +315,7 @@ export default function AwlyaaChartsSection() {
                     disabled={currentPage === totalPages}
                     className="px-3 sm:px-4 py-2 bg-amber-100 hover:bg-amber-200 disabled:bg-gray-100 disabled:text-gray-400 text-amber-700 font-semibold rounded-lg sm:rounded-xl transition-all duration-300 disabled:cursor-not-allowed text-sm sm:text-base"
                   >
-                    Next
+                    {t('awlyaaCharts.next')}
                   </button>
                 </div>
 
@@ -315,7 +324,7 @@ export default function AwlyaaChartsSection() {
                   className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-bold rounded-xl sm:rounded-2xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl flex items-center gap-2 text-sm sm:text-base"
                 >
                   <FaUser className="text-base sm:text-lg" />
-                  See All {treeData.length} Teachers
+                  {t('awlyaaCharts.seeAllTeachers').replace('{count}', treeData.length.toString())}
                 </button>
               </div>
             )}
@@ -331,7 +340,7 @@ export default function AwlyaaChartsSection() {
                   className="px-6 sm:px-8 py-2 sm:py-3 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold rounded-xl sm:rounded-2xl transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-xl flex items-center gap-2 text-sm sm:text-base"
                 >
                   <FaChevronUp className="text-base sm:text-lg" />
-                  Show Less
+                  {t('awlyaaCharts.showLess')}
                 </button>
               </div>
             )}
@@ -375,19 +384,19 @@ export default function AwlyaaChartsSection() {
                 <div className="bg-amber-50 rounded-2xl p-6 border border-amber-200 flex-1">
                   <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                     <FaIdCard className="text-amber-600" />
-                    Basic Information
+                    {t('awlyaaCharts.basicInformation')}
                   </h3>
                   <div className="space-y-3">
                     <div className="flex justify-between">
-                      <span className="font-medium text-gray-700">Unique ID:</span>
+                      <span className="font-medium text-gray-700">{t('awlyaaCharts.uniqueId')}</span>
                       <span className="text-gray-900 text-sm">{cleanText(selectedChart.uniqu_id)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-medium text-gray-700">Created:</span>
+                      <span className="font-medium text-gray-700">{t('awlyaaCharts.created')}</span>
                       <span className="text-gray-900 text-sm">{formatDate(selectedChart.created_at)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-medium text-gray-700">Updated:</span>
+                      <span className="font-medium text-gray-700">{t('awlyaaCharts.updated')}</span>
                       <span className="text-gray-900 text-sm">{formatDate(selectedChart.updated_at)}</span>
                     </div>
                   </div>
@@ -414,7 +423,7 @@ export default function AwlyaaChartsSection() {
                       <div className="bg-green-50 rounded-2xl p-6 border border-green-200">
                         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                           <FaUser className="text-green-600" />
-                          Teachers ({selectedChart.parents.length})
+                          {t('awlyaaCharts.teachers').replace('{count}', selectedChart.parents.length.toString())}
                         </h3>
                         <div className="space-y-4">
                           {selectedChart.parents.map((parent, index) => (
@@ -423,7 +432,7 @@ export default function AwlyaaChartsSection() {
                               <p className="text-sm text-gray-600 mb-2">ID: {cleanText(parent.teacher_chart.uniqu_id)}</p>
                               <div className="flex items-center gap-2 text-sm text-gray-500">
                                 <FaCalendarAlt className="text-green-500" />
-                                <span>Added: {formatDate(parent.created_at)}</span>
+                                <span>{t('awlyaaCharts.added')} {formatDate(parent.created_at)}</span>
                               </div>
                             </div>
                           ))}
@@ -438,7 +447,7 @@ export default function AwlyaaChartsSection() {
                         <div className="bg-blue-50 rounded-2xl p-6 border border-blue-200">
                           <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                             <FaUser className="text-blue-600" />
-                            Students ({students.length})
+                            {t('awlyaaCharts.students').replace('{count}', students.length.toString())}
                           </h3>
                           <div className="space-y-2">
                             {students.map((student, index) => (
@@ -458,7 +467,7 @@ export default function AwlyaaChartsSection() {
                              students.length === 0 && (
                         <div className="bg-gray-50 rounded-2xl p-6 border border-gray-200 text-center">
                           <FaUser className="text-gray-400 text-3xl mx-auto mb-3" />
-                          <p className="text-gray-600">No relationships recorded for this scholar.</p>
+                          <p className="text-gray-600">{t('awlyaaCharts.noRelationships')}</p>
                         </div>
                       );
                     })()}
@@ -468,17 +477,17 @@ export default function AwlyaaChartsSection() {
                       <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl p-6 border border-amber-200">
                         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                           <FaExternalLinkAlt className="text-amber-600" />
-                          Full Details
+                          {t('awlyaaCharts.fullDetails')}
                         </h3>
                         <p className="text-gray-600 mb-4">
-                          View complete information about this scholar including biography, achievements, and more.
+                          {t('awlyaaCharts.fullDetailsDesc')}
                         </p>
                         <a
                           href={`/awlayaa/${selectedChart.awlyaa_id}`}
                           className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl"
                         >
                           <FaExternalLinkAlt className="text-sm" />
-                          View Full Profile
+                          {t('awlyaaCharts.viewFullProfile')}
                         </a>
                       </div>
                     )}

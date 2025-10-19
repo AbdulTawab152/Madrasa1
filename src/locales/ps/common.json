@@ -387,5 +387,27 @@
       "title": "اسلامي تعلیمات",
       "subtitle": "زموږ د پراخه اسلامي زده کړې پلیټفارم ته ښه راغلاست"
     }
+  },
+  "awlyaaCharts": {
+    "loading": "د اولیاء چارټونو پورته کول...",
+    "unableToLoad": "د چارټونو پورته کول نشي کیدی",
+    "noMasterTeachers": "هیڅ اصلي استاد و نه موندل شو",
+    "noMasterTeachersDesc": "د اوسنيو معلوماتو کې هیڅ اصلي استاد شتون نلري.",
+    "previous": "پخوانی",
+    "next": "راتلونکی",
+    "of": "څخه",
+    "seeAllTeachers": "ټول {count} استادان وګورئ",
+    "showLess": "لږ وښایاست",
+    "basicInformation": "اساسي معلومات",
+    "uniqueId": "ځانګړی پېژندنه:",
+    "created": "جوړ شوی:",
+    "updated": "تازه شوی:",
+    "teachers": "استادان ({count})",
+    "students": "زده کړیالان ({count})",
+    "added": "اضافه شوی:",
+    "noRelationships": "د دې عالم لپاره هیڅ اړیکه ثبت شوې نده.",
+    "fullDetails": "بشپړ جزئیات",
+    "fullDetailsDesc": "د دې عالم بشپړ معلومات شامل د ژوندلیک، لاسته راوړنې او نور وګورئ.",
+    "viewFullProfile": "بشپړ پروفایل وګورئ"
   }
 }

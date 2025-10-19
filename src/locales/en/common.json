@@ -489,5 +489,27 @@
       "title": "Islamic Education",
       "subtitle": "Welcome to our comprehensive Islamic learning platform"
     }
+  },
+  "awlyaaCharts": {
+    "loading": "Loading Awlyaa Charts...",
+    "unableToLoad": "Unable to Load Charts",
+    "noMasterTeachers": "No Master Teachers Found",
+    "noMasterTeachersDesc": "No root teachers are available in the current data.",
+    "previous": "Previous",
+    "next": "Next",
+    "of": "of",
+    "seeAllTeachers": "See All {count} Teachers",
+    "showLess": "Show Less",
+    "basicInformation": "Basic Information",
+    "uniqueId": "Unique ID:",
+    "created": "Created:",
+    "updated": "Updated:",
+    "teachers": "Teachers ({count})",
+    "students": "Students ({count})",
+    "added": "Added:",
+    "noRelationships": "No relationships recorded for this scholar.",
+    "fullDetails": "Full Details",
+    "fullDetailsDesc": "View complete information about this scholar including biography, achievements, and more.",
+    "viewFullProfile": "View Full Profile"
   }
 }

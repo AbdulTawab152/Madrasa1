@@ -18,8 +18,14 @@ const PRIMARY_LINK_LIMIT = 7;
 
 const Navbar = memo(function Navbar() {
   const pathname = usePathname();
-  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Create a string-safe wrapper function
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   

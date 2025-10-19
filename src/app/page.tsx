@@ -22,7 +22,13 @@ const BooksSection = lazy(() => import("./components/books/BooksSection"));
 import { Course as CourseType } from "../lib/types";
 
 export default function HomePage() {
-  const { t } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a string-safe wrapper function
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
   
   // Temporarily disable API calls to test if they're causing the 500 error
   const courses: CourseType[] = [];

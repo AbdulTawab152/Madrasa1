@@ -11,8 +11,14 @@ import img2 from "../../../../public/about3.jpg";
 import img3 from "../../../../public/about4.jpg";
 
 const About = () => {
-  const { t, i18n } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+  
+  // Create a string-safe wrapper function
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
 
   const values = [
     {

@@ -13,7 +13,13 @@ import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
 
 export default function CoursesPage() {
-  const { t } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a string-safe wrapper function
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
   
   const {
     items,
