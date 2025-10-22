@@ -5,6 +5,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
+import { cookies } from "next/headers";
+import { getTranslation } from "@/lib/translations";
 
 interface Event {
   id: number;
@@ -28,6 +30,11 @@ interface Params {
 
 export default async function EventDetailsPage({ params }: Params) {
   const { slug } = await params;
+
+  // Determine language from cookie (fallback to ps)
+  const cookieStore = await cookies();
+  const currentLanguage = cookieStore.get("language")?.value || "ps";
+  const t = (key: string) => getTranslation(key, currentLanguage);
 
   const eventResponse = await EventsApi.getBySlug(slug);
   if (!eventResponse.success) {
@@ -64,8 +71,9 @@ export default async function EventDetailsPage({ params }: Params) {
   };
 
   // Get status badge color
-  const getStatusColor = (status: string) => {
-    switch (status.toLowerCase()) {
+  const getStatusColor = (status?: string) => {
+    const normalized = (status || "unknown").toLowerCase();
+    switch (normalized) {
       case "upcoming":
         return "bg-green-100 text-green-800";
       case "past":
@@ -88,7 +96,7 @@ export default async function EventDetailsPage({ params }: Params) {
                 href="/"
                 className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
               >
-                Home
+                {t('eventsPage.home')}
               </Link>
             </li>
             <li className="flex items-center">
@@ -97,7 +105,7 @@ export default async function EventDetailsPage({ params }: Params) {
                 href="/event"
                 className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
               >
-                Events
+                {t('eventsPage.events')}
               </Link>
             </li>
           </ol>
@@ -128,8 +136,9 @@ export default async function EventDetailsPage({ params }: Params) {
                         event.status
                       )}`}
                     >
-                      {event.status.charAt(0).toUpperCase() +
-                        event.status.slice(1)}
+                      {(event.status
+                        ? event.status.charAt(0).toUpperCase() + event.status.slice(1)
+                        : "Unknown")}
                     </span>
                   </div>
                 </div>
@@ -142,7 +151,7 @@ export default async function EventDetailsPage({ params }: Params) {
 
                 {/* Event Details Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-6 border-y border-gray-100">
-                  <div className="flex items-start space-x-3">
+                  <div className="flex gap-4 items-start space-x-3">
                     <div className="bg-amber-100 p-2 rounded-lg">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -160,14 +169,14 @@ export default async function EventDetailsPage({ params }: Params) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-md font-medium text-gray-500">Date</p>
+                      <p className="text-md font-medium text-gray-500">{t('eventsPage.date')}</p>
                       <p className=" text-[14px] md:font-medium ">
                         {formatDate(event.date)}
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-start space-x-3">
+                  <div className="flex gap-4 items-start space-x-3">
                     <div className="bg-amber-100 p-2 rounded-lg">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -185,9 +194,7 @@ export default async function EventDetailsPage({ params }: Params) {
                       </svg>
                     </div>
                     <div>
-                      <p className="text-md font-medium   text-gray-500">
-                        Duration
-                      </p>
+                      <p className="text-md font-medium   text-gray-500">{t('eventsPage.duration')}</p>
                       <p className="text-[14px]  md:font-medium">
                         {event.duration}
                       </p>
@@ -195,7 +202,7 @@ export default async function EventDetailsPage({ params }: Params) {
                   </div>
 
                   {event.live_link && (
-                    <div className="flex items-start space-x-3 md:col-span-2">
+                    <div className="flex gap-4 items-start space-x-3 md:col-span-2">
                       <div className="bg-amber-100 p-2 rounded-lg">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -212,15 +219,15 @@ export default async function EventDetailsPage({ params }: Params) {
                           />
                         </svg>
                       </div>
-                      <div>
-                        <p className="text-sm text-gray-500">Live Stream</p>
+                      <div className="space-x-6">
+                        <p className="text-sm text-gray-500">{t('eventsPage.liveStream')}</p>
                         <a
                           href={event.live_link}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="font-medium text-amber-600 hover:text-amber-700 inline-flex items-center mt-1"
                         >
-                          {event.live_link_type || "Watch Live"}
+                          {event.live_link_type || t('eventsPage.watchLive')}
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-4 w-4 ml-1"
@@ -244,9 +251,7 @@ export default async function EventDetailsPage({ params }: Params) {
                 {/* Description */}
                 {event.description && (
                   <div className="mt-6">
-                    <h2 className="text-xl font-semibold mb-4 text-gray-900">
-                      About This Event
-                    </h2>
+                    <h2 className="text-xl font-semibold mb-4 text-gray-900">{t('eventsPage.aboutThisEvent')}</h2>
                     <div className="prose max-w-none text-gray-700">
                       <p className="whitespace-pre-line">{cleanText(event.description)}</p>
                     </div>
@@ -257,40 +262,61 @@ export default async function EventDetailsPage({ params }: Params) {
           </div>
 
           {/* Sidebar */}
-          <div className="lg:col-span-1">
-            {/* Related Events */}
+          <div className="lg:col-span-1 flex flex-col gap-8">
+            {/* Related Events - sticky/fixed on scroll */}
             {relatedEvents.length > 0 && (
-              <div className="bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-8">
-                <h3 className="text-xl font-semibold text-gray-900 mb-4">
-                  Related Events
+              <div
+                className="
+                  bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-0 flex flex-col gap-5
+                  sticky top-8 transition-all duration-300
+                "
+                style={{
+                  zIndex: 10,
+                }}
+              >
+                <h3 className="text-xl font-bold text-amber-700 mb-2 flex items-center gap-2">
+                  <svg
+                    className="h-6 w-6 text-amber-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z"
+                    />
+                  </svg>
+                  {t('eventsPage.relatedEvents')}
                 </h3>
-                <div className="space-y-4">
+                <div className="flex flex-col gap-6">
                   {relatedEvents.map((event) => (
                     <Link
-                     key={event.slug}
+                      key={event.slug}
                       href={`/event/${event.slug}`}
-                      className="block group outline-none focus:outline-none focus:ring-0"
+                      className="block group focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400 rounded-xl transition-colors hover:bg-amber-100"
                     >
-                      <div className="flex space-x-3">
-                        <div className="flex-shrink-0 relative h-16 w-16 rounded-lg overflow-hidden">
+                      <div className="flex items-center gap-4 p-3 bg-amber-50 rounded-xl shadow-sm">
+                        <div className="flex-shrink-0 relative h-16 w-16 md:h-20 md:w-20 rounded-lg overflow-hidden border border-amber-200 bg-gray-100">
                           <Image
-                            src={
-                              getImageUrl(event.image, "/placeholder-event.jpg") ||
-                              "/placeholder-event.jpg"
-                            }
+                            src={getImageUrl(event.image, "/placeholder-event.jpg") || "/placeholder-event.jpg"}
                             alt={event.title}
                             fill
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 40vw, 15vw"
+                            className="object-cover"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 truncate group-hover:text-amber-600 transition-colors">
+                          <p className="text-base font-semibold text-gray-900 truncate group-hover:text-amber-700 transition-colors">
                             {event.title}
                           </p>
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-gray-500 mt-1">
                             {formatDate(event.date)}
                           </p>
+                        </div>
+                        <div className="flex items-center">
+                          {/* Intentionally left empty */}
                         </div>
                       </div>
                     </Link>

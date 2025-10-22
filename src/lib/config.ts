@@ -52,6 +52,7 @@ export const endpoints = {
   contact: `${apiConfig.baseUrl}/contact`,
 
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
+  sanad: `${apiConfig.baseUrl}/awlyaa-sanads`,
 } as const;
 
 
@@ -80,6 +81,7 @@ export const navigation = {
     { name: 'event', href: '/event', icon: 'event' },
     { name: 'tasawwuf', href: '/tasawwuf', icon: 'tasawwuf' },
     { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
+    { name: 'sanad', href: '/sanad', icon: 'sanad' },
   
     { name: 'contact', href: '/contact', icon: 'contact' },
   
