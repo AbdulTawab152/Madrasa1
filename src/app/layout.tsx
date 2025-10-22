@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "../globals.css";
 import Navbar from "../component/navbar";
 import Footer from "@/component/footer";
@@ -18,6 +19,24 @@ export default function RootLayout({
   return (
     <html data-scroll-behavior="smooth" dir="rtl" lang="ps">
       <body>
+        <Script
+          id="gtranslate-settings"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.gtranslateSettings = {
+                "default_language": "ps",
+                "languages": ["ps", "en", "fa", "ar", "ur", "tr", "uz"],
+                "wrapper_selector": ".gtranslate_wrapper"
+              };
+            `,
+          }}
+        />
+        <Script
+          src="https://cdn.gtranslate.net/widgets/latest/float.js"
+          strategy="lazyOnload"
+        />
+        <div className="gtranslate_wrapper"></div>
         <I18nProvider>
           <Navbar />
           <main>
