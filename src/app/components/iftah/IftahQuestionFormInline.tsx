@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { IftahQuestionApi } from "@/lib/api";
 import { useTranslation } from "@/hooks/useTranslation";
+import { getLanguageDirection } from "@/lib/i18n";
 import { 
   FaQuestionCircle, 
   FaUser, 
@@ -12,11 +13,12 @@ import {
   FaCheckCircle, 
   FaStar,
   FaClock,
-  FaArrowRight
+  FaArrowRight,
+  FaGlobe
 } from "react-icons/fa";
 
 export default function IftahQuestionFormInline() {
-  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   
   // Create a wrapper that always returns a string
   const t = (key: string): string => {
@@ -24,11 +26,16 @@ export default function IftahQuestionFormInline() {
     return typeof result === 'string' ? result : key;
   };
 
+  // Get current language and direction
+  const currentLanguage = i18n.language;
+  const isRTL = getLanguageDirection(currentLanguage) === 'rtl';
+
   const [form, setForm] = useState({
     name: "",
     email: "",
     phone: "",
     whatsapp: "",
+    category: "",
     question: "",
   });
   const [loading, setLoading] = useState(false);
@@ -41,8 +48,36 @@ export default function IftahQuestionFormInline() {
     email: "",
     phone: "",
     whatsapp: "",
+    category: "",
     question: "",
   });
+  const [categories, setCategories] = useState<any[]>([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setCategoriesLoading(true);
+        const response = await IftahQuestionApi.getCategories();
+        
+        if (response.success && response.data) {
+          setCategories(response.data);
+          console.log('✅ Iftah categories loaded:', response.data);
+        } else {
+          console.log('⚠️ No categories available');
+          setCategories([]);
+        }
+      } catch (error) {
+        console.error('❌ Failed to fetch categories:', error);
+        setCategories([]);
+      } finally {
+        setCategoriesLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
 
   // Helper function to check if form is valid
   const isFormValid = () => {
@@ -50,13 +85,14 @@ export default function IftahQuestionFormInline() {
            /^[a-zA-Z\s\u0600-\u06FF]+$/.test(form.name.trim()) &&
            form.email.trim() && 
            /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email) &&
+           form.category.trim() &&
            form.question.trim().length >= 15 &&
            form.question.trim().length <= 1000 &&
            (!form.phone.trim() || /^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.phone.trim())) &&
            (!form.whatsapp.trim() || /^[\+]?[0-9\s\-\(\)]{10,15}$/.test(form.whatsapp.trim()));
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
@@ -74,6 +110,7 @@ export default function IftahQuestionFormInline() {
       email: "",
       phone: "",
       whatsapp: "",
+      category: "",
       question: "",
     };
 
@@ -97,6 +134,12 @@ export default function IftahQuestionFormInline() {
       isValid = false;
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
       newErrors.email = t('iftah.form.validation.validEmailAddress');
+      isValid = false;
+    }
+
+    // Validate category
+    if (!form.category.trim()) {
+      newErrors.category = t('iftah.form.validation.pleaseSelectCategory');
       isValid = false;
     }
 
@@ -155,7 +198,7 @@ export default function IftahQuestionFormInline() {
       
       console.log('✅ Form submitted successfully');
       setSuccess(t('iftah.form.questionSubmittedSuccess'));
-      setForm({ name: "", email: "", phone: "", whatsapp: "", question: "" });
+      setForm({ name: "", email: "", phone: "", whatsapp: "", category: "", question: "" });
       
       
       // Show success modal
@@ -195,8 +238,8 @@ export default function IftahQuestionFormInline() {
             
             <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
               {/* Left Content */}
-              <div className="flex-1 text-white text-center md:text-left">
-                <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-4 border border-white/30 shadow-sm">
+              <div className={`flex-1 text-white text-center md:text-left ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
+                <div className="inline-flex gap-2 items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-4 border border-white/30 shadow-sm">
                   <FaQuestionCircle className="mr-1.5 text-sm" />
                   <span>{t('iftah.form.islamicQA')}</span>
                   <div className="ml-1.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
@@ -212,15 +255,15 @@ export default function IftahQuestionFormInline() {
                 
                 {/* Features */}
                 <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs sm:text-sm">
-                  <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
                     <span className="opacity-95 font-medium">{t('iftah.form.expertScholars')}</span>
                   </div>
-                  <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
                     <span className="opacity-95 font-medium">{t('iftah.form.quickResponse')}</span>
                   </div>
-                  <div className="flex items-center bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
+                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
                     <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
                     <span className="opacity-95 font-medium">{t('iftah.form.freeService')}</span>
                   </div>
@@ -228,8 +271,8 @@ export default function IftahQuestionFormInline() {
               </div>
 
               {/* Right Content - Compact CTA */}
-              <div className="flex flex-col items-center md:items-end">
-                <div className="text-center md:text-right mb-4">
+              <div className={`flex flex-col items-center ${isRTL ? 'md:items-start' : 'md:items-end'}`}>
+                <div className={`text-center mb-4 ${isRTL ? 'md:text-left' : 'md:text-right'}`}>
                   <div className="text-4xl sm:text-5xl mb-2">📿</div>
                   <h3 className="text-lg sm:text-xl font-bold mb-1">{t('iftah.form.askYourQuestion')}</h3>
                   <p className="text-amber-100 text-xs sm:text-sm">{t('iftah.form.getPersonalizedGuidance')}</p>
@@ -237,11 +280,11 @@ export default function IftahQuestionFormInline() {
                 
                 <button
                   onClick={() => setShowQuestionFormModal(true)}
-                  className="group flex items-center justify-center px-4 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm"
+                  className="group flex gap-2 items-center justify-center px-8 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm"
                 >
                   <FaQuestionCircle className="mr-1.5 text-sm group-hover:rotate-12 transition-transform duration-300" />
                   <span>{t('iftah.form.askAQuestion')}</span>
-                  <FaArrowRight className="ml-1.5 text-xs group-hover:translate-x-1 transition-transform duration-300" />
+                
                 </button>
               </div>
             </div>
@@ -273,7 +316,7 @@ export default function IftahQuestionFormInline() {
               <div className="absolute top-0 right-0 w-16 h-16 bg-white/10 rounded-full -translate-y-8 translate-x-8"></div>
               <div className="absolute bottom-0 left-0 w-12 h-12 bg-white/5 rounded-full translate-y-6 -translate-x-6"></div>
               
-              <div className="relative text-center">
+              <div className={`relative ${isRTL ? 'text-center md:text-right' : 'text-center'}`}>
                 <div className="inline-flex items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-3 border border-white/30 shadow-sm">
                   <FaQuestionCircle className="mr-1.5 text-sm" />
                   <span>{t('iftah.form.askYourQuestion')}</span>
@@ -306,6 +349,7 @@ export default function IftahQuestionFormInline() {
                       <div className="flex flex-wrap gap-1">
                         {errors.name && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.name}</span>}
                         {errors.email && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.email}</span>}
+                        {errors.category && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.category}</span>}
                         {errors.phone && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.phone}</span>}
                         {errors.whatsapp && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.whatsapp}</span>}
                         {errors.question && <span className="bg-red-100 px-2 py-1 rounded text-xs font-medium">{errors.question}</span>}
@@ -333,6 +377,7 @@ export default function IftahQuestionFormInline() {
                         errors.name ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterFullName')}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
                     {errors.name && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -358,6 +403,7 @@ export default function IftahQuestionFormInline() {
                         errors.email ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterEmail')}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
                     {errors.email && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -385,6 +431,7 @@ export default function IftahQuestionFormInline() {
                         errors.phone ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterPhoneOptional')}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
                     {errors.phone && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -409,6 +456,7 @@ export default function IftahQuestionFormInline() {
                         errors.whatsapp ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterWhatsappOptional')}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
                     {errors.whatsapp && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -417,6 +465,49 @@ export default function IftahQuestionFormInline() {
                       </p>
                     )}
                   </div>
+                </div>
+
+                {/* Dynamic Category Section - Simple Dropdown */}
+                <div className="space-y-1.5">
+                  <label className="font-semibold text-gray-800 mb-1.5 flex items-center gap-2 text-xs sm:text-sm">
+                    <div className="w-5 h-5 bg-indigo-100 rounded-md flex items-center justify-center shadow-sm">
+                      <FaQuestionCircle className="text-indigo-600 text-xs" />
+                    </div>
+                    {t('iftah.form.questionCategory')} *
+                  </label>
+                  
+                  {categoriesLoading ? (
+                    <div className="flex items-center justify-center py-4">
+                      <div className="w-5 h-5 border-2 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                      <span className="ml-3 text-sm text-gray-600">{t('iftah.form.loadingCategories')}</span>
+                    </div>
+                  ) : (
+                    <select 
+                      name="category" 
+                      value={form.category} 
+                      onChange={handleChange} 
+                      required 
+                      className={`w-full border-2 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
+                        errors.category ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
+                      }`}
+                      style={{ direction: currentLanguage === 'ar' ? 'rtl' : 'ltr' }}
+                    >
+                      <option value="">{t('iftah.form.selectCategory')}</option>
+                      {categories.map((category) => (
+                        <option key={category.id} value={category.name}>
+                          {category.icon ? `${category.icon} ` : ''}{category.name}
+                          {category.name_en ? ` (${category.name_en})` : ''}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                  
+                  {errors.category && (
+                    <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
+                      <span>⚠️</span>
+                      {errors.category}
+                    </p>
+                  )}
                 </div>
 
                 {/* Question Section */}
@@ -439,6 +530,7 @@ export default function IftahQuestionFormInline() {
                         errors.question ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.writeQuestionHere')}
+                      dir={isRTL ? 'rtl' : 'ltr'}
                     />
                     {/* Character Counter */}
                     <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-white/80 px-1.5 py-0.5 rounded">
@@ -491,7 +583,7 @@ export default function IftahQuestionFormInline() {
             {/* Background Pattern */}
             <div className="absolute inset-0 bg-gradient-to-br from-green-50 to-emerald-50"></div>
             
-            <div className="relative px-6 py-8 text-center">
+            <div className={`relative px-6 py-8 ${isRTL ? 'text-center md:text-right' : 'text-center'}`}>
               {/* Success Icon */}
               <div className="relative mb-4">
                 <div className="w-16 h-16 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full flex items-center justify-center mx-auto shadow-lg">

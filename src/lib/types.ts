@@ -183,6 +183,7 @@ export interface Article extends BaseEntity {
   description?: string;
   excerpt?: string;
   featuredImage?: string;
+  video_url?: string;
   author?: Author;
   category?: string;
   tags?: string[];
@@ -375,4 +376,11 @@ export interface InputProps {
   disabled?: boolean;
   className?: string;
   required?: boolean;
+}
+
+// Sanad types
+export interface Sanad extends BaseEntity {
+  name: string;
+  created_at: string;
+  updated_at: string;
 }

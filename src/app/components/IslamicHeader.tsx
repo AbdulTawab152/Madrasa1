@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useMemo } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
 
 type Alignment = "center" | "left";
@@ -9,7 +9,7 @@ type Theme = "amber" | "emerald" | "indigo" | "slate";
 type PageType = "courses" | "articles" | "blogs" | "events" | "books" | "authors" | "awlayaa" | "tasawwuf" | "gallery" | "about" | "contact" | "donation" | "registration" | "graduated-students" | "iftah" | "default";
 
 export interface IslamicHeaderProps {
-  title: string;
+  title?: string;
   subtitle?: string;
   alignment?: Alignment;
   theme?: Theme;
@@ -21,92 +21,6 @@ export interface IslamicHeaderProps {
   };
 }
 
-const getPageDefaults = (pageType: PageType, t: (key: string) => string) => {
-  const defaults = {
-    courses: {
-      title: t('header.courses.title'),
-      subtitle: t('header.courses.subtitle'),
-      theme: "amber" as Theme,
-    },
-    articles: {
-      title: t('header.articles.title'),
-      subtitle: t('header.articles.subtitle'),
-      theme: "emerald" as Theme,
-    },
-    blogs: {
-      title: t('header.blogs.title'),
-      subtitle: t('header.blogs.subtitle'),
-      theme: "indigo" as Theme,
-    },
-    events: {
-      title: t('header.events.title'),
-      subtitle: t('header.events.subtitle'),
-      theme: "amber" as Theme,
-    },
-    books: {
-      title: t('header.books.title'),
-      subtitle: t('header.books.subtitle'),
-      theme: "emerald" as Theme,
-    },
-    authors: {
-      title: t('header.authors.title'),
-      subtitle: t('header.authors.subtitle'),
-      theme: "indigo" as Theme,
-    },
-    awlayaa: {
-      title: t('header.awlayaa.title'),
-      subtitle: t('header.awlayaa.subtitle'),
-      theme: "slate" as Theme,
-    },
-    tasawwuf: {
-      title: t('header.tasawwuf.title'),
-      subtitle: t('header.tasawwuf.subtitle'),
-      theme: "slate" as Theme,
-    },
-    gallery: {
-      title: t('header.gallery.title'),
-      subtitle: t('header.gallery.subtitle'),
-      theme: "amber" as Theme,
-    },
-    about: {
-      title: t('header.about.title'),
-      subtitle: t('header.about.subtitle'),
-      theme: "emerald" as Theme,
-    },
-    contact: {
-      title: t('header.contact.title'),
-      subtitle: t('header.contact.subtitle'),
-      theme: "indigo" as Theme,
-    },
-    donation: {
-      title: t('header.donation.title'),
-      subtitle: t('header.donation.subtitle'),
-      theme: "amber" as Theme,
-    },
-    registration: {
-      title: t('header.registration.title'),
-      subtitle: t('header.registration.subtitle'),
-      theme: "emerald" as Theme,
-    },
-    "graduated-students": {
-      title: t('header.graduatedStudents.title'),
-      subtitle: t('header.graduatedStudents.subtitle'),
-      theme: "indigo" as Theme,
-    },
-    iftah: {
-      title: t('header.iftah.title'),
-      subtitle: t('header.iftah.subtitle'),
-      theme: "slate" as Theme,
-    },
-    default: {
-      title: t('header.default.title'),
-      subtitle: t('header.default.subtitle'),
-      theme: "amber" as Theme,
-    },
-  };
-  
-  return defaults[pageType] || defaults.default;
-};
 
 const themeClasses: Record<
   Theme,
@@ -155,8 +69,93 @@ export default function IslamicHeader({
     return typeof result === 'string' ? result : key;
   };
 
-  // Get defaults based on page type
-  const pageDefaults = getPageDefaults(pageType, t);
+  // Get defaults based on page type using useMemo for optimization
+  const pageDefaults = useMemo(() => {
+    const defaults = {
+      courses: {
+        title: t('header.courses.title'),
+        subtitle: t('header.courses.subtitle'),
+        theme: "amber" as Theme,
+      },
+      articles: {
+        title: t('header.articles.title'),
+        subtitle: t('header.articles.subtitle'),
+        theme: "emerald" as Theme,
+      },
+      blogs: {
+        title: t('header.blogs.title'),
+        subtitle: t('header.blogs.subtitle'),
+        theme: "indigo" as Theme,
+      },
+      events: {
+        title: t('header.events.title'),
+        subtitle: t('header.events.subtitle'),
+        theme: "amber" as Theme,
+      },
+      books: {
+        title: t('header.books.title'),
+        subtitle: t('header.books.subtitle'),
+        theme: "emerald" as Theme,
+      },
+      authors: {
+        title: t('header.authors.title'),
+        subtitle: t('header.authors.subtitle'),
+        theme: "indigo" as Theme,
+      },
+      awlayaa: {
+        title: t('header.awlayaa.title'),
+        subtitle: t('header.awlayaa.subtitle'),
+        theme: "slate" as Theme,
+      },
+      tasawwuf: {
+        title: t('header.tasawwuf.title'),
+        subtitle: t('header.tasawwuf.subtitle'),
+        theme: "slate" as Theme,
+      },
+      gallery: {
+        title: t('header.gallery.title'),
+        subtitle: t('header.gallery.subtitle'),
+        theme: "amber" as Theme,
+      },
+      about: {
+        title: t('header.about.title'),
+        subtitle: t('header.about.subtitle'),
+        theme: "emerald" as Theme,
+      },
+      contact: {
+        title: t('header.contact.title'),
+        subtitle: t('header.contact.subtitle'),
+        theme: "indigo" as Theme,
+      },
+      donation: {
+        title: t('header.donation.title'),
+        subtitle: t('header.donation.subtitle'),
+        theme: "amber" as Theme,
+      },
+      registration: {
+        title: t('header.registration.title'),
+        subtitle: t('header.registration.subtitle'),
+        theme: "emerald" as Theme,
+      },
+      "graduated-students": {
+        title: t('header.graduatedStudents.title'),
+        subtitle: t('header.graduatedStudents.subtitle'),
+        theme: "indigo" as Theme,
+      },
+      iftah: {
+        title: t('header.iftah.title'),
+        subtitle: t('header.iftah.subtitle'),
+        theme: "slate" as Theme,
+      },
+      default: {
+        title: t('header.default.title'),
+        subtitle: t('header.default.subtitle'),
+        theme: "amber" as Theme,
+      },
+    };
+    
+    return defaults[pageType] || defaults.default;
+  }, [pageType, t]);
   
   // Use provided props or fall back to page defaults
   const finalTitle = title || pageDefaults.title;

@@ -113,7 +113,7 @@ export default function AwlyaaListPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
-      <IslamicHeader pageType="awlayaa" title="Awlyaa" />
+      <IslamicHeader pageType="awlayaa" />
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 pb-16 relative z-20">
       
