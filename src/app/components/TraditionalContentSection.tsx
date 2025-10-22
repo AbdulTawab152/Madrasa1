@@ -85,7 +85,7 @@ export default function TraditionalContentSection({
               {/* Enhanced Section Header */}
               <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-b border-amber-200">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+                  <div className="flex gap-4 items-center">
                     <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -100,7 +100,7 @@ export default function TraditionalContentSection({
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex gap-2 items-center space-x-2">
                     <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
                     <span className="text-sm text-amber-700 font-medium">Live</span>
                   </div>
@@ -227,7 +227,7 @@ export default function TraditionalContentSection({
             <div className="bg-white rounded-2xl shadow-sm   border border-amber-100 overflow-hidden">
               {/* Search Section Header */}
               <div className="bg-gradient-to-r from-amber-500 to-orange-500 px-6 py-4">
-                <div className="flex items-center">
+                <div className="flex gap-2 items-center">
                   <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3">
                     <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />

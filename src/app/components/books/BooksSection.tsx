@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { getImageUrl } from "../../../lib/utils";
 import { BooksApi } from "../../../lib/api";
 import { Book } from "../../../lib/types";
+import PaginationControls from "@/components/PaginationControls";
 import { FaBook, FaCalendar, FaEye, FaHeart } from 'react-icons/fa';
 import { cleanText } from "../../../lib/textUtils";
 
@@ -18,14 +19,28 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   const [books, setBooks] = useState<Book[]>([]);
   const [loading, setLoading] = useState(true);
   const [hoveredBook, setHoveredBook] = useState<number | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState<number | null>(null);
+  const PAGE_SIZE = 8;
 
   // Fetch books from API
   useEffect(() => {
     const fetchBooks = async () => {
       try {
-        const response = await BooksApi.getAll();
+        setLoading(true);
+        const response = await BooksApi.getAll(showAll ? {} : { page, limit: PAGE_SIZE });
         const booksData = (response as any)?.data?.data || (response as any)?.data || [];
         setBooks(Array.isArray(booksData) ? booksData : []);
+
+        const pagination = (response as any)?.pagination;
+        if (pagination && typeof pagination.totalPages === 'number') {
+          setTotalPages(pagination.totalPages);
+        } else if (!showAll) {
+          // Fallback: infer if we likely have more pages
+          setTotalPages(booksData.length < PAGE_SIZE && page === 1 ? 1 : (booksData.length === PAGE_SIZE ? page + 1 : page));
+        } else {
+          setTotalPages(null);
+        }
       } catch (err) {
         console.error("Failed to fetch books:", err);
         setBooks([]);
@@ -34,10 +49,12 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
       }
     };
     fetchBooks();
-  }, []);
+  }, [page, showAll]);
 
   const sortedBooks = books.filter((book) => book.is_published === 1);
-  const displayBooks = showAll ? sortedBooks : sortedBooks.slice(0, 4);
+  const displayBooks = sortedBooks; // Books are already paginated from API
+  const hasNextPage = !showAll && (typeof totalPages === 'number' ? (page < totalPages) : (displayBooks.length === PAGE_SIZE));
+  const hasPrevPage = !showAll && page > 1;
 
   if (loading) {
     return (
@@ -159,8 +176,18 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
           </div>
         ))}
       </div>
-      
-     
+      {/* Pagination */}
+      {!showAll && displayBooks.length > 0 && (hasNextPage || hasPrevPage || (typeof totalPages === 'number' && totalPages > 1)) && (
+        <PaginationControls
+          className="mt-10"
+          page={page}
+          totalPages={typeof totalPages === 'number' ? totalPages : null}
+          hasNextPage={hasNextPage}
+          hasPrevPage={hasPrevPage}
+          onPageChange={(p) => setPage(p)}
+          isBusy={loading}
+        />
+      )}
     </div>
   );
 }

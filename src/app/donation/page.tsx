@@ -4,6 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import IslamicHeader from "../components/IslamicHeader";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   FaMapMarkerAlt,
   FaEnvelope,
@@ -40,6 +41,14 @@ interface DonationInfo {
 }
 
 export default function DonationPage() {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
   const [donations, setDonations] = useState<DonationInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -88,7 +97,7 @@ export default function DonationPage() {
       <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 text-gray-800 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading donation information...</p>
+          <p className="mt-4 text-gray-600">{t('donation.loadingInfo')}</p>
         </div>
       </main>
     );
@@ -104,7 +113,7 @@ export default function DonationPage() {
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      <IslamicHeader pageType="donation" title="Ways to Donate" />
+      <IslamicHeader pageType="donation" />
       
    
 
@@ -118,7 +127,7 @@ export default function DonationPage() {
             viewport={{ once: true }}
             className="text-4xl font-bold text-gray-900 mb-4"
           >
-            Choose Your Donation Method
+            {t('donation.chooseMethod')}
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -127,7 +136,7 @@ export default function DonationPage() {
             viewport={{ once: true }}
             className="text-xl text-gray-600 max-w-3xl mx-auto"
           >
-            We offer multiple secure and convenient ways for you to contribute to our cause
+            {t('donation.chooseMethodDesc')}
           </motion.p>
         </div>
 
@@ -174,7 +183,7 @@ export default function DonationPage() {
                         <div className="flex items-center gap-3 p-3 bg-green-600 rounded-xl">
                           <FaWhatsapp className="text-white text-lg" />
                           <div>
-                            <p className="font-semibold text-white text-sm">WhatsApp</p>
+                            <p className="font-semibold text-white text-sm">{t('donation.whatsapp')}</p>
                             <p className="text-xs text-white">{donation.whatsapp}</p>
                           </div>
                         </div>
@@ -184,7 +193,7 @@ export default function DonationPage() {
                         <div className="flex items-center gap-3 p-3 bg-blue-600 rounded-xl">
                           <FaEnvelope className="text-white text-lg" />
                           <div>
-                            <p className="font-semibold text-white text-sm">Email</p>
+                            <p className="font-semibold text-white text-sm">{t('donation.email')}</p>
                             <p className="text-xs text-white">{donation.email}</p>
                           </div>
                         </div>
@@ -193,7 +202,7 @@ export default function DonationPage() {
                       <div className="flex items-center gap-3 p-3 bg-orange-600 rounded-xl md:col-span-2">
                         <FaMapMarkerAlt className="text-white text-lg" />
                         <div>
-                          <p className="font-semibold text-white text-sm">Location</p>
+                          <p className="font-semibold text-white text-sm">{t('donation.location')}</p>
                           <p className="text-xs text-white">{donation.address.replace(/<[^>]*>/g, '')}</p>
                         </div>
                       </div>
@@ -209,7 +218,7 @@ export default function DonationPage() {
                         className={`flex-1 bg-gradient-to-r ${currentGradient} text-white py-3 px-6 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2`}
                       >
                         <FaWhatsapp className="text-lg" />
-                        Contact via WhatsApp
+                        {t('donation.contactWhatsapp')}
                       </motion.a>
                       
                       {donation.email && (
@@ -220,7 +229,7 @@ export default function DonationPage() {
                           className="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 text-white py-3 px-6 rounded-xl font-semibold text-center hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
                         >
                           <FaEnvelope className="text-lg" />
-                          Send Email
+                          {t('donation.sendEmail')}
                         </motion.a>
                       )}
                     </div>
@@ -243,10 +252,10 @@ export default function DonationPage() {
             className="text-center mb-12"
           >
             <h2 className="text-4xl font-bold mb-6">
-              How to Make a Donation
+              {t('donation.howToDonate')}
             </h2>
             <p className="text-xl text-orange-100">
-              Follow these simple steps to contribute to our cause
+              {t('donation.howToDonateDesc')}
             </p>
           </motion.div>
 
@@ -261,8 +270,8 @@ export default function DonationPage() {
               <div className="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold">1</span>
               </div>
-              <h3 className="text-xl font-bold mb-2">Choose Method</h3>
-              <p className="text-orange-100">Select your preferred donation method from the options above</p>
+              <h3 className="text-xl font-bold mb-2">{t('donation.step1')}</h3>
+              <p className="text-orange-100">{t('donation.step1Desc')}</p>
             </motion.div>
 
             <motion.div
@@ -275,8 +284,8 @@ export default function DonationPage() {
               <div className="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold">2</span>
               </div>
-              <h3 className="text-xl font-bold mb-2">Follow Instructions</h3>
-              <p className="text-orange-100">Use the provided details to complete your donation</p>
+              <h3 className="text-xl font-bold mb-2">{t('donation.step2')}</h3>
+              <p className="text-orange-100">{t('donation.step2Desc')}</p>
             </motion.div>
 
             <motion.div
@@ -289,8 +298,8 @@ export default function DonationPage() {
               <div className="bg-white/20 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <span className="text-2xl font-bold">3</span>
               </div>
-              <h3 className="text-xl font-bold mb-2">Confirm Donation</h3>
-              <p className="text-orange-100">Send us a message to confirm your donation and receive updates</p>
+              <h3 className="text-xl font-bold mb-2">{t('donation.step3')}</h3>
+              <p className="text-orange-100">{t('donation.step3Desc')}</p>
             </motion.div>
           </div>
         </div>
@@ -308,15 +317,15 @@ export default function DonationPage() {
           >
             <div className="flex items-center gap-2">
               <FaShieldAlt className="text-green-600 text-xl" />
-              <span className="font-semibold">100% Secure</span>
+              <span className="font-semibold">{t('donation.secure')}</span>
             </div>
             <div className="flex items-center gap-2">
               <FaCheckCircle className="text-blue-600 text-xl" />
-              <span className="font-semibold">Verified Organizations</span>
+              <span className="font-semibold">{t('donation.verified')}</span>
             </div>
             <div className="flex items-center gap-2">
               <FaClock className="text-purple-600 text-xl" />
-              <span className="font-semibold">24/7 Support</span>
+              <span className="font-semibold">{t('donation.support')}</span>
             </div>
           </motion.div>
         </div>

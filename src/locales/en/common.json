@@ -13,6 +13,7 @@
     "event": "Event",
     "tasawwuf": "Tasawof",
     "graduation": "Graduation",
+    "sanad": "Sanad",
     "contact": "Contact",
     "islamicLearningPlatform": "Islamic Learning Platform",
     "more": "More",
@@ -247,6 +248,11 @@
       "hoursResponse": "24-48 hours",
       "expertReview": "Expert Review",
       "continue": "Continue",
+      "questionCategory": "Question Category",
+      "selectCategory": "Select a category",
+      "loadingCategories": "Loading categories...",
+      "noCategoriesAvailable": "No categories available",
+      "categoriesWillAppearHere": "Categories will appear here when added from dashboard",
       "validation": {
         "pleaseEnterFullName": "Please enter your full name",
         "nameMinLength": "Name must be at least 2 characters",
@@ -260,7 +266,8 @@
         "writeIslamicQuestion": "Please write your Islamic question",
         "moreDetailedQuestion": "Please write a more detailed question (at least 15 characters)",
         "questionTooLong": "Question is too long (maximum 1000 characters)",
-        "completeRequiredFields": "Please complete all required fields: Name, Email, and Question.",
+        "pleaseSelectCategory": "Please select a category",
+        "completeRequiredFields": "Please complete all required fields: Name, Email, Category, and Question.",
         "completeFollowingFields": "Please complete the following required fields:"
       }
     }
@@ -392,6 +399,11 @@
     "graduatesDescription": "Highlighting the achievements and journeys of students who have successfully completed their courses",
     "loadingGraduates": "Loading graduates...",
     "viewAllGraduation": "View All Graduation",
+    "ourSanad": "Our Sanad",
+    "sanadHighlight": "Sanad",
+    "sanadDescription": "Discover our spiritual lineage and the blessed chain of transmission",
+    "loadingSanad": "Loading Sanad...",
+    "viewAllSanad": "View All Sanad",
     "readOurBlog": "Read Our Blog",
     "exploreOurBlog": "Blog",
     "blogHighlight": "Blog",
@@ -407,7 +419,50 @@
     "supportPrograms": "Support our programs",
     "annualContribution": "Annual Contribution",
     "transformLivesYearly": "Transform lives yearly",
-    "donateNow": "Donate Now"
+    "donateNow": "Donate Now",
+    "allArticles": "All Articles",
+    "readArticle": "Read Article",
+    "minRead": "min read",
+    "showLess": "Show Less",
+    "showMore": "Show More",
+    "readMore": "Read More"
+  },
+  "donation": {
+    "chooseMethod": "Choose Your Donation Method",
+    "chooseMethodDesc": "We offer multiple secure and convenient ways for you to contribute to our cause",
+    "loadingInfo": "Loading donation information...",
+    "whatsapp": "WhatsApp",
+    "email": "Email",
+    "location": "Location",
+    "contactWhatsapp": "Contact via WhatsApp",
+    "sendEmail": "Send Email",
+    "howToDonate": "How to Make a Donation",
+    "howToDonateDesc": "Follow these simple steps to contribute to our cause",
+    "step1": "Choose Method",
+    "step1Desc": "Select your preferred donation method from the options above",
+    "step2": "Follow Instructions",
+    "step2Desc": "Use the provided details to complete your donation",
+    "step3": "Confirm Donation",
+    "step3Desc": "Send us a message to confirm your donation and receive updates",
+    "secure": "100% Secure",
+    "verified": "Verified Organizations",
+    "support": "24/7 Support"
+  },
+  "eventsPage": {
+    "home": "Home",
+    "events": "Events",
+    "date": "Date",
+    "duration": "Duration",
+    "liveStream": "Live Stream",
+    "watchLive": "Watch Live",
+    "aboutThisEvent": "About This Event",
+    "relatedEvents": "Related Events"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page",
+    "of": "of"
   },
   "events": {
     "discoverOur": "Discover Our",
@@ -511,5 +566,27 @@
     "fullDetails": "Full Details",
     "fullDetailsDesc": "View complete information about this scholar including biography, achievements, and more.",
     "viewFullProfile": "View Full Profile"
+  },
+  "graduationDetail": {
+    "graduationNotFound": "Graduation not found",
+    "fetchError": "Failed to fetch graduation details",
+    "date": "Date",
+    "time": "Time",
+    "graduationYear": "Graduation Year",
+    "esteemedGraduates": "Our Esteemed Graduates",
+    "father": "Father",
+    "grandfather": "Grandfather",
+    "noStudents": "No students listed for this graduation",
+    "sonOf": "Son of",
+    "grandsonOf": "Grandson of",
+    "personalDetails": "Personal Details",
+    "dateOfBirth": "Date of Birth",
+    "contact": "Contact",
+    "notProvided": "Not provided",
+    "graduation": "Graduation",
+    "notSpecified": "Not specified",
+    "addressInformation": "Address Information",
+    "fullAddress": "Full Address",
+    "description": "Description"
   }
 }

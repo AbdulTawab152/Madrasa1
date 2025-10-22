@@ -6,6 +6,7 @@ import Link from "next/link";
 import { TasawwufApi, extractArray } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Tasawwuf {
   id: number;
@@ -25,6 +26,17 @@ interface Props {
 }
 
 export default function TasawwufList({ homePage = false, limit }: Props) {
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
+  // Check if current language is RTL
+  const isRTL = i18n.language === 'ps' || i18n.language === 'prs';
+
   const [posts, setPosts] = useState<Tasawwuf[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("All");
@@ -73,9 +85,6 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
           ))}
         </div>
         
-        {/* Featured Skeleton */}
-        <div className="relative rounded-2xl overflow-hidden h-[420px] bg-gray-200 animate-pulse"></div>
-        
         {/* List Skeleton */}
         <div className="space-y-12 max-w-5xl mx-auto">
           {[1, 2, 3].map((i) => (
@@ -114,61 +123,8 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
     );
   }
 
-  const [featured, ...rest] = filteredPosts;
-
   return (
     <section className="space-y-16">
-
-        {/* Hero Featured */}
-        {featured && (
-        <div className="relative rounded-2xl overflow-hidden shadow-lg group">
-          {featured.image && (
-            <Image
-              src={getImageUrl(featured.image, "/placeholder-tasawwuf.jpg")}
-              alt={featured.title}
-              width={1200}
-              height={500}
-              className="w-full h-[420px] object-cover group-hover:scale-105 transition-transform duration-700"
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex items-end p-6 md:p-10">
-            <div className="text-white max-w-3xl">
-              <div className="inline-flex items-center px-3 py-1 rounded-full bg-white/10 backdrop-blur-sm text-xs font-medium mb-4 border border-white/20">
-                {featured.category?.name || "Spirituality"}
-              </div>
-              <Link href={`/tasawwuf/${featured.slug}`}>
-                <h2 className="text-2xl text-white md:text-4xl font-bold mb-3 hover:text-amber-300 transition-colors leading-tight">
-                  {featured.title}
-                </h2>
-              </Link>
-              <p className="text-gray-200 mb-4 leading-relaxed line-clamp-2">
-                {featured.description?.replace(/<[^>]*>/g, "")}
-              </p>
-              <div className="flex flex-wrap items-center gap-4 text-sm">
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <span className="font-medium">{featured.shared_by || "Unknown"}</span>
-                </div>
-                <div className="flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span>
-                    {featured.created_at &&
-                      new Date(featured.created_at).toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                      })}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
       {/* Category Pills */}
       <div className="flex flex-wrap justify-center gap-2">
         {categories.map((cat) => (
@@ -190,7 +146,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
 
       {/* Vertical List */}
       <div className="grid gap-8 max-w-5xl mx-auto">
-  {rest.map((post) => (
+  {filteredPosts.map((post) => (
     <div
       key={post.id}
       className="flex flex-col md:flex-row gap-6 p-6 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-all duration-300"
@@ -228,13 +184,13 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
         
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mt-2">
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            <div className="flex items-center text-gray-500">
+            {/* <div className="flex gap-2 items-center text-gray-500">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
               <span>{cleanText(post.shared_by || "Unknown")}</span>
-            </div>
-            <div className="flex items-center text-gray-400">
+            </div> */}
+            {/* <div className="flex gap-2 items-center text-gray-400">
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
@@ -246,7 +202,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
                     day: 'numeric' 
                   })}
               </span>
-            </div>
+            </div> */}
           </div>
           
           {/* Read More Button */}
@@ -254,10 +210,23 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
             href={`/tasawwuf/${post.slug}`}
             className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 border border-amber-200 hover:border-amber-300 shadow-sm whitespace-nowrap outline-none focus:outline-none focus:ring-0"
           >
-            Read More
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1.5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
+            <span className={`flex items-center gap-1.5 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+              {t('home.readMore')}
+              {/* Arrow direction based on language: left for RTL, right for LTR */}
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-4 w-4" 
+                viewBox="0 0 20 20" 
+                fill="currentColor"
+                style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }}
+              >
+                <path 
+                  fillRule="evenodd" 
+                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" 
+                  clipRule="evenodd" 
+                />
+              </svg>
+            </span>
           </Link>
         </div>
       </div>

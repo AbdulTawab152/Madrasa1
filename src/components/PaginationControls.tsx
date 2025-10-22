@@ -3,6 +3,7 @@
 import { memo, useMemo } from "react";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface PaginationControlsProps {
   page: number;
@@ -29,6 +30,12 @@ const PaginationControls = memo(function PaginationControls({
   isBusy = false,
   className = "",
 }: PaginationControlsProps) {
+  const { t: tRaw, i18n } = useTranslation("common", { useSuspense: false });
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === "string" ? result : key;
+  };
+  const isRTL = i18n.language === "ps" || i18n.language === "prs";
   const safeTotal = useMemo(() => {
     if (typeof totalPages === "number" && totalPages > 0) {
       return Math.floor(totalPages);
@@ -64,27 +71,29 @@ const PaginationControls = memo(function PaginationControls({
 
   return (
     <nav
-      className={`flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-between ${className}`.trim()}
+      className={`flex flex-col items-center justify-center gap-4 sm:flex-row sm:justify-center ${className}`.trim()}
       aria-label="Pagination"
     >
-      <div className="flex items-center gap-3">
+      <div className={`flex items-center gap-3 ${isRTL ? "flex-row-reverse" : ""}`}>
         <button
           type="button"
           onClick={() => handlePageChange(page - 1)}
           disabled={!hasPrevPage || isBusy}
-          className="inline-flex items-center gap-2 rounded-full border border-primary-200 px-4 py-2 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/80 px-4 py-2 text-sm font-medium text-primary-700 transition-all hover:shadow-sm hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+          aria-label={t('pagination.previous')}
         >
-          <ChevronLeft className="h-4 w-4" />
-          Previous
+          {isRTL ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
+          {t('pagination.previous')}
         </button>
         <button
           type="button"
           onClick={() => handlePageChange(page + 1)}
           disabled={!hasNextPage || isBusy}
-          className="inline-flex items-center gap-2 rounded-full border border-primary-200 px-4 py-2 text-sm font-medium text-primary-700 transition-colors hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex items-center gap-2 rounded-full border border-primary-200/60 bg-white/80 px-4 py-2 text-sm font-medium text-primary-700 transition-all hover:shadow-sm hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+          aria-label={t('pagination.next')}
         >
-          Next
-          <ChevronRight className="h-4 w-4" />
+          {t('pagination.next')}
+          {isRTL ? <ChevronLeft className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
         </button>
       </div>
 
@@ -94,7 +103,7 @@ const PaginationControls = memo(function PaginationControls({
             type="button"
             onClick={() => handlePageChange(1)}
             disabled={isBusy}
-            className="rounded-full border border-transparent px-3 py-1 text-sm font-semibold text-primary-500 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full border border-transparent px-3 py-1 text-sm font-semibold text-primary-600 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             1
           </button>
@@ -108,8 +117,8 @@ const PaginationControls = memo(function PaginationControls({
             disabled={isBusy}
             className={`rounded-full px-3 py-1 text-sm font-semibold transition ${
               item === page
-                ? "bg-primary-600 text-white shadow"
-                : "text-primary-600 hover:bg-primary-50"
+                ? "bg-primary-600 text-white shadow-sm"
+                : "text-primary-700 hover:bg-primary-50"
             } disabled:cursor-not-allowed disabled:opacity-60`}
           >
             {item}
@@ -123,15 +132,16 @@ const PaginationControls = memo(function PaginationControls({
             type="button"
             onClick={() => handlePageChange(safeTotal)}
             disabled={isBusy}
-            className="rounded-full border border-transparent px-3 py-1 text-sm font-semibold text-primary-500 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
+            className="rounded-full border border-transparent px-3 py-1 text-sm font-semibold text-primary-600 transition hover:bg-primary-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             {safeTotal}
           </button>
         )}
       </div>
 
-      <div className="text-sm text-primary-500">
-        Page {Math.min(page, safeTotal)}{typeof totalPages === "number" && totalPages > 0 ? ` of ${safeTotal}` : ""}
+      <div className="text-sm text-primary-600">
+        {t('pagination.page')} {Math.min(page, safeTotal)}
+        {typeof totalPages === "number" && totalPages > 0 ? ` ${t('pagination.of')} ${safeTotal}` : ""}
       </div>
     </nav>
   );

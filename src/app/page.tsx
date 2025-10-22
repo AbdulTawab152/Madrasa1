@@ -18,6 +18,7 @@ const LazyGallerySection = lazy(
   () => import("./components/LazyGallerySection")
 );
 const BooksSection = lazy(() => import("./components/books/BooksSection"));
+const SanadSection = lazy(() => import("./components/sanad/SanadSection"));
 
 import { Course as CourseType } from "../lib/types";
 
@@ -83,19 +84,6 @@ export default function HomePage() {
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
                     <span>{t('home.viewAllCourses')}</span>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
                   </Link>
                 </div>
               </div>
@@ -165,21 +153,67 @@ export default function HomePage() {
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
                     <span>{t('home.viewAllBooks')}</span>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
                   </Link>
                 </div>
+              </div>
+            </Suspense>
+          </div>
+        </div>
+      </section>
+
+      {/* Sanad Section */}
+      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+        {/* Animated Gradient Blobs */}
+        <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-indigo-200/30 rounded-full blur-3xl animate-pulse z-0" />
+        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl animate-pulse z-0" />
+        
+        {/* Subtle Pattern Overlay */}
+        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none">
+          <div
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238b5cf6' fill-opacity='0.08'%3E%3Cpath d='M50 0L60 40L100 50L60 60L50 100L40 60L0 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E")`,
+            }}
+          />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-6 text-center z-10">
+          {/* Hero Text */}
+          <div className="mb-14">
+            <div className="inline-flex items-center px-5 py-2 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
+              📜 {t('home.sanadHighlight')}
+            </div>
+            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
+              {t('home.ourSanad')}
+            </h2>
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
+              {t('home.sanadDescription')}
+            </p>
+          </div>
+
+          {/* Sanad Section */}
+          <div className="mt-12 relative">
+            <Suspense
+              fallback={
+                <div className="flex items-center justify-center py-16">
+                  <div className="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+                  <span className="ml-4 text-gray-600 font-medium">
+                    {t('home.loadingSanad')}
+                  </span>
+                </div>
+              }
+            >
+              <div className="animate-fade-in-up">
+                <SanadSection showAll={false} showHero={false} />
+              </div>
+              {/* Call to Action */}
+              <div className="mt-10 text-center">
+                <Link
+                  href="/sanad"
+                  className="inline-flex items-center gap-2 px-6 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
+                >
+                  <span>{t('home.viewAllSanad')}</span>
+                </Link>
               </div>
             </Suspense>
           </div>
@@ -251,19 +285,6 @@ export default function HomePage() {
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
                     <span>{t('home.viewAllGraduation')}</span>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
                   </Link>
                 </div>
             </Suspense>
@@ -325,19 +346,6 @@ export default function HomePage() {
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
                   >
                     <span>{t('home.viewAllBlogs')}</span>
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
                   </Link>
                 </div>
       </Suspense>

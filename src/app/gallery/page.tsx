@@ -80,7 +80,7 @@ export default function GalleryPage() {
   if (loading) {
     return (
       <div>
-        <IslamicHeader pageType="gallery" title="Photo Gallery" />
+        <IslamicHeader pageType="gallery" />
         <div className="pb-16 flex items-center justify-center min-h-96">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
@@ -93,7 +93,7 @@ export default function GalleryPage() {
 
   return (
     <div>
-      <IslamicHeader pageType="gallery" title="Photo Gallery" />
+      <IslamicHeader pageType="gallery" />
       <div className="pb-16">
         <Gallery initialImages={images} />
       </div>

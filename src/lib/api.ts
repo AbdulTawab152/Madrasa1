@@ -1277,6 +1277,39 @@ This question was submitted via the Iftah form on ${new Date().toLocaleString()}
 
   // Note: Dashboard methods removed since you already have a dashboard
   // The data will be sent to your existing IftahQuestionForm endpoint
+
+  static async getCategories(): Promise<ApiResponse<any[]>> {
+    try {
+      const response = await fetch('/api/iftah/category', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        console.error(`❌ HTTP error! status: ${response.status}`);
+        return { data: [], success: true };
+      }
+
+      const data = await response.json();
+      console.log('✅ Iftah categories received:', data);
+      
+      // Handle different response formats
+      if (Array.isArray(data)) {
+        return { data, success: true };
+      } else if (data && Array.isArray(data.data)) {
+        return { data: data.data, success: true };
+      } else {
+        console.warn('⚠️ Unexpected Iftah categories data format:', data);
+        return { data: [], success: true };
+      }
+    } catch (error) {
+      console.error('❌ Failed to fetch Iftah categories:', error);
+      return { data: [], success: true };
+    }
+  }
 }
 
 export class ArticlesApi {
@@ -1584,6 +1617,54 @@ export class AwlyaaChartsApi {
       };
     }
     return result;
+  }
+}
+
+export class SanadApi {
+  static async getAll(params: ListParams = {}) {
+    const { page: rawPage, limit: rawLimit, ...rest } = params;
+    const page = rawPage ?? 1;
+    const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
+
+    const result = await apiClient.get(endpoints.sanad, {
+      params: { page, limit, ...rest },
+    });
+
+    if (!result.success) {
+      // Return fallback data if API fails
+      const fallbackData = [
+        {
+          id: 1,
+          name: "شجرهٔ حضرتات کابل  شجرهٔ عاليهٔ حضرتات عالي درجات نقشبنديه مجدديه عمريه (قدسنا الله باسرارهم العاليه)  خانقاه عاليه مجدديه عمريه ارغندی، پغمان، كابل",
+          created_at: "2025-10-13T05:17:47.000000Z",
+          updated_at: "2025-10-13T05:17:47.000000Z"
+        }
+      ];
+      
+      return {
+        data: fallbackData,
+        success: true,
+        message: "Showing offline Sanad data.",
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: fallbackData.length,
+        }),
+      };
+    }
+
+    const data = extractArray<unknown>(result.data);
+    const total = Array.isArray(result.data) ? result.data.length : data.length;
+
+    return {
+      ...result,
+      data,
+      pagination: createPaginationMeta({ page, limit, total }),
+    };
+  }
+
+  static async getById(id: string) {
+    return apiClient.get(`${endpoints.sanad}/${id}`);
   }
 }
 

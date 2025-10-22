@@ -15,6 +15,7 @@ import PageSkeleton from "@/components/loading/PageSkeleton";
 import PaginationControls from "@/components/PaginationControls";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { getImageUrl } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 type RawArticle = {
   id: number;
@@ -23,6 +24,7 @@ type RawArticle = {
   category?: { id: number; name: string } | null;
   category_id?: number;
   image?: string | null;
+  video_url?: string | null;
   slug: string;
   date: string;
   is_published: number;
@@ -33,6 +35,8 @@ type RawArticle = {
 
 interface ArticlesCardProps {
   limit?: number;
+  showAll?: boolean;
+  homePage?: boolean;
 }
 
 interface ArticleCardData {
@@ -43,6 +47,7 @@ interface ArticleCardData {
   category_id: number | null;
   published_at?: string | null;
   image?: string | null;
+  video_url?: string | null;
   slug: string;
   is_published: boolean;
   is_top: boolean;
@@ -53,12 +58,41 @@ interface ArticleCategory {
   name: string;
 }
 
-export default function ArticlesCard({ limit }: ArticlesCardProps) {
+export default function ArticlesCard({ limit, showAll = true, homePage = false }: ArticlesCardProps) {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
+  // Function to clean HTML entities and unwanted characters
+  const cleanText = (text: string): string => {
+    if (!text) return '';
+    
+    return text
+      // Remove HTML tags
+      .replace(/<[^>]*>/g, '')
+      // Replace common HTML entities
+      .replace(/&nbsp;/g, ' ')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&apos;/g, "'")
+      // Remove multiple spaces and normalize whitespace
+      .replace(/\s+/g, ' ')
+      // Remove leading/trailing whitespace
+      .trim();
+  };
+
   const [categories, setCategories] = useState<ArticleCategory[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [showAllCategories, setShowAllCategories] = useState(false);
-  const enablePagination = typeof limit === "undefined";
+  const enablePagination = !homePage && showAll;
   const normalizedSearch = searchTerm.trim();
 
 
@@ -67,10 +101,10 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
     (params: Record<string, unknown>) =>
       ArticlesApi.getAll({
         ...params,
-        search: normalizedSearch || undefined,
-        category: selectedCategory || undefined,
+        search: homePage ? undefined : (normalizedSearch || undefined),
+        category: homePage ? undefined : (selectedCategory || undefined),
       }),
-    [normalizedSearch, selectedCategory]
+    [normalizedSearch, selectedCategory, homePage]
   );
 
   const {
@@ -138,8 +172,8 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
         if (item.category) {
           if (typeof item.category === "string") {
             categoryName = item.category;
-          } else if (typeof item.category === "object" && item.category.name) {
-            categoryName = item.category.name;
+          } else if (typeof item.category === "object" && item.category && item.category.name) {
+            categoryName = String(item.category.name);
             if (typeof item.category.id === "number") {
               categoryId = item.category.id;
             }
@@ -151,39 +185,52 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
 
         return {
           id: item.id,
-          title: item.title || "Untitled Article",
-          description: item.description || "",
+          title: cleanText(item.title || "Untitled Article"),
+          description: cleanText(item.description || ""),
           category: categoryName,
           category_id: categoryId,
           published_at: item.created_at || item.date,
           image: item.image,
+          video_url: item.video_url,
           slug: item.slug || `article-${item.id}`,
           is_published: item.is_published === 1,
           is_top: Boolean(item.is_top),
         };
       });
       
-      // Extract unique categories from articles as fallback
-      const articleCategories = [...new Set(mapped.map(article => article.category))];
+      return mapped;
+    },
+    [items]
+  );
+
+  // Auto-update categories from articles when they change
+  useEffect(() => {
+    if (mappedArticles.length > 0) {
+      // Extract unique categories from articles
+      const articleCategories = [...new Set(mappedArticles.map(article => article.category))];
       console.log("🏷️ Categories found in articles:", articleCategories);
       
-      // If no categories from API, create them from articles
-      if (categories.length === 0 && articleCategories.length > 0) {
-        console.log("🔄 Creating categories from articles as fallback");
+      // Create categories from articles if API categories are empty or different
+      if (categories.length === 0 || 
+          (categories.length > 0 && !articleCategories.every(cat => 
+            categories.some(apiCat => apiCat.name === cat)
+          ))) {
+        console.log("🔄 Updating categories from articles");
         const fallbackCategories = articleCategories.map((name, index) => ({
           id: index + 1,
           name: name
         }));
         setCategories(fallbackCategories);
       }
-      
-      return mapped;
-    },
-    [items, categories.length]
-  );
+    }
+  }, [mappedArticles, categories.length]);
 
   const filteredArticles = useMemo(() => {
     if (!mappedArticles.length) {
+      return mappedArticles;
+    }
+
+    if (homePage) {
       return mappedArticles;
     }
 
@@ -194,15 +241,15 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
         !loweredSearch ||
         article.title.toLowerCase().includes(loweredSearch) ||
         article.description.toLowerCase().includes(loweredSearch) ||
-        article.category.toLowerCase().includes(loweredSearch);
+        String(article.category).toLowerCase().includes(loweredSearch);
 
       const matchesCategory =
         !selectedCategory ||
-        article.category === selectedCategory;
+        String(article.category) === selectedCategory;
 
       return matchesSearch && matchesCategory;
     });
-  }, [mappedArticles, normalizedSearch, selectedCategory]);
+  }, [mappedArticles, normalizedSearch, selectedCategory, homePage]);
 
   const displayArticles = limit
     ? filteredArticles.slice(0, limit)
@@ -233,171 +280,151 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
-        <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8">
-        
-        </div>
-
-        {/* Category Filter */}
-        <div className="flex flex-wrap items-center gap-3 mb-8 justify-center">
-          {/* All Button */}
-          <button
-            onClick={() => setSelectedCategory("")}
-            className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
-              selectedCategory === ""
-                ? "bg-amber-500 text-white border-amber-500 shadow-md"
-                : "bg-white text-gray-700 border-gray-200 hover:bg-amber-50"
-            }`}
-          >
-            All
-          </button>
-
-          {/* Dynamic Category Buttons - Show 3 on mobile, all on desktop */}
-          {categories.slice(0, showAllCategories ? categories.length : 3).map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.name)}
-              className={`px-4 py-2 rounded-full text-sm font-medium border transition-all duration-300 ${
-                selectedCategory === cat.name
-                  ? "bg-amber-500 text-white border-amber-500 shadow-md"
-                  : "bg-white text-gray-700 border-gray-200 hover:bg-amber-50"
-              }`}
-            >
-              {cat.name}
-              {/* Show count of articles in this category */}
-              <span className="ml-2 text-xs text-amber-600 font-semibold">
-                (
-                {
-                  // Count articles in this category
-                  mappedArticles.filter(
-                    (article) =>
-                      article.category_id === cat.id ||
-                      article.category === cat.name
-                  ).length
-                }
-                )
-              </span>
-            </button>
-          ))}
-
-          {/* More/Less Button - Only show on mobile when there are more than 3 categories */}
-          {categories.length > 3 && (
-            <button
-              onClick={() => setShowAllCategories(!showAllCategories)}
-              className="px-4 py-2 rounded-full text-sm font-medium border border-gray-200 bg-white text-gray-700 hover:bg-amber-50 transition-all duration-300 lg:hidden"
-            >
-              {showAllCategories ? "Less" : `+${categories.length - 3} More`}
-            </button>
-          )}
-        </div>
-
-
-
-        {displayArticles.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayArticles.map((article) => (
-              <div
-                key={article.id}
-                className="bg-white rounded-2xl shadow-lg border border-amber-100 overflow-hidden hover:shadow-xl transition-all duration-300 group cursor-pointer"
+    <div className={`${homePage ? '' : 'min-h-screen'} bg-gradient-to-br from-gray-50 via-white to-blue-50`}>
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Modern Category Filter - Hidden on Homepage */}
+        {!homePage && (
+          <div className="mb-12">
+            <div className="flex flex-wrap items-center gap-3 justify-center bg-gradient-to-r from-blue-50 via-white to-cyan-50 py-5 px-3 rounded-2xl border border-blue-100 shadow-sm">
+              {/* All Button */}
+              <button
+                onClick={() => setSelectedCategory("")}
+                className={`px-5 py-2.5 rounded-full text-base font-semibold shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                  ${
+                    selectedCategory === ""
+                      ? "bg-blue-600 text-white shadow-lg shadow-blue-100 scale-105 ring-2 ring-blue-300"
+                      : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50 hover:text-blue-900"
+                  }
+                `}
               >
-                <div className="relative h-48 overflow-hidden">
-                  {(() => {
-                    const imageUrl = getImageUrl(article.image);
-                    return imageUrl ? (
-                      <Image
-                        src={imageUrl}
-                        alt={article.title}
-                        fill
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
-                        }}
-                      />
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
-                        <div className="text-6xl text-amber-400">📚</div>
-                      </div>
-                    );
-                  })()}
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-md">
-                      📄 Article
-                    </span>
-                  </div>
-                  <div className="absolute top-4 right-4">
-                    <div className="w-8 h-8 bg-white/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white transition-colors">
-                      <svg
-                        className="w-4 h-4 text-amber-600"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
+                 <span className="inline-flex items-center gap-2">
+                   <svg className="w-4 h-4 opacity-60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m3 1a4 4 0 10-4-4 4 4 0 004 4zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                   {t('home.allArticles')}
+                 </span>
+              </button>
 
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-sm">
-                        {article.category}
-                      </span>
-                     
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      {article.published_at?.split("T")[0] || "Unknown date"}
-                    </div>
-                  </div>
-
-                  <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-amber-700 transition-colors">
-                    {article.title}
-                  </h3>
-
-                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4">
-                    {article.description.replace(/<[^>]*>/g, "")}
-                  </p>
-                </div>
-
-                <div className="px-6 pb-6">
-                  <Link
-                    href={`/articles/${article.slug}`}
-                    className="w-full inline-flex items-center justify-center px-4 py-2 bg-primary-600 to-orange-500 text-white font-semibold rounded-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              {/* Dynamic Category Buttons */}
+              {categories.slice(0, showAllCategories ? categories.length : 4).map((cat) => {
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.name)}
+                    className={`px-5 py-2.5 rounded-full text-base font-semibold shadow-sm flex items-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                      ${
+                        selectedCategory === cat.name
+                          ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg scale-105 ring-2 ring-blue-300"
+                          : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50 hover:text-blue-900"
+                      }
+                    `}
                   >
-                    Read Article
-                    <svg
-                      className="w-4 h-4 ml-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </Link>
+                    <span className="inline-flex items-center gap-2">
+                      <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" opacity="0.2"/><circle cx="10" cy="10" r="5"/></svg>
+                      {cat.name}
+                    </span>
+                  </button>
+                );
+              })}
+
+              {/* More/Less Button */}
+              {categories.length > 4 && (
+                <button
+                  onClick={() => setShowAllCategories(!showAllCategories)}
+                  className="px-5 py-2.5 rounded-full text-base font-semibold border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-900 transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                  <span className="inline-flex items-center gap-1">
+                    {showAllCategories ? (
+                      <>
+                        <svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24">
+                          <path d="M19 9l-7 7-7-7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        {t('home.showLess')}
+                      </>
+                    ) : (
+                      <>
+                        <svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24">
+                          <path d="M5 15l7-7 7 7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                        {`+${categories.length - 4} ${t('home.showMore')}`}
+                      </>
+                    )}
+                  </span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Modern Article List Design */}
+        {displayArticles.length > 0 ? (
+          <div className="space-y-6">
+            {displayArticles.map((article, index) => (
+              <Link
+                key={article.id}
+                href={`/articles/${article.slug}`}
+                className="group bg-white rounded-2xl transition-all duration-500 overflow-hidden cursor-pointer block"
+              >
+                <div className="flex flex-col h-96 lg:flex-row">
+                  {/* Image Section */}
+                  <div className="relative w-full lg:w-80 h-52 lg:h-auto overflow-hidden">
+                    {(() => {
+                      const imageUrl = getImageUrl(article.image);
+                      return imageUrl ? (
+                        <Image
+                          src={imageUrl}
+                          alt={article.title}
+                          fill
+                          sizes="(max-width: 1024px) 100vw, 320px"
+                          className="object-cover group-hover:scale-105 transition-transform duration-700"
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                          <div className="text-6xl text-blue-400">📄</div>
+                        </div>
+                      );
+                    })()}
+ 
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-blue-700 border border-blue-200">
+                        {String(article.category)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Content Section */}
+                  <div className="flex-1 p-4 sm:p-8">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2">
+                      <div className="flex-1 space-y-10 min-w-0">
+                        <h3 className="text-lg sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-700 transition-colors line-clamp-2 break-words">
+                          {article.title}
+                        </h3>
+                        <p className="
+                          text-gray-600 leading-relaxed mb-10 sm:mb-6 md:text-lg sm:text-base
+                          line-clamp-4
+                          sm:line-clamp-7
+                          lg:line-clamp-6
+                        ">
+                          {article.description}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Reading Time and Date */}
+                  </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-lg border border-amber-100">
-            <div className="text-gray-300 text-6xl mb-4">📚</div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">
+          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
+            <div className="text-gray-300 text-8xl mb-6">📚</div>
+            <h3 className="text-2xl font-semibold text-gray-600 mb-3">
               No Articles Found
             </h3>
-            <p className="text-gray-500">
+            <p className="text-gray-500 text-lg mb-6">
               {searchTerm
                 ? "Try adjusting your search terms"
                 : "No articles available at the moment"}
@@ -405,7 +432,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="mt-4 px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
+                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
               >
                 Clear Search
               </button>
@@ -413,6 +440,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
           </div>
         )}
 
+        {/* Pagination */}
         {enablePagination && !limit && displayArticles.length > 0 && (
           <PaginationControls
             className="mt-12"
@@ -424,7 +452,7 @@ export default function ArticlesCard({ limit }: ArticlesCardProps) {
             isBusy={isFetchingMore}
           />
         )}
-        </div>
       </div>
+    </div>
   );
 }

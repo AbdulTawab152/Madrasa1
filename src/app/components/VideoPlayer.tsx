@@ -12,36 +12,78 @@ interface VideoPlayerProps {
 export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Set video to unmuted by default
+  // Set video to unmuted by default and cleanup
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.muted = false;
     }
+
+    // Cleanup function to pause video when component unmounts
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
+    };
   }, []);
 
-  // Handle click to play/pause
-  const handleVideoClick = () => {
-    if (videoRef.current) {
+  // Handle click to play/pause with proper error handling
+  const handleVideoClick = async () => {
+    if (!videoRef.current || isLoading) return;
+
+    try {
       if (isPlaying) {
         videoRef.current.pause();
         setIsPlaying(false);
       } else {
-        videoRef.current.play();
-        setIsPlaying(true);
+        setIsLoading(true);
+        // Check if video is ready to play
+        if (videoRef.current.readyState >= 2) {
+          await videoRef.current.play();
+          setIsPlaying(true);
+        } else {
+          // Wait for video to be ready
+          videoRef.current.addEventListener('canplay', async () => {
+            try {
+              await videoRef.current?.play();
+              setIsPlaying(true);
+            } catch (error) {
+              console.warn('Video play error after canplay:', error);
+            }
+          }, { once: true });
+        }
       }
+    } catch (error) {
+      console.warn('Video play/pause error:', error);
+      setIsPlaying(false);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // Handle video play/pause events
-  const handlePlay = () => setIsPlaying(true);
-  const handlePause = () => setIsPlaying(false);
+  const handlePlay = () => {
+    setIsPlaying(true);
+    setIsLoading(false);
+  };
+  
+  const handlePause = () => {
+    setIsPlaying(false);
+    setIsLoading(false);
+  };
+
+  // Handle video errors
+  const handleError = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+    console.warn('Video error:', e);
+    setIsPlaying(false);
+    setIsLoading(false);
+  };
 
   return (
     <div className="relative w-full h-full cursor-pointer" onClick={handleVideoClick}>
       <video
         ref={videoRef}
-        autoPlay
         loop
         controls
         muted={false}
@@ -49,6 +91,8 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
         poster={posterUrl || "/placeholder-course.jpg"}
         onPlay={handlePlay}
         onPause={handlePause}
+        onError={handleError}
+        preload="metadata"
       >
         <source src={getImageUrl(videoUrl)} type="video/mp4" />
         <source src={getImageUrl(videoUrl)} type="video/webm" />
@@ -59,13 +103,17 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
         <div className={`transition-all duration-300 ${isPlaying ? 'opacity-0 scale-75' : 'opacity-80 scale-100'}`}>
           <div className="w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center">
-            <svg 
-              className="w-8 h-8 text-white ml-1" 
-              fill="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+            {isLoading ? (
+              <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <svg 
+                className="w-8 h-8 text-white ml-1" 
+                fill="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+            )}
           </div>
         </div>
       </div>
