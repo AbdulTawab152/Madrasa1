@@ -51,6 +51,7 @@ export const endpoints = {
   tasawwuf: `${apiConfig.baseUrl}/tasawwuf`,
   contact: `${apiConfig.baseUrl}/contact`,
 
+
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
 } as const;
 
@@ -81,8 +82,7 @@ export const navigation = {
     { name: 'tasawwuf', href: '/tasawwuf', icon: 'tasawwuf' },
     { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
   
-    { name: 'contact', href: '/contact', icon: 'contact' },
-  
+    { name: 'contact', href: '/contact', icon: 'contact' },  
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

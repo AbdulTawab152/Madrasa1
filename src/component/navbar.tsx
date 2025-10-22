@@ -13,6 +13,8 @@ import RouteProgressBar from "@/components/RouteProgressBar";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Suspense } from "react";
 import { FaListAlt } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6";
+
 
 const PRIMARY_LINK_LIMIT = 7;
 
@@ -277,6 +279,16 @@ const Navbar = memo(function Navbar() {
                 <PiList size={22} className="text-primary-700" />
               </button>
             </div>
+            {/* <div><button>Dunation</button></div> */}
+           
+           {/* Dunation btn  */}
+               <Link href="/donation">
+              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 text-white px-5 py-2 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300">
+           Dunation
+              </button>
+            </Link>
+
+ 
           </div>
         </div>
         <Suspense fallback={null}>

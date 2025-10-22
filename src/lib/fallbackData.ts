@@ -138,6 +138,35 @@ export const fallbackData = {
       category: { id: 1, name: "Spirituality" },
     },
   ],
+  "exam-results": [
+    {
+      id: 1,
+      slug: "exam-results-2024",
+      year: 2024,
+      title: "Annual Examination Results 2024",
+      pdf: "/placeholder-exam-results.pdf",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 2,
+      slug: "mid-term-results-2024",
+      year: 2024,
+      title: "Mid-term Examination Results 2024",
+      pdf: "/placeholder-exam-results.pdf",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+    {
+      id: 3,
+      slug: "final-exam-results-2023",
+      year: 2023,
+      title: "Final Examination Results 2023",
+      pdf: "/placeholder-exam-results.pdf",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+  ],
 };
 
 // Helper function to get fallback data

@@ -118,7 +118,7 @@ const Hero = () => {
             {t("hero.tagline")}
           </p>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-5xl font-bold leading-tight drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]">
             <span className="block bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
               {t("hero.title")}
             </span>
@@ -127,7 +127,7 @@ const Hero = () => {
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed max-w-4xl mx-auto drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
             {t("hero.description")}
           </p>
 
