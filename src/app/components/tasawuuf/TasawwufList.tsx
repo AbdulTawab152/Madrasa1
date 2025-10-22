@@ -7,6 +7,8 @@ import { TasawwufApi, extractArray } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import { useTranslation } from "@/hooks/useTranslation";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 interface Tasawwuf {
   id: number;
@@ -41,6 +43,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
   const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("All");
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -62,6 +65,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
         setCategories(["All", ...cats]);
       } catch (err) {
         console.error("Error fetching tasawwuf posts:", err);
+        setError(err instanceof Error ? err.message : "Failed to load tasawwuf content");
       } finally {
         setIsLoading(false);
       }
@@ -76,36 +80,16 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
       : posts.filter((post) => post.category?.name === activeCategory);
 
   if (isLoading) {
+    return <UnifiedLoader variant="list" count={3} showFilters={!homePage} />;
+  }
+
+  if (error) {
     return (
-      <div className="space-y-16">
-        {/* Category Pills Skeleton */}
-        <div className="flex flex-wrap justify-center gap-3">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-10 w-24 bg-gray-200 rounded-full animate-pulse"></div>
-          ))}
-        </div>
-        
-        {/* List Skeleton */}
-        <div className="space-y-12 max-w-5xl mx-auto">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="flex flex-col md:flex-row gap-6 border-b border-gray-200 pb-10">
-              <div className="w-full md:w-1/3 h-56 bg-gray-200 rounded-xl animate-pulse"></div>
-              <div className="flex-1 space-y-4">
-                <div className="h-6 bg-gray-200 rounded w-3/4 animate-pulse"></div>
-                <div className="space-y-2">
-                  <div className="h-4 bg-gray-200 rounded w-full animate-pulse"></div>
-                  <div className="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
-                  <div className="h-4 bg-gray-200 rounded w-4/6 animate-pulse"></div>
-                </div>
-                <div className="flex justify-between">
-                  <div className="h-6 w-24 bg-gray-200 rounded-full animate-pulse"></div>
-                  <div className="h-6 w-20 bg-gray-200 rounded animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
+      <ErrorDisplay 
+        error={error} 
+        variant="full" 
+        onRetry={() => window.location.reload()}
+      />
     );
   }
 

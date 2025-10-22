@@ -4,6 +4,7 @@ import "../globals.css";
 import Navbar from "../component/navbar";
 import Footer from "@/component/footer";
 import I18nProvider from "@/components/I18nProvider";
+import { ToastProvider } from "@/components/Toast";
 
 export const metadata: Metadata = {
   title: "Madsreqa - Islamic Learning Platform",
@@ -37,13 +38,15 @@ export default function RootLayout({
           strategy="lazyOnload"
         />
         <div className="gtranslate_wrapper"></div>
-        <I18nProvider>
-          <Navbar />
-          <main>
-            {children}
-          </main>
-          <Footer/>
-        </I18nProvider>
+        <ToastProvider>
+          <I18nProvider>
+            <Navbar />
+            <main>
+              {children}
+            </main>
+            <Footer/>
+          </I18nProvider>
+        </ToastProvider>
       </body>
     </html>
   );

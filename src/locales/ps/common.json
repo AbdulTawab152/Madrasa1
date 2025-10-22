@@ -17,7 +17,9 @@
     "contact": "اړیکه",
     "islamicLearningPlatform": "د اسلامي زده کړو پلیټفارم",
     "more": "نور",
-    "moreOptions": "نور انتخابونه"
+    "moreOptions": "نور انتخابونه",
+    "search": "لټون",
+    "logoAlt": "د انوارالعلوم لوګو"
   },
  "hero": {
   "tagline": "✦  شریعت • طریقت • سیاست ✦",
@@ -213,7 +215,10 @@
     "subscribe": "ګډون",
     "copyright": "مدرسه. ټول حقونه ساتل شوي.",
     "privacyPolicy": "د محرمیت پالیسي",
-    "termsOfService": "د خدمت شرطونه"
+    "termsOfService": "د خدمت شرطونه",
+    "address": "پښتون زرغون، هرات، افغانستان",
+    "phone": "+93 700 000 000",
+    "email": "info@madrasa.com"
   },
   "iftah": {
     "title": "د فتوا څانګه",

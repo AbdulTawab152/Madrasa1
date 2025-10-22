@@ -18,6 +18,8 @@ import { BlogsApi } from "@/lib/api";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { getImageUrl } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 interface BlogItem {
   id: number;
@@ -39,23 +41,7 @@ interface BlogsPreviewProps {
 
 const fallbackImage = "/placeholder-blog.jpg";
 
-const skeletonItems = (count: number) =>
-  Array.from({ length: count }).map((_, idx) => idx);
-
-const SkeletonCard = () => (
-  <div className="animate-pulse overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft">
-    <div className="h-52 w-full bg-primary-100/80" />
-    <div className="space-y-4 p-6">
-      <div className="h-5 w-3/4 rounded-full bg-primary-100" />
-      <div className="h-4 w-full rounded-full bg-primary-50" />
-      <div className="h-4 w-5/6 rounded-full bg-primary-50" />
-      <div className="flex items-center justify-between border-t border-primary-100/60 pt-4">
-        <div className="h-4 w-24 rounded-full bg-primary-100" />
-        <div className="h-9 w-24 rounded-full bg-primary-100" />
-      </div>
-    </div>
-  </div>
-);
+// Remove custom skeleton - using UnifiedLoader instead
 
 function resolveCoverImage(img?: string | null) {
   if (!img) return fallbackImage;
@@ -178,48 +164,18 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
   }, [curatedBlogs, homePage, limit, selectedCategory, t]);
 
   if (isLoadingInitial && filteredBlogs.length === 0) {
-    return (
-      <section className="bg-background-primary py-16">
-        <div className="max-w-7xl mx-auto px-6 space-y-10">
-          <header className="text-center space-y-3">
-            <p className="text-sm uppercase tracking-[0.35em] text-primary-600">
-              {t('blog.loading')}
-            </p>
-            <h2 className="text-3xl font-semibold text-primary-900">
-              {t('blog.preparingStories')}
-            </h2>
-            <p className="text-primary-600">
-              {t('blog.fetchingUpdates')}
-            </p>
-          </header>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {skeletonItems(limit ?? 6).map((idx) => (
-              <SkeletonCard key={idx} />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
+    return <UnifiedLoader variant="card-grid" count={limit ?? 6} showFilters={!homePage} />;
   }
 
   if (error) {
     return (
       <section className="bg-background-primary py-16">
-        <div className="max-w-3xl mx-auto px-6 text-center">
-          <div className="rounded-3xl border border-red-100 bg-red-50 p-10 shadow-soft">
-            <p className="text-xl font-semibold text-red-700 mb-4">
-              {t('blog.unableToLoad')}
-            </p>
-            <p className="text-red-600 mb-6">
-              {error}. {t('blog.tryRefreshing')}
-            </p>
-            <button
-              onClick={() => void reload()}
-              className="inline-flex items-center rounded-full bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
-            >
-              {t('blog.retryLoading')}
-            </button>
-          </div>
+        <div className="max-w-7xl mx-auto px-6">
+          <ErrorDisplay 
+            error={error} 
+            variant="inline" 
+            onRetry={() => void reload()}
+          />
         </div>
       </section>
     );

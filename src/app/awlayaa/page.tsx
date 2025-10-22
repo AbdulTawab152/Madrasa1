@@ -7,6 +7,8 @@ import { AwlyaaApi } from "../../lib/api";
 import { motion } from "framer-motion";
 import { getImageUrl } from "@/lib/utils";
 import IslamicHeader from "../components/IslamicHeader";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 import {
   FaUser,
   FaAward,
@@ -71,45 +73,24 @@ export default function AwlyaaListPage() {
     },
   };
 
-  if (loading)
-    return (
-      <div className="min-h-screen flex items-center justify-center mt-32">
-        <div className="text-center">
-          <div className="relative">
-            <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-100 border-t-orange-500 mx-auto"></div>
-            <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-orange-300 animate-spin mx-auto" style={{animationDirection: 'reverse', animationDuration: '1.5s'}}></div>
-          </div>
-          <h3 className="mt-6 text-xl font-semibold text-gray-800">Loading Awlyaa</h3>
-          <p className="mt-2 text-gray-600">Discovering our distinguished scholars...</p>
-        </div>
-      </div>
-    );
+  if (loading) {
+    return <UnifiedLoader variant="card-grid" count={6} showFilters={false} />;
+  }
 
-  if (error)
+  if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center mt-32">
-        <div className="text-center p-8 bg-white rounded-3xl shadow-lg border border-red-100 max-w-lg mx-auto">
-          <div className="w-20 h-20 bg-gradient-to-br from-red-100 to-pink-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <div className="text-red-500 text-3xl">⚠️</div>
-          </div>
-          <h2 className="text-2xl font-bold text-gray-800 mb-3">
-            Unable to Load Awlyaa
-          </h2>
-          <p className="text-gray-600 mb-6 leading-relaxed">
-            We encountered an issue while loading the scholars' information. Please try again.
-          </p>
-          <p className="text-sm text-red-600 mb-6 p-3 bg-red-50 rounded-lg">
-            {error}
-          </p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-2xl hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-          >
-            Try Again
-          </button>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+        <IslamicHeader pageType="awlayaa" />
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <ErrorDisplay 
+            error={error} 
+            variant="full" 
+            onRetry={() => window.location.reload()}
+          />
         </div>
       </div>
     );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">

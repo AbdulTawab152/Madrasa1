@@ -3,35 +3,51 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { PiList } from "react-icons/pi";
-import { useTranslation } from '@/hooks/useTranslation';
-import { getLanguageDirection } from '@/lib/i18n';
 
 import { appConfig, navigation } from "@/lib/config";
 import RouteProgressBar from "@/components/RouteProgressBar";
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import { Suspense } from "react";
-import { FaListAlt } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaSearch } from "react-icons/fa";
 
 
 const PRIMARY_LINK_LIMIT = 7;
+const NAV_LABELS: Record<string, string> = {
+  home: "کور",
+  courses: "درسي کورسونه",
+  iftah: "افتاء",
+  article: "مقالې",
+  awlayaa: "اولیا",
+  awlyaacharts: "اولیا چارټونه",
+  books: "کتابونه",
+  donation: "مرسته",
+  blogs: "بلاګونه",
+  author: "لیکوالان",
+  event: "پیښې",
+  tasawwuf: "تصوف",
+  graduation: "فراغتونه",
+  sanad: "سندونه",
+  contact: "اړیکه",
+};
 
 const Navbar = memo(function Navbar() {
   const pathname = usePathname();
-  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  // Create a string-safe wrapper function
-  const t = (key: string): string => {
-    const result = tRaw(key);
-    return typeof result === 'string' ? result : key;
-  };
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
-  
-  const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+  const [isSearchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchRef = useRef<HTMLDivElement>(null);
+
+  const isRTL = true;
+
+  useEffect(() => {
+    if (typeof document !== "undefined") {
+      document.documentElement.setAttribute('dir', 'rtl');
+      document.documentElement.setAttribute('lang', 'ps');
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setHasScrolled(window.scrollY > 10);
@@ -43,6 +59,23 @@ const Navbar = memo(function Navbar() {
     setMobileMenuOpen(false);
     setMoreMenuOpen(false);
   }, [pathname]);
+
+  // Close search when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setSearchOpen(false);
+      }
+    };
+
+    if (isSearchOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isSearchOpen]);
 
   const { desktop, mobile } = useMemo(() => {
     const now = new Date();
@@ -84,16 +117,16 @@ const Navbar = memo(function Navbar() {
   const primaryLinks = useMemo(
     () => navigation.main.slice(0, PRIMARY_LINK_LIMIT).map(link => ({
       ...link,
-      name: t(`navbar.${link.name.toLowerCase()}`)
+      name: NAV_LABELS[link.name as keyof typeof NAV_LABELS] || link.name
     })),
-    [t]
+    []
   );
   const secondaryLinks = useMemo(
     () => navigation.main.slice(PRIMARY_LINK_LIMIT).map(link => ({
       ...link,
-      name: t(`navbar.${link.name.toLowerCase()}`)
+      name: NAV_LABELS[link.name as keyof typeof NAV_LABELS] || link.name
     })),
-    [t]
+    []
   );
 
   const toggleMobileMenu = useCallback(() => {
@@ -104,11 +137,25 @@ const Navbar = memo(function Navbar() {
     setMoreMenuOpen((previous) => !previous);
   }, []);
 
+  const toggleSearch = useCallback(() => {
+    setSearchOpen((previous) => !previous);
+  }, []);
+
+  const handleSearch = useCallback((e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // TODO: Implement search functionality
+      console.log('Searching for:', searchQuery);
+      // You can redirect to a search results page or filter content
+      // Example: router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  }, [searchQuery]);
+
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
   const closeMoreMenu = useCallback(() => setMoreMenuOpen(false), []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header className="fixed inset-x-0 top-0 z-50" dir="rtl" lang="ps">
       <div className="relative overflow-hidden bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 text-white">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_rgba(255,255,255,0))]" aria-hidden="true" />
         <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
@@ -151,6 +198,7 @@ const Navbar = memo(function Navbar() {
       >
         <div className="max-w-screen-xl mx-auto px-4 lg:px-6 py-2">
           <div className={`flex items-center justify-between gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            {/* Logo - Will be on right for RTL */}
             <Link
               href="/"
               className={`flex items-center gap-3 hover:opacity-80 transition-opacity duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
@@ -159,7 +207,7 @@ const Navbar = memo(function Navbar() {
                 <div className="relative w-12 h-12 sm:w-14 sm:h-14">
                   <Image
                     src="/logo.png"
-                    alt="Anwarul Uloom Logo"
+                    alt="د انور العلوم نښان"
                     fill
                     sizes="(max-width: 768px) 120px, 150px"
                     className="object-contain"
@@ -173,11 +221,12 @@ const Navbar = memo(function Navbar() {
                   {appConfig.name}
                 </div>
                 <div className="text-xs text-primary-600 font-medium">
-                  {t('navbar.islamicLearningPlatform')}
+                  د اسلامي زده کړو پلیټفارم
                 </div>
               </div>
             </Link>
 
+            {/* Navigation - Center */}
             <div className="hidden lg:flex py-3 items-center justify-center flex-1">
               <ul className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 {primaryLinks.map(({ href, name }) => {
@@ -213,7 +262,7 @@ const Navbar = memo(function Navbar() {
                       aria-haspopup="true"
                       aria-expanded={isMoreMenuOpen}
                     >
-                      {t('navbar.more')}
+                      نور
                       <svg
                         className={`h-4 w-4 transition-transform ${
                           isMoreMenuOpen ? "rotate-180" : ""
@@ -267,8 +316,60 @@ const Navbar = memo(function Navbar() {
               </ul>
             </div>
 
+            {/* Left side - Search, Mobile Menu, Donation for RTL */}
             <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
-              <LanguageSwitcher />
+              {/* Search Button */}
+              <div ref={searchRef} className="relative">
+                <button
+                  type="button"
+                  onClick={toggleSearch}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 hover:bg-primary-100 border border-primary-200 shadow-sm transition-colors duration-200"
+                  aria-label="Toggle search"
+                >
+                  <FaSearch size={18} className="text-primary-700" />
+                </button>
+                
+                {/* Search Overlay */}
+                {isSearchOpen && (
+                  <div className={`absolute top-full mt-4 z-50 ${isRTL ? 'right-0' : 'left-0'}`}>
+                    <form onSubmit={handleSearch} className="relative">
+                      <div className="bg-white rounded-xl shadow-xl border border-primary-200 p-4">
+                        <div className="flex items-center gap-2">
+                          <input
+                            type="text"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            placeholder="پلټنه..."
+                            className={`h-10 px-4 rounded-lg bg-primary-50 border border-primary-200 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 ${
+                              searchQuery.length > 20 ? 'w-96' : 'w-80'
+                            }`}
+                            autoFocus
+                          />
+                          {searchQuery && (
+                            <button
+                              type="button"
+                              onClick={() => setSearchQuery("")}
+                              className="text-primary-400 hover:text-primary-600 transition-colors p-1"
+                              aria-label="Clear search"
+                            >
+                              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                          )}
+                          <button
+                            type="submit"
+                            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
+                          >
+                            پلټنه
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                )}
+              </div>
+              
               <button
                 type="button"
                 onClick={toggleMobileMenu}
@@ -278,15 +379,15 @@ const Navbar = memo(function Navbar() {
               >
                 <PiList size={22} className="text-primary-700" />
               </button>
+
+              {/* Donation Button */}
+              <Link href="/donation">
+                <button className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 border border-primary-700">
+                  <span className="inline-block animate-bounce text-lg">&#x1F381;</span>
+                  مرسته
+                </button>
+              </Link>
             </div>
-            {/* <div><button>Dunation</button></div> */}
-           
-           {/* Dunation btn  */}
-               <Link href="/donation">
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 text-white px-5 py-2 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.2)] hover:scale-105 transition-transform duration-300">
-           Dunation
-              </button>
-            </Link>
 
  
           </div>
@@ -317,7 +418,7 @@ const Navbar = memo(function Navbar() {
             <div className="relative w-10 h-10">
               <Image
                 src="/logo.png"
-                alt="Anwarul Uloom Logo"
+                alt="د انور العلوم نښان"
                 fill
                 sizes="(max-width: 768px) 120px, 150px"
                 className="object-contain"
@@ -360,11 +461,11 @@ const Navbar = memo(function Navbar() {
                   onClick={closeMobileMenu}
                   className={`flex items-center justify-between rounded-xl p-4 text-sm font-medium transition-all duration-200 shadow-sm ${
                     isActive
-                      ? "border-l-4 border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900"
+                      ? `${isRTL ? 'border-r-4' : 'border-l-4'} border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900`
                       : "text-primary-800/90 hover:bg-primary-100/40"
                   }`}
                 >
-                  <span>{name}</span>
+                  <span className={isRTL ? 'text-right' : 'text-left'}>{name}</span>
                 </Link>
               );
             })}
@@ -392,7 +493,7 @@ const Navbar = memo(function Navbar() {
                         d="M4 6h16M4 12h16m-7 6h7"
                       />
                     </svg>
-                    {t('navbar.moreOptions')}
+                    نور انتخابونه
                   </span>
                   <svg
                     className={`h-4 w-4 text-primary-500 transition-transform ${

@@ -1,32 +1,49 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import truncate from "html-truncate";
 import IslamicHeader from "../components/IslamicHeader";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 import { AuthorsApi } from "../../lib/api";
 import { Author } from "../../lib/types";
 import { getImageUrl } from "@/lib/utils";
-
-async function fetchAuthorsData(): Promise<Author[]> {
-  try {
-    const response = await AuthorsApi.getAll();
-    if (!response.success) {
-      throw new Error(response.error || "Failed to load authors");
-    }
-    const payload = response.data;
-    return Array.isArray(payload) ? payload : [];
-  } catch (error) {
-    console.error("Error fetching authors:", error);
-    return [];
-  }
-}
+import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 
 const isPublishedAndAlive = (author: Author): boolean => {
   return Boolean(author.is_published && author.is_alive);
 };
 
-export default async function AuthorsPage() {
-  const authors = await fetchAuthorsData();
+export default function AuthorsPage() {
+  const {
+    items: authors,
+    isLoadingInitial,
+    error,
+    reload,
+  } = usePaginatedResource<Author>((params) => AuthorsApi.getAll(params), {
+    pageSize: 12,
+  });
+
+  if (isLoadingInitial) {
+    return <UnifiedLoader variant="card-grid" count={6} showFilters={false} />;
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-background-primary">
+        <IslamicHeader pageType="authors" />
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <ErrorDisplay 
+            error={error} 
+            variant="full" 
+            onRetry={() => void reload()}
+          />
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-background-primary">

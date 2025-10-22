@@ -5,12 +5,13 @@ import { useMemo } from "react";
 import CoursesSection from "../components/courses/courseCard";
 import IslamicHeader from "../components/IslamicHeader";
 
-import PageSkeleton from "@/components/loading/PageSkeleton";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import PaginationControls from "@/components/PaginationControls";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { CoursesApi } from "@/lib/api";
 import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 export default function CoursesPage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
@@ -60,22 +61,13 @@ export default function CoursesPage() {
 
       <div className="w-full mx-auto py-1 px-4 sm:px-6 lg:px-8">
         {isLoadingInitial ? (
-          <PageSkeleton type="courses" showFilters={false} cardCount={6} />
+          <UnifiedLoader variant="card-grid" count={6} showFilters={false} />
         ) : error ? (
-          <div className="max-w-3xl mx-auto text-center bg-red-50 border border-red-100 rounded-3xl p-10 shadow-soft">
-            <h2 className="text-2xl font-semibold text-red-700 mb-4">
-              {t('courses.unableToLoad')}
-            </h2>
-            <p className="text-red-600 mb-6">
-              {error}. {t('courses.retryMessage')}
-            </p>
-            <button
-              onClick={() => void reload()}
-              className="inline-flex items-center rounded-full bg-primary-600 px-6 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
-            >
-              {t('courses.retryButton')}
-            </button>
-          </div>
+          <ErrorDisplay 
+            error={error} 
+            variant="full" 
+            onRetry={() => void reload()}
+          />
         ) : (
           <CoursesSection courses={courses} showAll={true} />
         )}
