@@ -16,6 +16,15 @@ const images = [
   "/hero5.jpg",
   "/hero6.jpg",
   "/hero7.jpg",
+  "/about1.jpg",
+  "/about2.jpg",
+  "/about3.jpg",
+  "/about4.jpg",
+  "/about5.jpg",
+  "/about6.jpg",
+  "/about7.jpg",
+  "/about8.jpg",
+  "/about9.jpg",
 ];
 
 const Ship = "/ship.png";

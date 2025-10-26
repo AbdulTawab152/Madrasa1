@@ -637,6 +637,224 @@ const AboutPage = () => {
         </div>
       </section>
 
+      {/* Enhanced About Page Content Section */}
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
+          {/* Short Introduction */}
+          <div className="text-center mb-12 sm:mb-16">
+            <div className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium mb-6">
+              <BookOpen className="h-4 w-4 mr-2" />
+              {t('aboutPage.shortIntroduction')}
+            </div>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+              {t('aboutPage.shortIntroduction')}
+            </h2>
+            <div className="w-32 h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full"></div>
+          </div>
+
+          {/* Main Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12">
+            {/* Madrasa Establishment */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mr-4">
+                  <BookOpen className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">تأسیس مدرسه</h3>
+              </div>
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                {t('aboutPage.madrasaEstablishment')}
+              </p>
+            </div>
+
+            {/* After Death */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">د وفات وروسته</h3>
+              </div>
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                {t('aboutPage.afterDeath')}
+              </p>
+            </div>
+          </div>
+
+          {/* Academic Services */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg border border-gray-100 mb-12">
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4">
+                  <Award className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">{t('aboutPage.academicServices')}</h3>
+              </div>
+              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
+                {t('aboutPage.teachingDescription')}
+              </p>
+            </div>
+            
+            {/* Subjects Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-8">
+              {tArray('aboutPage.subjectsList').map((subject: string, index: number) => (
+                <div key={index} className="group text-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:from-amber-50 hover:to-amber-100 transition-all duration-300 border border-gray-200 hover:border-amber-300">
+                  <div className={`w-12 h-12 ${subjects[index]?.color || 'bg-gray-500'} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`}>
+                    <span className="text-lg">{subjects[index]?.icon || '📚'}</span>
+                  </div>
+                  <p className="text-xs sm:text-sm font-medium text-gray-800 group-hover:text-amber-800 transition-colors">{subject}</p>
+                </div>
+              ))}
+            </div>
+            
+            <div className="text-center">
+              <p className="text-sm sm:text-base text-amber-600 font-medium italic">
+                {t('aboutPage.teachingMethods')}
+              </p>
+            </div>
+          </div>
+
+          {/* Teachers and Statistics Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12">
+            {/* Teachers and Scholars */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100">
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
+                  <Users className="h-6 w-6 text-white" />
+                </div>
+                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{t('aboutPage.teachersAndScholars')}</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {tArray('aboutPage.teachersList').slice(0, 8).map((teacher: string, index: number) => {
+                  const teacherData = teacher.split(' - ');
+                  const name = teacherData[0];
+                  const type = name.includes('خلیفه') || name.includes('Khalifa') ? 'خلیفه' : 
+                             name.includes('مفتي') || name.includes('Mufti') ? 'مفتي' : 
+                             name.includes('مولوي') || name.includes('Maulvi') ? 'مولوي' : 
+                             name.includes('قاري') || name.includes('Qari') ? 'قاري' : 'حافظ';
+                  return (
+                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+                      <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
+                        type === 'خلیفه' ? 'bg-amber-500' :
+                        type === 'مفتي' ? 'bg-blue-500' :
+                        type === 'مولوي' ? 'bg-green-500' :
+                        type === 'قاري' ? 'bg-purple-500' :
+                        'bg-gray-500'
+                      }`}>
+                        <span className="text-white text-xs font-bold">
+                          {type === 'خلیفه' ? 'خ' :
+                           type === 'مفتي' ? 'م' :
+                           type === 'مولوي' ? 'م' :
+                           type === 'قاري' ? 'ق' :
+                           'ح'}
+                        </span>
+                      </div>
+                      <p className="text-sm font-medium text-gray-800 flex-1">{name}</p>
+                    </div>
+                  );
+                })}
+              </div>
+              {tArray('aboutPage.teachersList').length > 8 && (
+                <div className="text-center mt-4">
+                  <span className="text-sm text-gray-500">+ {tArray('aboutPage.teachersList').length - 8} نور</span>
+                </div>
+              )}
+            </div>
+
+            {/* Student Statistics */}
+            <div className="space-y-6">
+              {/* Admission Stats */}
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-bold text-blue-800">د شاګردانو داخله</h4>
+                </div>
+                <p className="text-sm text-blue-700 leading-relaxed">{t('aboutPage.admissionDescription')}</p>
+              </div>
+
+              {/* Graduates Stats */}
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mr-4">
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                  </div>
+                  <h4 className="text-lg font-bold text-green-800">فارغان</h4>
+                </div>
+                <p className="text-sm text-green-700 leading-relaxed">{t('aboutPage.graduatesDescription')}</p>
+              </div>
+
+              {/* Teacher Qualifications */}
+              <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 border border-amber-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4">
+                    <Award className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="text-lg font-bold text-amber-800">{t('aboutPage.teacherQualifications')}</h4>
+                </div>
+                <p className="text-sm text-amber-700 leading-relaxed">{t('aboutPage.teacherQualificationsDesc')}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Successor Khalifas */}
+          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg border border-gray-100 mb-12">
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mr-4">
+                  <Star className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">{t('aboutPage.successorKhalifas')}</h3>
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {tArray('aboutPage.successorKhalifasList').map((khalifa: string, index: number) => (
+                <div key={index} className="group bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-4 text-center border border-amber-200 hover:border-amber-300 hover:shadow-md transition-all duration-300">
+                  <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
+                    <span className="text-white text-sm font-bold">{index + 1}</span>
+                  </div>
+                  <h4 className="font-bold text-sm text-amber-800 group-hover:text-amber-900 transition-colors">{khalifa}</h4>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Re-establishment Details */}
+          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg border border-amber-200">
+            <div className="text-center mb-8">
+              <div className="flex items-center justify-center mb-4">
+                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mr-4">
+                  <BookOpen className="h-8 w-8 text-white" />
+                </div>
+                <h3 className="text-2xl sm:text-3xl font-bold text-amber-900">{t('about.biography.reestablishment')}</h3>
+              </div>
+            </div>
+            
+            <div className="max-w-4xl mx-auto">
+              <p className="text-base sm:text-lg text-amber-800 leading-relaxed text-center mb-8">
+                {t('aboutPage.reestablishmentDetails')}
+              </p>
+              
+              <div className="bg-white rounded-xl p-6 text-center mb-8 shadow-sm">
+                <div className="space-y-2">
+                  <p className="text-xl font-bold text-amber-800">{t('aboutPage.reestablishmentDate1')}</p>
+                  <p className="text-lg text-amber-700">{t('aboutPage.reestablishmentDate2')}</p>
+                </div>
+              </div>
+              
+              <p className="text-base sm:text-lg text-amber-800 font-medium text-center italic leading-relaxed">
+                {t('aboutPage.reestablishmentPrayer')}
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       
 
       {/* Call to Action */}

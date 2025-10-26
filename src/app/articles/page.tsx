@@ -4,7 +4,7 @@ import IslamicHeader from "../components/IslamicHeader";
 export default function ArticlesPage() {
   return (
     <main className="w-full">
-      <IslamicHeader pageType="articles" />
+      <IslamicHeader pageType="articles" title="Islamic Articles" />
       <ArticlesCard />
     </main>
   );

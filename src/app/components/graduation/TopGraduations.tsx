@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getImageUrl } from "@/lib/utils";
 import PaginationControls from "@/components/PaginationControls";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface Graduation {
   id: number;
@@ -24,6 +25,13 @@ interface GraduationsSectionProps {
 }
 
 export default function GraduationsSection({ showAll = false }: GraduationsSectionProps) {
+  const { t: tRaw, i18n } = useTranslation("common", { useSuspense: false });
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === "string" ? result : key;
+  };
+  const isRTL = i18n.language === "ps" || i18n.language === "prs";
+
   const [graduations, setGraduations] = useState<Graduation[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
@@ -68,7 +76,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
         transition={{ duration: 0.5 }}
       >
         <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
-        <span className="ml-4 text-gray-600 font-medium">Loading graduations...</span>
+        <span className="ml-4 text-gray-600 font-medium">{t('graduationDetail.loadingGraduations')}</span>
       </motion.div>
     );
   }
@@ -83,9 +91,9 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
       >
         <div className="text-6xl mb-4">🎓</div>
         <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-          No graduations found
+          {t('graduationDetail.noGraduationsFound')}
         </h2>
-        <p className="text-gray-500">Check back later for upcoming graduation events</p>
+        <p className="text-gray-500">{t('graduationDetail.checkBackLater')}</p>
       </motion.div>
     );
   }
@@ -95,10 +103,10 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
         {/* Section heading */}
         <div className="text-center mb-8">
           <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-            Graduations
+            {t('graduationDetail.graduations')}
           </h2>
           <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
-            Celebrating the remarkable achievements of our esteemed graduates
+            {t('graduationDetail.celebratingAchievements')}
           </p>
         </div>
        
@@ -162,7 +170,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                     </h3>
                     {/* Description */}
                      <p className="text-gray-600 text-[13px] leading-6 mb-2 line-clamp-3 group-hover:line-clamp-6 transition-[line-clamp] duration-200">
-                       {grad.description?.replace(/<[^>]*>/g, "") || "No description available."}
+                       {grad.description?.replace(/<[^>]*>/g, "") || t('graduationDetail.noDescriptionAvailable')}
                      </p>
                    
 
@@ -174,7 +182,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                       </span>
                       {grad.is_top && (
                         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-medium">
-                          <FaStar className="text-yellow-400" /> Top
+                          <FaStar className="text-yellow-400" /> {t('graduationDetail.top')}
                         </span>
                       )}
                     </div>
@@ -184,10 +192,10 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                      <Link href={`/graduated-students/${grad.slug}`} className="w-full" aria-label="View graduation details">
                       <button
                         type="button"
-                        className="w-full py-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition-all shadow-sm hover:shadow focus:outline-none mt-2 flex justify-center items-center gap-2"
+                        className={`w-full py-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition-all shadow-sm hover:shadow focus:outline-none mt-2 flex justify-center items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
-                        <span>View Details</span>
-                        <FaArrowRight className="ml-1 text-sm" />
+                        <span>{t('graduationDetail.viewDetails')}</span>
+                        <FaArrowRight className={`text-sm ${isRTL ? 'scaleX(-1)' : ''}`} />
                       </button>
                     </Link>
                   </div>

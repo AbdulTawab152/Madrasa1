@@ -39,7 +39,7 @@ export default function EventsPage() {
 
   return (
     <main className="w-full min-h-screen">
-      <IslamicHeader pageType="events" />
+      <IslamicHeader pageType="events" title="Islamic Events" />
       <div className="pb-16">
         {isLoadingInitial ? (
           <PageSkeleton type="events" showFilters={false} cardCount={6} />
