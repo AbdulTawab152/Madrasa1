@@ -6,6 +6,8 @@ import { FiUser, FiMail, FiPhone, FiMessageSquare, FiSend, FiMapPin, FiClock } f
 import { FaYoutube, FaInstagram, FaTwitter } from "react-icons/fa6";
 import { ContactApi } from "@/lib/api";
 import { useTranslation } from "@/hooks/useTranslation";
+import { useApiMutation } from "@/hooks/useApi";
+import { useToast } from "@/components/Toast";
 
 // Mock FAQ data (replace with your actual FAQDate import)
 
@@ -19,19 +21,43 @@ function Contact() {
     return typeof result === 'string' ? result : key;
   };
 
+  const toast = useToast();
+  
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: "",
   });
-  const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState("");
   const [errors, setErrors] = useState({
     name: "",
     email: "",
     message: "",
   });
+
+  // Use the new API mutation hook
+  const { mutate: submitContact, isLoading: loading } = useApiMutation(
+    (data: typeof formData) => ContactApi.submit(data),
+    {
+      onSuccess: () => {
+        setStatus("✅ " + t('contact.messageSentSuccess'));
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+        });
+        toast.success(t('contact.messageSentSuccess'));
+      },
+      onError: (error) => {
+        setStatus("❌ " + t('contact.failedToSend'));
+        toast.error(error.message || t('contact.failedToSend'));
+      },
+      showSuccessToast: false, // We're handling toasts manually
+      showErrorToast: false,
+    }
+  );
 
 
 
@@ -80,32 +106,16 @@ function Contact() {
     // Validate form before submitting
     if (!validateForm()) {
       setStatus("❌ " + t('contact.fillRequiredFields'));
+      toast.error(t('contact.fillRequiredFields'));
       return;
     }
 
-    setLoading(true);
     setStatus("");
 
     try {
-      const response = await ContactApi.submit(formData);
-
-      if (!response.success) {
-        throw new Error(response.error || "Something went wrong");
-      }
-
-      setStatus("✅ " + t('contact.messageSentSuccess'));
-      // Clear form after successful submission
-      setFormData({
-        name: "",
-        email: "",
-        phone: "",
-        message: "",
-      });
-   
+      await submitContact(formData);
     } catch (err) {
-      setStatus("❌ " + t('contact.failedToSend'));
-    } finally {
-      setLoading(false);
+      // Error already handled by mutation hook
     }
   };
 

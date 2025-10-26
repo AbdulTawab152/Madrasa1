@@ -28,6 +28,31 @@ export const apiConfig = {
     duration: parseInt(process.env.NEXT_PUBLIC_CACHE_DURATION || '300'), // 5 minutes for better performance
     revalidate: parseInt(process.env.NEXT_PUBLIC_REVALIDATE_INTERVAL || '300'), // 5 minutes
   },
+  // Error handling configuration
+  errorHandling: {
+    maxRetries: 3,
+    retryDelay: 1000, // ms
+    retryableStatusCodes: [408, 429, 500, 502, 503, 504],
+    suppressedStatusCodes: [404], // Don't log these in production
+  },
+  // Toast notification preferences
+  notifications: {
+    showSuccessToast: false, // Don't show success toasts by default
+    showErrorToast: true, // Show error toasts for list endpoints
+    toastDuration: 5000, // ms
+  },
+  // Logging configuration
+  logging: {
+    enableApiLogs: process.env.NODE_ENV === 'development',
+    enablePerformanceLogs: process.env.NODE_ENV === 'development',
+    suppressedErrors: ['404'], // Errors to suppress in production
+  },
+  // Fallback data configuration
+  fallback: {
+    useForListEndpoints: true,
+    useForDetailEndpoints: false,
+    showFallbackMessage: true,
+  },
 } as const;
 
 // Generate endpoints from base URL
@@ -50,6 +75,7 @@ export const endpoints = {
   donation: `${apiConfig.baseUrl}/donate-info-for-web`,
   tasawwuf: `${apiConfig.baseUrl}/tasawwuf`,
   contact: `${apiConfig.baseUrl}/contact`,
+
 
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
   sanad: `${apiConfig.baseUrl}/awlyaa-sanads`,
@@ -83,8 +109,7 @@ export const navigation = {
     { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'sanad', href: '/sanad', icon: 'sanad' },
   
-    { name: 'contact', href: '/contact', icon: 'contact' },
-  
+    { name: 'contact', href: '/contact', icon: 'contact' },  
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],
 } as const;

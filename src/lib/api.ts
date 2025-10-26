@@ -1,7 +1,7 @@
 
 import { apiConfig, endpoints } from "./config";
-
 import { getFallbackData } from "./fallbackData";
+import { logger } from "./logger";
 
 // API Response Types
 export interface PaginationMeta {
@@ -216,38 +216,51 @@ class ApiClient {
       signal: rest.signal ?? this.createTimeoutSignal(method),
     };
 
+    const startTime = performance.now();
+    logger.apiRequest(endpoint, params);
+
     // Retry logic for failed requests
+    const maxRetries = apiConfig.errorHandling.maxRetries;
     let lastError: Error | null = null;
-    for (let attempt = 1; attempt <= 3; attempt++) {
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
         const response = await fetch(url, config);
+        const duration = Math.round(performance.now() - startTime);
+        
         if (!response.ok) { 
-          // Only log errors for server errors (5xx) or on final attempt
           const errorText = await response.text();
+          const statusCode = response.status;
           
           // Don't retry for client errors (4xx) except 408, 429
-          if (response.status >= 400 && response.status < 500 && response.status !== 408 && response.status !== 429) {
-            // Suppress 404 errors completely - they're expected for missing content
-            // This prevents console spam when users visit non-existent blog/article URLs
-            if (response.status !== 404) {
-              console.warn(`API Error ${response.status} (attempt ${attempt}/3):`, errorText);
+          const shouldRetry = apiConfig.errorHandling.retryableStatusCodes.includes(statusCode);
+          
+          if (!shouldRetry) {
+            // Check if error should be suppressed
+            const shouldSuppress = apiConfig.errorHandling.suppressedStatusCodes.includes(statusCode);
+            if (!shouldSuppress) {
+              logger.apiError(endpoint, new Error(errorText), statusCode);
             }
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${statusCode}`);
           }
           
           // If it's the last attempt, throw the error
-          if (attempt === 3) {
-            // Only log non-404 errors on final attempt
-            if (response.status !== 404) {
-              console.warn(`API Error ${response.status} (final attempt):`, errorText);
+          if (attempt === maxRetries) {
+            const shouldSuppress = apiConfig.errorHandling.suppressedStatusCodes.includes(statusCode);
+            if (!shouldSuppress) {
+              logger.apiError(endpoint, new Error(errorText), statusCode);
             }
-            throw new Error(`HTTP error! status: ${response.status}`);
+            throw new Error(`HTTP error! status: ${statusCode}`);
           }
           
-          // For other attempts, continue to retry
+          // Wait before retry (exponential backoff)
+          const delay = apiConfig.errorHandling.retryDelay * attempt;
+          logger.debug(`Retrying ${endpoint} in ${delay}ms (attempt ${attempt}/${maxRetries})`);
+          await new Promise((resolve) => setTimeout(resolve, delay));
           continue;
         }
 
+        logger.apiResponse(endpoint, duration, response.status);
 
         const rawPayload = await this.parseResponse<unknown>(response);
         let data = rawPayload as T;
@@ -271,27 +284,30 @@ class ApiClient {
         // Don't retry on certain errors
         if (
           error instanceof Error &&
-          (error.message.includes("404") ||
-            error.message.includes("401") ||
+          (error.message.includes("401") ||
             error.message.includes("403"))
         ) {
+          logger.apiError(endpoint, error);
           break;
         }
 
         // Wait before retry (exponential backoff)
-        if (attempt < 3) {
-          await new Promise((resolve) => setTimeout(resolve, attempt * 1000));
+        if (attempt < maxRetries) {
+          const delay = apiConfig.errorHandling.retryDelay * attempt;
+          await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
     }
 
-    // Only log non-404 errors to reduce console noise
-    if (lastError && !lastError.message.includes('404')) {
-      console.warn(
-        `API request failed for ${endpoint} after 3 attempts:`,
-        lastError
-      );
+    // Log final error
+    if (lastError) {
+      const shouldSuppress = lastError.message.includes('404') && 
+        apiConfig.errorHandling.suppressedStatusCodes.includes(404);
+      if (!shouldSuppress) {
+        logger.apiError(endpoint, lastError);
+      }
     }
+    
     return {
       data: null as T,
       success: false,
@@ -377,16 +393,17 @@ export class BlogsApi {
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
     try {
-      console.log('🔄 Attempting to fetch blogs from API...');
+      logger.info('Fetching blogs from API', { page, limit });
       const result = await apiClient.get(endpoints.blogs, {
         params: { page, limit, ...rest },
       });
 
       if (!result.success) {
-        throw new Error('API request failed');
+        throw new Error(result.error || 'API request failed');
       }
 
-      console.log('✅ Successfully fetched blogs from API');
+      logger.info('Successfully fetched blogs', { count: Array.isArray(result.data) ? result.data.length : 0 });
+      
       if (result.pagination) {
         return result;
       }
@@ -404,22 +421,19 @@ export class BlogsApi {
         }),
       };
     } catch (error) {
-      // Only log in development mode, suppress in production
-      if (process.env.NODE_ENV === 'development') {
-        console.warn('⚠️ Blogs API failed, using fallback data:', error);
-      }
+      logger.warn('Blogs API failed, using fallback data', { error });
       
       const fallback = getFallbackData("blogs");
       const data = fallback.slice(0, limit) as typeof fallback;
       
-      // Only log in development mode
-      if (process.env.NODE_ENV === 'development') {
-        console.log('📦 Using fallback data with', data.length, 'blogs');
-      }
+      logger.debug('Using fallback data', { count: data.length });
+      
       return {
         data,
         success: true,
-        message: "Using fallback data due to API unavailability",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -433,15 +447,18 @@ export class BlogsApi {
     try {
       const result = await apiClient.get(`${endpoints.blogs}/${id}`);
       if (!result.success) {
-        throw new Error('API request failed');
+        throw new Error(result.error || 'API request failed');
       }
       return result;
     } catch (error) {
-      // Suppress 404 errors completely - they're expected for missing blog IDs
-      const is404Error = error instanceof Error && error.message.includes('404');
-      if (!is404Error) {
-        console.warn('⚠️ Blog getById API failed, using fallback data:', error);
+      logger.warn('Blog getById failed', { id, error });
+      
+      // For detail endpoints, throw error to be caught by ErrorBoundary
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
       }
+      
+      // Otherwise return fallback
       const fallback = getFallbackData("blogs");
       return {
         data: fallback[0] || null,
@@ -455,26 +472,18 @@ export class BlogsApi {
     try {
       const result = await apiClient.get(`${endpoints.blogs}/${slug}`);
       if (!result.success) {
-        // Check if it's a 404 error before throwing
-        const is404Error = result.error && result.error.includes('404');
-        if (is404Error) {
-          // For 404 errors, silently return fallback data
-          const fallback = getFallbackData("blogs");
-          return {
-            data: fallback[0] || null,
-            success: true,
-            pagination: null,
-          };
-        }
-        throw new Error('API request failed');
+        throw new Error(result.error || 'API request failed');
       }
       return result;
     } catch (error) {
-      // Only log non-404 errors
-      const is404Error = error instanceof Error && error.message.includes('404');
-      if (!is404Error) {
-        console.warn('⚠️ Blog getBySlug API failed, using fallback data:', error);
+      logger.warn('Blog getBySlug failed', { slug, error });
+      
+      // For detail endpoints, throw error to be caught by ErrorBoundary
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
       }
+      
+      // Otherwise return fallback
       const fallback = getFallbackData("blogs");
       return {
         data: fallback[0] || null,
@@ -558,17 +567,41 @@ export class CoursesApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.courses, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching courses from API', { page, limit });
+      const result = await apiClient.get(endpoints.courses, {
+        params: { page, limit, ...rest },
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched courses', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Courses API failed, using fallback data', { error });
+      
       const fallback = getFallbackData("courses");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
         success: true,
-        message: "Using fallback data due to API unavailability",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -576,43 +609,46 @@ export class CoursesApi {
         }),
       };
     }
-
-    if (result.pagination) {
-      return result;
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : limit;
-
-    return {
-      ...result,
-      pagination: createPaginationMeta({ page, limit, total }),
-    };
   }
 
   static async getById(id: string) {
-    const result = await apiClient.get(`${endpoints.courses}/${id}`);
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.courses}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Course getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
         data: getFallbackData("courses")[0],
         success: true,
         message: "Using fallback data due to API unavailability",
       };
     }
-    return result;
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.courses}/${slug}`);
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.courses}/${slug}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Course getBySlug failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
         data: getFallbackData("courses")[0],
         success: true,
         message: "Using fallback data due to API unavailability",
       };
     }
-    return result;
   }
 }
 export class AwlyaaApi {
@@ -637,17 +673,41 @@ export class AuthorsApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.authors, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching authors from API', { page, limit });
+      const result = await apiClient.get(endpoints.authors, {
+        params: { page, limit, ...rest },
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched authors', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Authors API failed, using fallback data', { error });
+      
       const fallback = getFallbackData("authors");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
         success: true,
-        message: "Showing offline author data.",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -655,32 +715,26 @@ export class AuthorsApi {
         }),
       };
     }
-
-    if (result.pagination) {
-      return result;
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : limit;
-
-    return {
-      ...result,
-      pagination: createPaginationMeta({ page, limit, total }),
-    };
   }
 
   static async getById(id: string) {
-    const result = await apiClient.get(`${endpoints.authors}/${id}`);
-    if (!result.success) {
-      const fallback = getFallbackData("authors")[0];
+    try {
+      const result = await apiClient.get(`${endpoints.authors}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Author getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
-        data: fallback ?? null,
+        data: getFallbackData("authors")[0] ?? null,
         success: true,
-        message: "Showing offline author data.",
+        message: "Using cached data due to API unavailability",
       };
     }
-    return result;
   }
 }
 
@@ -690,17 +744,41 @@ export class BooksApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.books, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching books from API', { page, limit });
+      const result = await apiClient.get(endpoints.books, {
+        params: { page, limit, ...rest },
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched books', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Books API failed, using fallback data', { error });
+      
       const fallback = getFallbackData("books");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
         success: true,
-        message: "Showing offline books.",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -708,34 +786,32 @@ export class BooksApi {
         }),
       };
     }
-
-    if (result.pagination) {
-      return result;
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : limit;
-
-    return {
-      ...result,
-      pagination: createPaginationMeta({ page, limit, total }),
-    };
   }
 
   static async getById(id: string) {
-    const result = await apiClient.get(`${endpoints.book}/${id}`);
-    if (!result.success) {
-      const fallback = getFallbackData("books")[0];
+    try {
+      const result = await apiClient.get(`${endpoints.book}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Book getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
-        data: fallback ?? null,
+        data: getFallbackData("books")[0] ?? null,
         success: true,
-        message: "Showing offline books.",
+        message: "Using cached data due to API unavailability",
       };
     }
-    return result;
   }
 }
+
+
+
+
 
 export class EventsApi {
   static async getAll(params: ListParams = {}) {
@@ -743,17 +819,40 @@ export class EventsApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.events, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching events from API', { page, limit });
+      const result = await apiClient.get(endpoints.events, {
+        params: { page, limit, ...rest },
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched events', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Events API failed, using fallback data', { error });
       const fallback = getFallbackData("events");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
         success: true,
-        message: "Using fallback data due to API unavailability",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -761,43 +860,46 @@ export class EventsApi {
         }),
       };
     }
-
-    if (result.pagination) {
-      return result;
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : limit;
-
-    return {
-      ...result,
-      pagination: createPaginationMeta({ page, limit, total }),
-    };
   }
 
   static async getById(id: string) {
-    const result = await apiClient.get(`${endpoints.events}/${id}`);
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.events}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Event getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
         data: getFallbackData("events")[0],
         success: true,
         message: "Using fallback data due to API unavailability",
       };
     }
-    return result;
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.events}/${slug}`);
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.events}/${slug}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Event getBySlug failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
         data: getFallbackData("events")[0],
         success: true,
         message: "Using fallback data due to API unavailability",
       };
     }
-    return result;
   }
 }
 
@@ -814,21 +916,108 @@ export class IftahApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    return apiClient.get(endpoints.iftah, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching iftah from API', { page, limit });
+      const result = await apiClient.get(endpoints.iftah, {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched iftah', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Iftah API failed, using fallback data', { error });
+      
+      const fallback = getFallbackData("iftah");
+      const data = fallback.slice(0, limit) as typeof fallback;
+      return {
+        data,
+        success: true,
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: fallback.length,
+        }),
+      };
+    }
   }
 
   static async getById(id: string) {
-    return apiClient.get(`${endpoints.iftah}/${id}`);
+    try {
+      const result = await apiClient.get(`${endpoints.iftah}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Iftah getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: getFallbackData("iftah")[0] ?? null,
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
   }
 
   static async getBySlug(slug: string) {
-    return apiClient.get(`${endpoints.iftah}/${slug}`);
+    try {
+      const result = await apiClient.get(`${endpoints.iftah}/${slug}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Iftah getBySlug failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: getFallbackData("iftah")[0] ?? null,
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
   }
 
   static async getIftah(slug: string) {
-    return apiClient.get(`${endpoints.iftah}/${slug}`);
+    try {
+      const result = await apiClient.get(`${endpoints.iftah}/${slug}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Iftah getIftah failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: getFallbackData("iftah")[0] ?? null,
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
   }
 }
 
@@ -1314,17 +1503,69 @@ export class ArticlesApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    return apiClient.get(endpoints.articles, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching articles from API', { page, limit });
+      const result = await apiClient.get(endpoints.articles, {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched articles', { count: Array.isArray(result.data) ? result.data.length : 0 });
+      return result;
+    } catch (error) {
+      logger.warn('Articles API failed, using fallback data', { error });
+      
+      const fallback = getFallbackData("articles") || [];
+      const data = fallback.slice(0, limit) as typeof fallback;
+      
+      return {
+        data,
+        success: true,
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: fallback.length,
+        }),
+      };
+    }
   }
 
   static async getById(id: string) {
-    return apiClient.get(`${endpoints.articles}/${id}`);
+    try {
+      const result = await apiClient.get(`${endpoints.articles}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Article getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return { data: null, success: true, pagination: null };
+    }
   }
 
   static async getBySlug(slug: string) {
-    return apiClient.get(`${endpoints.articles}/${slug}`);
+    try {
+      const result = await apiClient.get(`${endpoints.articles}/${slug}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Article getBySlug failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return { data: null, success: true, pagination: null };
+    }
   }
 
   static async getCategories(): Promise<ApiResponse<any[]>> {
@@ -1338,8 +1579,7 @@ export class ArticlesApi {
       });
 
       if (!response.ok) {
-        console.error(`❌ HTTP error! status: ${response.status}`);
-        // Return fallback categories instead of throwing error
+        logger.warn('Articles categories API failed', { status: response.status });
         const fallbackCategories = [
           { id: 1, name: 'General' },
           { id: 2, name: 'Islamic Studies' },
@@ -1351,7 +1591,7 @@ export class ArticlesApi {
       }
 
       const data = await response.json();
-      console.log('✅ Categories received:', data);
+      logger.info('Categories received', { count: Array.isArray(data) ? data.length : 'unknown' });
       
       // Handle different response formats
       if (Array.isArray(data)) {
@@ -1359,10 +1599,7 @@ export class ArticlesApi {
       } else if (data && Array.isArray(data.data)) {
         return { data: data.data, success: true };
       } else {
-        // Only log in development mode
-        if (process.env.NODE_ENV === 'development') {
-          console.warn('⚠️ Unexpected categories data format:', data);
-        }
+        logger.warn('Unexpected categories data format');
         const fallbackCategories = [
           { id: 1, name: 'General' },
           { id: 2, name: 'Islamic Studies' },
@@ -1371,8 +1608,7 @@ export class ArticlesApi {
         return { data: fallbackCategories, success: true };
       }
     } catch (error) {
-      console.error('❌ Failed to fetch categories:', error);
-      // Return fallback categories instead of empty array
+      logger.error('Failed to fetch categories', error);
       const fallbackCategories = [
         { id: 1, name: 'General' },
         { id: 2, name: 'Islamic Studies' },
@@ -1391,17 +1627,88 @@ export class GraduationsApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    return apiClient.get(endpoints.graduated, {
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching graduations from API', { page, limit });
+      const result = await apiClient.get(endpoints.graduated, {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched graduations', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Graduations API failed, using fallback data', { error });
+      
+      const fallback = getFallbackData("graduations");
+      const data = fallback.slice(0, limit) as typeof fallback;
+      return {
+        data,
+        success: true,
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: fallback.length,
+        }),
+      };
+    }
   }
 
   static async getById(id: string) {
-    return apiClient.get(`${endpoints.graduated}/${id}`);
+    try {
+      const result = await apiClient.get(`${endpoints.graduated}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Graduation getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: getFallbackData("graduations")[0] ?? null,
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
   }
 
   static async getBySlug(slug: string) {
-    return apiClient.get(`${endpoints.graduated}/${slug}`);
+    try {
+      const result = await apiClient.get(`${endpoints.graduated}/${slug}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Graduation getBySlug failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: getFallbackData("graduations")[0] ?? null,
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
   }
 }
 
@@ -1411,18 +1718,53 @@ export class TasawwufApi {
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.tasawwuf, {
-      params: { page, limit, ...rest },
-      cache: "no-store",
-    });
+    try {
+      logger.info('Fetching tasawwuf from API', { page, limit });
+      const result = await apiClient.get(endpoints.tasawwuf, {
+        params: { page, limit, ...rest },
+        cache: "no-store",
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched tasawwuf', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      const payload = extractArray<unknown>(result.data);
+      const data = payload.length
+        ? payload
+        : result.data
+          ? [result.data]
+          : [];
+
+      if (result.pagination) {
+        return {
+          ...result,
+          data,
+        };
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : data.length;
+
+      return {
+        ...result,
+        data,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Tasawwuf API failed, using fallback data', { error });
+      
       const fallback = getFallbackData("tasawwuf");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
         success: true,
-        message: "Showing offline Tasawwuf content.",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -1430,44 +1772,28 @@ export class TasawwufApi {
         }),
       };
     }
-
-    const payload = extractArray<unknown>(result.data);
-    const data = payload.length
-      ? payload
-      : result.data
-        ? [result.data]
-        : [];
-
-    if (result.pagination) {
-      return {
-        ...result,
-        data,
-      };
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : data.length;
-
-    return {
-      ...result,
-      data,
-      pagination: createPaginationMeta({ page, limit, total }),
-    };
   }
 
   static async getBySlug(slug: string) {
-    const result = await apiClient.get(`${endpoints.tasawwuf}/${slug}`, {
-      cache: "no-store",
-    });
-    if (!result.success) {
+    try {
+      const result = await apiClient.get(`${endpoints.tasawwuf}/${slug}`, {
+        cache: "no-store",
+      });
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Tasawwuf getBySlug failed', { slug, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
       return {
         data: getFallbackData("tasawwuf")[0] ?? null,
         success: true,
-        message: "Showing offline Tasawwuf content.",
+        message: "Using cached data due to API unavailability",
       };
     }
-    return result;
   }
 }
 
@@ -1477,18 +1803,48 @@ export class GalleryApi {
     const limit = params.limit ?? DEFAULT_PAGE_SIZE;
     const { page: _page, limit: _limit, ...rest } = params;
 
-    const result = await apiClient.get(endpoints.gallery, {
-      cache: "no-store",
-      params: { page, limit, ...rest },
-    });
+    try {
+      logger.info('Fetching gallery from API', { page, limit });
+      const result = await apiClient.get(endpoints.gallery, {
+        cache: "no-store",
+        params: { page, limit, ...rest },
+      });
 
-    if (!result.success) {
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched gallery', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      const data = extractArray<unknown>(result.data);
+
+      if (result.pagination) {
+        return {
+          ...result,
+          data,
+        };
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : data.length;
+
+      return {
+        ...result,
+        data,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Gallery API failed, using fallback data', { error });
+      
       const fallback = getFallbackData("gallery");
       const data = fallback.slice(0, limit) as typeof fallback;
       return {
         data,
         success: true,
-        message: "Showing offline gallery items.",
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
         pagination: createPaginationMeta({
           page,
           limit,
@@ -1496,34 +1852,12 @@ export class GalleryApi {
         }),
       };
     }
-
-    const data = extractArray<unknown>(result.data);
-
-    if (result.pagination) {
-      return {
-        ...result,
-        data,
-      };
-    }
-
-    const total = Array.isArray(result.data)
-      ? result.data.length
-      : data.length;
-
-    return {
-      ...result,
-      data,
-      pagination: createPaginationMeta({ page, limit, total }),
-    };
   }
 }
 
 export class ContactApi {
   static async submit(payload: Record<string, unknown>) {
-    // Debug: log payload
-    if (typeof window !== 'undefined') {
-      console.log('[ContactApi.submit] Sending payload:', payload);
-    }
+    logger.info('Submitting contact form', { payload });
     
     // Since the Laravel backend has CORS and CSRF issues, 
     // we'll implement a client-side solution that simulates success

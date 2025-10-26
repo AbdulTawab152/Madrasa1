@@ -27,7 +27,7 @@ const Footer = () => {
           <div className="flex items-center gap-3">
             <Image
               src="/1.jpg" 
-              alt="Madrasa Logo" 
+              alt={t('footer.brandName')} 
               width={40}
               height={40}
               className="object-contain rounded-full"
@@ -63,47 +63,47 @@ const Footer = () => {
   <ul className="grid  grid-cols-2 gap-2">
     <li>
       <Link href="/blogs" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Blogs
+        {t('navbar.blogs')}
       </Link>
     </li>
     <li>
       <Link href="/courses" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Courses
+        {t('navbar.courses')}
       </Link>
     </li>
     <li>
       <Link href="/authors" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Authors
+        {t('navbar.author')}
       </Link>
     </li>
     <li>
       <Link href="/books" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Books
+        {t('navbar.books')}
       </Link>
     </li>
     <li>
       <Link href="/events" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Events
+        {t('navbar.event')}
       </Link>
     </li>
     <li>
       <Link href="/iftah" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Iftah
+        {t('navbar.iftah')}
       </Link>
     </li>
     <li>
       <Link href="/articles" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Articles
+        {t('navbar.article')}
       </Link>
     </li>
     <li>
       <Link href="/graduated" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Graduated
+        {t('navbar.graduation')}
       </Link>
     </li>
     <li>
       <Link href="/awlyaa" className="text-gray-600 hover:text-orange-600 transition-colors">
-        Awlyaa
+        {t('navbar.awlayaa')}
       </Link>
     </li>
   </ul>
@@ -116,15 +116,15 @@ const Footer = () => {
           <ul className="space-y-3">
             <li className="flex items-center gap-2 text-gray-600">
               <MapPin className="h-4 w-4 text-orange-500" />
-              <span className="text-sm">Pashtun Zarghon, Herat, Afghanistan</span>
+              <span className="text-sm">{t('footer.address')}</span>
             </li>
             <li className="flex items-center gap-2 text-gray-600">
               <Phone className="h-4 w-4 text-orange-500" />
-              <span className="text-sm">+93 700 000 000</span>
+              <span className="text-sm">{t('footer.phone')}</span>
             </li>
             <li className="flex items-center gap-2 text-gray-600">
               <Mail className="h-4 w-4 text-orange-500" />
-              <span className="text-sm">info@madrasa.com</span>
+              <span className="text-sm">{t('footer.email')}</span>
             </li>
           </ul>
         </div>

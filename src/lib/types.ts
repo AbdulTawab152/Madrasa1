@@ -134,6 +134,14 @@ export interface Event extends BaseEntity {
   live_link_type?: string;  // e.g. "facebook" | "youtube" | "zoom"
 }
 
+export interface ExamResult extends BaseEntity {
+  slug : string,
+  year : number,
+  title : string,
+  pdf: string
+
+}
+
 
 // Fatwa types
 export interface Iftah {
@@ -289,7 +297,7 @@ export interface AwlyaaChart {
   awlyaa_id: number | null;
   created_at: string;
   updated_at: string;
-  awlyaa: any | null;
+  awlyaa:  null;
   children: AwlyaaChart[];
   parents: AwlyaaChartParent[];
 }
@@ -305,7 +313,7 @@ export interface AwlyaaChartParent {
 
 // Search types
 export interface SearchResult {
-  type: 'blog' | 'course' | 'author' | 'book' | 'event' | 'fatwa' | 'article';
+  type: 'blog' | 'course' | 'author' | 'book' | 'event' | 'fatwa' | 'article' | ' ';
   id: string;
   title: string;
   description?: string;

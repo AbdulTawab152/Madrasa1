@@ -1,50 +1,82 @@
 'use client';
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
+import ErrorDisplay, { classifyError, ErrorType } from './ErrorDisplay';
+import { logger } from '@/lib/logger';
 
 interface Props {
   children: ReactNode;
   fallback?: ReactNode;
+  variant?: 'full' | 'inline' | 'minimal';
+  onReset?: () => void;
 }
 
 interface State {
   hasError: boolean;
   error?: Error;
+  errorType: ErrorType;
+  retrying: boolean;
 }
 
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false };
+    this.state = { 
+      hasError: false, 
+      errorType: 'unknown',
+      retrying: false,
+    };
   }
 
-  static getDerivedStateFromError(error: Error): State {
-    return { hasError: true, error };
+  static getDerivedStateFromError(error: Error): Partial<State> {
+    const errorType = classifyError(error);
+    return { 
+      hasError: true, 
+      error,
+      errorType,
+    };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    logger.error('ErrorBoundary caught an error', error, {
+      componentStack: errorInfo.componentStack,
+    });
   }
 
+  handleRetry = async () => {
+    this.setState({ retrying: true });
+    
+    // Small delay to show retrying state
+    await new Promise(resolve => setTimeout(resolve, 500));
+    
+    this.setState({ 
+      hasError: false, 
+      error: undefined,
+      retrying: false,
+    });
+    
+    // Call onReset if provided
+    if (this.props.onReset) {
+      this.props.onReset();
+    }
+  };
+
   render() {
-    if (this.state.hasError) {
-      return this.props.fallback || (
-        <div className="flex items-center justify-center min-h-[200px] p-8">
-          <div className="text-center">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">
-              Something went wrong
-            </h2>
-            <p className="text-gray-600 mb-4">
-              We're sorry, but something unexpected happened.
-            </p>
-            <button
-              onClick={() => this.setState({ hasError: false })}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              Try again
-            </button>
-          </div>
-        </div>
+    if (this.state.hasError && this.state.error) {
+      // Use custom fallback if provided
+      if (this.props.fallback) {
+        return this.props.fallback;
+      }
+
+      // Use ErrorDisplay component with appropriate variant
+      return (
+        <ErrorDisplay
+          error={this.state.error}
+          errorType={this.state.errorType}
+          variant={this.props.variant || 'full'}
+          onRetry={this.handleRetry}
+          retrying={this.state.retrying}
+        />
       );
     }
 

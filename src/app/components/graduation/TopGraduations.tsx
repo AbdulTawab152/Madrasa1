@@ -9,6 +9,8 @@ import { motion } from "framer-motion";
 import { getImageUrl } from "@/lib/utils";
 import PaginationControls from "@/components/PaginationControls";
 import { useTranslation } from "@/hooks/useTranslation";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 interface Graduation {
   id: number;
@@ -34,6 +36,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
 
   const [graduations, setGraduations] = useState<Graduation[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
   const PAGE_SIZE = 8;
@@ -59,6 +62,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
         }
       } catch (err) {
         console.error(err);
+        setError(err instanceof Error ? err.message : "Failed to load graduations");
         setGraduations([]);
       } finally {
         setLoading(false);
@@ -68,16 +72,16 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
   }, [showAll, page]);
 
   if (loading) {
+    return <UnifiedLoader variant="card-grid" count={8} showFilters={false} />;
+  }
+
+  if (error) {
     return (
-      <motion.div 
-        className="flex items-center justify-center py-20"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
-        <span className="ml-4 text-gray-600 font-medium">{t('graduationDetail.loadingGraduations')}</span>
-      </motion.div>
+      <ErrorDisplay 
+        error={error} 
+        variant="full" 
+        onRetry={() => window.location.reload()}
+      />
     );
   }
 

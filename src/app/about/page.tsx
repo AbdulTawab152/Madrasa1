@@ -300,7 +300,7 @@ const AboutPage = () => {
                   {/* Founder Real Photo (replace src='/images/khalifa-sahib.jpg' with the real path) */}
                   <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-2 sm:border-4 border-amber-300 shadow-lg bg-white">
                     <Image
-                      src="/about1.jpg"
+                      src="/about111.jpg"
                       alt="خلیفه صاحب فضل الدین (رح)"
                       width={144}
                       height={144}

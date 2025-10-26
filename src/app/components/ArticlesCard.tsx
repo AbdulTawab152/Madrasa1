@@ -11,11 +11,12 @@ import React, {
 } from "react";
 
 import { ArticlesApi } from "@/lib/api";
-import PageSkeleton from "@/components/loading/PageSkeleton";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import PaginationControls from "@/components/PaginationControls";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { getImageUrl } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 type RawArticle = {
   id: number;
@@ -256,25 +257,17 @@ export default function ArticlesCard({ limit, showAll = true, homePage = false }
     : filteredArticles;
 
   if (isLoadingInitial) {
-    return <PageSkeleton type="articles" showFilters cardCount={6} />;
+    return <UnifiedLoader variant="card-grid" count={6} showFilters={!homePage} />;
   }
 
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center p-6 bg-red-50 rounded-lg max-w-md mx-auto">
-          <div className="text-red-500 text-4xl mb-4">⚠️</div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            Error Loading Articles
-          </h2>
-          <p className="text-gray-600 mb-4">{error}</p>
-          <button
-            onClick={() => void reload()}
-            className="px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
+        <ErrorDisplay 
+          error={error} 
+          variant="full" 
+          onRetry={() => void reload()}
+        />
       </div>
     );
   }

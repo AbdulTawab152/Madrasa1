@@ -12,19 +12,25 @@ const images = [
   "/hero1.jpg",
   "/hero2.jpg",
   "/hero3.jpg",
-  "/hero4.jpg",
-  "/hero5.jpg",
-  "/hero6.jpg",
+  // "/hero4.jpg",
+  // "/hero5.jpg",
+  // "/hero6.jpg",
   "/hero7.jpg",
-  "/about1.jpg",
-  "/about2.jpg",
-  "/about3.jpg",
-  "/about4.jpg",
-  "/about5.jpg",
-  "/about6.jpg",
-  "/about7.jpg",
-  "/about8.jpg",
-  "/about9.jpg",
+  // "/hero8.jpg",
+  "/hero9.jpg",
+  "/hero10.jpg",
+  "/hero11.jpg",
+  "/hero12.jpg",
+  "/hero13.jpg",
+  "/hero14.jpg",
+  // "/hero15.jpg",
+  // "/hero16.jpg",
+  // "/hero17.jpg",
+  // "/hero18.jpg",
+  // "/hero19.jpg",
+  // "/hero20.jpg",
+  // "/hero21.jpg",
+  // "/hero22.jpg",
 ];
 
 const Ship = "/ship.png";
@@ -127,7 +133,7 @@ const Hero = () => {
             {t("hero.tagline")}
           </p>
 
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-5xl font-bold leading-tight drop-shadow-[0_8px_16px_rgba(0,0,0,0.9)]">
             <span className="block bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 bg-clip-text text-transparent drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
               {t("hero.title")}
             </span>
@@ -136,7 +142,7 @@ const Hero = () => {
             </span>
           </h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed max-w-3xl mx-auto drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
+          <p className="text-base sm:text-lg md:text-xl text-gray-200 leading-relaxed max-w-4xl mx-auto drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">
             {t("hero.description")}
           </p>
 

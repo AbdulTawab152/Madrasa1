@@ -9,6 +9,8 @@ import { Book } from "../../../lib/types";
 import PaginationControls from "@/components/PaginationControls";
 import { FaBook, FaCalendar, FaEye, FaHeart } from 'react-icons/fa';
 import { cleanText } from "../../../lib/textUtils";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 interface BooksSectionProps {
   showAll?: boolean; // Show all books or only limited
@@ -57,16 +59,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   const hasPrevPage = !showAll && page > 1;
 
   if (loading) {
-    return (
-      <div className="flex flex-col  items-center justify-center py-16">
-        <div className="relative">
-          <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-          <div className="absolute inset-0 w-12 h-12 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin animation-delay-150"></div>
-        </div>
-        <span className="mt-6 text-gray-600 font-medium">Loading our collection...</span>
-        <p className="mt-2 text-gray-500 text-sm">Preparing the best Islamic books for you</p>
-      </div>
-    );
+    return <UnifiedLoader variant="card-grid" count={8} showFilters={false} />;
   }
 
   if (displayBooks.length === 0) {

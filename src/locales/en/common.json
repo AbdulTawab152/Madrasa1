@@ -19,16 +19,16 @@
     "more": "More",
     "moreOptions": "More options"
   },
-  "hero": {
-    "tagline": "✦ Knowledge • Faith • Leadership ✦",
-    "title": "Anwarul Uloom Madrasa",
-    "subtitle": "Illuminating Young Minds",
-    "description": "Shaping the future with wisdom, values, and faith. Join our programs and courses designed to inspire bright young minds. Discover the beauty of Islamic knowledge through our comprehensive courses and traditional teachings.",
-    "learnMore": "Learn More",
-    "viewCourses": "View Courses",
-    "aboutUs": "About Us",
-    "ourCourses": "Our Courses"
-  },
+"hero": {
+  "tagline": "✦  Sharia • Tariqa • Politics ✦",
+  "title": "Al-Jamia Anwar Al-Uloom Al-Islamiyyah Al-Uruf Al-Madrasa Khalifa Sahib Arghandi (RA)",
+  "subtitle": "Nurturing the new generation with Islamic vision and spirit",
+  "description": "Educate the Islamic Ummah under the light of Sharia, Tariqa, and noble values. At Anwar Al-Uloom, our academic efforts are rooted in the principles of Islamic knowledge, moral values, and the Prophetic character, guiding every student to follow the path of the Prophet (PBUH). This inspiring environment opens the doors of knowledge, spirituality, and Islamic thought — empowering learners to become beneficial not only for themselves but also for the Muslim world, their communities, and their nation’s bright future.",
+  "viewCourses": "View Courses",
+  "aboutUs": "About Us",
+  "ourCourses": "Our Courses"
+},
+
   "about": {
     "title": "About Anwarul Uloom",
     "subtitle": "Center of Islamic Education",

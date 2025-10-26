@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { GalleryApi, extractArray } from "@/lib/api";
 import Gallery from "./../components/gallery/Gallery";
 import IslamicHeader from "../components/IslamicHeader";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 interface GalleryItem {
   id: number;
@@ -17,6 +19,7 @@ interface GalleryItem {
 export default function GalleryPage() {
   const [images, setImages] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function getImages() {
@@ -61,6 +64,7 @@ export default function GalleryPage() {
         setImages(mappedData);
       } catch (error) {
         console.error("Error fetching gallery images:", error);
+        setError(error instanceof Error ? error.message : "Failed to load gallery");
         setImages([{
           id: 1,
           title: "Gallery temporarily unavailable",
@@ -78,14 +82,19 @@ export default function GalleryPage() {
   }, []);
 
   if (loading) {
+    return <UnifiedLoader variant="card-grid" count={8} showFilters={false} />;
+  }
+
+  if (error) {
     return (
       <div>
         <IslamicHeader pageType="gallery" />
-        <div className="pb-16 flex items-center justify-center min-h-96">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600 mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading gallery...</p>
-          </div>
+        <div className="pb-16">
+          <ErrorDisplay 
+            error={error} 
+            variant="full" 
+            onRetry={() => window.location.reload()}
+          />
         </div>
       </div>
     );
