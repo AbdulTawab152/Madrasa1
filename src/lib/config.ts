@@ -78,6 +78,7 @@ export const endpoints = {
 
 
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
+  shajara: `${apiConfig.baseUrl}/awlyaa-sanads`,
   sanad: `${apiConfig.baseUrl}/awlyaa-sanads`,
 } as const;
 

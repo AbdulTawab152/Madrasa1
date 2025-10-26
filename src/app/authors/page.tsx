@@ -6,6 +6,7 @@ import truncate from "html-truncate";
 import IslamicHeader from "../components/IslamicHeader";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 import { AuthorsApi } from "../../lib/api";
 import { Author } from "../../lib/types";
@@ -50,12 +51,12 @@ export default function AuthorsPage() {
       <IslamicHeader pageType="authors" />
       <div className="max-w-7xl mx-auto px-6 space-y-12 pb-16">
         {authors.filter(isPublishedAndAlive).length === 0 ? (
-          <div className="text-center rounded-2xl border border-primary-100/60 bg-white/90 p-10 shadow-soft">
-            <h2 className="text-2xl font-semibold text-primary-800">
-              No authors found.
-            </h2>
-            <p className="text-primary-600 mt-2">Please check back soon for new profiles.</p>
-          </div>
+          <ComingSoonEmptyState
+            title="No authors found"
+            description="Please check back soon for new profiles."
+            icon="👥"
+            className="max-w-2xl mx-auto"
+          />
         ) : (
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {authors

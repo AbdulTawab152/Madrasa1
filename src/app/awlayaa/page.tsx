@@ -9,6 +9,7 @@ import { getImageUrl } from "@/lib/utils";
 import IslamicHeader from "../components/IslamicHeader";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import { NoDataEmptyState } from "@/components/EmptyState";
 import {
   FaUser,
   FaAward,
@@ -258,30 +259,15 @@ export default function AwlyaaListPage() {
             ))}
           </motion.div>
         ) : (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6 }}
-            className="text-center py-20 bg-white rounded-3xl shadow-lg border border-gray-100"
-          >
-            <div className="max-w-md mx-auto">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-amber-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <FaSearch className="text-4xl text-orange-500" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                No Awlyaa Found
-              </h3>
-              <p className="text-gray-600 mb-8 leading-relaxed">
-                We couldn't find any scholars matching your search criteria. Try adjusting your search terms or browse all our distinguished Awlyaa.
-              </p>
-              <button
-                onClick={() => setSearchTerm("")}
-                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-2xl hover:from-orange-600 hover:to-amber-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-              >
-                View All Awlyaa
-              </button>
-            </div>
-          </motion.div>
+          <NoDataEmptyState
+            title="No Awlyaa Found"
+            description="We couldn't find any scholars matching your search criteria. Try adjusting your search terms or browse all our distinguished Awlyaa."
+            action={{
+              label: "View All Awlyaa",
+              onClick: () => setSearchTerm("")
+            }}
+            className="max-w-2xl mx-auto"
+          />
         )}
       </div>
     </div>

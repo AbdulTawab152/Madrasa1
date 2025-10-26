@@ -5,6 +5,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { PiList } from "react-icons/pi";
+import { Button } from "@/components/ui/button";
 
 import { appConfig, navigation } from "@/lib/config";
 import RouteProgressBar from "@/components/RouteProgressBar";
@@ -27,7 +28,7 @@ const NAV_LABELS: Record<string, string> = {
   event: "پیښې",
   tasawwuf: "تصوف",
   graduation: "فراغتونه",
-  sanad: "سندونه",
+  sanad: "شجره",
   contact: "اړیکه",
 };
 
@@ -382,10 +383,10 @@ const Navbar = memo(function Navbar() {
 
               {/* Donation Button */}
               <Link href="/donation">
-                <button className="bg-primary-600 hover:bg-primary-700 text-white px-6 py-2 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-2 transition-transform duration-200 hover:scale-105 border border-primary-700">
+                <Button variant="primary" size="sm" className="rounded-full">
                   <span className="inline-block animate-bounce text-lg">&#x1F381;</span>
                   مرسته
-                </button>
+                </Button>
               </Link>
             </div>
 

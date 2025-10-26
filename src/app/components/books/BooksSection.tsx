@@ -8,9 +8,11 @@ import { BooksApi } from "../../../lib/api";
 import { Book } from "../../../lib/types";
 import PaginationControls from "@/components/PaginationControls";
 import { FaBook, FaCalendar, FaEye, FaHeart } from 'react-icons/fa';
+import { Button } from "@/components/ui/button";
 import { cleanText } from "../../../lib/textUtils";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 interface BooksSectionProps {
   showAll?: boolean; // Show all books or only limited
@@ -64,11 +66,12 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
 
   if (displayBooks.length === 0) {
     return (
-      <div className="text-center py-16">
-        <div className="text-6xl mb-4 animate-bounce">📚</div>
-        <h3 className="text-xl font-semibold text-gray-800 mb-2">No Books Available</h3>
-        <p className="text-gray-600">We're working on adding more books to our collection.</p>
-      </div>
+      <ComingSoonEmptyState
+        title="No Books Available"
+        description="We're working on adding more books to our collection."
+        icon="📚"
+        className="max-w-2xl mx-auto"
+      />
     );
   }
 
@@ -118,9 +121,9 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   
                   {/* Quick Actions */}
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                    <button className="bg-white/90 hover:bg-white text-amber-600 p-2 rounded-full shadow-lg transition-all duration-300 hover:scale-110">
+                    <Button variant="ghost" size="icon" className="bg-white/90 hover:bg-white text-amber-600 rounded-full shadow-lg hover:scale-110">
                       <FaHeart className="w-4 h-4" />
-                    </button>
+                    </Button>
                   </div>
                   
                   {/* View Details Button */}

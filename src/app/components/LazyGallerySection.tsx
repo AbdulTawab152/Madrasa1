@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { GalleryApi, extractArray } from "@/lib/api";
 import Gallery from "./gallery/Gallery";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 interface GalleryItem {
   id: number;

@@ -18,6 +18,7 @@ import { BlogsApi } from "@/lib/api";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { getImageUrl } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
 
@@ -203,17 +204,11 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
           )}
 
           {filteredBlogs.length === 0 ? (
-            <div className="rounded-3xl border border-primary-100/60 bg-white/95 p-10 text-center shadow-soft">
-              <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
-                {t('blog.comingSoon')}
-              </p>
-              <h2 className="mt-3 text-2xl font-semibold text-primary-900">
-                {t('blog.noBlogsAvailable')}
-              </h2>
-              <p className="mt-2 text-primary-600">
-                {t('blog.checkBackSoon')}
-              </p>
-            </div>
+            <ComingSoonEmptyState
+              title={t('blog.noBlogsAvailable')}
+              description={t('blog.checkBackSoon')}
+              className="max-w-2xl mx-auto"
+            />
           ) : (
             <motion.div
               className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"

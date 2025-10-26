@@ -6,6 +6,7 @@ import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getLanguageDirection } from "@/lib/i18n";
+import { Button } from "@/components/ui/button";
 
 // ✅ Array of images from public folder
 const images = [
@@ -148,15 +149,15 @@ const Hero = () => {
 
           <div className="flex flex-wrap gap-4 justify-center mt-8">
             <Link href="/about">
-              <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-yellow-400 hover:to-orange-500 px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold flex items-center justify-center gap-2 shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] hover:scale-105 transition-transform duration-300">
-                {t("hero.aboutUs")} <FaArrowRight />
-              </button>
+              <Button variant="primary" size="lg" className="rounded-full shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
+                {t("hero.aboutUs")} <FaArrowRight className="ml-2" />
+              </Button>
             </Link>
             
             <Link href="/courses">
-              <button className="border-2 border-orange-400 bg-white/10 backdrop-blur-sm text-orange-300 hover:bg-orange-500/25 hover:text-white hover:shadow-2xl px-6 py-3 rounded-full text-sm sm:text-base md:text-lg font-semibold transition-all duration-300 drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
+              <Button variant="outline" size="lg" className="rounded-full shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] bg-white/10 backdrop-blur-sm border-orange-400 text-orange-300 hover:bg-orange-500/25 hover:text-white">
                 {t("hero.ourCourses")}
-              </button>
+              </Button>
             </Link>
           </div>
 

@@ -1,19 +1,19 @@
 {
   "navbar": {
     "home": "کورپاڼه",
-    "courses": "کورسونه",
     "iftah": "افتاء",
+    "courses": "کورسونه",
     "article": "مقاله",
     "awlayaa": "اولیاء",
     "awlyaacharts": "اولیاء چارټ",
     "books": "کتابتون",
-    "donation": "بسپنه",
+    "donation": "مرسته",
     "blogs": "بلاګونه",
     "author": "لیکوال",
     "event": "واقیعات",
     "tasawwuf": "تصوف",
     "graduation": "فراغت",
-    "sanad": "سند",
+    "sanad": "شجره",
     "contact": "اړیکه",
     "islamicLearningPlatform": "د اسلامي زده کړو پلیټفارم",
     "more": "نور",
@@ -346,11 +346,11 @@
     "graduatesDescription": "د هغو زده کړیالو د بریالیتوبونو او سفرونو روښانه کول چې په بریالیتوب سره خپل کورسونه بشپړ کړي",
     "loadingGraduates": "د فاریغانو پورته کول...",
     "viewAllGraduation": "ټول فراغتونه وګورئ",
-    "ourSanad": "زموږ سند",
-    "sanadHighlight": "سند",
-    "sanadDescription": "زموږ د روحاني نسب او د مبارک دودیزو سلسلو موندنه",
-    "loadingSanad": "د سند پورته کول...",
-    "viewAllSanad": "ټول سند وګورئ",
+    "ourShajara": "زموږ شجره",
+    "shajaraHighlight": "شجره",
+    "shajaraDescription": "زموږ د روحاني نسب او د مبارک دودیزو سلسلو موندنه",
+    "loadingShajara": "د شجری پورته کول...",
+    "viewAllShajara": "ټول شجره وګورئ",
     "readOurBlog": "زموږ بلاګ ولولئ",
     "exploreOurBlog": "بلاګ",
     "blogHighlight": "بلاګ",
@@ -385,13 +385,13 @@
     "location": "ځای",
     "contactWhatsapp": "د واټساپ له لارې اړیکه ونیسئ",
     "sendEmail": "بریښنالیک واستوئ",
-    "howToDonate": "د عطیه کولو لارښود",
+    "howToDonate": "د مرستو کولو لارښود",
     "howToDonateDesc": "د زموږ موخې لپاره مرسته کولو لپاره د دې ساده ګامونو تعقیب وکړئ",
     "step1": "لارې غوره کړئ",
     "step1Desc": "د پورته اختیارونو څخه خپله غوره عطیه لارې غوره کړئ",
     "step2": "لارښوونو تعقیب وکړئ",
     "step2Desc": "د خپل عطیه بشپړولو لپاره ورکړل شوي تفصیلات وکاروئ",
-    "step3": "عطیه تایید کړئ",
+    "step3": "مرسته تایید کړئ",
     "step3Desc": "د خپل عطیه تاییدولو او تازه معلوماتو ترلاسه کولو لپاره موږ ته پیغام واستوئ",
     "secure": "۱۰۰٪ امن",
     "verified": "تصدیق شوي سازمانونه",
@@ -399,13 +399,13 @@
   },
   "eventsPage": {
     "home": "کور",
-    "events": "پیښې",
+    "events": "ملاقات",
     "date": "نیټه",
     "duration": "موده",
     "liveStream": "ژوندي خپرونه",
     "watchLive": "ژوندی وګورئ",
-    "aboutThisEvent": "د دې پیښې په اړه",
-    "relatedEvents": "اړوند پیښې"
+    "aboutThisEvent": "د دې واقعه په اړه",
+    "relatedEvents": "اړوند واقعه"
   },
   "pagination": {
     "previous": "مخکینی",
@@ -415,7 +415,7 @@
   },
   "events": {
     "discoverOur": "زموږ وپلټئ",
-    "events": "پیښې",
+    "events": "واقعه",
     "description": "زموږ د ژوندي ټولنې غونډو، لیکچرونو او ځانګړو تجربو سره یوځای شئ.",
     "communityEvent": "د ټولنې پیښه",
     "locationComingSoon": "ځای ژر راځي",
@@ -425,8 +425,8 @@
     "zoomMeeting": "زوم غونډه",
     "joinLive": "ژوندي کې ګډون وکړئ",
     "organizedBy": "د انوارالعلوم مدرسې لخوا تنظیم شوی",
-    "eventDetails": "د پیښې جزئیات",
-    "viewAllEvents": "ټولې پیښې وګورئ"
+    "eventDetails": "د وقیعاتو جزئیات",
+    "viewAllEvents": "ټولې واقیعات وګورئ"
   },
   "header": {
     "courses": {
@@ -459,16 +459,16 @@
     },
     "tasawwuf": {
       "title": "تصوف",
-      "subtitle": "د اسلامي عمل د روحاني ابعادو وپلټئ"
+      "subtitle": "د اسلامي عمل د روحاني ابعادو په رڼا کې وپلټئ"
     },
     "gallery": {
       "title": "ګالري",
       "subtitle": "زموږ د اسلامي پیښو او فعالیتونو عکسونه وګورئ"
     },
-    "about": {
-      "title": "زموږ په اړه",
-      "subtitle": "زموږ د اسلامي تعلیماتو کې د ماموریت او لیدلوري په اړه زده کړئ"
-    },
+   "about": {
+  "title": "زموږ په اړه",
+  "subtitle": "د اسلامي ارشاداتو له مخې زموږ د ماموریت او لیدلوري پېژندنه"
+},
     "contact": {
       "title": "زموږ سره اړیکه",
       "subtitle": "د هر ډول پوښتنو یا ملاتړ لپاره زموږ سره اړیکه ونیسئ"
@@ -485,10 +485,10 @@
       "title": "فارغان",
       "subtitle": "زموږ د بریالي فارغانو او د دوی د لاسته راوړنو جشن"
     },
-    "iftah": {
-      "title": "افتاح",
-      "subtitle": "زموږ د افتاح پروګرام او روحاني لارښوونو وپلټئ"
-    },
+   "iftah": {
+  "title": "دار الافتاح",
+  "subtitle": "په دارالافتاح کې خپلې دیني پوښتنې وکړئ او د شرعي لارښوونو رڼا تر لاسه کړئ"
+},
     "default": {
       "title": "اسلامي تعلیمات",
       "subtitle": "زموږ د پراخه اسلامي زده کړې پلیټفارم ته ښه راغلاست"
@@ -517,22 +517,22 @@
     "viewFullProfile": "بشپړ پروفایل وګورئ"
   },
   "graduationDetail": {
-    "graduationNotFound": "فارغ‌التحصیلی و نه موندل شو",
-    "fetchError": "د فارغ‌التحصیلی جزئیاتو را اخیستلو کې ستونزه",
+    "graduationNotFound": "فارغ زده کوونکی و نه موندل شو",
+    "fetchError": "د فارغ زده کوونکی جزئیاتو را اخیستلو کې ستونزه",
     "date": "نیټه",
     "time": "وخت",
-    "graduationYear": "د فارغ‌التحصیلی کال",
+    "graduationYear": "د فارغ زده کوونکی کال",
     "esteemedGraduates": "زموږ درناوي وړ فارغ‌التحصیلان",
     "father": "پلار",
     "grandfather": "نیکه",
-    "noStudents": "د دې فارغ‌التحصیلی لپاره هیڅ زده کړیال نه دی لیست شوی",
+    "noStudents": "د دې فارغ زده کوونکی لپاره هیڅ زده کړیال نه دی لیست شوی",
     "sonOf": "د",
     "grandsonOf": "د",
     "personalDetails": "شخصي جزئیات",
     "dateOfBirth": "د زیږیدو نیټه",
     "contact": "اړیکه",
     "notProvided": "ورکړل شوی نه دی",
-    "graduation": "فارغ‌التحصیلی",
+    "graduation": "فارغ زده کوونکی",
     "notSpecified": "ښودل شوی نه دی",
     "addressInformation": "د پتې معلومات",
     "fullAddress": "بشپړه پته",

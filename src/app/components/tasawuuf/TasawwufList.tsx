@@ -9,6 +9,7 @@ import { cleanText } from "@/lib/textUtils";
 import { useTranslation } from "@/hooks/useTranslation";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import { NoDataEmptyState } from "@/components/EmptyState";
 
 interface Tasawwuf {
   id: number;
@@ -95,15 +96,15 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
 
   if (!filteredPosts.length) {
     return (
-      <div className="text-center py-16">
-        <div className="mx-auto w-24 h-24 mb-4 text-gray-300">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <h3 className="text-xl font-medium text-gray-600 mb-2">No articles found</h3>
-        <p className="text-gray-500">Try selecting a different category</p>
-      </div>
+      <NoDataEmptyState
+        title={t('tasawwuf.noArticlesFound') || "No articles found"}
+        description={t('tasawwuf.tryDifferentCategory') || "Try selecting a different category"}
+        action={{
+          label: t('tasawwuf.viewAllCategories') || "View All Categories",
+          onClick: () => setActiveCategory("All")
+        }}
+        className="max-w-2xl mx-auto"
+      />
     );
   }
 
