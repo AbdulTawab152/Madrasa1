@@ -8,6 +8,7 @@ import Course from "../app/components/courses/courseCard";
 import Link from "next/link";
 import Contact from "../app/components/contact/ContactForm";
 import { useTranslation } from "@/hooks/useTranslation";
+import { Button } from "@/components/ui/button";
 
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
@@ -18,7 +19,7 @@ const LazyGallerySection = lazy(
   () => import("./components/LazyGallerySection")
 );
 const BooksSection = lazy(() => import("./components/books/BooksSection"));
-const SanadSection = lazy(() => import("./components/sanad/SanadSection"));
+const ShajaraSection = lazy(() => import("./components/sanad/SanadSection"));
 
 import { Course as CourseType } from "../lib/types";
 
@@ -31,8 +32,57 @@ export default function HomePage() {
     return typeof result === 'string' ? result : key;
   };
   
-  // Temporarily disable API calls to test if they're causing the 500 error
-  const courses: CourseType[] = [];
+  // Sample course data to show the course section
+  const courses: CourseType[] = [
+    {
+      id: 1,
+      title: "Introduction to Islamic Studies",
+      slug: "introduction-islamic-studies",
+      description: "A comprehensive introduction to the fundamentals of Islamic knowledge and practice.",
+      image: "/placeholder-course.jpg",
+      is_published: 1,
+      duration: "4 weeks",
+      video_quantity: 12,
+      publish_date: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      recorded_by: {
+        first_name: "Dr. Ahmad",
+        last_name: "Hassan"
+      }
+    },
+    {
+      id: 2,
+      title: "Quranic Arabic for Beginners",
+      slug: "quranic-arabic-beginners",
+      description: "Learn the basics of Arabic language to better understand the Quran.",
+      image: "/placeholder-course.jpg",
+      is_published: 1,
+      duration: "6 weeks",
+      video_quantity: 18,
+      publish_date: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      recorded_by: {
+        first_name: "Sheikh",
+        last_name: "Omar"
+      }
+    },
+    {
+      id: 3,
+      title: "Hadith Studies and Methodology",
+      slug: "hadith-studies-methodology",
+      description: "Understanding the science of Hadith and its proper methodology.",
+      image: "/placeholder-course.jpg",
+      is_published: 1,
+      duration: "8 weeks",
+      video_quantity: 24,
+      publish_date: new Date().toISOString(),
+      created_at: new Date().toISOString(),
+      recorded_by: {
+        first_name: "Prof. Fatima",
+        last_name: "Ali"
+      }
+    }
+  ];
   return (
     <div className="min-h-screen bg-white">
       <Hero />
@@ -204,7 +254,7 @@ export default function HomePage() {
               }
             >
               <div className="animate-fade-in-up">
-                <SanadSection showAll={false} showHero={false} />
+                <ShajaraSection showAll={false} showHero={false} />
               </div>
               {/* Call to Action */}
               <div className="mt-10 text-center">
@@ -409,9 +459,9 @@ export default function HomePage() {
             ))}
           </div>
 
-          <button className="px-6 py-3 bg-white text-amber-600 font-semibold text-sm rounded-lg hover:bg-amber-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <Button variant="outline" className="bg-white text-amber-600 hover:bg-amber-50">
             {t('home.donateNow')}
-          </button>
+          </Button>
         </div>
       </section>
 
@@ -493,9 +543,9 @@ export default function HomePage() {
                   rows={4}
                   className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-amber-600 transition-colors text-sm resize-none"
                 ></textarea>
-                <button className="w-full px-6 py-3 bg-gradient-to-r from-amber-600 to-amber-700 text-white font-semibold text-sm rounded-lg hover:from-amber-700 hover:to-amber-800 transition-all duration-300 transform hover:scale-105 shadow-md">
+                <Button variant="primary" fullWidth>
                   Send Message
-                </button>
+                </Button>
               </div>
             </div>
           </div>

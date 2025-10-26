@@ -127,25 +127,49 @@
 
 /* Component styles */
 @layer components {
-  /* Button styles */
+  /* Button styles - Standardized across website */
   .btn {
-    @apply inline-flex items-center justify-center px-4 py-2 text-sm font-medium rounded-lg transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105;
+    @apply inline-flex items-center justify-center whitespace-nowrap rounded-lg font-semibold transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 transform hover:scale-105;
+  }
+  
+  .btn-sm {
+    @apply h-9 px-4 py-2 text-sm;
+  }
+  
+  .btn-default {
+    @apply h-11 px-6 py-3 text-base;
+  }
+  
+  .btn-lg {
+    @apply h-12 px-8 py-3 text-lg;
+  }
+  
+  .btn-icon {
+    @apply h-10 w-10 p-0;
   }
   
   .btn-primary {
-    @apply btn bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg hover:shadow-xl hover:from-primary-700 hover:to-primary-800;
+    @apply btn btn-default bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg hover:shadow-xl hover:from-amber-700 hover:to-amber-800;
   }
   
   .btn-secondary {
-    @apply btn bg-gradient-to-r from-secondary-600 to-secondary-700 text-white shadow-lg hover:shadow-xl hover:from-secondary-700 hover:to-secondary-800;
+    @apply btn btn-default bg-gradient-to-r from-gray-600 to-gray-700 text-white shadow-lg hover:shadow-xl hover:from-gray-700 hover:to-gray-800;
   }
   
   .btn-outline {
-    @apply btn border-2 border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-primary-500 hover:text-primary-600;
+    @apply btn btn-default border-2 border-amber-500 bg-transparent text-amber-600 hover:bg-amber-500 hover:text-white hover:shadow-lg;
   }
   
   .btn-ghost {
-    @apply btn text-gray-700 hover:bg-gray-100 hover:text-primary-600;
+    @apply btn btn-default bg-transparent text-gray-700 hover:bg-gray-100 hover:text-gray-900;
+  }
+  
+  .btn-link {
+    @apply btn text-amber-600 underline-offset-4 hover:underline hover:text-amber-700;
+  }
+  
+  .btn-destructive {
+    @apply btn btn-default bg-gradient-to-r from-red-600 to-red-700 text-white shadow-lg hover:shadow-xl hover:from-red-700 hover:to-red-800;
   }
   
   /* Card styles */

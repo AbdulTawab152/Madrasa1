@@ -10,6 +10,7 @@ import {
 import { getImageUrlWithFallback } from "@/lib/utils";
 import { useTranslation } from '@/hooks/useTranslation';
 import { getTranslation } from '@/lib/translations';
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 interface GalleryItem {
   id: number;
@@ -210,17 +211,12 @@ export default function Gallery({
     return (
       <section className="py-16 mt-[100px] bg-gradient-to-br from-orange-50 via-white to-amber-50 min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center">
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-              {translate('about.biography.gallerySection.title')}{" "}
-              <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
-                {translate('about.biography.gallerySection.collection')}
-              </span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-              {translate('about.biography.gallerySection.unavailable') || 'ګالري اوس مهال شتون نلري. مهرباني وکړئ وروسته بیا وګورئ.'}
-            </p>
-          </div>
+          <ComingSoonEmptyState
+            title={`${translate('about.biography.gallerySection.title')} ${translate('about.biography.gallerySection.collection')}`}
+            description={translate('about.biography.gallerySection.unavailable') || 'ګالري اوس مهال شتون نلري. مهرباني وکړئ وروسته بیا وګورئ.'}
+            icon="🖼️"
+            className="max-w-4xl mx-auto"
+          />
         </div>
       </section>
     );

@@ -46,8 +46,8 @@ const About = () => {
   const stats = [
     { icon: Clock, value: "63+", label: t('about.stats.years') },
     { icon: GraduationCap, value: "500+", label: t('about.stats.graduates') },
-    { icon: Sparkles, value: "100%", label: t('about.stats.scholars') },
-    { icon: Award, value: "50+", label: t('about.stats.scholars') }
+    { icon: Sparkles, value: "800", label: t('about.stats.students') },
+    { icon: Award, value: "18+", label: t('about.stats.scholars') }
   ];
 
   return (
@@ -268,22 +268,8 @@ const About = () => {
       </div>
     </div>
 
-    {/* Info Section */}
-    <div className="mt-6 text-center p-4 bg-amber-50 rounded-xl border border-amber-200">
-      <div className="flex items-center justify-center space-x-2 mb-2">
-        <div className="w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center">
-          <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-          </svg>
-        </div>
-        <h4 className="text-base font-bold text-gray-800 text-center">
-          {t('about.biography.gallery')}
-        </h4>
-      </div>
-      <p className="text-sm text-gray-600 leading-relaxed text-justify">
-        {t('about.biography.galleryDescription')}
-      </p>
-    </div>
+    {/* Info Section is deleted */}
+
   </div>
 </div>
 

@@ -386,6 +386,13 @@ export interface InputProps {
   required?: boolean;
 }
 
+// Shajara types
+export interface Shajara extends BaseEntity {
+  name: string;
+  created_at: string;
+  updated_at: string;
+}
+
 // Sanad types
 export interface Sanad extends BaseEntity {
   name: string;

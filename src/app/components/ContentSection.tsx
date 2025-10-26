@@ -5,6 +5,7 @@ import { motion, useInView, useAnimation } from "framer-motion";
 import { useRef, useEffect } from "react";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 interface Author {
   name: string;
@@ -529,38 +530,11 @@ export default function ContentSection({
       )}
 
       {displayContent.length === 0 && (
-        <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="text-center py-16 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100"
-        >
-          <motion.div
-            animate={{ rotate: [0, 5, -5, 0] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="w-20 h-20 mx-auto bg-gradient-to-br from-amber-100 to-orange-100 rounded-2xl flex items-center justify-center mb-5 shadow-sm"
-          >
-            <svg
-              className="w-10 h-10 text-amber-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </motion.div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            No content available yet
-          </h3>
-          <p className="text-gray-600 max-w-md mx-auto">
-            We're preparing valuable content. Check back soon for new articles
-            and Q&A.
-          </p>
-        </motion.div>
+        <ComingSoonEmptyState
+          title="No content available yet"
+          description="We're preparing valuable content. Check back soon for new articles and Q&A."
+          className="max-w-2xl mx-auto"
+        />
       )}
 
       {/* Add CSS for custom animations */}

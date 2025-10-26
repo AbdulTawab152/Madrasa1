@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Event from "./event/eventCard";
 import { Event as EventType } from "../../lib/types";
 import { EventsApi } from "../../lib/api";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 export default function LazyEventSection() {
   const [events, setEvents] = useState<EventType[]>([]);
@@ -36,6 +37,17 @@ export default function LazyEventSection() {
           Loading events...
         </span>
       </div>
+    );
+  }
+
+  if (events.length === 0) {
+    return (
+      <ComingSoonEmptyState
+        title="No Events Available"
+        description="We're working on bringing you exciting events. Check back soon!"
+        icon="📅"
+        className="max-w-2xl mx-auto"
+      />
     );
   }
 

@@ -5,12 +5,13 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BookOpen, Clock, UserRound } from "lucide-react";
+import { ArrowUpRight, BookOpen, Clock, UserRound, Star } from "lucide-react";
 
-import { Card, CardContent, CardFooter, CardMedia } from "../Card";
+import { Card, CardContent, CardMedia } from "../Card";
 import { getImageUrl } from "@/lib/utils";
 import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 interface CoursesSectionProps {
   courses: CourseType[];
@@ -65,17 +66,33 @@ export default function CoursesSection({
     const result = tRaw(key);
     return typeof result === 'string' ? result : key;
   };
+
+  // Debug logging
+  console.log('CoursesSection - courses:', courses);
+  console.log('CoursesSection - courses length:', courses?.length);
   const publishedCourses = (courses || [])
-    .filter((course) => Number(course.is_published) === 1)
+    .filter((course) => {
+      try {
+        return Number(course.is_published) === 1;
+      } catch (error) {
+        console.error('Error filtering course:', course, error);
+        return false;
+      }
+    })
     .sort((a, b) => {
-      const aDate = new Date(
-        a.publish_date || a.created_date || a.created_at || "",
-      ).getTime();
-      const bDate = new Date(
-        b.publish_date || b.created_date || b.created_at || "",
-      ).getTime();
-      if (Number.isNaN(aDate) || Number.isNaN(bDate)) return 0;
-      return bDate - aDate;
+      try {
+        const aDate = new Date(
+          a.publish_date || a.created_date || a.created_at || "",
+        ).getTime();
+        const bDate = new Date(
+          b.publish_date || b.created_date || b.created_at || "",
+        ).getTime();
+        if (Number.isNaN(aDate) || Number.isNaN(bDate)) return 0;
+        return bDate - aDate;
+      } catch (error) {
+        console.error('Error sorting courses:', error);
+        return 0;
+      }
     });
 
   const displayCourses = showAll
@@ -84,18 +101,12 @@ export default function CoursesSection({
 
   if (displayCourses.length === 0) {
     return (
-      <section className="py- text-center">
-        <div className="mx-auto max-w-2xl space-y-4 rounded-3xl border border-primary-100/60 bg-white/95 p-12 shadow-[0_18px_40px_-28px_rgba(15,23,42,0.45)]">
-          <p className="text-xs uppercase tracking-[0.35em] text-primary-500">
-            {t('courses.comingSoon')}
-          </p>
-          <h2 className="text-2xl font-semibold text-primary-900">
-            {t('courses.freshCourses')}
-          </h2>
-          <p className="text-primary-600">
-            {t('courses.curatingMessage')}
-          </p>
-        </div>
+      <section className="px-4 pb-16 pt-2 sm:px-6 lg:px-8">
+        <ComingSoonEmptyState
+          title={t('courses.freshCourses')}
+          description={t('courses.curatingMessage')}
+          className="max-w-4xl mx-auto"
+        />
       </section>
     );
   }
@@ -135,13 +146,14 @@ export default function CoursesSection({
           className="grid gap-5  sm:px-0 sm:grid-cols-2 lg:grid-cols-3"
         >
           {displayCourses.map((course) => {
-            const coverImage =
-              getImageUrl(course.image, fallbackCourseImage) ??
-              fallbackCourseImage;
-            const publishedOn = formatDate(
-              t,
-              course.publish_date || course.created_date || course.created_at
-            );
+            try {
+              const coverImage =
+                getImageUrl(course.image, fallbackCourseImage) ??
+                fallbackCourseImage;
+              const publishedOn = formatDate(
+                t,
+                course.publish_date || course.created_date || course.created_at
+              );
 
             return (
               <motion.article
@@ -149,39 +161,43 @@ export default function CoursesSection({
                 variants={cardVariants}
                 className="h-full sm:px-4"
               >
-                <Card className="group flex  h-full flex-col rounded-2xl border border-primary-100/60 bg-white/95 shadow-[0_14px_40px_-28px_rgba(15,23,42,0.35)] transition-transform duration-300 hover:-translate-y-1 hover:shadow-md">
-                  <CardMedia className="aspect-[16/9]" gradientOverlay={false}>
+                <Card className="group flex h-full flex-col rounded-3xl border border-gray-200/50 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-amber-400/50 hover:shadow-amber-100/20">
+                  <CardMedia className="aspect-[4/3] overflow-hidden rounded-t-3xl relative" gradientOverlay={false}>
                     <Image
                       src={coverImage}
                       alt={course.title}
                       fill
                       sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 90vw"
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      onError={(e) => {
+                        console.error('Image load error:', coverImage, e);
+                        e.currentTarget.src = fallbackCourseImage;
+                      }}
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                      <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
+                        <ArrowUpRight className="h-4 w-4 text-amber-600" />
+                      </div>
+                    </div>
                   </CardMedia>
 
-                  <CardContent className="gap-3.5 px-5 pb-2.5 pt-5">
-                    <div className="space-y-2.5">
-                      <span className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary-500">
+                  <CardContent className="flex-1 flex flex-col gap-2 px-4 py-4">
+                    <div className="space-y-2">
+                      <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-amber-700 bg-amber-50 px-2 py-1 rounded-full">
                         {publishedOn}
                       </span>
 
-                      {/* <Link
-                        href={`/courses/${course.slug}`}
-                        className="block outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
-                      > */}
-                        <h3 className="line-clamp-2 text-lg font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
-                          {course.title}
-                        </h3>
-                      {/* </Link> */}
+                      <h3 className="text-lg font-bold leading-tight text-gray-900 group-hover:text-amber-600 transition-colors duration-500 line-clamp-2">
+                        {course.title}
+                      </h3>
 
-                      <p className="text-sm leading-relaxed text-primary-600 line-clamp-2">
-                        {stripHtml(course.description) ||
-                          t('courses.immersiveLearning')}
+                      <p className="text-gray-600 leading-relaxed line-clamp-2 text-xs">
+                        {stripHtml(course.description) || t('courses.immersiveLearning')}
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-1 gap-2.5 text-[13px] font-medium text-primary-700 sm:grid-cols-2">
+                    <div className="grid grid-cols-2 gap-2 mt-1">
                       <CourseMetaItem
                         icon={<Clock className="h-3.5 w-3.5" />}
                         label={course.duration || t('courses.selfPaced')}
@@ -196,26 +212,30 @@ export default function CoursesSection({
                       />
                     </div>
 
-                    <CardFooter className="!mt-0 border-t border-primary-100/60 pt-2">
-                      <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary-700">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary-50 text-primary-600 shadow-inner shadow-primary-100/70 ring-1 ring-primary-100/70">
+                    <div className="mt-auto pt-3">
+                      <div className="flex items-center gap-2 mb-3 p-2 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-100 hover:border-amber-200 hover:shadow-md transition-all duration-300 group">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md group-hover:scale-105 transition-all duration-300">
                           <UserRound className="h-4 w-4" />
-                        </span>
-                        <span>{instructorName(course, t)}</span>
+                        </div>
+                        <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 truncate transition-colors duration-300">{instructorName(course, t)}</p>
                       </div>
 
                       <Link
                         href={`/courses/${course.slug}`}
-                        className="inline-flex mt-4 items-center gap-1.5 rounded-full bg-primary-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-200 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold py-2.5 px-3 rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-500/30 focus:ring-offset-2 transform group-hover:shadow-xl"
                       >
-                        {t('courses.viewCourse')}
-                        <ArrowUpRight className="h-4 w-4" />
+                        <span className="text-xs">{t('courses.viewCourse')}</span>
+                        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                       </Link>
-                    </CardFooter>
+                    </div>
                   </CardContent>
                 </Card>
               </motion.article>
             );
+            } catch (error) {
+              console.error('Error rendering course card:', course, error);
+              return null;
+            }
           })}
         </motion.div>
       </div>
@@ -230,10 +250,10 @@ const CourseMetaItem = ({
   icon: ReactNode;
   label: string;
 }) => (
-  <div className="flex items-center gap-2 rounded-xl border border-primary-100/70 bg-white/85 px-3 py-2 shadow-sm backdrop-blur">
-    <span className="flex h-7 w-7 items-center justify-center rounded-full bg-gradient-to-br from-primary-100/80 via-white to-primary-200/70 text-primary-600 shadow-inner shadow-primary-200/60 ring-1 ring-primary-300/50">
+  <div className="flex items-center gap-2 rounded-md bg-gray-50/50 px-2 py-1.5">
+    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600">
       {icon}
     </span>
-    <span className="truncate text-primary-800">{label}</span>
+    <span className="text-xs font-medium text-gray-700 truncate">{label}</span>
   </div>
 );

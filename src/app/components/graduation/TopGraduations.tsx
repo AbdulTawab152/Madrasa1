@@ -10,6 +10,7 @@ import { getImageUrl } from "@/lib/utils";
 import PaginationControls from "@/components/PaginationControls";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import { ComingSoonEmptyState } from "@/components/EmptyState";
 
 interface Graduation {
   id: number;
@@ -79,32 +80,18 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
 
   if (!graduations.length) {
     return (
-      <motion.div 
-        className="text-center py-20 bg-white/60 rounded-2xl border border-amber-100"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <div className="text-6xl mb-4">🎓</div>
-        <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-          No graduations found
-        </h2>
-        <p className="text-gray-500">Check back later for upcoming graduation events</p>
-      </motion.div>
+      <ComingSoonEmptyState
+        title="No graduations found"
+        description="Check back later for upcoming graduation events"
+        icon="🎓"
+        className="max-w-2xl mx-auto"
+      />
     );
   }
 
   return (
     <div className="w-full">
-        {/* Section heading */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-            Graduations
-          </h2>
-          <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
-            Celebrating the remarkable achievements of our esteemed graduates
-          </p>
-        </div>
+   
        
 
         {/* Enhanced Graduations Grid */}

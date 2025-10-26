@@ -470,25 +470,36 @@ export class BlogsApi {
 
   static async getBySlug(slug: string) {
     try {
+      // First try to get all blogs and find by slug
+      const allBlogs = await this.getAll({ limit: 1000 });
+      if (allBlogs.success && Array.isArray(allBlogs.data)) {
+        const blog = allBlogs.data.find((b: any) => b.slug === slug);
+        if (blog) {
+          return {
+            data: blog,
+            success: true,
+            message: "Blog found by slug"
+          };
+        }
+      }
+      
+      // If not found in list, try direct API call
       const result = await apiClient.get(`${endpoints.blogs}/${slug}`);
       if (!result.success) {
-        throw new Error(result.error || 'API request failed');
+        throw new Error(result.error || 'Blog not found');
       }
       return result;
     } catch (error) {
       logger.warn('Blog getBySlug failed', { slug, error });
       
-      // For detail endpoints, throw error to be caught by ErrorBoundary
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
+      // Return fallback data instead of throwing error
+      const fallbackData = getFallbackData("blogs");
+      const blog = fallbackData.find((b: any) => b.slug === slug) || fallbackData[0];
       
-      // Otherwise return fallback
-      const fallback = getFallbackData("blogs");
       return {
-        data: fallback[0] || null,
+        data: blog,
         success: true,
-        pagination: null,
+        message: "Using fallback data - blog not found in API",
       };
     }
   }
@@ -633,20 +644,36 @@ export class CoursesApi {
 
   static async getBySlug(slug: string) {
     try {
+      // First try to get all courses and find by slug
+      const allCourses = await this.getAll({ limit: 1000 });
+      if (allCourses.success && Array.isArray(allCourses.data)) {
+        const course = allCourses.data.find((c: any) => c.slug === slug);
+        if (course) {
+          return {
+            data: course,
+            success: true,
+            message: "Course found by slug"
+          };
+        }
+      }
+      
+      // If not found in list, try direct API call
       const result = await apiClient.get(`${endpoints.courses}/${slug}`);
       if (!result.success) {
-        throw new Error(result.error || 'API request failed');
+        throw new Error(result.error || 'Course not found');
       }
       return result;
     } catch (error) {
       logger.warn('Course getBySlug failed', { slug, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
+      
+      // Return fallback data instead of throwing error
+      const fallbackData = getFallbackData("courses");
+      const course = fallbackData.find((c: any) => c.slug === slug) || fallbackData[0];
+      
       return {
-        data: getFallbackData("courses")[0],
+        data: course,
         success: true,
-        message: "Using fallback data due to API unavailability",
+        message: "Using fallback data - course not found in API",
       };
     }
   }
@@ -1950,13 +1977,13 @@ export class AwlyaaChartsApi {
   }
 }
 
-export class SanadApi {
+export class ShajaraApi {
   static async getAll(params: ListParams = {}) {
     const { page: rawPage, limit: rawLimit, ...rest } = params;
     const page = rawPage ?? 1;
     const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
 
-    const result = await apiClient.get(endpoints.sanad, {
+    const result = await apiClient.get(endpoints.shajara, {
       params: { page, limit, ...rest },
     });
 
@@ -1974,7 +2001,7 @@ export class SanadApi {
       return {
         data: fallbackData,
         success: true,
-        message: "Showing offline Sanad data.",
+        message: "Showing offline Shajara data.",
         pagination: createPaginationMeta({
           page,
           limit,
@@ -1994,7 +2021,86 @@ export class SanadApi {
   }
 
   static async getById(id: string) {
-    return apiClient.get(`${endpoints.sanad}/${id}`);
+    return apiClient.get(`${endpoints.shajara}/${id}`);
+  }
+}
+
+export class SanadApi {
+  static async getAll(params: ListParams = {}) {
+    const { page: rawPage, limit: rawLimit, ...rest } = params;
+    const page = rawPage ?? 1;
+    const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
+
+    try {
+      logger.info('Fetching sanads from API', { page, limit });
+      const result = await apiClient.get(endpoints.sanad, {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched sanads', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Sanads API failed, using fallback data', { error });
+      
+      // Return fallback data if API fails
+      const fallbackData = [
+        {
+          id: 1,
+          name: "شجرهٔ حضرتات کابل  شجرهٔ عاليهٔ حضرتات عالي درجات نقشبنديه مجدديه عمريه (قدسنا الله باسرارهم العاليه)  خانقاه عاليه مجدديه عمريه ارغندی، پغمان، كابل",
+          created_at: "2025-10-13T05:17:47.000000Z",
+          updated_at: "2025-10-13T05:17:47.000000Z"
+        }
+      ];
+      
+      return {
+        data: fallbackData,
+        success: true,
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: fallbackData.length,
+        }),
+      };
+    }
+  }
+
+  static async getById(id: string) {
+    try {
+      const result = await apiClient.get(`${endpoints.sanad}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Sanad getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: null,
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
   }
 }
 

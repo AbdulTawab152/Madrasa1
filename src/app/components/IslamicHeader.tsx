@@ -6,7 +6,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 
 type Alignment = "center" | "left";
 type Theme = "amber" | "emerald" | "indigo" | "slate";
-type PageType = "courses" | "articles" | "blogs" | "events" | "books" | "authors" | "awlayaa" | "tasawwuf" | "gallery" | "about" | "contact" | "donation" | "registration" | "graduated-students" | "iftah" | "default";
+type PageType = "courses" | "articles" | "blogs" | "events" | "books" | "authors" | "awlayaa" | "tasawwuf" | "gallery" | "about" | "contact" | "donation" | "registration" | "graduated-students" | "iftah" | "sanad" | "default";
 
 export interface IslamicHeaderProps {
   title?: string;
