@@ -46,7 +46,6 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
       <ComingSoonEmptyState
         title="زموږ شجره"
         description="د روحاني نسبونو شجره"
-        icon="📜"
         className="max-w-2xl mx-auto"
       />
     );

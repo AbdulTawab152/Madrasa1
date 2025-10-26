@@ -48,8 +48,8 @@ export default function AwlyaaListPage() {
   // Filter awlyaa based on search term
   const filteredAwlyaa = awlyaa.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.title?.toLowerCase().includes(searchTerm.toLowerCase())
+      (item.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (item.title || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Animation variants

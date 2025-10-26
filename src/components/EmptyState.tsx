@@ -38,8 +38,7 @@ const iconVariants = {
     opacity: 1, 
     scale: 1,
     transition: {
-      duration: 0.6,
-      ease: "easeOut"
+      duration: 0.6
     }
   }
 };
@@ -51,8 +50,7 @@ const contentVariants = {
     y: 0,
     transition: {
       duration: 0.6,
-      delay: 0.2,
-      ease: "easeOut"
+      delay: 0.2
     }
   }
 };
@@ -64,8 +62,7 @@ const buttonVariants = {
     y: 0,
     transition: {
       duration: 0.4,
-      delay: 0.4,
-      ease: "easeOut"
+      delay: 0.4
     }
   }
 };

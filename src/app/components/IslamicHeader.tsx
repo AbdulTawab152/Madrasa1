@@ -147,6 +147,11 @@ export default function IslamicHeader({
         subtitle: t('header.iftah.subtitle'),
         theme: "slate" as Theme,
       },
+      sanad: {
+        title: t('header.sanad.title') || 'Our Sanad',
+        subtitle: t('header.sanad.subtitle') || 'Discover our spiritual lineage',
+        theme: "slate" as Theme,
+      },
       default: {
         title: t('header.default.title'),
         subtitle: t('header.default.subtitle'),

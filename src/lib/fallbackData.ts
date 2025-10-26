@@ -167,6 +167,47 @@ export const fallbackData = {
       updated_at: new Date().toISOString(),
     },
   ],
+  iftah: [
+    {
+      id: 1,
+      title: "Sample Fatwa Question",
+      slug: "sample-fatwa-question",
+      question: "What is the ruling on...",
+      answer: "The ruling is...",
+      date: new Date().toISOString(),
+      note: "Sample fatwa for demonstration",
+      is_published: 1,
+      is_top: 0,
+      attachment: null,
+      mufti_id: 1,
+      tag_id: 1,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    },
+  ],
+  articles: [
+    {
+      id: 1,
+      title: "Introduction to Islamic Articles",
+      slug: "intro-islamic-articles",
+      description: "Learn about Islamic knowledge through articles.",
+      content: "Article content here...",
+      image: "/placeholder-article.jpg",
+      created_at: new Date().toISOString(),
+      is_published: 1,
+    },
+  ],
+  graduations: [
+    {
+      id: 1,
+      studentName: "Sample Graduate",
+      slug: "sample-graduate",
+      photo: "/placeholder-graduation.jpg",
+      graduationDate: new Date().toISOString(),
+      course: "Islamic Studies",
+      grade: "Excellent",
+    },
+  ],
 };
 
 // Helper function to get fallback data

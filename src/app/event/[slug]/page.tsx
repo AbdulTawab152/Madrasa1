@@ -16,9 +16,9 @@ interface Event {
   image: string;
   date: string;
   duration: string;
-  live_link: string;
-  live_link_type: string;
-  status: string; // "past", "upcoming", etc.
+  live_link?: string | null;
+  live_link_type?: string | null;
+  status?: string | null; // "past", "upcoming", etc.
   is_published: number; // 0 or 1
   created_at: string;
   updated_at: string;
@@ -60,18 +60,24 @@ export default async function EventDetailsPage({ params }: Params) {
   }
 
   // Format date for better display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString("en-US", {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "Date not available";
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) return "Invalid date";
+      return date.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    } catch {
+      return "Invalid date";
+    }
   };
 
   // Get status badge color
-  const getStatusColor = (status?: string) => {
+  const getStatusColor = (status?: string | null) => {
     const normalized = (status || "unknown").toLowerCase();
     switch (normalized) {
       case "upcoming":
@@ -196,7 +202,7 @@ export default async function EventDetailsPage({ params }: Params) {
                     <div>
                       <p className="text-md font-medium   text-gray-500">{t('eventsPage.duration')}</p>
                       <p className="text-[14px]  md:font-medium">
-                        {event.duration}
+                        {event.duration || "Not specified"}
                       </p>
                     </div>
                   </div>

@@ -214,7 +214,6 @@ export default function Gallery({
           <ComingSoonEmptyState
             title={`${translate('about.biography.gallerySection.title')} ${translate('about.biography.gallerySection.collection')}`}
             description={translate('about.biography.gallerySection.unavailable') || 'ګالري اوس مهال شتون نلري. مهرباني وکړئ وروسته بیا وګورئ.'}
-            icon="🖼️"
             className="max-w-4xl mx-auto"
           />
         </div>

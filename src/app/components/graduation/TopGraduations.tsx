@@ -91,7 +91,6 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
       <ComingSoonEmptyState
         title="No graduations found"
         description="Check back later for upcoming graduation events"
-        icon="🎓"
         className="max-w-2xl mx-auto"
       />
     );

@@ -16,7 +16,6 @@ import ErrorDisplay from "@/components/ErrorDisplay";
 export default function CoursesPage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
   
-  // Create a string-safe wrapper function
   const t = (key: string): string => {
     const result = tRaw(key);
     return typeof result === 'string' ? result : key;

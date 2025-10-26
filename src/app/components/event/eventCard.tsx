@@ -8,7 +8,6 @@ import { motion } from "framer-motion";
 import { Event } from "../../../lib/types";
 import { FaSearchLocation, FaTimes } from "react-icons/fa";
 import { FaBuildingCircleExclamation, FaClock, FaTimeline } from "react-icons/fa6";
-import { Card, CardBadge, CardContent, CardFooter, CardMedia } from "../Card";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getLanguageDirection } from "@/lib/i18n";
 
@@ -142,9 +141,9 @@ export default function EventsSection({
                 {idx < displayEvents.length - 1 ? (
                   <span className="pointer-events-none absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100" />
                 ) : null}
-                <Card className="relative flex w-full flex-col overflow-hidden bg-white/95 backdrop-blur md:flex-row  shadow-none hover:shadow-none">
+                <div className="relative flex w-full flex-col overflow-hidden bg-white/95 backdrop-blur md:flex-row  shadow-none hover:shadow-none">
 
-                    <CardMedia className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3]">
+                    <div className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3] relative">
                       <Image
                         src={coverImage}
                         alt={event.title}
@@ -153,17 +152,17 @@ export default function EventsSection({
                               className="h-full w-full object-cover"
                       />
 
-                      <CardBadge className="absolute top-4 left-4 bg-white/90 text-primary-700">
+                      <span className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-primary-700 shadow-sm">
                         {t('events.communityEvent')}
-                      </CardBadge>
+                      </span>
                       {event.branch_name ? (
-                        <CardBadge className="absolute bottom-4 right-4 bg-primary-600 text-white">
+                        <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-primary-600 px-3 py-1 text-xs font-semibold text-white shadow-sm">
                           {event.branch_name}
-                        </CardBadge>
+                        </span>
                       ) : null}
-                    </CardMedia>
+                    </div>
 
-                    <CardContent className="w-full gap-6 p-6 md:w-1/2">
+                    <div className="w-full gap-6 p-6 md:w-1/2">
                       <div className="space-y-4">
                         <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">
                           <Calendar className="h-4 w-4 text-primary-500" />
@@ -205,7 +204,7 @@ export default function EventsSection({
                         ) : null}
                       </div>
 
-                      <CardFooter>
+                      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-primary-100/70 pt-4">
                         <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-700">
                           <Users className="h-4 w-4 text-primary-500" />
                           {t('events.organizedBy')}
@@ -233,9 +232,9 @@ export default function EventsSection({
                             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </Link>
                         </div>
-                      </CardFooter>
-                    </CardContent>
-                  </Card>
+                      </div>
+                    </div>
+                  </div>
               </motion.div>
             );
           })}

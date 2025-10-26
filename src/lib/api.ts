@@ -230,14 +230,14 @@ class ApiClient {
         
         if (!response.ok) { 
           const errorText = await response.text();
-          const statusCode = response.status;
+          const statusCode: number = response.status;
           
           // Don't retry for client errors (4xx) except 408, 429
-          const shouldRetry = apiConfig.errorHandling.retryableStatusCodes.includes(statusCode);
+          const shouldRetry = apiConfig.errorHandling.retryableStatusCodes.includes(statusCode as any);
           
           if (!shouldRetry) {
             // Check if error should be suppressed
-            const shouldSuppress = apiConfig.errorHandling.suppressedStatusCodes.includes(statusCode);
+            const shouldSuppress = apiConfig.errorHandling.suppressedStatusCodes.includes(statusCode as any);
             if (!shouldSuppress) {
               logger.apiError(endpoint, new Error(errorText), statusCode);
             }
@@ -246,7 +246,7 @@ class ApiClient {
           
           // If it's the last attempt, throw the error
           if (attempt === maxRetries) {
-            const shouldSuppress = apiConfig.errorHandling.suppressedStatusCodes.includes(statusCode);
+            const shouldSuppress = apiConfig.errorHandling.suppressedStatusCodes.includes(statusCode as any);
             if (!shouldSuppress) {
               logger.apiError(endpoint, new Error(errorText), statusCode);
             }

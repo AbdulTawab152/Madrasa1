@@ -69,7 +69,6 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
       <ComingSoonEmptyState
         title="No Books Available"
         description="We're working on adding more books to our collection."
-        icon="📚"
         className="max-w-2xl mx-auto"
       />
     );

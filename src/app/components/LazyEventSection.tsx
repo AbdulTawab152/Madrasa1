@@ -45,7 +45,6 @@ export default function LazyEventSection() {
       <ComingSoonEmptyState
         title="No Events Available"
         description="We're working on bringing you exciting events. Check back soon!"
-        icon="📅"
         className="max-w-2xl mx-auto"
       />
     );

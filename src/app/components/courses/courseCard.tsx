@@ -6,8 +6,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight, BookOpen, Clock, UserRound, Star } from "lucide-react";
-
-import { Card, CardContent, CardMedia } from "../Card";
 import { getImageUrl } from "@/lib/utils";
 import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -161,8 +159,8 @@ export default function CoursesSection({
                 variants={cardVariants}
                 className="h-full sm:px-4"
               >
-                <Card className="group flex h-full flex-col rounded-3xl border border-gray-200/50 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-amber-400/50 hover:shadow-amber-100/20">
-                  <CardMedia className="aspect-[4/3] overflow-hidden rounded-t-3xl relative" gradientOverlay={false}>
+                <div className="group flex h-full flex-col rounded-3xl border border-gray-200/50 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-amber-400/50 hover:shadow-amber-100/20">
+                  <div className="aspect-[4/3] overflow-hidden rounded-t-3xl relative">
                     <Image
                       src={coverImage}
                       alt={course.title}
@@ -180,9 +178,9 @@ export default function CoursesSection({
                         <ArrowUpRight className="h-4 w-4 text-amber-600" />
                       </div>
                     </div>
-                  </CardMedia>
+                  </div>
 
-                  <CardContent className="flex-1 flex flex-col gap-2 px-4 py-4">
+                  <div className="flex-1 flex flex-col gap-2 px-4 py-4">
                     <div className="space-y-2">
                       <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-amber-700 bg-amber-50 px-2 py-1 rounded-full">
                         {publishedOn}
@@ -228,8 +226,8 @@ export default function CoursesSection({
                         <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                       </Link>
                     </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </div>
               </motion.article>
             );
             } catch (error) {

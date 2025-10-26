@@ -1,14 +1,15 @@
 "use client";
 
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState, useEffect } from "react";
 import Hero from "../app/herosection/page";
 import About from "./components/about/page";
 import Blogs from "../app/components/blog/BlogCard";
 import Course from "../app/components/courses/courseCard";
 import Link from "next/link";
-import Contact from "../app/components/contact/ContactForm";
 import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
+import { CoursesApi } from "@/lib/api";
+import type { Course as CourseType } from "@/lib/types";
 
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
@@ -21,10 +22,11 @@ const LazyGallerySection = lazy(
 const BooksSection = lazy(() => import("./components/books/BooksSection"));
 const ShajaraSection = lazy(() => import("./components/sanad/SanadSection"));
 
-import { Course as CourseType } from "../lib/types";
-
 export default function HomePage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  const [courses, setCourses] = useState<CourseType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   
   // Create a string-safe wrapper function
   const t = (key: string): string => {
@@ -32,57 +34,25 @@ export default function HomePage() {
     return typeof result === 'string' ? result : key;
   };
   
-  // Sample course data to show the course section
-  const courses: CourseType[] = [
-    {
-      id: 1,
-      title: "Introduction to Islamic Studies",
-      slug: "introduction-islamic-studies",
-      description: "A comprehensive introduction to the fundamentals of Islamic knowledge and practice.",
-      image: "/placeholder-course.jpg",
-      is_published: 1,
-      duration: "4 weeks",
-      video_quantity: 12,
-      publish_date: new Date().toISOString(),
-      created_at: new Date().toISOString(),
-      recorded_by: {
-        first_name: "Dr. Ahmad",
-        last_name: "Hassan"
-      }
-    },
-    {
-      id: 2,
-      title: "Quranic Arabic for Beginners",
-      slug: "quranic-arabic-beginners",
-      description: "Learn the basics of Arabic language to better understand the Quran.",
-      image: "/placeholder-course.jpg",
-      is_published: 1,
-      duration: "6 weeks",
-      video_quantity: 18,
-      publish_date: new Date().toISOString(),
-      created_at: new Date().toISOString(),
-      recorded_by: {
-        first_name: "Sheikh",
-        last_name: "Omar"
-      }
-    },
-    {
-      id: 3,
-      title: "Hadith Studies and Methodology",
-      slug: "hadith-studies-methodology",
-      description: "Understanding the science of Hadith and its proper methodology.",
-      image: "/placeholder-course.jpg",
-      is_published: 1,
-      duration: "8 weeks",
-      video_quantity: 24,
-      publish_date: new Date().toISOString(),
-      created_at: new Date().toISOString(),
-      recorded_by: {
-        first_name: "Prof. Fatima",
-        last_name: "Ali"
+  // Fetch courses from API
+  useEffect(() => {
+    async function fetchCourses() {
+      try {
+        setLoading(true);
+        const result = await CoursesApi.getAll({ limit: 3 });
+        if (result.success && Array.isArray(result.data)) {
+          setCourses(result.data);
+        }
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+        setError('Failed to fetch courses');
+      } finally {
+        setLoading(false);
       }
     }
-  ];
+    
+    fetchCourses();
+  }, []);
   return (
     <div className="min-h-screen bg-white">
       <Hero />
@@ -116,19 +86,21 @@ export default function HomePage() {
 
           {/* Simple Courses Section */}
           <div className="mt-8">
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center py-12">
-                  <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-                  <span className="ml-3 text-gray-600">{t('home.loadingCourses')}</span>
-                </div>
-              }
-            >
+            {loading ? (
+              <div className="flex items-center justify-center py-12">
+                <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                <span className="ml-3 text-gray-600">{t('home.loadingCourses')}</span>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12">
+                <p className="text-red-600">{error}</p>
+              </div>
+            ) : (
               <div className="relative">
                 <Course courses={courses} showAll={false} />
 
                 {/* Simple Call to Action */}
-                <div className="mt- text-center">
+                <div className="mt-8 text-center">
                   <Link
                     href="/courses"
                     className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
@@ -137,7 +109,7 @@ export default function HomePage() {
                   </Link>
                 </div>
               </div>
-            </Suspense>
+            )}
           </div>
         </div>
       </section>

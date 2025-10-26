@@ -54,7 +54,6 @@ export default function AuthorsPage() {
           <ComingSoonEmptyState
             title="No authors found"
             description="Please check back soon for new profiles."
-            icon="👥"
             className="max-w-2xl mx-auto"
           />
         ) : (

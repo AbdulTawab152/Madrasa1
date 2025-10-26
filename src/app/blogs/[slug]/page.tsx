@@ -33,7 +33,7 @@ export default async function BlogDetailsPage({ params }: Params) {
   const { slug } = await params;
 
   const blogResponse = await BlogsApi.getBySlug(slug);
-  if (!blogResponse.success || blogResponse.error === 'not_found') {
+  if (!blogResponse.success || ('error' in blogResponse && blogResponse.error === 'not_found')) {
     notFound();
   }
 

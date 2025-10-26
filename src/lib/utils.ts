@@ -36,7 +36,8 @@ export function formatDateShort(date: string | Date): string {
 /**
  * Truncate text to a specified length
  */
-export function truncateText(text: string, length: number): string {
+export function truncateText(text: string | null | undefined, length: number): string {
+  if (!text || typeof text !== 'string') return '';
   if (text.length <= length) return text;
   return text.slice(0, length) + '...';
 }
@@ -44,7 +45,8 @@ export function truncateText(text: string, length: number): string {
 /**
  * Generate a slug from a string
  */
-export function generateSlug(text: string): string {
+export function generateSlug(text: string | null | undefined): string {
+  if (!text || typeof text !== 'string') return '';
   return text
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
@@ -54,9 +56,14 @@ export function generateSlug(text: string): string {
 /**
  * Get initials from a name
  */
-export function getInitials(name: string): string {
-  return name
+export function getInitials(name: string | null | undefined): string {
+  if (!name || typeof name !== 'string') return '';
+  const trimmed = name.trim();
+  if (!trimmed) return '';
+  
+  return trimmed
     .split(' ')
+    .filter(word => word.length > 0)
     .map(word => word.charAt(0))
     .join('')
     .toUpperCase()
@@ -149,21 +156,26 @@ export function generateId(): string {
 /**
  * Capitalize first letter of a string
  */
-export function capitalize(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+export function capitalize(str: string | null | undefined): string {
+  if (!str || typeof str !== 'string') return '';
+  const trimmed = str.trim();
+  if (!trimmed) return '';
+  return trimmed.charAt(0).toUpperCase() + trimmed.slice(1);
 }
 
 /**
  * Convert camelCase to kebab-case
  */
-export function camelToKebab(str: string): string {
+export function camelToKebab(str: string | null | undefined): string {
+  if (!str || typeof str !== 'string') return '';
   return str.replace(/([a-z0-9]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 }
 
 /**
  * Convert kebab-case to camelCase
  */
-export function kebabToCamel(str: string): string {
+export function kebabToCamel(str: string | null | undefined): string {
+  if (!str || typeof str !== 'string') return '';
   return str.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
 }
 
