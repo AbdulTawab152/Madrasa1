@@ -1,9 +1,7 @@
 'use client';
-import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-import IslamicHeader from "./IslamicHeader";
-import { cleanText } from "../../lib/textUtils";
+import { cleanText } from "@/lib/textUtils";
 
 interface Author {
   name: string;
@@ -42,13 +40,9 @@ interface TraditionalContentSectionProps {
 export default function TraditionalContentSection({ 
   articles = [], 
   fatwas = [], 
-  showAll = false, 
-  title = "Islamic University",
-  subtitle = "Fatwa Department"
+  showAll = false
 }: TraditionalContentSectionProps) {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedBook, setSelectedBook] = useState("");
 
   // Combine content
   const allContent = [
@@ -65,14 +59,10 @@ export default function TraditionalContentSection({
     const matchesSearch = cleanTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          cleanQuestion.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          cleanDescription.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
+    return matchesSearch;
   });
 
   const displayContent = showAll ? filteredContent : filteredContent.slice(0, 10);
-
-  const categories = [...new Set(allContent.map(item => item.category).filter(Boolean))];
-  const books = ["Quran", "Hadith", "Fiqh", "Aqeedah", "Tasawwuf"];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
@@ -109,7 +99,7 @@ export default function TraditionalContentSection({
 
               {/* Enhanced Content List */}
               <div className="divide-y divide-amber-100">
-                {displayContent.map((item, index) => (
+                {displayContent.map((item) => (
                   <div key={`${item.type}-${item.id}`} className="group hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-300">
                     <div className="px-8 py-6">
                       <div className="flex items-start justify-between">
@@ -186,39 +176,6 @@ export default function TraditionalContentSection({
                 ))}
               </div>
 
-              {/* Enhanced Ask Question Section */}
-              {/* <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-8 py-6 border-t border-amber-200">
-                <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-lg font-semibold text-amber-900">
-                      {fatwas.length > 0 ? "سوال پوچھیں" : "Submit Article"}
-                    </h4>
-                    <p className="text-amber-700 text-sm">
-                      {fatwas.length > 0 ? "Ask a new question" : "Share your knowledge"}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-gray-600 text-sm mb-6 leading-relaxed">
-                  {fatwas.length > 0 
-                    ? "If you don't find the desired question, you can click below to ask. Due to many questions, it might take 15-20 days for an answer."
-                    : "Share your knowledge and insights by submitting an educational article."
-                  }
-                </p>
-                <Link
-                  href={fatwas.length > 0 ? "/ask-question" : "/submit-article"}
-                  className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold rounded-xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                >
-                  {fatwas.length > 0 ? "Ask Question" : "Submit Article"}
-                  <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                  </svg>
-                </Link>
-              </div> */}
             </div>
           </div>
 
@@ -258,12 +215,8 @@ export default function TraditionalContentSection({
                       </svg>
                     </div>
                   </div>
-
-                  
                 </div>
               </div>
-
-          
             </div>
           </div>
         </div>

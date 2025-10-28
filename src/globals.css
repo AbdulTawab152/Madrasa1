@@ -508,6 +508,21 @@
       transform: translateY(0);
     }
   }
+  
+  /* Animate fade in up utility */
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+    opacity: 0;
+  }
+  
+  @keyframes backgroundMove {
+    from {
+      background-position: 0 0;
+    }
+    to {
+      background-position: 100% 100%;
+    }
+  }
 
   /* Force animations to work on all languages */
   .force-scroll-animation {

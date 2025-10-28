@@ -1,8 +1,7 @@
 "use client";
 
 // components/iftah/IftahSection.tsx
-import TraditionalContentSection from '../TraditionalContentSection';
-import IslamicHeader from '../IslamicHeader';
+import DarulUloomIftahSection from './DarulUloomIftahSection';
 import { useTranslation } from '@/hooks/useTranslation';
 // import IftahQuestionForm from './IftahQuestionForm';
 
@@ -48,14 +47,7 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
 
   return (
     <>
-      <IslamicHeader
-        title={t('iftah.title')}
-        subtitle={t('iftah.subtitle')}
-        pageType="iftah"
-        theme="slate"
-        alignment="center"
-      />
-      <TraditionalContentSection 
+      <DarulUloomIftahSection 
         fatwas={displayFatwas}
         showAll={showAll}
         title={t('iftah.universityTitle')}

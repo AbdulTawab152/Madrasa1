@@ -220,7 +220,7 @@ export default function IftahQuestionFormInline() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+    <div className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8 ">
       {/* Hero Section - Compact Design */}
       <div className="relative mb-6 sm:mb-8 overflow-hidden">
         {/* Background with enhanced gradients */}

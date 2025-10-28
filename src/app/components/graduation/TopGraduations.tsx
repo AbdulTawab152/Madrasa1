@@ -47,11 +47,11 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
       try {
         setLoading(true);
         const res = await GraduationsApi.getAll(showAll ? {} : { page, limit: PAGE_SIZE });
-        let data: Graduation[] = Array.isArray(res?.data) ? res.data : [];
+        const data: Graduation[] = Array.isArray(res?.data) ? res.data : [];
         
         if (!showAll) {
           setGraduations(data);
-          const pagination = (res as any)?.pagination;
+          const pagination = res?.pagination;
           if (pagination && typeof pagination.totalPages === 'number') {
             setTotalPages(pagination.totalPages);
           } else {
@@ -98,17 +98,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
 
   return (
     <div className="w-full">
-        {/* Section heading */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-            {t('graduationDetail.graduations')}
-          </h2>
-          <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
-            {t('graduationDetail.celebratingAchievements')}
-          </p>
-        </div>
-       
-
+      
         {/* Enhanced Graduations Grid */}
         <div className="relative">
           {/* Simpler, friendlier background */}
