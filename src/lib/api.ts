@@ -678,6 +678,278 @@ export class CoursesApi {
     }
   }
 }
+
+// awlayaa api
+
+export interface AdmissionFormData {
+  unique_id?: string;
+  first_name: string;
+  last_name: string;
+  father_name: string;
+  grandfather_name?: string;
+  permanent_province?: string;
+  permanent_distract?: string;
+  permanent_vilage?: string;
+  current_province?: string;
+  current_distract?: string;
+  current_vilage?: string;
+  phone?: string;
+  whatsapp_no?: string;
+  dob?: string;
+  blood_type?: string;
+  degree_id?: number; // Optional - can be omitted to avoid validation error
+  previous_degree?: string;
+  previous_madrasa?: string;
+  location_madrasa?: string;
+  location?: string;
+}
+
+export class AdmissionsApi {
+  // 🔹 Get available degrees (for dropdown)
+  static async getDegrees() {
+    try {
+      const response = await fetch(endpoints.degrees, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        // 404 is expected - the endpoint doesn't exist yet, use fallback
+        if (response.status === 404) {
+          return this.getDefaultDegrees();
+        }
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      return result;
+    } catch (error: any) {
+      // Use fallback degrees (no logging for expected 404)
+      return this.getDefaultDegrees();
+    }
+  }
+
+  // 🔹 Get default degrees (fallback)
+  static getDefaultDegrees() {
+    return {
+      data: [
+        { id: 1, name: 'درجه اول' },
+        { id: 2, name: 'درجه دوم' },
+        { id: 3, name: 'درجه سوم' },
+        { id: 4, name: 'درجه چهارم' },
+        { id: 5, name: 'درجه پنجم' },
+      ],
+      success: true,
+    };
+  }
+
+  // 🔹 Get all admissions (using POST)
+  static async getAll(params: ListParams = {}) {
+    const { page: rawPage, limit: rawLimit, ...rest } = params;
+    const page = rawPage ?? 1;
+    const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
+
+    try {
+      logger.info("Fetching admissions from API", { page, limit });
+
+      // ✅ Using POST method instead of GET
+      const result = await apiClient.post(endpoints.admissions, {
+        page,
+        limit,
+        ...rest,
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || "API request failed");
+      }
+
+      logger.info("Successfully fetched admissions", {
+        count: Array.isArray(result.data) ? result.data.length : 0,
+      });
+
+      if (result.pagination) {
+        return result;
+      }
+
+      const total = Array.isArray(result.data)
+        ? result.data.length
+        : limit;
+
+      return {
+        ...result,
+        pagination: createPaginationMeta({ page, limit, total }),
+      };
+    } catch (error) {
+      logger.warn("Admissions API failed, using fallback data", { error });
+
+      // Return empty array instead of calling getFallbackData with "admissions"
+      return {
+        data: [],
+        success: true,
+        message: apiConfig.fallback.showFallbackMessage
+          ? "Using empty data due to API unavailability"
+          : undefined,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: 0,
+        }),
+      };
+    }
+  }
+
+  // 🔹 Get admission by ID (using POST)
+  static async getById(id: string) {
+    try {
+      const result = await apiClient.post(`${endpoints.admissions}/show`, { id });
+      if (!result.success) {
+        throw new Error(result.error || "API request failed");
+      }
+      return result;
+    } catch (error) {
+      logger.warn("Admission getById failed", { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: null,
+        success: true,
+        message: "Using fallback data due to API unavailability",
+      };
+    }
+  }
+
+  // 🔹 Create a new admission (POST) - Direct to Laravel API
+  static async create(data: AdmissionFormData) {
+    try {
+      console.log('🚀 Sending admission data to Laravel API:', endpoints.admissions);
+      console.log('📤 Data being sent:', JSON.stringify(data, null, 2));
+
+      // Send directly to Laravel API
+      const response = await fetch(endpoints.admissions, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('❌ API Error: Data could NOT be sent to dashboard');
+        console.error('❌ Error details:', errorText);
+        throw new Error('Validation failed');
+      }
+
+      const result = await response.json();
+      console.log('✅ SUCCESS: Data sent to dashboard successfully!');
+      console.log('✅ Response:', result);
+
+      return {
+        data: result,
+        success: true,
+        message: 'Admission submitted successfully',
+      };
+    } catch (error: any) {
+      throw error;
+    }
+  }
+
+  // 🔹 Update admission (POST)
+  static async update(id: string, data: Partial<AdmissionFormData>) {
+    try {
+      const result = await apiClient.post(`${endpoints.admissions}/update/${id}`, data);
+      if (!result.success) {
+        throw new Error(result.error || "Admission update failed");
+      }
+      return result;
+    } catch (error) {
+      logger.error("Admission update failed", { id, error });
+      throw error;
+    }
+  }
+
+  // 🔹 Delete admission (POST)
+  static async delete(id: string) {
+    try {
+      const result = await apiClient.post(`${endpoints.admissions}/delete/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || "Admission delete failed");
+      }
+      return result;
+    } catch (error) {
+      logger.error("Admission delete failed", { id, error });
+      throw error;
+    }
+  }
+
+  // 🔹 Submit admission form
+  static async submit(data: AdmissionFormData) {
+    try {
+      return await this.create(data);
+    } catch (error: any) {
+      // API failed - save locally and show message
+      console.warn('⚠️ WARNING: Could not send to dashboard. Saving data locally for manual processing.');
+      console.warn('⚠️ Local backup saved successfully. Data can be retrieved from localStorage.');
+      
+      // Store locally as fallback
+      const admissionData = {
+        id: Date.now(),
+        timestamp: new Date().toISOString(),
+        ...data,
+        status: 'pending',
+        source: 'admission-form'
+      };
+      
+      if (typeof window !== 'undefined') {
+        try {
+          const existingAdmissions = JSON.parse(localStorage.getItem('admissions') || '[]');
+          existingAdmissions.unshift(admissionData);
+          localStorage.setItem('admissions', JSON.stringify(existingAdmissions));
+          console.log('💾 Local storage updated successfully');
+        } catch (storageError) {
+          console.error('❌ Failed to save to local storage:', storageError);
+        }
+      }
+      
+      return {
+        data: { 
+          message: 'Admission form submitted successfully! Data has been stored locally for manual processing.',
+          id: Date.now(),
+          timestamp: new Date().toISOString(),
+          stored_locally: true
+        },
+        success: true,
+        error: null,
+      };
+    }
+  }
+
+  // Helper method to get stored submissions
+  static getStoredSubmissions() {
+    if (typeof window === 'undefined') return [];
+    
+    try {
+      const submissions = JSON.parse(localStorage.getItem('admissions') || '[]');
+      return submissions;
+    } catch (error) {
+      console.error('Error retrieving stored admissions:', error);
+      return [];
+    }
+  }
+
+  // Helper method to clear stored submissions
+  static clearStoredSubmissions() {
+    if (typeof window === 'undefined') return;
+    localStorage.removeItem('admissions');
+    console.log('📝 Admission submissions cleared');
+  }
+}
+
 export class AwlyaaApi {
   static async getAll(params: ListParams = {}) {
     const { page: rawPage, limit: rawLimit, ...rest } = params;

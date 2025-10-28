@@ -2,7 +2,8 @@
 import Link from "next/link";
 
 import Image from "next/image";
-import { Calendar, MapPin, Clock, Users, ArrowRight } from "lucide-react";
+import { Calendar, MapPin, Clock, Users } from "lucide-react";
+import RTLArrowIcon from "@/components/RTLArrowIcon";
 import { getImageUrl } from "../../../lib/utils";
 import { motion } from "framer-motion";
 import { Event } from "../../../lib/types";
@@ -198,7 +199,7 @@ export default function EventsSection({
 
                         {event.live_link ? (
                           <span className="inline-flex items-center gap-2 text-primary-600">
-                            <ArrowRight className="h-4 w-4" />
+                            <RTLArrowIcon className="h-4 w-4" />
                             <span>{liveLabel}</span>
                           </span>
                         ) : null}
@@ -219,7 +220,7 @@ export default function EventsSection({
                               className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600"
                             >
                               {t('events.joinLive')}
-                              <ArrowRight className="h-4 w-4" />
+                              <RTLArrowIcon size="h-4 w-4" />
                             </a>
                           ) : null}
 
@@ -229,7 +230,7 @@ export default function EventsSection({
                             style={{ minWidth: 0 }}
                           >
                             <span className="whitespace-nowrap">{t('events.eventDetails')}</span>
-                            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            <RTLArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                           </Link>
                         </div>
                       </div>
@@ -247,19 +248,7 @@ export default function EventsSection({
               className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg border-2 border-amber-500"
             >
               <span>{t('events.viewAllEvents')}</span>
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
+              <RTLArrowIcon className="w-4 h-4" />
             </Link>
           </div>
         )}

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React, { useMemo } from "react";
 import { useTranslation } from "@/hooks/useTranslation";
+import { getLanguageDirection } from "@/lib/i18n";
 
 type Alignment = "center" | "left";
 type Theme = "amber" | "emerald" | "indigo" | "slate";
@@ -61,13 +62,16 @@ export default function IslamicHeader({
   className = "",
   cta,
 }: IslamicHeaderProps) {
-  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
   
   // Create a wrapper that always returns a string
   const t = (key: string): string => {
     const result = tRaw(key);
     return typeof result === 'string' ? result : key;
   };
+
+  // Get RTL status
+  const isRTL = getLanguageDirection(i18n.language) === 'rtl';
 
   // Get defaults based on page type using useMemo for optimization
   const pageDefaults = useMemo(() => {
@@ -160,7 +164,7 @@ export default function IslamicHeader({
     };
     
     return defaults[pageType] || defaults.default;
-  }, [pageType, t]);
+  }, [pageType, i18n.language]);
   
   // Use provided props or fall back to page defaults
   const finalTitle = title || pageDefaults.title;
@@ -171,6 +175,8 @@ export default function IslamicHeader({
   const alignmentClasses =
     alignment === "center"
       ? "items-center text-center"
+      : isRTL
+      ? "items-start text-right"
       : "items-start text-left";
 
   return (
@@ -181,7 +187,7 @@ export default function IslamicHeader({
         <div className={`absolute inset-0 ${themeCfg.overlay}`}></div>
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl  px-4 sm:px-6">
+      <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className={`flex flex-col gap-4 mt-10 sm:mt-20 ${alignmentClasses}`}>
           <div className="flex flex-col gap-3">
             <h1 className="text-3xl font-bold text-white drop-shadow-sm sm:text-4xl lg:text-5xl">
@@ -189,7 +195,13 @@ export default function IslamicHeader({
             </h1>
             {finalSubtitle ? (
               <p
-                className={`max-w-3xl text-base font-medium sm:text-lg ${alignment === "center" ? "text-center" : "text-left"} ${themeCfg.accentText} opacity-90`}
+                className={`max-w-3xl text-base font-medium sm:text-lg ${
+                  alignment === "center" 
+                    ? "text-center" 
+                    : isRTL 
+                    ? "text-right" 
+                    : "text-left"
+                } ${themeCfg.accentText} opacity-90`}
               >
                 {finalSubtitle}
               </p>
@@ -201,6 +213,8 @@ export default function IslamicHeader({
               className={
                 alignment === "center"
                   ? "flex justify-center"
+                  : isRTL
+                  ? "flex justify-end"
                   : "flex justify-start"
               }
             >

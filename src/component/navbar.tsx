@@ -21,6 +21,7 @@ const NAV_LABELS: Record<string, string> = {
   article: "مقالې",
   awlayaa: "اولیا",
   awlyaacharts: "اولیا چارټونه",
+  admission: "نوملیکنه",
   books: "کتابونه",
   donation: "مرسته",
   blogs: "بلاګونه",
@@ -382,12 +383,8 @@ const Navbar = memo(function Navbar() {
               </button>
 
               {/* Donation Button */}
-              <Link href="/donation">
-                <Button variant="primary" size="sm" className="rounded-full">
-                  <span className="inline-block animate-bounce text-lg">&#x1F381;</span>
-                  مرسته
-                </Button>
-              </Link>
+            
+            
             </div>
 
  
@@ -428,27 +425,30 @@ const Navbar = memo(function Navbar() {
             </div>
             <span className={`text-lg font-semibold text-primary-900 tracking-wide ${isRTL ? 'text-right' : 'text-left'}`}>{appConfig.name}</span>
           </div>
-          <button
-            type="button"
-            onClick={closeMobileMenu}
-            className="rounded-full p-2 text-primary-700 hover:text-primary-600 focus:outline-none focus-visible:outline-none"
-            aria-label="Close navigation menu"
-          >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+          
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <button
+              type="button"
+              onClick={closeMobileMenu}
+              className="rounded-full p-2 text-primary-700 hover:text-primary-600 focus:outline-none focus-visible:outline-none transition-colors duration-200"
+              aria-label="Close navigation menu"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <nav className="h-full overflow-y-auto px-6 py-6" aria-label="Mobile">
@@ -540,6 +540,27 @@ const Navbar = memo(function Navbar() {
                 </div>
               </div>
             )}
+            
+            {/* Donation Button at Bottom */}
+            <div className="pt-6 mt-8 border-t border-primary-100/60 flex justify-center">
+              <Link href="/donation" onClick={closeMobileMenu} className="w-full">
+                <button
+                  className="group relative w-full flex items-center justify-center gap-3 px-7 py-4 rounded-xl bg-gradient-to-br from-yellow-300 via-primary-600 to-primary-700 hover:from-yellow-400 hover:to-primary-800 text-white font-bold text-base shadow-2xl hover:shadow-yellow-200/60 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-200 focus:ring-offset-2"
+                  style={{
+                    boxShadow: '0 6px 24px 0 rgba(255, 205, 86, 0.15), 0 1.5px 6px 0 rgba(13, 148, 136, 0.11)'
+                  }}
+                >
+                  <span className="absolute left-0 top-0 w-full h-full rounded-xl bg-gradient-to-br from-yellow-200 via-transparent to-transparent opacity-0 group-hover:opacity-30 blur-sm pointer-events-none transition-opacity duration-300"></span>
+                  <span className="relative inline-flex items-center gap-3 z-10">
+                    <span className="text-2xl animate-bounce drop-shadow-md">🎁</span>
+                    <span className="whitespace-nowrap text-lg tracking-wide  drop-shadow">مرسته وکړئ</span>
+                  </span>
+                  <span className="absolute right-6 top-1/2 -translate-y-1/2 z-10 opacity-70 group-hover:translate-x-1 transition-transform duration-300">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 22 22" className="text-yellow-300 group-hover:text-yellow-400"><path d="M17.5 10.43l-10.167 7.173a1 1 0 01-1.55-.833V5.217a1 1 0 011.55-.833L17.5 11.557a1 1 0 010 1.606z" fill="currentColor"/></svg>
+                  </span>
+                </button>
+              </Link>
+            </div>
           </div>
         </nav>
       </aside>

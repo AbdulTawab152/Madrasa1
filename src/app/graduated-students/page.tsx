@@ -6,8 +6,6 @@ export default function GraduationsPage() {
     <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <IslamicHeader 
         pageType="graduated-students" 
-        title="Our Graduates"
-        subtitle="Celebrating the remarkable achievements of our esteemed graduates"
         alignment="center"
        
       />

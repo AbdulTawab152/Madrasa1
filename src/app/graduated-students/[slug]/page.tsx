@@ -297,10 +297,10 @@ export default function GraduationDetailPage({
                         <span className="font-medium">{t('graduationDetail.father')}:</span>{" "}
                         {s.father_name}
                       </p>
-                      <p className="text-xs text-gray-200 sm:text-sm">
+                      {/* <p className="text-xs text-gray-200 sm:text-sm">
                         <span className="font-medium">{t('graduationDetail.grandfather')}:</span>{" "}
                         {s.grandfather_name}
-                      </p>
+                      </p> */}
                     </div>
                   </div>
                 </motion.div>

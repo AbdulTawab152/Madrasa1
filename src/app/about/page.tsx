@@ -80,786 +80,424 @@ const AboutPage = () => {
     { name: t('about.subjects.rhetoric'), icon: "🎤", color: "bg-purple-600" }
   ];
 
-  // Slick Slider settings
-  const sliderSettings = {
-    dots: false,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    pauseOnHover: true,
-    nextArrow: <CustomNextArrow />,
-    prevArrow: <CustomPrevArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 640,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 1,
-        }
-      }
-    ]
-  };
-  
-  const values = [
-    {
-      icon: BookOpen,
-      title: t('about.values.authenticKnowledge'),
-      description: t('about.values.authenticKnowledgeDesc')
-    },
-    {
-      icon: Award,
-      title: t('about.values.excellence'),
-      description: t('about.values.excellenceDesc')
-    },
-    {
-      icon: Heart,
-      title: t('about.values.faithAndCharacter'),
-      description: t('about.values.faithAndCharacterDesc')
-    },
-    {
-      icon: Users,
-      title: t('about.values.community'),
-      description: t('about.values.communityDesc')
-    }
-  ];
-
-  const stats = [
-    { icon: Clock, value: "63+", label: t('about.stats.years') },
-    { icon: GraduationCap, value: "500+", label: t('about.stats.graduates') },
-    { icon: Sparkles, value: "100%", label: t('about.stats.scholars') },
-    { icon: Award, value: "50+", label: t('about.stats.scholars') }
-  ];
-
-  const timeline = [
-    {
-      year: "1963",
-      title: t('about.timeline.1963'),
-      description: t('about.timeline.1963Desc')
-    },
-    {
-      year: "1970s",
-      title: t('about.timeline.1970s'),
-      description: t('about.timeline.1970sDesc')
-    },
-    {
-      year: "1985",
-      title: t('about.timeline.1985'),
-      description: t('about.timeline.1985Desc')
-    },
-    {
-      year: "2005",
-      title: t('about.timeline.2005'),
-      description: t('about.timeline.2005Desc')
-    },
-    {
-      year: "2024",
-      title: t('about.timeline.2024'),
-      description: t('about.timeline.2024Desc')
-    }
-  ];
-
   return (
     <div className="bg-white mt-32">
-      {/* Modern Hero Section with Enhanced Background Shapes */}
-      <section className="py-12 sm:py-16 md:py-24 bg-white relative overflow-hidden">
-        {/* Enhanced Background Shapes for Mobile */}
-        <div className="absolute inset-0 overflow-hidden">
-          {/* Large Primary Shapes */}
-          <div className="absolute -top-16 -right-16 sm:-top-20 sm:-right-20 w-64 h-64 sm:w-80 sm:h-80 bg-gradient-to-br from-amber-100 to-amber-200 rounded-full opacity-60"></div>
-          <div className="absolute -bottom-16 -left-16 sm:-bottom-20 sm:-left-20 w-72 h-72 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-100 to-blue-200 rounded-full opacity-50"></div>
-          
-         
-          {/* Small Decorative Elements */}
-          {/* <div className="absolute top-1/3 right-1/3 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-amber-200 to-amber-300 rounded-full opacity-80"></div>
-          <div className="absolute bottom-1/3 left-1/3 w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-indigo-100 to-indigo-200 rounded-2xl -rotate-12 opacity-60"></div>
-           */}
-          {/* Additional Mobile-Optimized Shapes */}
-          <div className="absolute top-1/2 left-1/2 w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-pink-100 to-pink-200 rounded-full opacity-50"></div>
-          <div className="absolute top-1/6 right-1/6 w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-teal-100 to-teal-200 rounded-full opacity-70"></div>
-          
-          {/* New Mobile-Specific Shapes */}
-          <div className="absolute top-1/5 left-1/6 w-10 h-10 sm:w-14 sm:h-14 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full opacity-60"></div>
-          <div className="absolute bottom-1/5 right-1/6 w-14 h-14 sm:w-18 sm:h-18 bg-gradient-to-br from-cyan-100 to-cyan-200 rounded-2xl rotate-45 opacity-50"></div>
-          <div className="absolute top-2/3 left-1/5 w-6 h-6 sm:w-10 sm:h-10 bg-gradient-to-br from-rose-100 to-rose-200 rounded-full opacity-70"></div>
-          <div className="absolute bottom-1/6 left-1/3 w-8 h-8 sm:w-12 sm:h-12 bg-gradient-to-br from-violet-100 to-violet-200 rounded-full opacity-60"></div>
-          <div className="absolute top-1/8 right-1/4 w-7 h-7 sm:w-11 sm:h-11 bg-gradient-to-br from-emerald-100 to-emerald-200 rounded-2xl -rotate-30 opacity-55"></div>
-          
-          {/* Floating Elements for Mobile */}
-            <div className="absolute top-1/2 right-1/5 w-4 h-4 sm:w-6 sm:h-6 bg-gradient-to-br from-yellow-200 to-yellow-300 rounded-full opacity-80 animate-pulse"></div>
-            <div className="absolute bottom-1/3 right-1/3 w-5 h-5 sm:w-7 sm:h-7 bg-gradient-to-br from-sky-200 to-sky-300 rounded-full opacity-70 animate-bounce"></div>
-            <div className="absolute top-3/4 left-1/4 w-3 h-3 sm:w-5 sm:h-5 bg-gradient-to-br from-fuchsia-200 to-fuchsia-300 rounded-full opacity-75 animate-ping"></div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 relative z-10">
+      <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-amber-50 to-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
           {/* Header Section */}
-          <div className="text-center mb-12 sm:mb-16 md:mb-20">
-            <div className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-amber-50 text-amber-700 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
-              <BookOpen className={`h-3 w-3 sm:h-4 sm:w-4 ${isRTL ? 'ml-1.5 sm:ml-2' : 'mr-1.5 sm:mr-2'}`} />
-              {t('about.subtitle')}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-medium mb-6">
+              <BookOpen className="h-4 w-4 ml-2" />
+              د مدرسې پېژندنه
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-4 sm:mb-6 leading-tight text-center">
-              {t('about.title')}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight text-center">
+              د انوارالعلوم اسلامي مدرسې لنډه پېژندنه
             </h1>
-            <div className="w-24 sm:w-32 h-0.5 sm:h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full mb-6 sm:mb-8"></div>
-            <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 mb-3 sm:mb-4 max-w-4xl mx-auto leading-relaxed text-center">
-              {t('about.founderTitle')}
-            </h2>
-            <p className="text-base sm:text-lg md:text-xl text-amber-700 font-medium mb-4 sm:mb-6 text-center">
-              {t('about.founderName')}
-            </p>
-            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-5xl mx-auto leading-relaxed text-center">
-              {t('about.founderDescription')}
-            </p>
+            <div className="w-32 h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full mb-8"></div>
           </div>
 
-          {/* Stats Section with Background Shapes */}
-          <div className="relative bg-white/80 backdrop-blur-sm rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 lg:p-12 border border-white/50">
-            <div className="text-center mb-8 sm:mb-10 md:mb-12">
-              <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 text-center">
-                {t('about.stats.title')}
-              </h3>
-              <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto text-center">
-                {t('about.stats.description')}
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-              <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Clock className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">63+</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.years')}</p>
-                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.since1963')}</p>
-              </div>
-              
-              <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">700+</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.graduates')}</p>
-                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.fifteenYears')}</p>
-              </div>
-              
-              <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Users className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">500-700</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.students')}</p>
-                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.nightStudents')}</p>
-              </div>
-              
-              <div className="text-center p-3 sm:p-4 md:p-6 bg-white/60 backdrop-blur-sm rounded-xl sm:rounded-2xl border border-white/50 hover:bg-white/80 transition-all duration-300 group">
-                <div className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center mx-auto mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Award className="h-5 w-5 sm:h-6 sm:w-6 md:h-8 md:w-8 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-800 mb-1 sm:mb-2">50+</h3>
-                <p className="text-xs sm:text-sm text-gray-600 font-medium text-center">{t('about.stats.scholars')}</p>
-                <p className="text-xs text-gray-500 mt-1 text-center">{t('about.stats.highDegreeHolders')}</p>
-              </div>
-              </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Academic Services Section */}
-      <section className="py-12 sm:py-16 bg-white">
-        <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6">
-      
-          <div className="space-y-8 text-gray-700 leading-relaxed">
-            {/* Comprehensive Founder Biography w/ Image */}
-            <div className="rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
-              <div className="text-center mb-6 sm:mb-8">
-                <div className="flex flex-col items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                  {/* Founder Real Photo (replace src='/images/khalifa-sahib.jpg' with the real path) */}
-                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-36 md:h-36 rounded-full overflow-hidden border-2 sm:border-4 border-amber-300 shadow-lg bg-white">
+          {/* Main Content */}
+          <div className="prose prose-lg max-w-none">
+            {/* Founder Biography Section */}
+            <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 sm:p-8 shadow-lg border border-amber-200 mb-8">
+              <div className="text-center mb-8">
+                <div className="relative w-32 h-32 mx-auto mb-6">
                     <Image
                       src="/about111.jpg"
-                      alt="خلیفه صاحب فضل الدین (رح)"
-                      width={144}
-                      height={144}
-                      className="object-cover w-full h-full"
+                    alt="شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)"
+                    width={128}
+                    height={128}
+                    className="object-cover w-full h-full rounded-full border-4 border-amber-300 shadow-lg"
                       priority
                     />
-                    {/* Optionally, BookOpen icon at bottom right of image */}
-                    <div className="absolute -bottom-1 -right-1 sm:-bottom-2 sm:-right-2 w-6 h-6 sm:w-8 sm:h-8 md:w-10 md:h-10 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg border border-white">
-                      <BookOpen className="h-3 w-3 sm:h-4 sm:w-4 md:h-6 md:w-6 text-white" />
-                    </div>
+                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
+                    <BookOpen className="h-4 w-4 text-white" />
                   </div>
-                  {/* -- or fallback if no image --
-                  <div className="w-20 h-20 bg-gradient-to-r from-amber-500 to-amber-600 rounded-full flex items-center justify-center">
-                    <BookOpen className="h-10 w-10 text-white" />
-                  </div>
-                  */}
                 </div>
-                <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2 sm:mb-3 text-center">
-                  {t('about.biography.introduction')}
-                </h3>
-                <p className="text-sm sm:text-base md:text-lg lg:text-xl text-amber-700 font-medium mb-3 sm:mb-4 text-center">
-                  {t('about.founderName')}
+                <h2 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
+                  شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)
+                </h2>
+                <p className="text-lg text-amber-800 font-medium mb-4">
+                  مشهور (په ارغندي خلیفه صاحب) قدس الله سره
                 </p>
-                <div className="w-16 sm:w-20 md:w-24 h-0.5 sm:h-1 bg-gradient-to-r from-amber-500 to-amber-600 mx-auto rounded-full"></div>
+                <div className="w-24 h-1 bg-gradient-to-r from-amber-500 to-amber-600 mx-auto rounded-full"></div>
               </div>
 
-              <div className="space-y-4 sm:space-y-6 text-gray-700 leading-relaxed">
-                {/* Optionally, add a horizontal image here for more visual */}
-                {/* Introduction */}
-                <div className="p-3 sm:p-4 md:p-6 rounded-lg text-center">
-                  <p className="text-sm sm:text-base md:text-lg font-medium mb-3 sm:mb-4 text-center">
-                    <strong className="text-amber-700">{t('about.biography.introduction')}</strong>
-                  </p>
-                  <p className="text-xs sm:text-sm md:text-base text-center">
-                    {t('about.biography.father')} {t('about.biography.education')}
+              <div className="space-y-6 text-gray-700 leading-relaxed">
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">د ژوند لنډه پېژندنه</h3>
+                  <p className="text-base leading-relaxed text-center">
+                    انوار المشایخ جناب حضرت مولانا مؤید الدین خلیفه صاحب فضل الدین مشهور په خلیفه صاحب د ارغندی رحمه الله د افغانستان له نومياليو عالمانو او لویو عارفانو څخه ؤ. پلار یې محمد زرين نومېده چې یو نیک خویه او متقی انسان و.
                   </p>
                 </div>
 
-                {/* Education Journey */}
-                <div className="text-center">
-                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center justify-center">
-                    <div className="w-1.5 sm:w-2 h-4 sm:h-6 bg-amber-500 rounded-full mr-2 sm:mr-3"></div>
-                    {t('about.biography.educationJourney')}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="bg-white rounded-xl p-6 shadow-sm">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
+                      <div className="w-2 h-6 bg-amber-500 rounded-full mr-3"></div>
+                      د تعلیم سفر
+                    </h4>
+                    <p className="text-sm leading-relaxed">
+                      نوموړي تقريبا (۶) کاله د خپل کلي په ښوونځي کې ليک لوست زده کړه. بیا ېې د افغانستان په مختلفو ديني مدارسو کې مروجه دينـي عـلـوم سـرته ورسول د تفسیر د زده کړې دپاره د جناب شیخ الحدیث حضرت مولانا عبدالغفار ننگرهاری نوموړي د شیخ الحدیث حضرت مولانـا نـصـير الـدين غرغشتوی قدس سره شاګرد او د غزني په نورالمدارس مدرسه کې شیخ الحديث ؤ.
+                    </p>
+                  </div>
+
+                  <div className="bg-white rounded-xl p-6 shadow-sm">
+                    <h4 className="text-lg font-bold text-gray-900 mb-3 flex items-center">
+                      <div className="w-2 h-6 bg-amber-500 rounded-full mr-3"></div>
+                      د حدیثو زده کړه
                   </h4>
-                  <p className="text-xs sm:text-sm md:text-base text-center">
-                    {t('about.biography.educationJourneyDesc')}
+                    <p className="text-sm leading-relaxed">
+                      ده ته ورغی او د تفسیر علم یې ترېنه حاصل کړ بیا د حديثو د زده کړې لپاره کابل ته راغی او د شیخ الحدیث حضرت مولانا سلطان جان صاحب نه يي سند او اجازه د حدیثو واخیسته او په ۱۳۳۶هـ.ش کال د قلعـه جـواد کې د حضرت صاحب د مدرسې نه فارغ شو.
+                  </p>
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">د طریقت سفر</h4>
+                  <p className="text-base leading-relaxed text-center">
+                    خليفـه صـاحب قدس الله سره د طـالـب علمـی پـه دوران کی د حضرت نورالمشايخ فضل عمر مجددي قدس الله سره سره بيعت وکړ بیا چی کله حضرت نورالمشایخ صاحب نور الله مرقده وفات شو نو د بیعت تجديد يې له حضرت ضياء المشايخ محمد ابراهیم جان مجددی قدس الله سره وکړ او په ۱۳۴۹هـ.ش کال د علم باطن نه فارغ اود سلوک منازل يې سرته ورسول اود جناب حضرت ضياء المشايخ صاحب په مبارکو لاسونو ورته د خلافت دستار وتړل شـو.
                   </p>
                 </div>
 
-                {/* Optionally, add another image between journey */}
-                {/* Spiritual Journey */}
-                <div className="text-center">
-                  <h4 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center justify-center">
-                    <div className="w-1.5 sm:w-2 h-4 sm:h-6 bg-amber-500 rounded-full mr-2 sm:mr-3"></div>
-                    {t('about.biography.spiritualJourney')}
-                  </h4>
-                  <p className="text-xs sm:text-sm md:text-base text-center">
-                    {t('about.biography.spiritualJourneyDesc')}
-                  </p>
-                </div>
-
-                {/* First Madrasa Establishment - inset image on side for more visual */}
-                <div className={`p-6 rounded-lg flex flex-col lg:flex-row gap-6 items-center ${isRTL ? 'lg:flex-row-reverse' : ''}`}>
-                  <div className="flex-shrink-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+                  <div className="order-2 lg:order-1">
                     <Image
                       src="/hero1.jpg"
-                      alt={t('about.biography.firstMadrasa')}
-                      width={176}
-                      height={128}
-                      className="rounded-xl w-44 h-32 object-cover shadow-lg border border-amber-100"
+                      alt="د ارغندی د مدرسې بنسټ"
+                      width={300}
+                      height={200}
+                      className="rounded-xl w-full h-48 object-cover shadow-lg"
                     />
                   </div>
-                  <div className="text-center">
-                    <h4 className="text-xl font-bold text-amber-800 mb-4 text-center">{t('about.biography.firstMadrasa')}</h4>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.firstMadrasaDesc')}
+                  <div className="order-1 lg:order-2">
+                    <h4 className="text-xl font-bold text-amber-800 mb-4 text-center">د ارغندی د مدرسې بنسټ</h4>
+                    <p className="text-base leading-relaxed mb-4">
+                      كلـه چې حضرت خلیفه صاحب قدس سره د ظاهري او باطنی علومو څخه فارغ شو نو په تدريس يې شروع وکړه د میدان ولایت د چارکی په مدرسه کې يې څه موده تیره کړه بیاله هغه ځایه د کابل ولایت پغمان ولسوالی برې ارغندۍ د بازید خيلو ته لاړهلته یې په لومړی ځل مدرسه تأسیس کړه
                     </p>
-                    <div className="p-4 rounded-lg text-center mb-4">
-                      <p className="text-xl font-bold text-amber-600 mb-1">{t('about.biography.firstMadrasaDate')}</p>
-                      <p className="text-lg text-gray-600 mb-1">{t('about.biography.firstMadrasaDateShamsi')}</p>
-                      <p className="text-lg text-gray-600">{t('about.biography.firstMadrasaDateMiladi')}</p>
+                    <div className="bg-amber-100 rounded-lg p-4 text-center">
+                      <p className="text-lg font-bold text-amber-800 mb-1">ارغندی اول ځل:</p>
+                      <p className="text-base text-amber-700">٦ / ١ / ١٣٨٣ هـ ق</p>
+                      <p className="text-base text-amber-700">٨ / ٣ / ١٣٤٢ هـ ش</p>
+                      <p className="text-base text-amber-700">٢٩ / ٥ / ١٩٦٣ م</p>
                     </div>
-                    <p className="text-center">
-                      {t('about.biography.firstMadrasaTeaching')}
-                    </p>
                   </div>
                 </div>
 
-                {/* Migration Period */}
-                <div className={`flex flex-col lg:flex-row-reverse gap-6 items-center ${isRTL ? 'lg:flex-row' : ''}`}>
-                  <div className="flex-shrink-0">
-                    <Image
-                      src="/1.jpg"
-                      alt={t('about.biography.migration')}
-                      width={176}
-                      height={128}
-                      className="rounded-xl w-44 h-32 object-cover shadow-lg border border-gray-100"
-                    />
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h4 className="text-lg font-bold text-gray-900 mb-4 text-center">د هجرت دوره</h4>
+                  <p className="text-base leading-relaxed text-center mb-4">
+                    نوموړي د تره کي د حکومت په دوره کې له خپل ګران هیواد څخه هجرت وکړ او د پاکستان په شمالی وزیرستان میرانشاه کې يې استوګنه غوره کړه د هجرت په ټاټوبي کې يې یوه ستره ديني مدرسه د انوار العلوم الاسلامیة په نامه دوهم ځل په میرانشاه کې جوړه کړه چې په سلګونو طالبانو به په کې ديني علوم زده کول.
+                  </p>
+                  <div className="bg-blue-100 rounded-lg p-4 text-center">
+                    <p className="text-lg font-bold text-blue-800 mb-1">میرانشاه د مدرسې بنسټ:</p>
+                    <p className="text-base text-blue-700">٦ / ٩ / ١٤٠٥ هـ ق</p>
+                    <p className="text-base text-blue-700">۴ / ۳ / ۱۳۶۴ هـ ش</p>
                   </div>
-                  <div className="text-center">
-                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center justify-center">
-                      <div className="w-2 h-6 bg-amber-500 rounded-full mr-3"></div>
-                      {t('about.biography.migration')}
-                    </h4>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.migrationDesc')}
-                    </p>
-                    <div className="p-4 rounded-lg text-center mb-4">
-                      <p className="text-lg font-bold text-gray-700 mb-1">{t('about.biography.migrationDate')}</p>
-                      <p className="text-base text-gray-600">{t('about.biography.migrationDateShamsi')}</p>
                     </div>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.migrationTeaching')}
-                    </p>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.migrationLegacy')}
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+                  <div>
+                    <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">د وفات او میراث</h4>
+                    <p className="text-base leading-relaxed mb-4">
+                      حضرت انوار المشائخ خلیفه صاحب ارغندي قدس الله سره، ته په وروستيو کالو کې سخته مريضي ور پېښه شوه او د هماغې مريضي نـه پـه ۱۹۹۵م كـال وفـات شـو او د میرانشاه د شهیدانو په هدیره کې خاورو ته وسپارل شو. وايي چې د ده په جنازه کې په زرګونو مسلمانانو شرکت کړی ؤ چې زياتره يـې عالمان او دينې طالبان ؤ.
                     </p>
                   </div>
-                </div>
-
-                {/* Death and Legacy */}
-                <div className={`p-6 rounded-lg flex flex-col md:flex-row items-center gap-6 ${isRTL ? 'md:flex-row-reverse' : ''}`}>
-                  <div className="flex-shrink-0">
+                  <div>
                     <Image
                       src="/about2.jpg"
-                      alt={t('about.biography.death')}
-                      width={128}
-                      height={128}
-                      className="rounded-xl w-32 h-32 object-cover shadow-md border border-gray-200"
+                      alt="د خلیفه صاحب میراث"
+                      width={300}
+                      height={200}
+                      className="rounded-xl w-full h-48 object-cover shadow-lg"
                     />
                   </div>
-                  <div className="text-center">
-                    <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.death')}</h4>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.deathDesc')}
-                    </p>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.funeral')}
-                    </p>
-                    <p className="italic text-gray-600 text-center">
-                      {t('about.biography.dream')}
+                </div>
+              </div>
+            </div>
+
+            {/* Introduction */}
+            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100 mb-8">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center mb-6">
+                د انوارالعلوم اسلامي مدرسه د جناب شیخ القرآن والحدیث حضرت انوارالمشائخ خلیفه صاحب فضل‌الدین ارغندی رحمة‌الله علیه په مبارک لاس د ۱۳۸۳ هـ ق / ۱۳۴۲ هـ ش / ۱۹۶۳ م کال د جوزا په اتمه نېټه د کابل ولایت د پغمان ولسوالۍ د ارغندي علیا په سیمه کې تأسیس شوه.
+              </p>
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center">
+                له نوموړي د وفات وروسته، د مدرسې د اهتمام چارې د هغه ورور حضرت تاج‌المشائخ خلیفه صاحب سدوزی غریقي رحمة‌الله علیه ته وسپارل شوې. ورپسې، د تاج‌المشائخ رح له وفات وروسته د مدرسې اداره د حضرت ارغندی خلیفه صاحب د کشر زوی او د تاج‌المشائخ رح وراره حضرت قلب‌المشائخ خلیفه صاحب محمد شفیق فضلي حفظه‌الله تعالی ته وسپارل شوه. نوموړی تر ننه د دې جامعې د علمي او روحاني چارو څارنه کوي او د تصوف څانګه یې په ځانګړي ډول د پام وړ وده کړې ده.
+              </p>
+            </div>
+
+            {/* Academic Services */}
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 sm:p-8 shadow-lg border border-blue-200 mb-8">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl mb-4">
+                  <BookOpen className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+                  د جامعې علمي خدمتونه
+                </h2>
+                <p className="text-base text-gray-700">
+                  په نوموړې مدرسه کې د ديني او عصري علومو تدریس په منظم ډول تر سره کېږي، چې مهمې څانګې یې دا دي:
+                  </p>
+                </div>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mt-6">
+                {[
+                  { name: 'تجوید', icon: '📖' },
+                  { name: 'حفظ', icon: '💎' },
+                  { name: 'تفسیر', icon: '🔍' },
+                  { name: 'حدیث', icon: '📚' },
+                  { name: 'فقه', icon: '⚖️' },
+                  { name: 'اصول الفقه', icon: '📋' },
+                  { name: 'منطق', icon: '🧠' },
+                  { name: 'معاني', icon: '💭' },
+                  { name: 'صرف', icon: '✍️' },
+                  { name: 'نحو', icon: '📝' },
+                  { name: 'حکمت', icon: '🌟' },
+                  { name: 'ریاضي', icon: '🔢' },
+                  { name: 'انګلیسي', icon: '🌍' },
+                  { name: 'عربي', icon: '🕌' },
+                  { name: 'فن بیان', icon: '🎤' }
+                ].map((subject, index) => (
+                  <div key={index} className="text-center p-4 bg-white rounded-xl hover:bg-blue-50 transition-all duration-300 shadow-sm">
+                    <div className="text-3xl mb-2">{subject.icon}</div>
+                    <p className="text-sm font-medium text-gray-800">{subject.name}</p>
+                  </div>
+                ))}
+                </div>
+
+              <div className="mt-6 text-center">
+                <p className="text-sm text-gray-600 italic">
+                  دغه علوم په درجوي (صنفي) او متفرقه ډول تدریس کېږي.
                     </p>
                   </div>
                 </div>
 
-                {/* Family */}
-                <div className="text-center">
-                  <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.family')}</h4>
-                  <div className="space-y-4">
-                    <div>
-                      <h5 className="font-bold text-gray-800 mb-2 text-center">{t('about.biography.twoBrothers')}</h5>
-                      <p className="text-center">{t('about.biography.brother1')}</p>
-                      <p className="text-center">{t('about.biography.brother2')}</p>
-                    </div>
-                    <div>
-                      <h5 className="font-bold text-gray-800 mb-2 text-center">{t('about.biography.fiveSons')}</h5>
-                      <div className="space-y-2 text-sm">
-                        <p className="text-center">• <strong>{t('about.biography.son1')}</strong></p>
-                        <p className="text-center">• <strong>{t('about.biography.son2')}</strong></p>
-                        <p className="text-center">• <strong>{t('about.biography.son3')}</strong></p>
-                        <p className="text-center">• <strong>{t('about.biography.son4')}</strong></p>
-                      </div>
-                    </div>
+            {/* Teachers Section */}
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 sm:p-8 shadow-lg border border-green-200 mb-8">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl mb-4">
+                  <Users className="h-8 w-8 text-white" />
                   </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+                  د جامعې مشایخ او استادان
+                </h2>
                 </div>
 
-                {/* Famous Khalifas */}
-                <div className="p-6 rounded-lg text-center">
-                  <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.famousKhalifas')}</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    {tArray('about.biography.famousKhalifasList').map((khalifa: string, index: number) => (
-                      <div key={index} className="flex items-start justify-center space-x-2">
-                        <div className="w-2 h-2 bg-amber-500 rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-gray-700 text-center">{khalifa}</span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                {[
+                  'خلیفه صاحب محمد شفیق فضلي (حفظه‌الله)',
+                  'مفتي صاحب محمد حسن حسان (حفظه‌الله)',
+                  'مفتي صاحب سیف الرحمن سعید (حفظه‌الله)',
+                  'الحاج مولوي محمد پزیر فاروقي (حفظه‌الله)',
+                  'مولوي صاحب محب‌الله',
+                  'مولوي صاحب شفیق الرحمن اخوند زاده',
+                  'مولوي صاحب احمد نبي',
+                  'مولوي صاحب صادق سکندر',
+                  'مولوي صاحب طاهر بلال',
+                  'مولوي صاحب رفیع‌الله ابوالسیف',
+                  'مولوي صاحب محمد شریف عمر فضلي',
+                  'مولوي صاحب ضیاءالله عمري',
+                  'مولوي صاحب سمیع‌الله فهام',
+                  'مولوي صاحب سمیع‌الله راشد',
+                  'قاري صاحب محمد میرویس تحسین',
+                  'حافظ صاحب رحمن‌الله قائد',
+                  'حافظ صاحب صدیق‌الله'
+                ].map((teacher, index) => (
+                  <div key={index} className="bg-white rounded-xl p-4 hover:bg-green-50 transition-all duration-300 shadow-sm">
+                    <p className="text-sm font-medium text-gray-800 text-center">{teacher}</p>
                       </div>
                     ))}
                   </div>
                 </div>
 
-                {/* Successor Khalifas */}
-                <div className="p-6 rounded-lg text-center">
-                  <h4 className="text-xl font-bold text-gray-900 mb-4 text-center">{t('about.biography.successorKhalifas')}</h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
-                    {tArray('about.biography.successorKhalifasList').map((successor: string, index: number) => (
-                      <div key={index} className="flex items-start justify-center space-x-2">
-                        <span className="text-amber-600 font-bold text-xs mt-1">{index + 1}.</span>
-                        <span className="text-gray-700 text-center">{successor}</span>
-                      </div>
-                    ))}
-                  </div>
+            {/* Stats Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 shadow-lg border border-amber-200">
+                <div className="text-center mb-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl mb-3">
+                  <Users className="h-6 w-6 text-white" />
                 </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">د شاګردانو داخله</h3>
+                </div>
+                <p className="text-base text-gray-700 text-center">
+                  هر کال شاوخوا ۵۰۰ تر ۷۰۰ پورې لیلي شاګردانو ته داخله ورکول کېږي.
+              </p>
+            </div>
 
-                {/* Re-establishment */}
-                <div className={`p-6 rounded-lg flex flex-col md:flex-row gap-6 items-center ${isRTL ? 'md:flex-row-reverse' : ''}`}>
-                  <div className="flex-shrink-0">
-                    <Image
-                      src="/about3.jpg"
-                      alt={t('about.biography.reestablishment')}
-                      width={144}
-                      height={96}
-                      className="rounded-xl w-36 h-24 object-cover shadow-md border border-amber-100"
-                    />
-                  </div>
-                  <div className="text-center">
-                    <h4 className="text-xl font-bold text-amber-800 mb-4 text-center">{t('about.biography.reestablishment')}</h4>
-                    <p className="mb-4 text-center">
-                      {t('about.biography.reestablishmentDesc')}
-                    </p>
-                    <div className="p-4 rounded-lg text-center mb-4">
-                      <p className="text-xl font-bold text-amber-600 mb-1">{t('about.biography.reestablishmentDate')}</p>
-                      <p className="text-lg text-gray-600 mb-1">{t('about.biography.reestablishmentDateShamsi')}</p>
-                      <p className="text-lg text-gray-600">{t('about.biography.reestablishmentDateMiladi')}</p>
-                    </div>
-                    <p className="text-center font-medium text-amber-800">
-                      {t('about.biography.reestablishmentPrayer')}
-                    </p>
-                  </div>
+              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 shadow-lg border border-green-200">
+                <div className="text-center mb-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-green-500 to-green-600 rounded-xl mb-3">
+                    <GraduationCap className="h-6 w-6 text-white" />
                 </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">فارغین</h3>
+              </div>
+                <p className="text-base text-gray-700 text-center">
+                  د تېرو پنځلسو کلونو په ترڅ کې شاوخوا ۷۰۰ تنه فارغین یې د علمي پړاوونو څخه فارغ شوي او ټولنې ته وړاندې شوي دي.
+              </p>
             </div>
           </div>
 
-            {/* Enhanced Academic Services with Slider */}
-            <div className="rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8">
-              <div className={`flex items-center mb-4 sm:mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center ${isRTL ? 'ml-3 sm:ml-4' : 'mr-3 sm:mr-4'}`}>
-                  <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            {/* Family and Successors Section */}
+            <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-2xl p-6 sm:p-8 shadow-lg border border-indigo-200 mb-8">
+            <div className="text-center mb-8">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-indigo-500 to-indigo-600 rounded-2xl mb-4">
+                  <Users className="h-8 w-8 text-white" />
                 </div>
-                <div className={isRTL ? 'text-right' : 'text-left'}>
-                  <h3 className={`text-lg sm:text-xl md:text-2xl font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.academicServices')}</h3>
-                  <p className={`text-sm sm:text-base text-blue-600 font-medium ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.academicServicesDesc')}</p>
-                </div>
-              </div>
-              
-              <p className={`text-sm sm:text-base md:text-lg text-gray-700 mb-4 sm:mb-6 leading-relaxed ${isRTL ? 'text-right' : 'text-left'}`}>
-                {t('about.biography.subjectsDescription')}
-              </p>
-              
-              {/* Slick Slider */}
-              <div className="relative px-4">
-                <Slider {...sliderSettings}>
-                  {subjects.map((subject, index) => (
-                    <div key={index} className="px-2">
-                      <div className="bg-white rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-6 hover:bg-gray-50 transition-all duration-300 shadow-lg border border-gray-100 h-full">
-                        <div className="text-center">
-                          <div className={`w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 ${subject.color} rounded-full flex items-center justify-center mx-auto mb-3 sm:mb-4 shadow-lg`}>
-                            <span className="text-xl sm:text-2xl md:text-3xl">{subject.icon}</span>
-                          </div>
-                          <h4 className="font-bold text-xs sm:text-sm md:text-base text-gray-800 leading-tight">{subject.name}</h4>
-                          <p className="text-xs text-gray-600 mt-1">د اسلامي علومو څانګه</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </Slider>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+                  د کورنۍ او ځای ناستو پېژندنه
+                </h2>
               </div>
 
-              <div className="bg-white rounded-lg sm:rounded-xl p-4 sm:p-6 mt-4 sm:mt-6">
-                <p className={`text-center text-xs sm:text-sm text-gray-600 italic ${isRTL ? 'text-right' : 'text-left'}`}>
-                  <span className="font-bold text-blue-600">{t('about.biography.subjectsNote')}</span>
+              <div className="space-y-6">
+                {/* Brothers */}
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">د ارغندی د خلیفه صاحب وروڼه</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-indigo-50 rounded-lg p-4">
+                      <h4 className="font-bold text-indigo-800 mb-2">محترم احمدزی</h4>
+                      <p className="text-sm text-gray-700">ده ښو اخلاقوڅښتن اومتقی شخص وه.</p>
+                    </div>
+                    <div className="bg-indigo-50 rounded-lg p-4">
+                      <h4 className="font-bold text-indigo-800 mb-2">جناب تاج المشائخ خلیفه صاحب سدوزی غریقي رحمه الله</h4>
+                      <p className="text-sm text-gray-700">د ارغندی خلیفه صاحب ورور او په علمي ډګر کې ځای ناستی وو. د وخت جید عالم، مدرس، پیاوړۍ مجاهد او لـوی عـارف وو.</p>
+            </div>
+            </div>
+          </div>
+
+                {/* Sons */}
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">د ارغندي خلیفه صاحب پنځه زامن</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="bg-green-50 rounded-lg p-4">
+                      <h4 className="font-bold text-green-800 mb-2">جناب الحاج قاری صاحب عبدالعلیم فضلي</h4>
+                      <p className="text-sm text-gray-700">مشر زوى، د ښواخلاقو څښتن اوزړه سواند شخصیت ده.</p>
+                </div>
+                    <div className="bg-green-50 rounded-lg p-4">
+                      <h4 className="font-bold text-green-800 mb-2">جناب الحاج خلیفه صاحب نعمت الله فضلي</h4>
+                      <p className="text-sm text-gray-700">د قوي عزم خاوند، د تصوف او سلوک په ډګر کې د جناب قطب المشائخ لخوا ورته د خلافت دستار ور په سر کړل شو.</p>
+              </div>
+                    <div className="bg-green-50 rounded-lg p-4">
+                      <h4 className="font-bold text-green-800 mb-2">انجینر رحمت الله فضلي</h4>
+                      <p className="text-sm text-gray-700">دحلم او زغم نمونه ده.</p>
+                    </div>
+                    <div className="bg-green-50 rounded-lg p-4 md:col-span-2 lg:col-span-3">
+                      <h4 className="font-bold text-green-800 mb-2">جناب قلب المشائخ الحاج خلیفه صاحب محمدشفیق فضلي دام الله حیاته وفیوضاته</h4>
+                      <p className="text-sm text-gray-700">جید عالم او کامل متبع د شریعت چې ده. جناب تاج المشائخ رحمه الله د وفات څخه وروسته د انوار العلوم اسلامي مدرسې مهتمم شیخ الحدیث او دخلیفه صاحب ځاي ناستي ده، اوس مهال د تصوف اوسلوک په ډګر کې یو لا مثال شخصیت ده.</p>
+            </div>
+                  </div>
+              </div>
+
+                {/* Famous Khalifas */}
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">د ده مشهور خليفه ګان</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {[
+                      'سراج المشائخ خلیفه صاحب احمد ضیا قدس الله سره دمیدان وردګو ولایت جغتو ولسوالی',
+                      'قطب المشائخ خلیفه صاحب دین محمد قدس الله، د پکتیا ولایت زرمت ولسوالی',
+                      'جناب أبو الحسن خليفـه صـاحب مشهور په صوفي صاحب د لوګر ولایت',
+                      'جناب عبد الستار خلیفه صاحب د وخت جـيـد عـالـم او لوی روحاني شخصیت وو د لوګر ولایت',
+                      'جناب عبد الرشيد خليفه صاحب د لوګر ولایت',
+                      'جناب ملا كل خلیفه صاحب د لوګر ولایت',
+                      'جناب نعمت الله خلیفه صاحب د لوګر ولایت',
+                      'جناب عثمان غنی خلیفه صاحب اصلا دغزنی ولایت اندړو ولسوالی، فعلاً دپکتیکا ولایت نکه ولسوالی اړوند دی'
+                    ].map((khalifa, index) => (
+                      <div key={index} className="bg-purple-50 rounded-lg p-4">
+                        <p className="text-sm font-medium text-purple-800">{khalifa}</p>
+                  </div>
+                    ))}
+            </div>
+          </div>
+
+                {/* Successors */}
+                <div className="bg-white rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">د خلافت ځای ناستي</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {[
+                      'تاج المشائخ خلیفه صاحب سدوزی غریقي رحمه الله',
+                      'جناب خلیفه صاحب نعمت الله فضلي حفظه الله',
+                      'شمس المشائخ خلیفه صاحب دین محمد حفظه الله',
+                      'نجم المشائخ خلیفه صاحب داد محمد نوري حفظه الله',
+                      'روح المشائخ خلیفه صاحب عبدالحی فقیرالله حفظه الله',
+                      'قطب المشائخ خلیفه صاحب محمد انور ابو زبېرحفظه الله',
+                      'محب المشائخ خلیفه صاحب محمد معراج روحاني رحمه الله',
+                      'جناب خلیفه صاحب محمد عباس حفظه الله',
+                      'فخر المشائخ جناب خلیفه صاحب محمد اکرم خادم حفظه الله',
+                      'جناب خلیفه صاحب محمد هاشم حفظه الله',
+                      'جناب خلیفه صاحب عزت الله حفظه الله',
+                      'جناب خلیفه صاحب عاشق الرحمن حفظه الله',
+                      'جناب خلیفه صاحب اسماعیل جان حفظه الله',
+                      'جناب خلیفه صاحب سید محمد حفظه الله',
+                      'جناب خلیفه صاحب بهادر رحمه الله',
+                      'جناب خلیفه صاحب فهیم حفظه الله',
+                      'جناب خلیفه صاحب حمید الله حفظه الله',
+                      'جناب خلیفه صاحب رسول محمد حفظه الله',
+                      'جناب خلیفه صاحب وزیر حفظه الله'
+                    ].map((successor, index) => (
+                      <div key={index} className="bg-blue-50 rounded-lg p-3">
+                        <p className="text-xs font-medium text-blue-800 text-center">{successor}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+                {/* Re-establishment */}
+                <div className="bg-gradient-to-r from-emerald-50 to-emerald-100 rounded-xl p-6 shadow-sm">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4 text-center">د مدرسې بیا بنسټ</h3>
+                  <p className="text-base leading-relaxed text-center mb-4">
+                    دجناب ارغندی خلیفه صاحب کورنی دهجرت له دیارڅخه چې کله بېرته راستنه شوه نو په دوهم ځل یې دکابل پغمان ارغندی بازید خېل سیمه کې دمدرسې بنیاد دجناب تاج المشائخ خلیفه صاحب سدوزی غریقی. او دارغندی خلیفه صاحب د زامنو، علماءو او دمخورو په لاس په تاریخ ښود ل شو.
+                  </p>
+                  <div className="bg-emerald-200 rounded-lg p-4 text-center">
+                    <p className="text-lg font-bold text-emerald-800 mb-1">د مدرسې بیا بنسټ:</p>
+                    <p className="text-base text-emerald-700">۱۷ / ٦ / ١٤٢٦ هـ ق</p>
+                    <p className="text-base text-emerald-700">۱ / ۵ / ١٣٨۴ هـ ش</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Teacher Qualifications */}
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 sm:p-8 shadow-lg border border-purple-200 mb-8">
+              <div className="text-center">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl mb-4">
+                  <Award className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
+                  د استادانو علمي سویه
+                </h2>
+                <p className="text-base sm:text-lg text-gray-700 max-w-3xl mx-auto">
+                  د جامعې استادان د لوړو علمي سطحو څښتنان دي، چې د ماسټري، دوکتورا او تخصصي درجې لري.
                 </p>
               </div>
             </div>
-
-            {/* Enhanced Teachers Section */}
-            <div className="rounded-2xl p-8">
-              <div className={`flex items-center mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
-                <div className={`w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-full flex items-center justify-center ${isRTL ? 'ml-4' : 'mr-4'}`}>
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <div className={isRTL ? 'text-right' : 'text-left'}>
-                  <h3 className={`text-2xl font-bold text-gray-900 ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.teachers')}</h3>
-                  <p className={`text-green-600 font-medium ${isRTL ? 'text-right' : 'text-left'}`}>{t('about.teachersDesc')}</p>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {tArray('about.biography.teachersList').map((teacher: string, index: number) => {
-                  const teacherData = teacher.split(' - ');
-                  const name = teacherData[0];
-                  const title = teacherData[1] || '';
-                  const type = name.includes('خلیفه') ? 'خلیفه' : 
-                             name.includes('مفتي') ? 'مفتي' : 
-                             name.includes('مولوي') ? 'مولوي' : 
-                             name.includes('قاري') ? 'قاري' : 'حافظ';
-                  return (
-                    <div key={index} className="bg-white rounded-xl p-4 hover:bg-gray-50 transition-all duration-300">
-                      <div className={`flex items-start ${isRTL ? 'flex-row-reverse space-x-reverse' : ''} space-x-3`}>
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                          type === 'خلیفه' ? 'bg-amber-500' :
-                          type === 'مفتي' ? 'bg-blue-500' :
-                          type === 'مولوي' ? 'bg-green-500' :
-                          type === 'قاري' ? 'bg-purple-500' :
-                          'bg-gray-500'
-                        }`}>
-                          <span className="text-white text-sm font-bold">
-                            {type === 'خلیفه' ? 'خ' :
-                             type === 'مفتي' ? 'م' :
-                             type === 'مولوي' ? 'م' :
-                             type === 'قاري' ? 'ق' :
-                             'ح'}
-                          </span>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h4 className={`font-bold text-sm text-gray-800 leading-tight ${isRTL ? 'text-right' : 'text-left'}`}>
-                            {name}
-                          </h4>
-                          {title && (
-                            <p className={`text-xs text-green-600 font-medium mt-1 ${isRTL ? 'text-right' : 'text-left'}`}>
-                              {title}
-                            </p>
-                          )}
-                          <div className="mt-2">
-                            <span className={`inline-block px-2 py-1 rounded-full text-xs font-medium ${
-                              type === 'خلیفه' ? 'bg-amber-100 text-amber-700' :
-                              type === 'مفتي' ? 'bg-blue-100 text-blue-700' :
-                              type === 'مولوي' ? 'bg-green-100 text-green-700' :
-                              type === 'قاري' ? 'bg-purple-100 text-purple-700' :
-                              'bg-gray-100 text-gray-700'
-                            }`}>
-                              {type}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Enhanced Students Section */}
-          
           </div>
         </div>
       </section>
 
-      {/* Enhanced About Page Content Section */}
-      <section className="py-12 sm:py-16 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
-          {/* Short Introduction */}
-          <div className="text-center mb-12 sm:mb-16">
-            <div className="inline-flex items-center px-4 py-2 bg-amber-100 text-amber-800 rounded-full text-sm font-medium mb-6">
-              <BookOpen className="h-4 w-4 mr-2" />
-              {t('aboutPage.shortIntroduction')}
+      {/* Prayer Section */}
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-green-600 to-green-700">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 sm:p-12">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-white/20 rounded-2xl mb-6">
+              <Heart className="h-8 w-8 text-white" />
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
-              {t('aboutPage.shortIntroduction')}
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-6">
+              دعا او امید
             </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-amber-400 to-amber-600 mx-auto rounded-full"></div>
-          </div>
-
-          {/* Main Content Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12">
-            {/* Madrasa Establishment */}
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mr-4">
-                  <BookOpen className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">تأسیس مدرسه</h3>
-              </div>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                {t('aboutPage.madrasaEstablishment')}
-              </p>
-            </div>
-
-            {/* After Death */}
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center mr-4">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">د وفات وروسته</h3>
-              </div>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
-                {t('aboutPage.afterDeath')}
-              </p>
-            </div>
-          </div>
-
-          {/* Academic Services */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg border border-gray-100 mb-12">
-            <div className="text-center mb-8">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mr-4">
-                  <Award className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">{t('aboutPage.academicServices')}</h3>
-              </div>
-              <p className="text-base sm:text-lg text-gray-600 max-w-3xl mx-auto">
-                {t('aboutPage.teachingDescription')}
-              </p>
-            </div>
-            
-            {/* Subjects Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 mb-8">
-              {tArray('aboutPage.subjectsList').map((subject: string, index: number) => (
-                <div key={index} className="group text-center p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:from-amber-50 hover:to-amber-100 transition-all duration-300 border border-gray-200 hover:border-amber-300">
-                  <div className={`w-12 h-12 ${subjects[index]?.color || 'bg-gray-500'} rounded-xl flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300`}>
-                    <span className="text-lg">{subjects[index]?.icon || '📚'}</span>
-                  </div>
-                  <p className="text-xs sm:text-sm font-medium text-gray-800 group-hover:text-amber-800 transition-colors">{subject}</p>
-                </div>
-              ))}
-            </div>
-            
-            <div className="text-center">
-              <p className="text-sm sm:text-base text-amber-600 font-medium italic">
-                {t('aboutPage.teachingMethods')}
-              </p>
-            </div>
-          </div>
-
-          {/* Teachers and Statistics Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 mb-12">
-            {/* Teachers and Scholars */}
-            <div className="bg-white rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-100">
-              <div className="flex items-center mb-6">
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-xl flex items-center justify-center mr-4">
-                  <Users className="h-6 w-6 text-white" />
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900">{t('aboutPage.teachersAndScholars')}</h3>
-              </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {tArray('aboutPage.teachersList').slice(0, 8).map((teacher: string, index: number) => {
-                  const teacherData = teacher.split(' - ');
-                  const name = teacherData[0];
-                  const type = name.includes('خلیفه') || name.includes('Khalifa') ? 'خلیفه' : 
-                             name.includes('مفتي') || name.includes('Mufti') ? 'مفتي' : 
-                             name.includes('مولوي') || name.includes('Maulvi') ? 'مولوي' : 
-                             name.includes('قاري') || name.includes('Qari') ? 'قاري' : 'حافظ';
-                  return (
-                    <div key={index} className="flex items-center p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center mr-3 ${
-                        type === 'خلیفه' ? 'bg-amber-500' :
-                        type === 'مفتي' ? 'bg-blue-500' :
-                        type === 'مولوي' ? 'bg-green-500' :
-                        type === 'قاري' ? 'bg-purple-500' :
-                        'bg-gray-500'
-                      }`}>
-                        <span className="text-white text-xs font-bold">
-                          {type === 'خلیفه' ? 'خ' :
-                           type === 'مفتي' ? 'م' :
-                           type === 'مولوي' ? 'م' :
-                           type === 'قاري' ? 'ق' :
-                           'ح'}
-                        </span>
-                      </div>
-                      <p className="text-sm font-medium text-gray-800 flex-1">{name}</p>
-                    </div>
-                  );
-                })}
-              </div>
-              {tArray('aboutPage.teachersList').length > 8 && (
-                <div className="text-center mt-4">
-                  <span className="text-sm text-gray-500">+ {tArray('aboutPage.teachersList').length - 8} نور</span>
-                </div>
-              )}
-            </div>
-
-            {/* Student Statistics */}
-            <div className="space-y-6">
-              {/* Admission Stats */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
-                    </svg>
-                  </div>
-                  <h4 className="text-lg font-bold text-blue-800">د شاګردانو داخله</h4>
-                </div>
-                <p className="text-sm text-blue-700 leading-relaxed">{t('aboutPage.admissionDescription')}</p>
-              </div>
-
-              {/* Graduates Stats */}
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mr-4">
-                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                    </svg>
-                  </div>
-                  <h4 className="text-lg font-bold text-green-800">فارغان</h4>
-                </div>
-                <p className="text-sm text-green-700 leading-relaxed">{t('aboutPage.graduatesDescription')}</p>
-              </div>
-
-              {/* Teacher Qualifications */}
-              <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 border border-amber-200">
-                <div className="flex items-center mb-4">
-                  <div className="w-12 h-12 bg-amber-500 rounded-xl flex items-center justify-center mr-4">
-                    <Award className="h-6 w-6 text-white" />
-                  </div>
-                  <h4 className="text-lg font-bold text-amber-800">{t('aboutPage.teacherQualifications')}</h4>
-                </div>
-                <p className="text-sm text-amber-700 leading-relaxed">{t('aboutPage.teacherQualificationsDesc')}</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Successor Khalifas */}
-          <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg border border-gray-100 mb-12">
-            <div className="text-center mb-8">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mr-4">
-                  <Star className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-gray-900">{t('aboutPage.successorKhalifas')}</h3>
-              </div>
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-              {tArray('aboutPage.successorKhalifasList').map((khalifa: string, index: number) => (
-                <div key={index} className="group bg-gradient-to-br from-amber-50 to-amber-100 rounded-xl p-4 text-center border border-amber-200 hover:border-amber-300 hover:shadow-md transition-all duration-300">
-                  <div className="w-12 h-12 bg-amber-500 rounded-full flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform duration-300">
-                    <span className="text-white text-sm font-bold">{index + 1}</span>
-                  </div>
-                  <h4 className="font-bold text-sm text-amber-800 group-hover:text-amber-900 transition-colors">{khalifa}</h4>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Re-establishment Details */}
-          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 sm:p-8 md:p-12 shadow-lg border border-amber-200">
-            <div className="text-center mb-8">
-              <div className="flex items-center justify-center mb-4">
-                <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center mr-4">
-                  <BookOpen className="h-8 w-8 text-white" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-bold text-amber-900">{t('about.biography.reestablishment')}</h3>
-              </div>
-            </div>
-            
-            <div className="max-w-4xl mx-auto">
-              <p className="text-base sm:text-lg text-amber-800 leading-relaxed text-center mb-8">
-                {t('aboutPage.reestablishmentDetails')}
-              </p>
-              
-              <div className="bg-white rounded-xl p-6 text-center mb-8 shadow-sm">
-                <div className="space-y-2">
-                  <p className="text-xl font-bold text-amber-800">{t('aboutPage.reestablishmentDate1')}</p>
-                  <p className="text-lg text-amber-700">{t('aboutPage.reestablishmentDate2')}</p>
-                </div>
-              </div>
-              
-              <p className="text-base sm:text-lg text-amber-800 font-medium text-center italic leading-relaxed">
-                {t('aboutPage.reestablishmentPrayer')}
+            <p className="text-lg sm:text-xl text-green-100 mb-8 max-w-4xl mx-auto leading-relaxed">
+              الله ج دې ترقیامته پورې دا پور نوره روانه بېړی روانه لری
+            </p>
+            <div className="bg-white/10 rounded-xl p-6 mb-8">
+              <p className="text-base text-white italic">
+                "د ده روح دې تر قيـامـتـه ښـاد وي او د ده فيض دې جـاري وي"
               </p>
             </div>
           </div>
         </div>
       </section>
-
-      
 
       {/* Call to Action */}
       <section className="py-12 sm:py-16 bg-amber-600">
-        <div className="max-w-6xl mx-auto px-2 sm:px-4 md:px-6 text-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
           <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3 sm:mb-4">
             زموږ <span className="text-amber-200">ټولنې</span> سره یوځای شئ
           </h2>

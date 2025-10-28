@@ -128,18 +128,24 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
     : "N/A";
 
   return (
-    <div className="min-h-screen mt-40 md:mt-32 bg-gray-50 py-12 px-4">
-      <main className="max-w-4xl mx-auto" dir="rtl">
+    <div className="min-h-screen mt-40 md:mt-32 bg-white relative py-12 px-4">
+      {/* Islamic Pattern Background */}
+      <div className="absolute inset-0 opacity-5" style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-20 0c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10-10-4.477-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+      }}></div>
+      
+      <div className="relative z-10">
+        <main className="max-w-4xl mx-auto" dir="rtl">
         {/* Go Back Button */}
         <div className="mb-6">
           {iftah.tag && (
-            <Link 
-              href="/iftah"
-              className="inline-flex items-center text-gray-700 hover:text-gray-900 transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5 ml-2" />
-              <span className="text-sm">بازگشت</span>
-            </Link>
+            <Link
+            href={`/iftah/category/${encodeURIComponent(iftah.tag.name)}`}
+            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-lg transition-all duration-300 group shadow-md"
+          >
+            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+            <span className="font-medium">Back to {iftah.tag.name}</span>
+          </Link>
           )}
         </div>
 
@@ -157,16 +163,24 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             <p className="text-gray-700 text-sm">سوال نمبر: {iftah.id}</p>
           </div>
 
-          {/* Title */}
-          <div className="mb-6">
-            <p className="font-bold text-gray-900 mb-2">عنوان:</p>
-            <p className="text-gray-800 leading-relaxed">{cleanText(iftah.title)}</p>
+          {/* Title - Inline Design */}
+          <div className="mb-6 flex items-start gap-4 bg-blue-50 p-4 rounded-lg border-r-4 border-blue-600">
+            <div className="flex-shrink-0">
+              <p className="font-bold text-gray-900 whitespace-nowrap">عنوان:</p>
+            </div>
+            <div className="flex-1">
+              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.title)}</p>
+            </div>
           </div>
 
-          {/* Question */}
-          <div className="mb-8">
-            <p className="font-bold text-gray-900 mb-2">سوال:</p>
-            <p className="text-gray-800 leading-relaxed">{cleanText(iftah.question)}</p>
+          {/* Question - Inline Design */}
+          <div className="mb-8 flex items-start gap-4 bg-green-50 p-4 rounded-lg border-r-4 border-green-600">
+            <div className="flex-shrink-0">
+              <p className="font-bold text-gray-900 whitespace-nowrap">سوال:</p>
+            </div>
+            <div className="flex-1">
+              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.question)}</p>
+            </div>
           </div>
 
           {/* Divider Line */}
@@ -189,15 +203,25 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             <p className="text-sm text-gray-600">Fatwa: {iftah.id}</p>
           </div>
 
-          {/* Answer */}
-          <div className="mb-8">
-            <p className="text-gray-800 leading-relaxed">{cleanText(iftah.answer)}</p>
+          {/* Answer - Enhanced Design */}
+          <div className="mb-8 flex items-start gap-4 bg-amber-50 p-4 rounded-lg border-r-4 border-amber-600">
+            <div className="flex-shrink-0">
+              <p className="font-bold text-gray-900 whitespace-nowrap">جواب:</p>
+            </div>
+            <div className="flex-1">
+              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.answer)}</p>
+            </div>
           </div>
 
-          {/* Note if available */}
+          {/* Note if available - Enhanced Design */}
           {iftah.note && (
-            <div className="mb-8">
-              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.note)}</p>
+            <div className="mb-8 flex items-start gap-4 bg-purple-50 p-4 rounded-lg border-r-4 border-purple-600">
+              <div className="flex-shrink-0">
+                <p className="font-bold text-gray-900 whitespace-nowrap">نوٹ:</p>
+              </div>
+              <div className="flex-1">
+                <p className="text-gray-800 leading-relaxed">{cleanText(iftah.note)}</p>
+              </div>
             </div>
           )}
 
@@ -277,7 +301,8 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             )}
           </div>
         )}
-      </main>
+        </main>
+      </div>
     </div>
   );
 }

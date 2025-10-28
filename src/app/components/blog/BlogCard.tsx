@@ -17,7 +17,7 @@ import PaginationControls from "@/components/PaginationControls";
 import { BlogsApi } from "@/lib/api";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { getImageUrl } from "@/lib/utils";
-import { useTranslation } from "@/hooks/useTranslation";
+import { getTranslation } from "@/lib/translations";
 import { ComingSoonEmptyState } from "@/components/EmptyState";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
@@ -49,6 +49,20 @@ function resolveCoverImage(img?: string | null) {
   return getImageUrl(img, fallbackImage) || fallbackImage;
 }
 
+function cleanHtmlEntities(html?: string | null) {
+  if (!html) return '';
+  return html
+    .replace(/<[^>]*>/g, "")      // Remove HTML tags
+    .replace(/&nbsp;/g, " ")     // Remove &nbsp; entities
+    .replace(/&amp;/g, "&")     // Replace &amp; with &
+    .replace(/&lt;/g, "<")       // Replace &lt; with <
+    .replace(/&gt;/g, ">")       // Replace &gt; with >
+    .replace(/&quot;/g, '"')      // Replace &quot; with "
+    .replace(/&#39;/g, "'")      // Replace &#39; with '
+    .replace(/\s+/g, " ")        // Replace multiple spaces with single space
+    .trim();
+}
+
 function formatDate(value?: string | null, t?: (key: string) => string) {
   if (!value) return t ? t('blog.recentlyUpdated') : "Recently updated";
   const date = new Date(value);
@@ -63,12 +77,8 @@ function formatDate(value?: string | null, t?: (key: string) => string) {
 }
 
 export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
-  const { t: tRaw } = useTranslation('common', { useSuspense: false });
-  
-  // Create a wrapper that always returns a string
   const t = (key: string): string => {
-    const result = tRaw(key);
-    return typeof result === 'string' ? result : key;
+    return getTranslation(key, 'ps');
   };
 
   const [selectedCategory, setSelectedCategory] = useState<string>(t('blog.all'));
@@ -84,7 +94,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
       BlogsApi.getAll({
         ...params,
         category:
-          !homePage && selectedCategory !== "All"
+          !homePage && selectedCategory !== t('blog.all')
             ? selectedCategory
             : undefined,
         // Remove is_top filter from API call - we'll filter on frontend
@@ -253,7 +263,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                         {item.title}
                       </h2>
                       <p className="text-primary-600 text-sm leading-relaxed line-clamp-3">
-                        {item.description?.replace(/<[^>]*>/g, "") ||
+                        {cleanHtmlEntities(item.description) ||
                           t('blog.noSummaryAvailable')}
                       </p>
                     </div>

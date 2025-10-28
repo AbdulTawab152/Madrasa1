@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import IslamicHeader from "../components/IslamicHeader";
-import { useTranslation } from "@/hooks/useTranslation";
+import { getTranslation } from "@/lib/translations";
 import {
   FaMapMarkerAlt,
   FaEnvelope,
@@ -20,7 +20,6 @@ import {
   FaUsers,
   FaStar,
   FaCheckCircle,
-  FaArrowRight,
   FaShieldAlt,
   FaClock
 } from "react-icons/fa";
@@ -41,12 +40,8 @@ interface DonationInfo {
 }
 
 export default function DonationPage() {
-  const { t: tRaw } = useTranslation('common', { useSuspense: false });
-  
-  // Create a wrapper that always returns a string
   const t = (key: string): string => {
-    const result = tRaw(key);
-    return typeof result === 'string' ? result : key;
+    return getTranslation(key, 'ps');
   };
 
   const [donations, setDonations] = useState<DonationInfo[]>([]);
@@ -270,104 +265,105 @@ export default function DonationPage() {
       </section>
 
       {/* Donation Instructions */}
-      <section className="py-16 sm:py-20 lg:py-24 bg-gradient-to-br from-orange-500 via-amber-500 to-yellow-500 text-white relative overflow-hidden">
-        <div className="absolute inset-0 bg-black/10"></div>
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <div className="inline-block mb-6">
-              <span className="bg-white/20 text-white px-6 py-2 rounded-full text-sm font-semibold">
-                {t('donation.howToDonate')}
-              </span>
+      <section className="py-20 sm:py-24 bg-gradient-to-br from-gray-50 to-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
+              <span>📋</span>
+              <span>د ډونیشن لومړی</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">
-              {t('donation.howToDonate')}
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              څنګه مرسته وکړئ
             </h2>
-            <p className="text-lg sm:text-xl text-orange-100 max-w-3xl mx-auto leading-relaxed px-4">
-              {t('donation.howToDonateDesc')}
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              ستاسو د مرستې لپاره ډیرونه اسانه لارې شته دي. د لاندې لارښوونو تعقیب وکړئ
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="text-center group"
-            >
-              <div className="bg-white/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-white/30 transition-all duration-300">
-                <span className="text-3xl font-bold">1</span>
+            <div className="group text-center">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                  <span className="text-3xl font-bold">1</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <span className="text-xs font-bold text-yellow-900">✓</span>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-4">{t('donation.step1')}</h3>
-              <p className="text-orange-100 leading-relaxed">{t('donation.step1Desc')}</p>
-            </motion.div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">د اړیکو خبرې وکړئ</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">د WhatsApp یا بریښنالیک له لارې د مرستې د اړیکې سره اړیکه ونیسئ</p>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-center group"
-            >
-              <div className="bg-white/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-white/30 transition-all duration-300">
-                <span className="text-3xl font-bold">2</span>
+            <div className="group text-center">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                  <span className="text-3xl font-bold">2</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
+                  <span className="text-xs font-bold text-blue-900">✓</span>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-4">{t('donation.step2')}</h3>
-              <p className="text-orange-100 leading-relaxed">{t('donation.step2Desc')}</p>
-            </motion.div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">مرسته واستوئ</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">ستاسو د مرستې سیمه او اندازه ټاکئ او داسې تصدیق کړئ</p>
+            </div>
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="text-center group"
-            >
-              <div className="bg-white/20 w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:bg-white/30 transition-all duration-300">
-                <span className="text-3xl font-bold">3</span>
+            <div className="group text-center">
+              <div className="relative mb-8">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                  <span className="text-3xl font-bold">3</span>
+                </div>
+                <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
+                  <span className="text-xs font-bold text-green-900">✓</span>
+                </div>
               </div>
-              <h3 className="text-2xl font-bold mb-4">{t('donation.step3')}</h3>
-              <p className="text-orange-100 leading-relaxed">{t('donation.step3Desc')}</p>
-            </motion.div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">د مرستې تصدیق</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">ستاسو ته به د مرستې د ترلاسه کولو تصدیق رسول شي</p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Trust Indicators */}
-      <section className="py-12 sm:py-16 bg-gradient-to-r from-green-50 via-blue-50 to-indigo-50">
+      <section className="py-20 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 lg:gap-12 text-gray-700"
-          >
-            <div className="flex items-center gap-3 bg-white px-4 sm:px-6 py-3 sm:py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <FaShieldAlt className="text-green-600 text-lg sm:text-xl" />
-              </div>
-              <span className="font-bold text-base sm:text-lg">{t('donation.secure')}</span>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
+              <span>🛡️</span>
+              <span>ولې زموږ پر باور وکړئ؟</span>
             </div>
-            <div className="flex items-center gap-3 bg-white px-4 sm:px-6 py-3 sm:py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                <FaCheckCircle className="text-blue-600 text-lg sm:text-xl" />
+            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              ولې زموږ پر باور وکړئ؟
+            </h2>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+              موږ د شفافیت، امنیت او د مرستوکوونکو لپاره دوامداره ملاتړ ګارنګو خپلولو ته ژمن یو
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <FaShieldAlt className="text-2xl" />
               </div>
-              <span className="font-bold text-base sm:text-lg">{t('donation.verified')}</span>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition-colors duration-300">100% امن دی</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">ستاسو مرستې د لوړو امنیت معیارونو او تایید شوي حفاظت سره پروسس کیږي</p>
             </div>
-            <div className="flex items-center gap-3 bg-white px-4 sm:px-6 py-3 sm:py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <FaClock className="text-purple-600 text-lg sm:text-xl" />
+
+            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <FaCheckCircle className="text-2xl" />
               </div>
-              <span className="font-bold text-base sm:text-lg">{t('donation.support')}</span>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-300">تصدیق شوي سازمانونه</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">زموږ سازمان رسمي تصدیق شوی دی او د باور وړ چارواکو لخوا منظمه معاینه کیږي</p>
             </div>
-          </motion.div>
+
+            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <FaClock className="text-2xl" />
+              </div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors duration-300">24/7 ملاتړ</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">موږ د ټولو پوښتنو او د مرستې اړتیاوو لپاره د ورځې او شپې ملاتړ وړاندې کوو</p>
+            </div>
+          </div>
         </div>
       </section>
     </main>
