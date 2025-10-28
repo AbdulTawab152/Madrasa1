@@ -21,6 +21,7 @@ const NAV_LABELS: Record<string, string> = {
   article: "مقالې",
   awlayaa: "اولیا",
   awlyaacharts: "اولیا چارټونه",
+  admission: "نوملیکنه",
   books: "کتابونه",
   donation: "مرسته",
   blogs: "بلاګونه",
@@ -383,8 +384,8 @@ const Navbar = memo(function Navbar() {
 
               {/* Donation Button */}
               <Link href="/donation">
-                <Button variant="primary" size="sm" className="rounded-full">
-                  <span className="inline-block animate-bounce text-lg">&#x1F381;</span>
+                <Button variant="primary" size="sm" className="rounded-full hidden md:block">
+                  <span className="inline-block  animate-bounce text-lg">&#x1F381;</span>
                   مرسته
                 </Button>
               </Link>
@@ -428,27 +429,30 @@ const Navbar = memo(function Navbar() {
             </div>
             <span className={`text-lg font-semibold text-primary-900 tracking-wide ${isRTL ? 'text-right' : 'text-left'}`}>{appConfig.name}</span>
           </div>
-          <button
-            type="button"
-            onClick={closeMobileMenu}
-            className="rounded-full p-2 text-primary-700 hover:text-primary-600 focus:outline-none focus-visible:outline-none"
-            aria-label="Close navigation menu"
-          >
-            <svg
-              className="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+          
+          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <button
+              type="button"
+              onClick={closeMobileMenu}
+              className="rounded-full p-2 text-primary-700 hover:text-primary-600 focus:outline-none focus-visible:outline-none transition-colors duration-200"
+              aria-label="Close navigation menu"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </button>
+              <svg
+                className="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <nav className="h-full overflow-y-auto px-6 py-6" aria-label="Mobile">
@@ -540,6 +544,21 @@ const Navbar = memo(function Navbar() {
                 </div>
               </div>
             )}
+            
+            {/* Donation Button at Bottom */}
+            <div className="pt-6 mt-6 border-t border-primary-100/60">
+              <Link href="/donation" onClick={closeMobileMenu}>
+                <button
+                  className="group relative w-full flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-gradient-to-r from-primary-600 via-primary-700 to-primary-600 hover:from-primary-700 hover:via-primary-800 hover:to-primary-700 text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                >
+                  <span className="absolute inset-0 rounded-full bg-gradient-to-r from-yellow-300 to-yellow-400 opacity-0 group-hover:opacity-20 blur-sm transition-opacity duration-300"></span>
+                  <span className="relative inline-flex items-center gap-2">
+                    <span className="text-xl animate-bounce">🎁</span>
+                    <span className="whitespace-nowrap text-base">مرسته وکړئ</span>
+                  </span>
+                </button>
+              </Link>
+            </div>
           </div>
         </nav>
       </aside>

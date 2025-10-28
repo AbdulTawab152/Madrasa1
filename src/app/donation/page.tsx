@@ -4,7 +4,7 @@ import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import IslamicHeader from "../components/IslamicHeader";
-import { useTranslation } from "@/hooks/useTranslation";
+import { getTranslation } from "@/lib/translations";
 import {
   FaMapMarkerAlt,
   FaEnvelope,
@@ -20,7 +20,6 @@ import {
   FaUsers,
   FaStar,
   FaCheckCircle,
-  FaArrowRight,
   FaShieldAlt,
   FaClock
 } from "react-icons/fa";
@@ -41,12 +40,8 @@ interface DonationInfo {
 }
 
 export default function DonationPage() {
-  const { t: tRaw } = useTranslation('common', { useSuspense: false });
-  
-  // Create a wrapper that always returns a string
   const t = (key: string): string => {
-    const result = tRaw(key);
-    return typeof result === 'string' ? result : key;
+    return getTranslation(key, 'ps');
   };
 
   const [donations, setDonations] = useState<DonationInfo[]>([]);

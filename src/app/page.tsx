@@ -188,7 +188,7 @@ export default function HomePage() {
         {/* Animated Gradient Blobs */}
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-indigo-200/30 rounded-full blur-3xl animate-pulse z-0" />
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl animate-pulse z-0" />
-        
+
         {/* Subtle Pattern Overlay */}
         <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none">
           <div
@@ -203,13 +203,13 @@ export default function HomePage() {
           {/* Hero Text */}
           <div className="mb-14">
             <div className="inline-flex items-center px-5 py-2 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
-              📜 {t('home.sanadHighlight')}
+              📜 زموږ د سند ځانګړنه
             </div>
             <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-              {t('home.ourSanad')}
+              زموږ سند (د انتقال تسلسل)
             </h2>
             <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
-              {t('home.sanadDescription')}
+              زموږ د روحاني نسب او انتقال تسلسل وپلټئ. موږ ته ویاړ دی چې دا درسونه خوندي او دوام ورکوو.
             </p>
           </div>
 
@@ -220,7 +220,7 @@ export default function HomePage() {
                 <div className="flex items-center justify-center py-16">
                   <div className="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
                   <span className="ml-4 text-gray-600 font-medium">
-                    {t('home.loadingSanad')}
+                    د سند معلومات بارېږي...
                   </span>
                 </div>
               }
@@ -234,7 +234,7 @@ export default function HomePage() {
                   href="/sanad"
                   className="inline-flex items-center gap-2 px-6 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
                 >
-                  <span>{t('home.viewAllSanad')}</span>
+                  <span>ټول سند وګورئ</span>
                 </Link>
               </div>
             </Suspense>

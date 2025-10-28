@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
+import { getTranslation } from "@/lib/translations";
 
 interface Blog {
   name: string;
@@ -31,6 +32,7 @@ interface Params {
 
 export default async function BlogDetailsPage({ params }: Params) {
   const { slug } = await params;
+  const t = (key: string): string => getTranslation(key, 'ps');
 
   const blogResponse = await BlogsApi.getBySlug(slug);
   if (!blogResponse.success || ('error' in blogResponse && blogResponse.error === 'not_found')) {
@@ -75,7 +77,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                 >
                   <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
                 </svg>
-                Home
+                {t('blog.home')}
               </Link>
             </li>
             <li className="flex items-center">
@@ -94,7 +96,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                 href="/blogs"
                 className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0 "
               >
-                Blogs
+                {t('blog.blogs')}
               </Link>
             </li>
             {/* <li className="flex items-center">
@@ -148,7 +150,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                 >
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
-                Featured Post
+                {t('blog.featuredPost')}
               </div>
             )}
           </div>
@@ -188,7 +190,7 @@ export default async function BlogDetailsPage({ params }: Params) {
           {blog.tags && blog.tags.length > 0 && (
             <div className="mt-12 pt-8 border-t border-gray-200">
               <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                Article Tags
+                {t('blog.articleTags')}
               </h3>
               <div className="flex flex-wrap gap-3">
                 {blog.tags.map((tag) => (
@@ -228,7 +230,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                     d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
                   />
                 </svg>
-                More Articles You Might Like
+                {t('blog.moreArticlesYouMightLike')}
                 <span className="absolute inset-x-0 bottom-[-10px] h-1 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full w-1/3 mx-auto"></span>
               </span>
             </h2>
@@ -253,7 +255,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                     />
                     {rb.is_top && (
                       <span className="absolute top-3 left-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
-                        Featured
+                        {t('blog.featured')}
                       </span>
                     )}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>

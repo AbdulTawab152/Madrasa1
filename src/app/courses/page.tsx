@@ -50,7 +50,6 @@ export default function CoursesPage() {
     <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <IslamicHeader
         pageType="courses"
-        title={t('courses.title')}
         alignment="center"
         // cta={{
         //   label: "Explore All Courses",

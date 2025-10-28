@@ -82,7 +82,7 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
             >
               {idx === 0 ? (
                 // First item - bigger and special
-                <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl p-8 border-l-6 border-blue-600 hover:shadow-xl transition-all duration-300">
+                <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl p-8 border-l-6 border-blue-600 ">
                   <div className="text-center">
                     <div className="text-4xl mb-4">📜</div>
                     <p className="text-gray-800 text-xl leading-relaxed font-semibold rtl">
@@ -92,7 +92,7 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
                 </div>
               ) : (
                 // Other items - with numbers
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-500 hover:shadow-lg transition-all duration-300">
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-50">
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex-shrink-0 w-8 h-8"></div>
                     <p className="text-gray-800 text-lg leading-relaxed font-medium rtl flex-1 text-center">

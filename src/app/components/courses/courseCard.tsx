@@ -30,8 +30,14 @@ const cardVariants = {
 
 const stripHtml = (value?: string | null) =>
   (value || "")
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
+    .replace(/<[^>]*>/g, " ")  // Remove HTML tags
+    .replace(/&nbsp;/g, " ")   // Remove &nbsp; entities
+    .replace(/&amp;/g, "&")    // Replace &amp; with &
+    .replace(/&lt;/g, "<")      // Replace &lt; with <
+    .replace(/&gt;/g, ">")      // Replace &gt; with >
+    .replace(/&quot;/g, '"')    // Replace &quot; with "
+    .replace(/&#39;/g, "'")     // Replace &#39; with '
+    .replace(/\s+/g, " ")       // Replace multiple spaces with single space
     .trim();
 
 const formatDate = (t: (key: string) => string, value?: string | null) => {

@@ -66,6 +66,42 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
     }
   };
 
+  // Helper function to clean HTML from descriptions - improved version
+  const cleanHtml = (html: string | null | undefined) => {
+    if (!html) return '';
+    
+    let cleaned = html;
+    
+    // First, handle common HTML entity encoding
+    cleaned = cleaned.replace(/&nbsp;/g, ' ');
+    cleaned = cleaned.replace(/&amp;/g, '&');
+    cleaned = cleaned.replace(/&lt;/g, '<');
+    cleaned = cleaned.replace(/&gt;/g, '>');
+    cleaned = cleaned.replace(/&quot;/g, '"');
+    cleaned = cleaned.replace(/&#39;/g, "'");
+    cleaned = cleaned.replace(/&apos;/g, "'");
+    cleaned = cleaned.replace(/&mdash;/g, '—');
+    cleaned = cleaned.replace(/&ndash;/g, '–');
+    
+    // Remove ALL HTML/XML tags including malformed ones
+    cleaned = cleaned.replace(/<[^>]*>/g, '');           // Standard tags
+    cleaned = cleaned.replace(/<[^>]*$/g, '');           // Unclosed opening tags
+    cleaned = cleaned.replace(/<\/[^>]*/g, '');         // Closing tags without >
+    cleaned = cleaned.replace(/<[^<]*>/g, '');          // Any remaining tags
+    cleaned = cleaned.replace(/\[(\w+)\s[^\]]*\]/g, ''); // Markdown-style tags
+    
+    // Clean up any remaining HTML entities
+    cleaned = cleaned.replace(/&[#\w]+;/g, ' ');
+    
+    // Clean up whitespace
+    cleaned = cleaned.replace(/  +/g, ' ');              // Multiple spaces
+    cleaned = cleaned.replace(/\n\s*\n+/g, '\n');        // Multiple line breaks
+    cleaned = cleaned.replace(/\s+/g, ' ');              // Any whitespace sequence
+    cleaned = cleaned.trim();
+    
+    return cleaned;
+  };
+
 
   // ✅ Fetch course by slug
   const courseResponse = await CoursesApi.getBySlug(slug);
@@ -176,87 +212,64 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         <span className="text-black font-medium">{course.title}</span>
       </div>
 
-      {/* Hero Section with Full Width Image */}
-      <section className="relative min-h-56 h-60 sm:h-72 md:h-96 lg:h-[420px] xl:h-[480px] 2xl:h-[540px] overflow-hidden rounded-b-[40px] sm:rounded-b-[80px] shadow-xl">
-        {/* Layered Background */}
+      {/* Hero Section - Modern & Clean Design */}
+      <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[560px] lg:min-h-[600px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">0
+        {/* Background Image Layer */}
         <div className="absolute inset-0 z-0">
-          {/* Backdrop Image */}
           <Image
             src={course?.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
             alt={course.title}
             fill
             sizes="100vw"
-            className="object-cover scale-105 brightness-90 transition-all duration-700"
+            className="object-cover opacity-20"
             priority
           />
-          {/* Enhanced Gradient Overlays */}
-          <div className="absolute inset-0 bg-[radial-gradient(ellipse_100%_80%_at_60%_90%,rgba(251,191,36,0.15),transparent_70%)] pointer-events-none"></div>
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-900/95 via-green-900/90 to-amber-900/80 mix-blend-multiply pointer-events-none"></div>
-          <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black/80 via-black/45 to-transparent"></div>
-          {/* Decorative Emerald Orb */}
-          <div className="absolute left-8 top-1/3 w-56 h-56 bg-emerald-400 opacity-40 blur-3xl rounded-full pointer-events-none"></div>
-          {/* Bottom Amber Glow */}
-          <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-amber-400/90 via-transparent to-transparent pointer-events-none"></div>
-          {/* Decorative BG Ship SVG (floating, blurred) */}
-          <div className="absolute right-8 bottom-6 z-10 pointer-events-none opacity-90">
-            <svg width="120" height="60" viewBox="0 0 120 60" fill="none" xmlns="http://www.w3.org/2000/svg" className="drop-shadow-xl blur-[1.5px] opacity-90">
-              <ellipse cx="60" cy="40" rx="45" ry="16" fill="#FFBF46" fillOpacity="0.13"/>
-              <rect x="35" y="25" width="50" height="18" rx="7" fill="#FDBA74" fillOpacity="0.34"/>
-              <rect x="55" y="16" width="12" height="18" rx="5" fill="#059669" fillOpacity="0.28"/>
-              <polygon points="53,41 67,41 60,29" fill="#059669" fillOpacity="0.20"/>
-              <rect x="48" y="27" width="2.5" height="9" rx="1" fill="#bbf7d0" fillOpacity="0.45"/>
-              <rect x="69.5" y="27" width="2.5" height="9" rx="1" fill="#bbf7d0" fillOpacity="0.45"/>
-            </svg>
-          </div>
-          {/* One more decorative shape, top left */}
-          <div className="absolute -left-8 -top-10 z-10 pointer-events-none opacity-60">
-            <svg width="72" height="40" viewBox="0 0 72 40" fill="none" xmlns="http://www.w3.org/2000/svg" className="blur-[2.5px] drop-shadow-2xl">
-              <ellipse cx="40" cy="26" rx="28" ry="11" fill="#059669" fillOpacity="0.09"/>
-              <rect x="15" y="12" width="25" height="8" rx="4" fill="#fbbf24" fillOpacity="0.17"/>
-            </svg>
-          </div>
+          
+          {/* Gradient Overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-transparent to-transparent"></div>
+          
+          {/* Subtle Light Effects */}
+          <div className="absolute top-20 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-20 h-full flex items-center py-8">
-          <div className="container mx-auto px-4 flex flex-col justify-center">
-            <div className="w-full pt-10 sm:pt-0 max-w-3xl">
-              {/* Animated course label */}
-            
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-black tracking-tight text-white mb-6 drop-shadow-xl leading-tight animate-fade-in-up">
+        <div className="relative z-10 h-full flex items-center py-12 sm:py-16 md:py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-6 animate-fade-in flex justify-start">
+            <nav className="flex items-center gap-2 text-sm text-amber-400/80">
+              <Link href="/courses" className="hover:text-amber-400 transition-colors">
+                کورسونه
+              </Link>
+              <span>/</span>
+              <span className="text-white/60">{course.title}</span>
+            </nav>
+          </div>
+            <div className="max-w-4xl mx-auto flex flex-col items-center text-center relative">
+              {/* Title */}
+              <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold text-white mb-8 leading-tight tracking-tight animate-fade-in-up">
                 {course.title}
               </h1>
 
-              {/* Course Meta Info: Duration, Level, Videos (if available) */}
-              <div className="flex flex-wrap gap-x-6 gap-y-2 items-center text-white/90 text-base font-semibold mb-0 animate-fade-in-up">
-                {course.duration && (
-                  <div className="flex items-center gap-1 bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                    <svg className="w-5 h-5 text-emerald-300" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <circle cx="12" cy="12" r="10" strokeOpacity="0.5" />
-                      <path d="M12 6v6l4 2" strokeLinecap="round" />
-                    </svg>
-                    <span>{course.duration}</span>
-                  </div>
-                )}
-                {course.video_quantity && (
-                  <div className="flex items-center gap-1 bg-black/20 px-3 py-1 rounded-full backdrop-blur-sm">
-                    <svg className="w-5 h-5 text-amber-200" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M15.75 10.01a1.75 1.75 0 1 0-3.5 0 1.75 1.75 0 0 0 3.5 0Zm-8 0a1.75 1.75 0 1 0-3.5 0 1.75 1.75 0 0 0 3.5 0Zm8 0c0-2.75-2.25-5-5-5s-5 2.25-5 5c0 2.75 2.25 5 5 5s5-2.25 5-5Z" />
-                    </svg>
-                    <span>{course.video_quantity} videos</span>
-                  </div>
-                )}
-              
-              </div>
+              {course.description && (
+                <div className="max-w-2xl mx-auto">
+                  <p className="text-lg text-gray-300 leading-relaxed animate-fade-in-up line-clamp-2" style={{ animationDelay: '0.2s' }}>
+                    {cleanHtml(course.description)}
+                  </p>
+                </div>
+              )}
 
-              {/* No description here, improved background visuals instead */}
+              {/* Decorative Elements */}
+              <div className="absolute top-24 -left-24 w-72 h-72 bg-amber-400/15 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute bottom-24 -right-24 w-72 h-72 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none"></div>
+              <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-40 h-4 bg-gradient-to-r from-emerald-400 via-amber-400 to-emerald-200 rounded-full opacity-50 blur pointer-events-none"></div>
             </div>
           </div>
         </div>
 
-        {/* Decorative Corners */}
-        <div className="absolute left-0 bottom-0 w-40 h-10 bg-gradient-to-r from-amber-300/30 via-transparent to-transparent blur-lg opacity-70 pointer-events-none" />
-        <div className="absolute right-0 top-0 w-40 h-10 bg-gradient-to-l from-emerald-400/30 via-transparent to-transparent blur-lg opacity-50 pointer-events-none" />
+        {/* Bottom Wave Decoration */}
+        <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
       {/* Video Section - Enhanced Design */}
@@ -290,19 +303,13 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             
             {/* Debug Output: Show video URL */}
           
-            {/* Improved Video Player for reliable playback */}
-            <div className="relative group">
-              <div className="bg-white rounded-3xl shadow-2xl shadow-emerald-500/10 border border-emerald-100/50 overflow-hidden transform group-hover:scale-[1.02] transition-all duration-500">
-                <div className="relative aspect-video bg-black flex items-center justify-center">
-                  <VideoPlayer
-                    videoUrl={course.short_video}
-                    posterUrl={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
-                    title={course.title}
-                  />
-                </div>
-              </div>
-              <div className="absolute -top-4 -right-4 w-24 h-24 bg-emerald-200/20 rounded-full blur-xl group-hover:scale-110 transition-transform duration-500"></div>
-              <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-emerald-300/10 rounded-full blur-2xl group-hover:scale-110 transition-transform duration-500"></div>
+            {/* Video Player Container */}
+            <div className="max-w-4xl mx-auto">
+              <VideoPlayer
+                videoUrl={course.short_video}
+                posterUrl={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+                title={course.title}
+              />
             </div>
           </div>
         </section>
@@ -346,10 +353,9 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             </header>
             <div>
               {course.description ? (
-                <div
-                  className="prose prose-lg prose-amber max-w-none text-gray-800 leading-relaxed animate-fade-in"
-                  dangerouslySetInnerHTML={{ __html: course.description }}
-                />
+                <div className="prose prose-lg prose-amber max-w-none text-gray-800 leading-relaxed animate-fade-in">
+                  <p className="whitespace-pre-line">{cleanHtml(course.description)}</p>
+                </div>
               ) : (
                 <div className="bg-amber-50 border-l-4 border-amber-500 px-6 py-4 rounded-md animate-fade-in shadow-inner">
                   <p className="text-gray-700 leading-relaxed text-lg">
@@ -383,7 +389,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   <span>| {t('courses.pages')}: <span className="font-semibold">{book.pages || "N/A"}</span></span>
                   <span>| {t('courses.year')}: <span className="font-semibold">{book.written_year || "N/A"}</span></span>
                 </div>
-                <div className="text-gray-700 text-base leading-relaxed mb-3">{book.description}</div>
+                <div className="text-gray-700 text-base leading-relaxed mb-3 whitespace-pre-line">{cleanHtml(book.description)}</div>
                 {book.pdf_file && (
                   <a
                     href={getImageUrl(book.pdf_file)}
@@ -423,7 +429,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                     </span>
                   )}
                   {recordedBy.description && (
-                    <span className="text-gray-700 text-base">{recordedBy.description}</span>
+                    <span className="text-gray-700 text-base whitespace-pre-line">{cleanHtml(recordedBy.description)}</span>
                   )}
                 </div>
                 {recordedBy.contact_no && (

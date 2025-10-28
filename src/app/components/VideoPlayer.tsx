@@ -2,6 +2,7 @@
 
 import { useRef, useEffect, useState } from "react";
 import { getImageUrl } from "@/lib/utils";
+import { FaPlay, FaPause, FaVolumeUp, FaVolumeMute, FaExpand, FaCompress } from "react-icons/fa";
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -11,13 +12,26 @@ interface VideoPlayerProps {
 
 export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
 
   // Set video to unmuted by default and cleanup
   useEffect(() => {
     if (videoRef.current) {
-      videoRef.current.muted = false;
+      // Ensure audio is enabled
+      videoRef.current.muted = isMuted;
+      videoRef.current.volume = volume;
+      
+      // Force enable audio
+      if (!isMuted && volume > 0) {
+        videoRef.current.muted = false;
+      }
     }
 
     // Cleanup function to pause video when component unmounts
@@ -26,6 +40,16 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
         videoRef.current.pause();
       }
     };
+  }, [volume, isMuted]);
+
+  // Handle fullscreen changes
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   // Handle click to play/pause with proper error handling
@@ -62,6 +86,75 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
     }
   };
 
+  // Toggle mute
+  const toggleMute = () => {
+    if (videoRef.current) {
+      const newMutedState = !isMuted;
+      videoRef.current.muted = newMutedState;
+      setIsMuted(newMutedState);
+      
+      // If unmuting, ensure volume is set
+      if (!newMutedState && volume === 0) {
+        setVolume(1);
+        videoRef.current.volume = 1;
+      }
+    }
+  };
+
+  // Toggle fullscreen
+  const toggleFullscreen = () => {
+    if (!containerRef.current) return;
+
+    if (!isFullscreen) {
+      containerRef.current.requestFullscreen();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen();
+      setIsFullscreen(false);
+    }
+  };
+
+  // Handle volume change
+  const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newVolume = parseFloat(e.target.value);
+    setVolume(newVolume);
+    if (videoRef.current) {
+      videoRef.current.volume = newVolume;
+      setIsMuted(newVolume === 0);
+      videoRef.current.muted = newVolume === 0;
+    }
+  };
+
+  // Handle time update
+  const handleTimeUpdate = () => {
+    if (videoRef.current) {
+      setCurrentTime(videoRef.current.currentTime);
+    }
+  };
+
+  // Handle duration change
+  const handleDurationChange = () => {
+    if (videoRef.current) {
+      setDuration(videoRef.current.duration);
+    }
+  };
+
+  // Handle seek
+  const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (videoRef.current) {
+      const newTime = parseFloat(e.target.value);
+      videoRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
+
+  // Format time
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   // Handle video play/pause events
   const handlePlay = () => {
     setIsPlaying(true);
@@ -81,67 +174,125 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
   };
 
   return (
-    <div className="relative w-full h-full cursor-pointer" onClick={handleVideoClick}>
+    <div ref={containerRef} className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden group">
       <video
         ref={videoRef}
-        loop
-        controls
-        muted={false}
-        className="w-full h-full object-cover"
+        className="w-full h-full object-contain"
         poster={posterUrl || "/placeholder-course.jpg"}
         onPlay={handlePlay}
         onPause={handlePause}
         onError={handleError}
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={handleDurationChange}
         preload="metadata"
+        onClick={handleVideoClick}
+        playsInline
+        controls={false}
       >
         <source src={getImageUrl(videoUrl)} type="video/mp4" />
         <source src={getImageUrl(videoUrl)} type="video/webm" />
         Your browser does not support the video tag.
       </video>
-      
-      {/* Click to play/pause indicator */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <div className={`transition-all duration-300 ${isPlaying ? 'opacity-0 scale-75' : 'opacity-80 scale-100'}`}>
-          <div className="w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center">
-            {isLoading ? (
-              <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <svg 
-                className="w-8 h-8 text-white ml-1" 
-                fill="currentColor" 
-                viewBox="0 0 24 24"
+
+      {/* Custom Controls */}
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+        {/* Progress Bar */}
+        <div className="w-full px-4 py-2 pointer-events-auto">
+          <input
+            type="range"
+            min="0"
+            max={duration || 0}
+            value={currentTime}
+            onChange={handleSeek}
+            className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+            style={{
+              background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${(currentTime / duration) * 100}%, rgba(255,255,255,0.3) ${(currentTime / duration) * 100}%, rgba(255,255,255,0.3) 100%)`
+            }}
+          />
+        </div>
+
+        {/* Control Buttons */}
+        <div className="flex items-center justify-between px-4 py-3 pointer-events-auto">
+          {/* Left Controls */}
+          <div className="flex items-center gap-4">
+            {/* Play/Pause Button */}
+            <button
+              onClick={(e) => { e.stopPropagation(); handleVideoClick(); }}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors backdrop-blur-sm"
+            >
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : isPlaying ? (
+                <FaPause className="w-5 h-5 text-white" />
+              ) : (
+                <FaPlay className="w-5 h-5 text-white ml-0.5" />
+              )}
+            </button>
+
+            {/* Volume Control */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={(e) => { e.stopPropagation(); toggleMute(); }}
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
               >
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-            )}
+                {isMuted ? (
+                  <FaVolumeMute className="w-4 h-4 text-white" />
+                ) : (
+                  <FaVolumeUp className="w-4 h-4 text-white" />
+                )}
+              </button>
+              <input
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value={volume}
+                onChange={(e) => { e.stopPropagation(); handleVolumeChange(e); }}
+                className="w-24 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer"
+                style={{
+                  background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${volume * 100}%, rgba(255,255,255,0.3) ${volume * 100}%, rgba(255,255,255,0.3) 100%)`
+                }}
+              />
+            </div>
+
+            {/* Time Display */}
+            <div className="text-white text-sm font-medium px-2">
+              {formatTime(currentTime)} / {formatTime(duration)}
+            </div>
+          </div>
+
+          {/* Right Controls */}
+          <div className="flex items-center gap-2">
+            {/* Fullscreen Button */}
+            <button
+              onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }}
+              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+            >
+              {isFullscreen ? (
+                <FaCompress className="w-4 h-4 text-white" />
+              ) : (
+                <FaExpand className="w-4 h-4 text-white" />
+              )}
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Enhanced shadow overlays for better text readability */}
-      <div className="absolute inset-0 pointer-events-none">
-        {/* Top gradient for better button visibility */}
-        <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/40 to-transparent"></div>
-        
-        {/* Bottom gradient for title readability */}
-        <div className="absolute bottom-0 left-0 right-0 h-2/3 bg-gradient-to-t from-black/90 via-black/60 to-transparent"></div>
-        
-        {/* Side gradients for better overall contrast */}
-        <div className="absolute left-0 top-0 bottom-0 w-1/4 bg-gradient-to-r from-black/30 to-transparent"></div>
-        <div className="absolute right-0 top-0 bottom-0 w-1/4 bg-gradient-to-l from-black/30 to-transparent"></div>
-        
-        {/* Amber overlay for brand consistency */}
-        <div className="absolute inset-0 bg-gradient-to-r from-amber-700/60 to-amber-900/70 mix-blend-multiply"></div>
-      </div>
-
-      {/* Course Title with enhanced shadow effects */}
-      <div className="absolute inset-0 flex items-end pb-8 z-20">
-        <h1 className="mx-auto text-3xl sm:text-4xl lg:text-5xl font-bold text-white px-5 text-center">
-          <span className="drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] shadow-[0_0_20px_rgba(0,0,0,0.5)]">
-            {title}
-          </span>
-        </h1>
-      </div>
+      {/* Center Play Button (when paused) */}
+      {!isPlaying && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+          <button
+            onClick={handleVideoClick}
+            className="pointer-events-auto w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-300 hover:scale-110"
+          >
+            {isLoading ? (
+              <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            ) : (
+              <FaPlay className="w-8 h-8 text-white ml-1" />
+            )}
+          </button>
+        </div>
+      )}
     </div>
   );
 }

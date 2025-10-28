@@ -75,11 +75,13 @@ export const endpoints = {
   donation: `${apiConfig.baseUrl}/donate-info-for-web`,
   tasawwuf: `${apiConfig.baseUrl}/tasawwuf`,
   contact: `${apiConfig.baseUrl}/contact`,
-
+  admissions: `${apiConfig.baseUrl}/admissions`,
+  degrees: `${apiConfig.baseUrl}/degrees`, // Not implemented yet - uses fallback
 
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
   shajara: `${apiConfig.baseUrl}/awlyaa-sanads`,
   sanad: `${apiConfig.baseUrl}/awlyaa-sanads`,
+  
 } as const;
 
 
@@ -96,20 +98,18 @@ export const navigation = {
     { name: 'home', href: '/', icon: 'home' },
     { name: 'courses', href: '/courses', icon: 'course' },
     { name: 'iftah', href: '/iftah', icon: 'fatwa' },
-  
     { name: 'article', href: '/articles', icon: 'article' },
     { name: 'awlayaa', href: '/awlayaa', icon: 'awlayaa' },
     { name: 'awlyaacharts', href: '/awlyaa-charts', icon: 'chart' },
+    { name: 'admission', href: '/admission', icon: 'admission' },
     { name: 'books', href: '/book', icon: 'book' },
     { name: 'donation', href: '/donation', icon: 'donation' },
     { name: 'blogs', href: '/blogs', icon: 'blog' },
     { name: 'author', href: '/authors', icon: 'author' },
-
     { name: 'event', href: '/event', icon: 'event' },
     { name: 'tasawwuf', href: '/tasawwuf', icon: 'tasawwuf' },
     { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'sanad', href: '/sanad', icon: 'sanad' },
-  
     { name: 'contact', href: '/contact', icon: 'contact' },  
     // { name: 'Gallery', href: '/gallery', icon: '' },
   ],

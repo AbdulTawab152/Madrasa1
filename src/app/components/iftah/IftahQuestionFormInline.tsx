@@ -236,53 +236,53 @@ export default function IftahQuestionFormInline() {
             <div className="absolute top-0 right-0 w-20 h-20 bg-white/10 rounded-full -translate-y-10 translate-x-10"></div>
             <div className="absolute bottom-0 left-0 w-16 h-16 bg-white/5 rounded-full translate-y-8 -translate-x-8"></div>
             
-            <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
+            <div className="relative flex flex-col lg:flex-row items-start justify-between gap-8 lg:gap-12">
               {/* Left Content */}
-              <div className={`flex-1 text-white text-center md:text-left ${isRTL ? 'md:text-right' : 'md:text-left'}`}>
-                <div className="inline-flex gap-2 items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-4 border border-white/30 shadow-sm">
-                  <FaQuestionCircle className="mr-1.5 text-sm" />
+              <div className={`flex-1 text-white ${isRTL ? 'text-right' : 'text-left'}`}>
+                <div className={`inline-flex gap-2 items-center rounded-full bg-white/20 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold mb-4 border border-white/30 shadow-sm ${isRTL ? 'ml-auto' : 'mr-auto'}`}>
+                  <FaQuestionCircle className={`${isRTL ? 'ml-1.5' : 'mr-1.5'} text-sm`} />
                   <span>{t('iftah.form.islamicQA')}</span>
-                  <div className="ml-1.5 w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></div>
+                  <div className={`${isRTL ? 'mr-1.5' : 'ml-1.5'} w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse`}></div>
                 </div>
                 
-                <h1 className="text-2xl sm:text-3xl font-bold mb-3 leading-tight">
+                <h1 className={`text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 leading-tight ${isRTL ? 'text-right' : 'text-left'}`}>
                   {t('iftah.form.seekDivineGuidance')}
                 </h1>
                 
-                <p className="text-sm sm:text-base mb-6 opacity-95 leading-relaxed max-w-lg mx-auto md:mx-0">
+                <p className={`text-sm sm:text-base mb-6 opacity-95 leading-relaxed max-w-lg ${isRTL ? 'mr-auto ml-0' : 'ml-auto mr-0'}`}>
                   {t('iftah.form.getAuthenticAnswers')}
                 </p>
                 
                 {/* Features */}
-                <div className="flex flex-wrap justify-center md:justify-start gap-4 text-xs sm:text-sm">
-                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                    <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
+                <div className={`flex flex-wrap gap-3 text-xs sm:text-sm ${isRTL ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <FaCheckCircle className={`text-green-300 text-sm ${isRTL ? 'ml-1.5' : 'mr-1.5'}`} />
                     <span className="opacity-95 font-medium">{t('iftah.form.expertScholars')}</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                    <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
+                  <div className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <FaCheckCircle className={`text-green-300 text-sm ${isRTL ? 'ml-1.5' : 'mr-1.5'}`} />
                     <span className="opacity-95 font-medium">{t('iftah.form.quickResponse')}</span>
                   </div>
-                  <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm px-3 py-1.5 rounded-full">
-                    <FaCheckCircle className="mr-1.5 text-green-300 text-sm" />
+                  <div className={`flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full ${isRTL ? 'flex-row-reverse' : ''}`}>
+                    <FaCheckCircle className={`text-green-300 text-sm ${isRTL ? 'ml-1.5' : 'mr-1.5'}`} />
                     <span className="opacity-95 font-medium">{t('iftah.form.freeService')}</span>
                   </div>
                 </div>
               </div>
 
               {/* Right Content - Compact CTA */}
-              <div className={`flex flex-col items-center ${isRTL ? 'md:items-start' : 'md:items-end'}`}>
-                <div className={`text-center mb-4 ${isRTL ? 'md:text-left' : 'md:text-right'}`}>
-                  <div className="text-4xl sm:text-5xl mb-2">📿</div>
-                  <h3 className="text-lg sm:text-xl font-bold mb-1">{t('iftah.form.askYourQuestion')}</h3>
-                  <p className="text-amber-100 text-xs sm:text-sm">{t('iftah.form.getPersonalizedGuidance')}</p>
+              <div className={`flex flex-col items-center lg:items-center shrink-0 w-full lg:w-auto ${isRTL ? 'lg:mr-auto' : 'lg:ml-auto'}`}>
+                <div className={`text-center mb-6`}>
+                  <div className="text-5xl sm:text-6xl mb-3">📿</div>
+                  <h3 className="text-xl sm:text-2xl font-bold mb-2">{t('iftah.form.askYourQuestion')}</h3>
+                  <p className="text-amber-100 text-sm max-w-xs mx-auto">{t('iftah.form.getPersonalizedGuidance')}</p>
                 </div>
                 
                 <button
                   onClick={() => setShowQuestionFormModal(true)}
-                  className="group flex gap-2 items-center justify-center px-8 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm"
+                  className={`group flex gap-2 items-center justify-center px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
-                  <FaQuestionCircle className="mr-1.5 text-sm group-hover:rotate-12 transition-transform duration-300" />
+                  <FaQuestionCircle className={`${isRTL ? 'ml-1.5' : 'mr-1.5'} text-sm group-hover:rotate-12 transition-transform duration-300`} />
                   <span>{t('iftah.form.askAQuestion')}</span>
                 
                 </button>

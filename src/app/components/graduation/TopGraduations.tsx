@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GraduationsApi } from "../../../lib/api";
-import { FaCalendarAlt, FaStar, FaArrowRight } from "react-icons/fa";
+import { FaCalendarAlt, FaStar } from "react-icons/fa";
+import RTLArrowIcon from "@/components/RTLArrowIcon";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getImageUrl } from "@/lib/utils";
@@ -40,7 +41,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState<number | null>(null);
-  const PAGE_SIZE = 8;
+  const PAGE_SIZE = showAll ? 8 : 3; // Show only 3 cards on home page, 8 on dedicated page
 
   useEffect(() => {
     async function fetchData() {
@@ -50,12 +51,14 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
         let data: Graduation[] = Array.isArray(res?.data) ? res.data : [];
         
         if (!showAll) {
-          setGraduations(data);
+          // Limit to 3 cards on home page
+          const limitedData = data.slice(0, PAGE_SIZE);
+          setGraduations(limitedData);
           const pagination = (res as any)?.pagination;
           if (pagination && typeof pagination.totalPages === 'number') {
             setTotalPages(pagination.totalPages);
           } else {
-            setTotalPages(data.length < PAGE_SIZE && page === 1 ? 1 : (data.length === PAGE_SIZE ? page + 1 : page));
+            setTotalPages(limitedData.length < PAGE_SIZE && page === 1 ? 1 : (limitedData.length === PAGE_SIZE ? page + 1 : page));
           }
         } else {
           setGraduations(data);
@@ -99,14 +102,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
   return (
     <div className="w-full">
         {/* Section heading */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-3xl font-extrabold text-gray-900">
-            {t('graduationDetail.graduations')}
-          </h2>
-          <p className="mt-2 text-gray-600 max-w-2xl mx-auto">
-            {t('graduationDetail.celebratingAchievements')}
-          </p>
-        </div>
+      
        
 
         {/* Enhanced Graduations Grid */}
@@ -116,7 +112,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
             <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-amber-50 via-yellow-50 to-transparent blur-sm opacity-70 rounded-t-3xl" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {graduations.map((grad, idx) => (
+            {graduations.slice(0, PAGE_SIZE).map((grad, idx) => (
               <motion.div
                 key={grad.id}
                 className="group"
@@ -193,7 +189,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                         className={`w-full py-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition-all shadow-sm hover:shadow focus:outline-none mt-2 flex justify-center items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
                       >
                         <span>{t('graduationDetail.viewDetails')}</span>
-                        <FaArrowRight className={`text-sm ${isRTL ? 'scaleX(-1)' : ''}`} />
+                        {/* <RTLArrowIcon /> */}
                       </button>
                     </Link>
                   </div>
@@ -203,8 +199,8 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
           </div>
         </div>
 
-        {/* Pagination */}
-        {!showAll && graduations.length > 0 && (
+        {/* Pagination - Only show on dedicated graduations page */}
+        {showAll && graduations.length > 0 && (
           <PaginationControls
             className="mt-10"
             page={page}
