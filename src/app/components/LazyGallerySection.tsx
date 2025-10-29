@@ -44,7 +44,7 @@ export default function LazyGallerySection() {
           })
           .map((item: any) => {
             const mappedItem = {
-              id: Number(item.id) || Math.random(), // Ensure we have a valid ID
+              id: Number(item.id) || Date.now() + Math.floor(Math.random() * 1000), // Ensure we have a valid ID
               title: item.title || "Untitled",
               description: item.description || "",
               category: item.category || "General",

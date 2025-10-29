@@ -46,7 +46,7 @@ export function ToastProvider({ children, maxToasts = 3 }: ToastProviderProps) {
 
   const showToast = useCallback(
     (message: string, variant: ToastVariant = 'info', duration = 5000) => {
-      const id = `toast-${Date.now()}-${Math.random()}`;
+      const id = `toast-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
       const newToast: Toast = { id, message, variant, duration };
 
       setToasts((prev) => {

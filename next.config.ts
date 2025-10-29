@@ -23,11 +23,19 @@ module.exports = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Performance optimizations
-  experimental: {
-    optimizePackageImports: ["lucide-react", "framer-motion"],
-  },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
+  },
+  webpack: (config) => {
+    // Handle JSON imports properly
+    config.resolve.extensionAlias = {
+      '.js': ['.ts', '.tsx', '.js', '.jsx'],
+      '.json': ['.json'],
+    };
+    return config;
+  },
+  // Turbopack configuration
+  experimental: {
+    optimizePackageImports: ["lucide-react", "framer-motion"],
   },
 };

@@ -5,9 +5,6 @@ import { IftahApi } from "@/lib/api";
 import { buildStorageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import {
-  User,
-  Phone,
-  MapPin,
   Download,
   ChevronLeft,
   BookOpen,
@@ -131,7 +128,7 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
     <div className="min-h-screen mt-40 md:mt-32 bg-white relative py-12 px-4">
       {/* Islamic Pattern Background */}
       <div className="absolute inset-0 opacity-5" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-20 0c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10-10-4.477-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60'  height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-20 0c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10-10-4.477-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
       }}></div>
       
       <div className="relative z-10">
@@ -232,6 +229,13 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             </p>
           </div>
 
+          {/* Mufti Name */}
+          {iftah.mufti && (
+            <div className="mb-6 text-left" dir="ltr">
+              <p className="text-sm text-gray-700 font-medium">Mufti: {cleanText(iftah.mufti.full_name)}</p>
+            </div>
+          )}
+
           {/* Institution Footer */}
           <div className="mt-8 pt-6 border-t border-gray-200">
             <p className="text-sm text-gray-700">دار الافتاء،</p>
@@ -257,50 +261,6 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             </div>
           )}
         </div>
-
-        {/* Mufti Card - Below the Fatwa */}
-        {iftah.mufti && (
-          <div className="bg-white shadow-md border border-gray-200 rounded-lg mt-8 p-8" dir="rtl">
-            <div className="text-center mb-6">
-              <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <User className="w-10 h-10 text-gray-600" />
-              </div>
-              <h3 className="font-semibold text-gray-900 text-xl mb-2">{cleanText(iftah.mufti.full_name)}</h3>
-              {iftah.mufti.father_name && (
-                <p className="text-gray-600 text-sm">Son of {cleanText(iftah.mufti.father_name)}</p>
-              )}
-              <p className="text-gray-500 text-sm mt-2">Islamic Scholar & Mufti</p>
-            </div>
-
-            <div className="space-y-3 mb-6">
-              {iftah.mufti.phone && (
-                <div className="flex items-center p-3 bg-gray-50 rounded border">
-                  <Phone className="w-4 h-4 text-gray-600 ml-3" />
-                  <span className="text-gray-800">{iftah.mufti.phone}</span>
-                </div>
-              )}
-              {iftah.mufti.email && (
-                <div className="flex items-center p-3 bg-gray-50 rounded border">
-                  <span className="text-gray-600 ml-3">📧</span>
-                  <span className="text-gray-800 break-all text-sm">{iftah.mufti.email}</span>
-                </div>
-              )}
-              {iftah.mufti.address && (
-                <div className="flex items-start p-3 bg-gray-50 rounded border">
-                  <MapPin className="w-4 h-4 text-gray-600 ml-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-gray-800 text-sm">{iftah.mufti.address}</span>
-                </div>
-              )}
-            </div>
-
-            {iftah.mufti.biography && (
-              <div className="mt-6 pt-6 border-t border-gray-200">
-                <h4 className="font-semibold text-gray-900 mb-3">Biography</h4>
-                <p className="text-gray-700 leading-relaxed text-sm">{cleanText(iftah.mufti.biography)}</p>
-              </div>
-            )}
-          </div>
-        )}
         </main>
       </div>
     </div>

@@ -3,7 +3,7 @@ import IslamicHeader from "../components/IslamicHeader";
 
 export default function SanadPage() {
   return (
-    <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
+    <main className="notranlate w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <IslamicHeader 
         pageType="sanad" 
         title="Our Sanad"

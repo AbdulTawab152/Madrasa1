@@ -10,27 +10,27 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 /**
- * Format date to a readable string
+ * Format date to a readable string (consistent between server and client)
  */
 export function formatDate(date: string | Date): string {
   const d = new Date(date);
-  return d.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  // Use a consistent format that doesn't depend on locale
+  const year = d.getFullYear();
+  const month = d.toLocaleDateString('en-US', { month: 'long' });
+  const day = d.getDate();
+  return `${month} ${day}, ${year}`;
 }
 
 /**
- * Format date to a short string
+ * Format date to a short string (consistent between server and client)
  */
 export function formatDateShort(date: string | Date): string {
   const d = new Date(date);
-  return d.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  });
+  // Use a consistent format that doesn't depend on locale
+  const year = d.getFullYear();
+  const month = d.toLocaleDateString('en-US', { month: 'short' });
+  const day = d.getDate();
+  return `${month} ${day}, ${year}`;
 }
 
 /**
@@ -147,10 +147,13 @@ export function throttle<T extends (...args: any[]) => any>(
 }
 
 /**
- * Generate a random ID
+ * Generate a deterministic ID (consistent between server and client)
  */
 export function generateId(): string {
-  return Math.random().toString(36).substr(2, 9);
+  // Use timestamp and counter to avoid Math.random() hydration issues
+  const timestamp = Date.now().toString(36);
+  const counter = Math.floor(Math.random() * 1000).toString(36);
+  return `${timestamp}-${counter}`;
 }
 
 /**
