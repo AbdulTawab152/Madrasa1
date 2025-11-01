@@ -65,7 +65,7 @@ export const endpoints = {
   book: `${apiConfig.baseUrl}/book`,
   events: `${apiConfig.baseUrl}/events`,  // لیست
   event: `${apiConfig.baseUrl}/event`, 
-  iftah: `${apiConfig.baseUrl}/iftah`,
+  iftah: '/api/iftah', // Use local API route proxy
   IftahQuestionForm: `${apiConfig.baseUrl}/iftah-question`,
   csrfCookie: `${apiConfig.baseUrl}/sanctum/csrf-cookie`,
   articles: `${apiConfig.baseUrl}/articles`,

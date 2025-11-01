@@ -40,6 +40,18 @@ export default function LanguageSwitcher() {
   const handleLanguageChange = (langCode: string) => {
     setCurrentLang(langCode);
     localStorage.setItem('i18nextLng', langCode);
+    
+    // Dispatch custom event for font and direction updates
+    if (typeof window !== 'undefined') {
+      const event = new CustomEvent('languagechange', { detail: { lang: langCode } });
+      window.dispatchEvent(event);
+      
+      // Also update document attributes immediately
+      document.documentElement.lang = langCode;
+      const isRTL = langCode === 'ps' || langCode === 'prs' || langCode === 'ar' || langCode === 'fa' || langCode === 'ur';
+      document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    }
+    
     setIsOpen(false);
     router.refresh();
   };

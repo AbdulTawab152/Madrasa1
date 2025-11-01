@@ -48,7 +48,7 @@ export async function GET(request: NextRequest) {
     // const data = await response.json();
     
     // Mock data for now
-    const mockData = [];
+    const mockData: any[] = [];
     
     return NextResponse.json({
       success: true,

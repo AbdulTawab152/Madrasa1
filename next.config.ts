@@ -26,7 +26,7 @@ module.exports = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  webpack: (config) => {
+  webpack: (config: any) => {
     // Handle JSON imports properly
     config.resolve.extensionAlias = {
       '.js': ['.ts', '.tsx', '.js', '.jsx'],

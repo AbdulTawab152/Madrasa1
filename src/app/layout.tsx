@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <html data-scroll-behavior="smooth">
-      <body>
+      <body suppressHydrationWarning>
         <Script
           id="gtranslate-settings"
           strategy="beforeInteractive"

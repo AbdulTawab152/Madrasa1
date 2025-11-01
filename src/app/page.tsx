@@ -62,11 +62,10 @@ export default function HomePage() {
 
 
       {/* Courses Section */}
-      <section className="py-6 bg-gradient-to-b from-gray-50 to-white">
-    
-
-
-        <div className="max-w-7xl mx-auto px-6 text-center">
+      <section className="py-6 bg-gradient-to-b from-gray-50 to-white relative">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           {/* Simple Hero Text */}
           <div className="mb-8">
             <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
@@ -78,9 +77,7 @@ export default function HomePage() {
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto sm:text-sm">
-              {t('home.coursesDescription')}{" "}
-              <span className="font-semibold text-amber-700">{t('home.quran')}</span> {t('home.and')}{" "}
-              <span className="font-semibold text-amber-700">{t('home.sunnah')}</span>.
+              {t('home.coursesDescription')}
             </p>
           </div>
 
@@ -117,8 +114,10 @@ export default function HomePage() {
       {/* gragurtion */}
 
       {/* Events Section - Lazy Loaded */}
-      <section className="py-10 ">
-        <div className="max-w-7xl mx-auto px-6">
+      <section className="py-10 relative">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20 pointer-events-none"></div>
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
           <Suspense
           fallback={
             <div className="flex items-center justify-center py-20">
@@ -137,7 +136,9 @@ export default function HomePage() {
       {/* Books */}
 
       <section className="relative py-12 bg-gradient-to-b from-amber-50 to-white">
-        <div className="max-w-7xl mx-auto px-6 text-center">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
+        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
           {/* Simple Hero Text */}
           <div className="mb-8">
             <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
@@ -149,9 +150,7 @@ export default function HomePage() {
             </h2>
 
             <p className="text-gray-600 max-w-2xl mx-auto">
-              {t('home.booksDescription')}{" "}
-              <span className="font-semibold text-amber-700">{t('home.quran')}</span> {t('home.and')}{" "}
-              <span className="font-semibold text-amber-700">{t('home.sunnah')}</span>, {t('home.booksDescriptionEnd')}
+              {t('home.booksDescription')}{" "}{t('home.booksDescriptionEnd')}
             </p>
           </div>
 
@@ -185,6 +184,8 @@ export default function HomePage() {
 
       {/* Sanad Section */}
       <section className="relative py-20 overflow-hidden bg-gradient-to-br from-purple-50 via-white to-indigo-50">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
         {/* Animated Gradient Blobs */}
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-indigo-200/30 rounded-full blur-3xl animate-pulse z-0" />
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl animate-pulse z-0" />
@@ -243,22 +244,30 @@ export default function HomePage() {
       </section>
 
       {/* Gallery - Lazy Loaded */}
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-20">
-            <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-            <span className="ml-4 text-gray-600 font-medium">
-              {t('home.loadingGallery')}
-            </span>
+      <div className="relative">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
+        <Suspense
+          fallback={
+            <div className="flex items-center justify-center py-20 relative z-10">
+              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+              <span className="ml-4 text-gray-600 font-medium">
+                {t('home.loadingGallery')}
+              </span>
+            </div>
+          }
+        >
+          <div className="relative z-10">
+            <LazyGallerySection />
           </div>
-        }
-      >
-        <LazyGallerySection />
-      </Suspense>
+        </Suspense>
+      </div>
 
       {/* gragutaion */}
 
       <section className="relative py-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50">
+        {/* Dark Overlay */}
+        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
         {/* Animated Gradient Blobs */}
         <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full blur-3xl animate-pulse z-0" />
         <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse z-0" />
@@ -318,6 +327,8 @@ export default function HomePage() {
    
 
  <section className="relative py-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50">
+  {/* Dark Overlay */}
+  <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
   {/* Animated Gradient Blobs */}
   <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full blur-3xl animate-pulse z-0" />
   <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse z-0" />

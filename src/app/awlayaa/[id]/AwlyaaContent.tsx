@@ -25,7 +25,8 @@ interface AwlyaaContentProps {
 
 export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
   const t = (key: string): string => {
-    return getTranslation(key, 'ps');
+    const translation = getTranslation(key, 'ps');
+    return typeof translation === 'string' ? translation : key;
   };
 
   // Format date for display

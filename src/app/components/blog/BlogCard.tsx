@@ -78,7 +78,8 @@ function formatDate(value?: string | null, t?: (key: string) => string) {
 
 export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
   const t = (key: string): string => {
-    return getTranslation(key, 'ps');
+    const translation = getTranslation(key, 'ps');
+    return typeof translation === 'string' ? translation : key;
   };
 
   const [selectedCategory, setSelectedCategory] = useState<string>(t('blog.all'));

@@ -1,5 +1,6 @@
 /* Import fonts */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* Poppins for Pashto */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -67,8 +68,37 @@
 /* Base styles */
 @layer base {
   body {
-    @apply bg-background-primary text-text-primary font-sans;
+    @apply bg-background-primary text-text-primary;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Apple font (SF Pro) for English */
+  html[lang="en"] body,
+  html[lang="en"] {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  /* Poppins for Pashto and other non-English languages */
+  html[lang="ps"] body,
+  html[lang="prs"] body,
+  html[lang="fa"] body,
+  html[lang="ar"] body,
+  html[lang="ur"] body,
+  html[lang="tr"] body,
+  html[lang="uz"] body,
+  html:not([lang]) body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  
+  html[lang="ps"],
+  html[lang="prs"],
+  html[lang="fa"],
+  html[lang="ar"],
+  html[lang="ur"],
+  html[lang="tr"],
+  html[lang="uz"],
+  html:not([lang]) {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   }
   
   html {

@@ -3,10 +3,36 @@ import Link from "next/link";
 import { useState } from "react";
 import { cleanText } from "@/lib/textUtils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { IftahApi } from "@/lib/api";
 
 interface Author {
+  id?: number;
   name: string;
+  full_name?: string;
   bio?: string;
+  father_name?: string;
+  email?: string;
+  image?: string;
+  phone?: string;
+  address?: string;
+  dob?: string;
+  biography?: string;
+}
+
+interface Tag {
+  id: number;
+  name: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+interface IftahSubCategory {
+  id: number;
+  name: string;
+  tag_id: number;
+  created_at?: string;
+  updated_at?: string;
+  tag?: Tag;
 }
 
 interface IftahItem {
@@ -21,10 +47,13 @@ interface IftahItem {
   date?: string;
   shared_by?: string;
   mufti?: Author;
+  mufti_id?: number;
   category?: string;
   tags?: string[];
   is_published?: boolean;
   viewCount?: number;
+  iftah_sub_category_id?: number;
+  iftah_sub_category?: IftahSubCategory;
 }
 
 interface DarulUloomIftahSectionProps {
@@ -33,6 +62,8 @@ interface DarulUloomIftahSectionProps {
   title?: string;
   subtitle?: string;
 }
+
+type ViewMode = 'categories' | 'subcategories' | 'questions';
 
 export default function DarulUloomIftahSection({ 
   fatwas = [], 
@@ -49,21 +80,82 @@ export default function DarulUloomIftahSection({
   };
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState<string | number | null>(null);
+  const [selectedSubCategory, setSelectedSubCategory] = useState<string | number | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>('categories');
+  const [subCategoryQuestions, setSubCategoryQuestions] = useState<IftahItem[]>([]);
+  const [loading, setLoading] = useState(false);
 
-  // Filter content
-  const filteredFatwas = fatwas.filter(item => {
-    const cleanTitle = cleanText(item.title);
-    const cleanQuestion = cleanText(item.question);
+  // Extract categories and subcategories from fatwas
+  const categories = IftahApi.extractCategories(fatwas);
+  const subcategories = selectedCategory 
+    ? IftahApi.extractSubCategories(fatwas, selectedCategory)
+    : IftahApi.extractSubCategories(fatwas);
+
+  // Handle category click - show subcategories
+  const handleCategoryClick = (categoryId: number) => {
+    setSelectedCategory(categoryId);
+    setSelectedSubCategory(null);
+    setViewMode('subcategories');
+    setSubCategoryQuestions([]);
+  };
+
+  // Handle subcategory click - fetch and show questions
+  const handleSubCategoryClick = async (subCategoryId: number) => {
+    setSelectedSubCategory(subCategoryId);
+    setViewMode('questions');
+    setLoading(true);
     
-    const matchesSearch = cleanTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cleanQuestion.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
+    try {
+      const result = await IftahApi.getBySubCategory(subCategoryId, { limit: 100 });
+      if (result.success && Array.isArray(result.data)) {
+        setSubCategoryQuestions(result.data);
+      } else {
+        setSubCategoryQuestions([]);
+      }
+    } catch (error) {
+      console.error('Error fetching subcategory questions:', error);
+      setSubCategoryQuestions([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Handle back to categories
+  const handleBackToCategories = () => {
+    setSelectedCategory(null);
+    setSelectedSubCategory(null);
+    setViewMode('categories');
+    setSubCategoryQuestions([]);
+  };
+
+  // Handle back to subcategories
+  const handleBackToSubCategories = () => {
+    setSelectedSubCategory(null);
+    setViewMode('subcategories');
+    setSubCategoryQuestions([]);
+  };
+
+  // Filter content for questions view
+  const filteredFatwas = viewMode === 'questions' 
+    ? subCategoryQuestions.filter(item => {
+        const cleanTitle = cleanText(item.title);
+        const cleanQuestion = cleanText(item.question);
+        return cleanTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+               cleanQuestion.toLowerCase().includes(searchTerm.toLowerCase());
+      })
+    : fatwas.filter(item => {
+        const cleanTitle = cleanText(item.title);
+        const cleanQuestion = cleanText(item.question);
+        const matchesSearch = cleanTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                             cleanQuestion.toLowerCase().includes(searchTerm.toLowerCase());
+        const matchesCategory = !selectedCategory || 
+          item.iftah_sub_category?.tag?.id === selectedCategory ||
+          item.iftah_sub_category?.tag_id === selectedCategory;
+        return matchesSearch && matchesCategory;
+      });
 
   const displayFatwas = showAll ? filteredFatwas : filteredFatwas.slice(0, 8);
-  const categories = [...new Set(fatwas.map(item => item.category).filter(Boolean))];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
@@ -112,7 +204,19 @@ export default function DarulUloomIftahSection({
               {/* Enhanced Section Header */}
               <div className="bg-gradient-to-r from-emerald-50 to-teal-50 px-8 py-6 border-b border-emerald-200">
                 <div className="flex items-center justify-between">
-                  <div className="flex gap-4 items-center">
+                  <div className="flex gap-4 items-center flex-1">
+                    {/* Back Button */}
+                    {(viewMode === 'subcategories' || viewMode === 'questions') && (
+                      <button
+                        onClick={viewMode === 'questions' ? handleBackToSubCategories : handleBackToCategories}
+                        className="w-10 h-10 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg flex items-center justify-center transition-colors shadow-sm"
+                        title="Back"
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                        </svg>
+                      </button>
+                    )}
                     <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-xl flex items-center justify-center mr-4 shadow-lg">
                       <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -120,10 +224,14 @@ export default function DarulUloomIftahSection({
                     </div>
                     <div>
                       <h3 className="text-2xl font-bold text-emerald-900" style={{ fontFamily: 'Amiri, serif' }}>
-                        نئے سوالات
+                        {viewMode === 'categories' && 'د کتګوریو لیست'}
+                        {viewMode === 'subcategories' && 'د فرعي کتګوریو لیست'}
+                        {viewMode === 'questions' && 'سوالات'}
                       </h3>
                       <p className="text-emerald-700 text-sm mt-1">
-                        {displayFatwas.length} questions available
+                        {viewMode === 'categories' && `${categories.length} categories available`}
+                        {viewMode === 'subcategories' && `${subcategories.length} subcategories available`}
+                        {viewMode === 'questions' && `${displayFatwas.length} questions available`}
                       </p>
                     </div>
                   </div>
@@ -134,9 +242,85 @@ export default function DarulUloomIftahSection({
                 </div>
               </div>
 
-              {/* Enhanced Content List */}
-              <div className="divide-y divide-emerald-100">
-                {displayFatwas.map((item, index) => (
+              {/* Categories View */}
+              {viewMode === 'categories' && (
+                <div className="p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {categories.map((category) => (
+                      <button
+                        key={category.id}
+                        onClick={() => handleCategoryClick(category.id)}
+                        className="group bg-gradient-to-br from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 rounded-xl p-6 border border-emerald-200 hover:border-emerald-300 transition-all duration-300 text-right shadow-sm hover:shadow-md"
+                      >
+                        <div className="flex items-center justify-between">
+                          <svg className="w-6 h-6 text-emerald-600 group-hover:text-emerald-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-bold text-emerald-900 mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                              {cleanText(category.name)}
+                            </h4>
+                            <p className="text-sm text-emerald-700">
+                              Click to view subcategories
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  {categories.length === 0 && (
+                    <div className="text-center py-12">
+                      <p className="text-gray-600">No categories available</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Subcategories View */}
+              {viewMode === 'subcategories' && (
+                <div className="p-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {subcategories.map((subcategory) => (
+                      <button
+                        key={subcategory.id}
+                        onClick={() => handleSubCategoryClick(subcategory.id)}
+                        className="group bg-gradient-to-br from-teal-50 to-emerald-50 hover:from-teal-100 hover:to-emerald-100 rounded-xl p-6 border border-teal-200 hover:border-teal-300 transition-all duration-300 text-right shadow-sm hover:shadow-md"
+                      >
+                        <div className="flex items-center justify-between">
+                          <svg className="w-6 h-6 text-teal-600 group-hover:text-teal-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                          <div className="flex-1">
+                            <h4 className="text-lg font-bold text-teal-900 mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                              {cleanText(subcategory.name)}
+                            </h4>
+                            <p className="text-sm text-teal-700">
+                              Click to view questions
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                  {subcategories.length === 0 && (
+                    <div className="text-center py-12">
+                      <p className="text-gray-600">No subcategories available</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Questions View */}
+              {viewMode === 'questions' && (
+                <>
+                  {loading ? (
+                    <div className="px-8 py-12 text-center">
+                      <div className="w-10 h-10 border-4 border-emerald-200 border-t-emerald-600 rounded-full animate-spin mx-auto mb-4"></div>
+                      <p className="text-gray-600">Loading questions...</p>
+                    </div>
+                  ) : (
+                    <div className="divide-y divide-emerald-100">
+                      {displayFatwas.map((item) => (
                   <div key={item.id} className="group hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all duration-300">
                     <div className="px-8 py-6">
                       <div className="flex items-start justify-between">
@@ -145,9 +329,14 @@ export default function DarulUloomIftahSection({
                             <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium mr-3 bg-emerald-100 text-emerald-800">
                               ❓ Q&A
                             </span>
-                            {item.category && (
+                            {item.iftah_sub_category && (
                               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                {cleanText(item.category)}
+                                {cleanText(item.iftah_sub_category.name)}
+                              </span>
+                            )}
+                            {item.mufti?.full_name && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                {cleanText(item.mufti.full_name)}
                               </span>
                             )}
                           </div>
@@ -170,7 +359,7 @@ export default function DarulUloomIftahSection({
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                                   </svg>
                                 </div>
-                                <span>{cleanText(item.mufti?.name || "Anonymous")}</span>
+                                <span>{cleanText(item.mufti?.full_name || item.mufti?.name || "Anonymous")}</span>
                               </div>
                             )}
                             <div className="flex items-center">
@@ -202,19 +391,9 @@ export default function DarulUloomIftahSection({
                     </div>
                   </div>
                 ))}
-              </div>
-
-              {/* Empty State */}
-              {displayFatwas.length === 0 && (
-                <div className="px-8 py-12 text-center">
-                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Questions Found</h3>
-                  <p className="text-gray-600">Try adjusting your search criteria</p>
-                </div>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -262,14 +441,14 @@ export default function DarulUloomIftahSection({
                         Category
                       </label>
                       <select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
+                        value={selectedCategory || ""}
+                        onChange={(e) => setSelectedCategory(e.target.value ? Number(e.target.value) : null)}
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
                       >
                         <option value="">All Categories</option>
                         {categories.map((category) => (
-                          <option key={category} value={category}>
-                            {cleanText(category)}
+                          <option key={category.id} value={category.id}>
+                            {cleanText(category.name)}
                           </option>
                         ))}
                       </select>

@@ -5,6 +5,7 @@ import { SanadApi } from "../../../lib/api";
 import { Sanad } from "../../../lib/types";
 import { motion } from "framer-motion";
 import { ComingSoonEmptyState } from "@/components/EmptyState";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface SanadSectionProps {
   showAll?: boolean;
@@ -12,8 +13,15 @@ interface SanadSectionProps {
 }
 
 export default function SanadSection({ showAll = false, showHero = false }: SanadSectionProps) {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
   const [sanads, setSanads] = useState<Sanad[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Create a string-safe wrapper function
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
 
   useEffect(() => {
     async function fetchSanads() {
@@ -44,8 +52,8 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
   if (!sanads.length) {
     return (
       <ComingSoonEmptyState
-        title="زموږ شجره"
-        description="د روحاني نسبونو شجره"
+        title={t('sanad.title')}
+        description={t('sanad.description')}
         className="max-w-2xl mx-auto"
       />
     );
@@ -57,10 +65,10 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
         <div className="text-center mb-16">
           <div className="w-12 h-1 bg-blue-600 rounded-full mx-auto mb-6"></div>
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            زموږ شجره
+            {t('sanad.title')}
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            د روحاني نسبونو شجره
+            {t('sanad.description')}
           </p>
         </div>
       )}

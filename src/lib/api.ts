@@ -92,10 +92,21 @@ class ApiClient {
       url = endpoint;
     } else {
       const base = this.baseUrl;
-      const baseIsAbsolute = /^https?:\/\//i.test(base);
-
-      if (endpoint.startsWith("/") && !baseIsAbsolute) {
-        url = endpoint;
+      
+      // If endpoint is a local route (starts with /), use it as-is
+      // Next.js will resolve relative URLs correctly in server components
+      // For client-side, we'll need absolute URL
+      if (endpoint.startsWith("/")) {
+        // For server-side, relative URLs work fine with fetch
+        // For client-side, we need absolute URL
+        if (typeof window !== 'undefined') {
+          url = `${window.location.origin}${endpoint}`;
+        } else {
+          // Server-side: try to use app URL if available, otherwise use relative
+          // Relative URLs work in Next.js server components via fetch
+          const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+          url = `${appUrl}${endpoint}`;
+        }
       } else {
         const needsSlash =
           !base.endsWith("/") && !endpoint.startsWith("/");
@@ -299,12 +310,21 @@ class ApiClient {
       }
     }
 
-    // Log final error
+    // Log final error (suppress for endpoints with fallback data)
     if (lastError) {
-      const shouldSuppress = lastError.message.includes('404') && 
-        apiConfig.errorHandling.suppressedStatusCodes.includes(404);
+      const shouldSuppress = 
+        (lastError.message.includes('404') && 
+         apiConfig.errorHandling.suppressedStatusCodes.includes(404)) ||
+        // Suppress errors for endpoints that have graceful fallback handling
+        endpoint.includes('/iftah');
+      
       if (!shouldSuppress) {
         logger.apiError(endpoint, lastError);
+      } else {
+        // Only log as debug/warn level for endpoints with fallback
+        logger.debug(`API request failed (fallback will be used): ${endpoint}`, { 
+          error: lastError.message 
+        });
       }
     }
     

@@ -32,7 +32,10 @@ interface Params {
 
 export default async function BlogDetailsPage({ params }: Params) {
   const { slug } = await params;
-  const t = (key: string): string => getTranslation(key, 'ps');
+  const t = (key: string): string => {
+    const translation = getTranslation(key, 'ps');
+    return typeof translation === 'string' ? translation : key;
+  };
 
   const blogResponse = await BlogsApi.getBySlug(slug);
   if (!blogResponse.success || ('error' in blogResponse && blogResponse.error === 'not_found')) {

@@ -5,7 +5,6 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { PiList } from "react-icons/pi";
-import { Button } from "@/components/ui/button";
 
 import { appConfig, navigation } from "@/lib/config";
 import RouteProgressBar from "@/components/RouteProgressBar";
@@ -16,17 +15,17 @@ import { FaSearch } from "react-icons/fa";
 const PRIMARY_LINK_LIMIT = 7;
 const NAV_LABELS: Record<string, string> = {
   home: "کور",
-  courses: "درسي کورسونه",
+  courses: " کورسونه",
   iftah: "افتاء",
   article: "مقالې",
   awlayaa: "اولیا",
   awlyaacharts: "اولیا چارټونه",
-  admission: "نوملیکنه",
-  books: "کتابونه",
+  admission: "نوم لیکنه",
+  books: "کتابتون",
   donation: "مرسته",
   blogs: "بلاګونه",
   author: "لیکوالان",
-  event: "پیښې",
+  event: "واقعات",
   tasawwuf: "تصوف",
   graduation: "فراغتونه",
   sanad: "شجره",
@@ -78,6 +77,7 @@ const Navbar = memo(function Navbar() {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, [isSearchOpen]);
+
 
   const { desktop, mobile } = useMemo(() => {
     const now = new Date();
@@ -372,6 +372,19 @@ const Navbar = memo(function Navbar() {
                 )}
               </div>
               
+              {/* Donation Button */}
+              <Link href="/donation" className="hidden md:block">
+                <button
+                  className="group relative inline-flex items-center justify-center gap-2 px-2 py-1 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium text-sm shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-out hover:scale-105 active:scale-100 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 overflow-hidden"
+                >
+                  {/* Subtle shine effect */}
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
+                  
+                  <span className="text-lg inline-block animate-bounce group-hover:animate-none group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out">🎁</span>
+                  <span className="whitespace-nowrap relative z-10">مرسته وکړئ</span>
+                </button>
+              </Link>
+              
               <button
                 type="button"
                 onClick={toggleMobileMenu}
@@ -381,10 +394,6 @@ const Navbar = memo(function Navbar() {
               >
                 <PiList size={22} className="text-primary-700" />
               </button>
-
-              {/* Donation Button */}
-            
-            
             </div>
 
  

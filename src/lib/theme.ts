@@ -80,7 +80,9 @@ export const theme = {
   // Typography
   typography: {
     fontFamily: {
-      sans: ['Inter', 'system-ui', 'sans-serif'],
+      sans: ['Poppins', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+      sansEnglish: ['-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'SF Pro Text', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      sansPashto: ['Poppins', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
       serif: ['Georgia', 'serif'],
       mono: ['JetBrains Mono', 'monospace'],
       arabic: ['Noto Naskh Arabic', 'serif'],

@@ -87,11 +87,7 @@ export default function EventsSection({
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight ">
-                <span className="relative z-10">
-                  <span className="px-2 py-1 rounded-lg">
-                    {t('events.discoverOur')}
-                  </span>
-                </span>
+               
                 <span className="relative mt-3 z-10">
                   <span className="bg-gradient-to-r from-amber-500 via-orange-400 to-orange-600 bg-clip-text text-transparent  text-4xl md:text-6xl font-black tracking-tight">
                     {t('events.events')}

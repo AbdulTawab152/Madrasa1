@@ -41,7 +41,8 @@ interface DonationInfo {
 
 export default function DonationPage() {
   const t = (key: string): string => {
-    return getTranslation(key, 'ps');
+    const translation = getTranslation(key, 'ps');
+    return typeof translation === 'string' ? translation : key;
   };
 
   const [donations, setDonations] = useState<DonationInfo[]>([]);
@@ -270,13 +271,13 @@ export default function DonationPage() {
           <div className="text-center mb-20">
             <div className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
               <span>📋</span>
-              <span>د ډونیشن لومړی</span>
+              <span>{t('donation.instructionTitle')}</span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              څنګه مرسته وکړئ
+              {t('donation.howToDonateTitle')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              ستاسو د مرستې لپاره ډیرونه اسانه لارې شته دي. د لاندې لارښوونو تعقیب وکړئ
+              {t('donation.howToDonateDescription')}
             </p>
           </div>
 
@@ -290,8 +291,8 @@ export default function DonationPage() {
                   <span className="text-xs font-bold text-yellow-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">د اړیکو خبرې وکړئ</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">د WhatsApp یا بریښنالیک له لارې د مرستې د اړیکې سره اړیکه ونیسئ</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">{t('donation.contactStep')}</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">{t('donation.contactStepDesc')}</p>
             </div>
 
             <div className="group text-center">
@@ -303,8 +304,8 @@ export default function DonationPage() {
                   <span className="text-xs font-bold text-blue-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">مرسته واستوئ</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">ستاسو د مرستې سیمه او اندازه ټاکئ او داسې تصدیق کړئ</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">{t('donation.donateStep')}</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">{t('donation.donateStepDesc')}</p>
             </div>
 
             <div className="group text-center">
@@ -329,13 +330,13 @@ export default function DonationPage() {
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
               <span>🛡️</span>
-              <span>ولې زموږ پر باور وکړئ؟</span>
+              <span>{t('donation.trustTitle')}</span>
             </div>
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              ولې زموږ پر باور وکړئ؟
+              {t('donation.trustTitle')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-              موږ د شفافیت، امنیت او د مرستوکوونکو لپاره دوامداره ملاتړ ګارنګو خپلولو ته ژمن یو
+              {t('donation.trustDescription')}
             </p>
           </div>
 
@@ -352,8 +353,8 @@ export default function DonationPage() {
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
                 <FaCheckCircle className="text-2xl" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-300">تصدیق شوي سازمانونه</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">زموږ سازمان رسمي تصدیق شوی دی او د باور وړ چارواکو لخوا منظمه معاینه کیږي</p>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-300">{t('donation.verifiedTitle')}</h3>
+              <p className="text-gray-600 leading-relaxed text-lg">{t('donation.verifiedDescription')}</p>
             </div>
 
             <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200">

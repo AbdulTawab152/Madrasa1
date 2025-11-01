@@ -45,7 +45,10 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
   // Client-side language switching will handle the rest
   const currentLang = 'ps';
   
-  const t = (key: string) => getTranslation(key, currentLang);
+  const t = (key: string): string => {
+    const translation = getTranslation(key, currentLang);
+    return typeof translation === 'string' ? translation : key;
+  };
   
   // Helper function to translate course data values
   const translateCourseValue = (value: string, type: 'duration' | 'quality' | 'size') => {

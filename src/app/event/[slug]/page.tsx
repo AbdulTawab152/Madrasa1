@@ -34,7 +34,10 @@ export default async function EventDetailsPage({ params }: Params) {
   // Determine language from cookie (fallback to ps)
   const cookieStore = await cookies();
   const currentLanguage = cookieStore.get("language")?.value || "ps";
-  const t = (key: string) => getTranslation(key, currentLanguage);
+  const t = (key: string): string => {
+    const translation = getTranslation(key, currentLanguage);
+    return typeof translation === 'string' ? translation : key;
+  };
 
   const eventResponse = await EventsApi.getBySlug(slug);
   if (!eventResponse.success) {
