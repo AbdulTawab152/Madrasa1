@@ -14,19 +14,34 @@ export interface Iftah {
   id: number;
   title: string;
   slug: string;
-  question: string;
-  answer: string;
-  mufti?: Author;
+  question?: string;
+  answer?: string;
+  mufti?: Author | any;
   category?: string;
   tags?: string[];
   references?: string[];
   isPublished?: boolean;
   viewCount?: number;
-  is_published?: boolean;
+  is_published?: boolean | number;
   tag?: {
     id: number;
     name: string;
   };
+  tag_id?: number | null;
+  iftah_sub_category?: {
+    id: number;
+    name: string;
+    tag_id?: number;
+    tag?: {
+      id: number;
+      name: string;
+    };
+  };
+  date?: string;
+  created_at?: string;
+  updated_at?: string;
+  note?: string;
+  attachment?: string | null;
 }
 
 export default function IftahCategoryPage({ 
@@ -36,8 +51,11 @@ export default function IftahCategoryPage({
 }) {
   const [categorySlug, setCategorySlug] = useState<string>('');
   const [categoryIftahs, setCategoryIftahs] = useState<Iftah[]>([]);
+  const [subCategories, setSubCategories] = useState<Array<{ id: number; name: string; tag_id?: number; tag?: { id: number; name: string } }>>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [tagInfo, setTagInfo] = useState<any>(null);
+  const [tagId, setTagId] = useState<number | string | null>(null);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -46,22 +64,135 @@ export default function IftahCategoryPage({
       setCategorySlug(slug);
       
       // Decode the category name
-      const name = decodeURIComponent(slug);
+      const categoryName = decodeURIComponent(slug);
       
       setIsLoading(true);
       
       try {
-        // Fetch all iftahs
-        const res = await IftahApi.getAll();
-        const allIftahs = Array.isArray(res.data) ? (res.data as Iftah[]) : [];
+        console.log('🔍 Fetching data for category:', categoryName);
         
-        // Filter by tag name
-        const filtered = allIftahs.filter(
-          (item: Iftah) => item.tag?.name === name
-        );
-        setCategoryIftahs(filtered);
+        // Step 1: Check if category slug is a numeric tag ID
+        const numericId = parseInt(categoryName);
+        let foundTagId: number | string | null = null;
+        
+        if (!isNaN(numericId) && numericId > 0) {
+          // Category slug is a numeric ID - use it directly
+          foundTagId = numericId;
+          setTagId(numericId);
+          console.log('✅ Category slug is numeric tag ID:', numericId);
+        } else {
+          // Step 2: Fetch all tags to find the tag by name
+          const tagsResult = await IftahApi.getTags({ limit: 100 });
+          console.log('📋 Tags fetched:', tagsResult);
+          
+          if (tagsResult.success && Array.isArray(tagsResult.data)) {
+            // Find tag by name
+            const foundTag = tagsResult.data.find((tag: any) => 
+              tag.name === categoryName || 
+              decodeURIComponent(categoryName) === tag.name ||
+              tag.name?.trim() === categoryName?.trim()
+            );
+            
+            if (foundTag) {
+              foundTagId = foundTag.id;
+              setTagId(foundTag.id);
+              console.log('✅ Found tag by name:', foundTag);
+            } else {
+              console.warn('⚠️ Tag not found by name:', categoryName);
+            }
+          }
+        }
+        
+        // Step 2: If tag ID found, fetch tag data using the tag API endpoint
+        if (foundTagId) {
+          console.log('📂 Fetching tag data for ID:', foundTagId);
+          const tagResult = await IftahApi.getTagById(foundTagId);
+          
+          if (tagResult.success && tagResult.data) {
+            const responseData = tagResult.data as any;
+            console.log('✅ Tag API response structure:', {
+              hasTagId: !!responseData.tag_id,
+              hasData: !!responseData.data,
+              dataIsArray: Array.isArray(responseData.data),
+              dataLength: Array.isArray(responseData.data) ? responseData.data.length : 0,
+              pagination: responseData.pagination
+            });
+            
+            // Extract tag info and iftah items from response
+            // API response: { tag_id: "1", data: [...], pagination: {...} }
+            if (responseData.tag_id) {
+              setTagInfo({ tag_id: responseData.tag_id });
+              setTagId(responseData.tag_id);
+            }
+            
+            // Extract data array - this is the main iftah items array
+            // API response structure: { tag_id: "1", data: [...], pagination: {...} }
+            if (Array.isArray(responseData.data)) {
+              console.log('✅ Found', responseData.data.length, 'iftah items for tag', foundTagId);
+              setCategoryIftahs(responseData.data as Iftah[]);
+              
+              // Extract unique subcategories from iftah items
+              const uniqueSubCategories = new Map<number, { id: number; name: string; tag_id?: number; tag?: { id: number; name: string } }>();
+              responseData.data.forEach((item: any) => {
+                if (item.iftah_sub_category && item.iftah_sub_category.id) {
+                  const subCat = item.iftah_sub_category;
+                  if (!uniqueSubCategories.has(subCat.id)) {
+                    uniqueSubCategories.set(subCat.id, {
+                      id: subCat.id,
+                      name: subCat.name,
+                      tag_id: subCat.tag_id,
+                      tag: subCat.tag
+                    });
+                  }
+                }
+              });
+              setSubCategories(Array.from(uniqueSubCategories.values()));
+              console.log('📁 Extracted', uniqueSubCategories.size, 'unique subcategories');
+            } else {
+              console.warn('⚠️ No data array in response. Response structure:', {
+                keys: Object.keys(responseData),
+                hasTagId: !!responseData.tag_id,
+                responseData: responseData
+              });
+              setCategoryIftahs([]);
+            }
+          } else {
+            console.warn('⚠️ Tag API request failed:', tagResult);
+            setCategoryIftahs([]);
+          }
+        } else {
+          // Fallback: Try to fetch all iftahs and filter by tag name
+          console.log('🔄 Fallback: Fetching all iftahs and filtering by tag name');
+          const res = await IftahApi.getAll({ limit: 100 });
+          const allIftahs = Array.isArray(res.data) ? (res.data as Iftah[]) : [];
+          
+          // Filter by tag name - check both nested and direct tag
+          const filtered = allIftahs.filter((item: Iftah) => 
+            item.tag?.name === categoryName ||
+            (item as any).iftah_sub_category?.tag?.name === categoryName
+          );
+          console.log('📊 Filtered iftahs:', filtered.length);
+          setCategoryIftahs(filtered);
+          
+          // Extract unique subcategories from filtered items
+          const uniqueSubCategories = new Map<number, { id: number; name: string; tag_id?: number; tag?: { id: number; name: string } }>();
+          filtered.forEach((item: any) => {
+            if (item.iftah_sub_category && item.iftah_sub_category.id) {
+              const subCat = item.iftah_sub_category;
+              if (!uniqueSubCategories.has(subCat.id)) {
+                uniqueSubCategories.set(subCat.id, {
+                  id: subCat.id,
+                  name: subCat.name,
+                  tag_id: subCat.tag_id,
+                  tag: subCat.tag
+                });
+              }
+            }
+          });
+          setSubCategories(Array.from(uniqueSubCategories.values()));
+        }
       } catch (error) {
-        console.error('Error fetching iftah category data:', error);
+        console.error('❌ Error fetching iftah category data:', error);
         setCategoryIftahs([]);
       } finally {
         setIsLoading(false);
@@ -122,6 +253,25 @@ export default function IftahCategoryPage({
         </div>
 
         <main className="max-w-6xl mx-auto px-4 py-8">
+          {/* Tag Information Banner */}
+          {tagId && tagInfo && (
+            <div className="mb-6 p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-200 rounded-lg shadow-sm">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 bg-emerald-500 rounded-xl flex items-center justify-center">
+                    <span className="text-3xl text-white">🏷️</span>
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-emerald-900 mb-1" style={{ fontFamily: 'Amiri, serif' }}>
+                      {decodeURIComponent(categorySlug)}
+                    </h2>
+                    <p className="text-sm text-emerald-700">Tag ID: {tagId} | {categoryIftahs.length} Questions</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Back Button and Category Tabs */}
           <div className="flex items-center justify-between gap-4 mb-6">
             {/* Back Button */}
@@ -150,6 +300,34 @@ export default function IftahCategoryPage({
               ))}
             </div>
           </div>
+
+          {/* Subcategories Section */}
+          {subCategories.length > 0 && (
+            <div className="mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3" style={{ fontFamily: 'Amiri, serif' }}>
+                📁 Subcategories ({subCategories.length})
+              </h3>
+              <div className="flex flex-wrap gap-3">
+                {subCategories.map((subCat) => (
+                  <Link
+                    key={subCat.id}
+                    href={`/iftah/sub-category/${subCat.id}`}
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-lg hover:from-teal-100 hover:to-emerald-100 hover:border-teal-300 transition-all duration-200 shadow-sm hover:shadow-md"
+                  >
+                    <span className="text-lg">📁</span>
+                    <span className="font-medium text-gray-800" style={{ fontFamily: 'Amiri, serif' }}>
+                      {cleanText(subCat.name)}
+                    </span>
+                    {subCat.tag && (
+                      <span className="text-xs text-teal-600 bg-teal-100 px-2 py-1 rounded-full">
+                        {cleanText(subCat.tag.name)}
+                      </span>
+                    )}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Search Bar */}
           <div className="mb-6">
@@ -187,13 +365,59 @@ export default function IftahCategoryPage({
                   <Link
                     key={item.id}
                     href={`/iftah/${item.slug}`}
-                    className="block group hover:bg-gray-50 transition-colors duration-200"
+                    className="block group hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all duration-200"
                   >
-                    <div className="px-6 py-4">
-                      <p className="text-base text-gray-800 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
-                        <span className="font-bold text-green-600 mr-2">Q.</span>
-                        {cleanText(item.title)}
-                      </p>
+                    <div className="px-6 py-5">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-bold text-green-600 text-lg">Q.</span>
+                            <p className="text-lg font-semibold text-gray-900 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
+                              {cleanText(item.title || 'Untitled')}
+                            </p>
+                          </div>
+                          
+                          {/* Question Preview */}
+                          {item.question && (
+                            <p className="text-sm text-gray-600 mt-2 line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
+                              {cleanText(item.question)}
+                            </p>
+                          )}
+                          
+                          {/* Tags and Metadata */}
+                          <div className="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-gray-100">
+                            {/* Tag Badge */}
+                            {(item.tag || (item as any).iftah_sub_category?.tag) && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                🏷️ {cleanText(item.tag?.name || (item as any).iftah_sub_category?.tag?.name || 'Tag')}
+                              </span>
+                            )}
+                            {/* Subcategory Badge */}
+                            {(item as any).iftah_sub_category && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
+                                📁 {cleanText((item as any).iftah_sub_category.name)}
+                              </span>
+                            )}
+                            {/* Mufti Badge */}
+                            {item.mufti && (
+                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800">
+                                👤 {cleanText(item.mufti.full_name || item.mufti.name || 'Mufti')}
+                              </span>
+                            )}
+                            {/* Date */}
+                            {(item.date || item.created_at) && (
+                              <span className="text-xs text-gray-500">
+                                📅 {item.date || (item.created_at?.split('T')[0])}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="flex-shrink-0">
+                          <svg className="w-6 h-6 text-gray-400 group-hover:text-green-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </div>
+                      </div>
                     </div>
                   </Link>
                 ))}

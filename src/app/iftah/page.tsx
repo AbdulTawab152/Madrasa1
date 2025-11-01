@@ -1,6 +1,7 @@
 // app/iftah/page.tsx
 import { IftahApi } from "../../lib/api";
 import Link from "next/link";
+import DarulUloomIftahSection from "../components/iftah/DarulUloomIftahSection";
 
 interface IftahCategory {
   id: number;
@@ -16,9 +17,19 @@ interface Tag {
   name: string;
 }
 
+interface IftahSubCategory {
+  id: number;
+  name: string;
+  tag_id?: number;
+  tag?: Tag;
+}
+
 interface Iftah {
   id: number;
+  title?: string;
   tag?: Tag;
+  tag_id?: number | null;
+  iftah_sub_category?: IftahSubCategory | null;
 }
 
 export default async function IftahPage() {
@@ -27,13 +38,30 @@ export default async function IftahPage() {
 
   try {
     // Get all iftahs to extract unique tags
-  const res = await IftahApi.getAll();
+    const res = await IftahApi.getAll({ limit: 100 });
     allIftahs = Array.isArray(res.data) ? res.data : [];
     
-    // Extract unique tags from iftahs
+    console.log('📊 Fetched iftahs:', allIftahs.length, 'Sample:', allIftahs[0]);
+    
+    // Extract unique tags from iftahs - check both iftah_sub_category.tag and direct tag
     const tagMap = new Map<number, { id: number; name: string; count: number }>();
     allIftahs.forEach((iftah: Iftah) => {
-      if (iftah.tag) {
+      // Check iftah_sub_category.tag first (this is the nested structure from API)
+      if (iftah.iftah_sub_category?.tag) {
+        const tagId = iftah.iftah_sub_category.tag.id;
+        if (tagMap.has(tagId)) {
+          const existing = tagMap.get(tagId)!;
+          existing.count += 1;
+        } else {
+          tagMap.set(tagId, {
+            id: tagId,
+            name: iftah.iftah_sub_category.tag.name,
+            count: 1
+          });
+        }
+      } 
+      // Fallback to direct tag if available
+      else if (iftah.tag) {
         const tagId = iftah.tag.id;
         if (tagMap.has(tagId)) {
           const existing = tagMap.get(tagId)!;
@@ -158,7 +186,7 @@ export default async function IftahPage() {
             // Use tag name as slug
             const categorySlug = category.name;
 
-  return (
+         return (
               <Link
                 key={category.id || index}
                 href={`/iftah/category/${encodeURIComponent(categorySlug)}`}
@@ -205,6 +233,16 @@ export default async function IftahPage() {
             );
           })}
         </div>
+      </div>
+
+      {/* Iftah Section - Display actual fatwas */}
+      <div className="max-w-6xl mx-auto px-6 py-8">
+        <DarulUloomIftahSection 
+          fatwas={allIftahs as any}
+          showAll={true}
+          title="دانورالعلوم ارغندی"
+          subtitle="فتویٰ شعبہ"
+        />
       </div>
     </div>
   );

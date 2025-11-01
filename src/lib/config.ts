@@ -65,7 +65,10 @@ export const endpoints = {
   book: `${apiConfig.baseUrl}/book`,
   events: `${apiConfig.baseUrl}/events`,  // لیست
   event: `${apiConfig.baseUrl}/event`, 
-  iftah: '/api/iftah', // Use local API route proxy
+  iftah: `${apiConfig.baseUrl}/darul-ifta`, // Iftah API endpoint
+  iftahSubCategories: `${apiConfig.baseUrl}/darul-ifta/sub-categories`, // Subcategories endpoint
+  iftahTags: `${apiConfig.baseUrl}/darul-ifta/tags`, // Tags endpoint
+  iftahTag: (tagId: number | string) => `${apiConfig.baseUrl}/darul-ifta/tag/${tagId}`, // Tag by ID endpoint
   IftahQuestionForm: `${apiConfig.baseUrl}/iftah-question`,
   csrfCookie: `${apiConfig.baseUrl}/sanctum/csrf-cookie`,
   articles: `${apiConfig.baseUrl}/articles`,

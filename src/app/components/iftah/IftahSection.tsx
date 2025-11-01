@@ -40,10 +40,19 @@ export default function IftahSection({ fatwas, showAll = false }: IftahSectionPr
   
   const sortedFatwas =
     fatwas
-      ?.filter(iftah => iftah.is_published)
+      ?.filter(iftah => {
+        // Handle both boolean and number formats for is_published
+        const isPublished = iftah.is_published;
+        if (typeof isPublished === 'boolean') return isPublished;
+        if (typeof isPublished === 'number') return isPublished === 1;
+        // If not specified, include it by default
+        return true;
+      })
       .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0)) || [];
 
   const displayFatwas = showAll ? sortedFatwas : sortedFatwas.slice(0, 5);
+  
+  console.log('📋 IftahSection received fatwas:', fatwas?.length || 0, 'filtered to:', sortedFatwas.length, 'displaying:', displayFatwas.length);
 
   return (
     <>

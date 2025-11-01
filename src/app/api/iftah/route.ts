@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const queryString = searchParams.toString();
-    const apiUrl = `${API_BASE_URL}/iftah${queryString ? `?${queryString}` : ''}`;
+    const apiUrl = `${API_BASE_URL}/darul-ifta${queryString ? `?${queryString}` : ''}`;
 
     console.log('🔍 Iftah API endpoint called - fetching from external API:', apiUrl);
 
@@ -43,12 +43,10 @@ export async function GET(request: NextRequest) {
     console.log('✅ Iftah data received from API');
     
     // Handle different response formats
-    if (Array.isArray(data)) {
+    // API returns { data: [...], pagination: {...} }
+    if (data && Array.isArray(data.data)) {
       return NextResponse.json(
-        { 
-          data,
-          success: true
-        },
+        data,
         {
           status: 200,
           headers: {
@@ -58,9 +56,14 @@ export async function GET(request: NextRequest) {
           },
         }
       );
-    } else if (data && (Array.isArray(data.data) || data.data)) {
+    } else if (Array.isArray(data)) {
+      // If direct array, wrap in response format
       return NextResponse.json(
-        data,
+        { 
+          data,
+          success: true,
+          pagination: null
+        },
         {
           status: 200,
           headers: {

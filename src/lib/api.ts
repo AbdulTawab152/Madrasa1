@@ -1338,6 +1338,454 @@ export class IftahApi {
       };
     }
   }
+
+  static async getBySubCategory(subCategoryId: number, params: ListParams = {}) {
+    const { limit: rawLimit, ...rest } = params;
+    const limit = rawLimit ?? 100;
+
+    try {
+      logger.info('Fetching iftah by subcategory from API', { subCategoryId, limit });
+      const result = await apiClient.get(`/api/iftah/sub-category/${subCategoryId}`, {
+        params: { limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched iftah by subcategory', { 
+        subCategoryId, 
+        count: Array.isArray(result.data) ? result.data.length : 0 
+      });
+
+      return {
+        data: Array.isArray(result.data) ? result.data : [],
+        success: true,
+      };
+    } catch (error) {
+      logger.warn('Iftah getBySubCategory failed', { subCategoryId, error });
+      return {
+        data: [],
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      };
+    }
+  }
+
+  static extractCategories(fatwas: any[]): Array<{ id: number; name: string }> {
+    if (!Array.isArray(fatwas) || fatwas.length === 0) {
+      logger.info('extractCategories: No fatwas provided or empty array');
+      console.log('📊 extractCategories: No fatwas provided or empty array');
+      return [];
+    }
+
+    const categoryMap = new Map<number, { id: number; name: string }>();
+    let processedCount = 0;
+    let skippedCount = 0;
+
+    fatwas.forEach((fatwa, index) => {
+      try {
+        // Log first item structure for debugging
+        if (index === 0) {
+          console.log('🔍 Sample fatwa structure:', {
+            id: fatwa.id,
+            title: fatwa.title,
+            has_iftah_sub_category: !!fatwa?.iftah_sub_category,
+            iftah_sub_category: fatwa?.iftah_sub_category,
+            direct_tag: fatwa?.tag,
+            tag_id: fatwa?.tag_id
+          });
+        }
+
+        let tagId: number | null = null;
+        let tagName: string | null = null;
+
+        // Priority 1: Check iftah_sub_category.tag (nested structure - most common)
+        if (fatwa?.iftah_sub_category?.tag) {
+          tagId = fatwa.iftah_sub_category.tag.id;
+          tagName = fatwa.iftah_sub_category.tag.name;
+          processedCount++;
+        }
+        // Priority 2: Check iftah_sub_category.tag_id (if tag object is missing)
+        else if (fatwa?.iftah_sub_category?.tag_id) {
+          tagId = fatwa.iftah_sub_category.tag_id;
+          // Try to get name from subcategory or use tag_id as fallback
+          tagName = fatwa.iftah_sub_category.name || `Tag ${tagId}`;
+          processedCount++;
+        }
+        // Priority 3: Check direct tag on fatwa
+        else if (fatwa?.tag) {
+          tagId = fatwa.tag.id;
+          tagName = fatwa.tag.name;
+          processedCount++;
+        }
+        // Priority 4: Check direct tag_id
+        else if (fatwa?.tag_id) {
+          tagId = fatwa.tag_id;
+          tagName = `Tag ${tagId}`;
+          processedCount++;
+        }
+        else {
+          skippedCount++;
+          return; // Skip items without any category information
+        }
+
+        if (tagId && tagName && !categoryMap.has(tagId)) {
+          categoryMap.set(Number(tagId), {
+            id: Number(tagId),
+            name: String(tagName),
+          });
+        }
+      } catch (error) {
+        logger.warn(`extractCategories: Error processing fatwa at index ${index}`, { error, fatwa });
+        console.error(`❌ extractCategories: Error at index ${index}:`, error, fatwa);
+        skippedCount++;
+      }
+    });
+
+    const categories = Array.from(categoryMap.values());
+    logger.info(`extractCategories: Extracted ${categories.length} categories from ${fatwas.length} fatwas (processed: ${processedCount}, skipped: ${skippedCount})`);
+    console.log(`📊 extractCategories: Extracted ${categories.length} categories from ${fatwas.length} fatwas`, {
+      categories,
+      processedCount,
+      skippedCount
+    });
+    
+    return categories;
+  }
+
+  static extractSubCategories(
+    fatwas: any[], 
+    categoryId?: number | string | null
+  ): Array<{ id: number; name: string; tag_id: number }> {
+    if (!Array.isArray(fatwas) || fatwas.length === 0) {
+      logger.info('extractSubCategories: No fatwas provided or empty array');
+      console.log('📊 extractSubCategories: No fatwas provided or empty array');
+      return [];
+    }
+
+    console.log(`🔍 extractSubCategories START: Processing ${fatwas.length} fatwas with categoryId: ${categoryId} (type: ${typeof categoryId})`);
+
+    const subCategoryMap = new Map<number, { id: number; name: string; tag_id: number }>();
+    let processedCount = 0;
+    let skippedCount = 0;
+    let noSubCategoryCount = 0;
+    let categoryMismatchCount = 0;
+
+    // Normalize categoryId to number for comparison
+    const categoryIdNum = categoryId !== null && categoryId !== undefined ? Number(categoryId) : null;
+
+    fatwas.forEach((fatwa, index) => {
+      try {
+        // Handle null iftah_sub_category - only process items that have it
+        const subCategory = fatwa?.iftah_sub_category;
+        
+        if (!subCategory || !subCategory.id) {
+          noSubCategoryCount++;
+          skippedCount++;
+          return; // Skip items without subcategory
+        }
+
+        // Get tag_id from nested tag structure or direct tag_id
+        // Priority: subCategory.tag.id > subCategory.tag_id
+        const subCategoryTagId = subCategory.tag?.id ?? subCategory.tag_id ?? null;
+        
+        // Convert to number for comparison
+        const subCategoryTagIdNum = subCategoryTagId !== null ? Number(subCategoryTagId) : null;
+        
+        // If categoryId is specified, only include subcategories for that category
+        if (categoryIdNum !== null) {
+          // Match if tag.id OR tag_id matches the category
+          const matchesCategory = subCategoryTagIdNum === categoryIdNum;
+          
+          if (!matchesCategory) {
+            categoryMismatchCount++;
+            // Log first few non-matching items for debugging
+            if (categoryMismatchCount <= 3) {
+              console.log(`❌ Subcategory "${subCategory.name}" (ID: ${subCategory.id}) doesn't match category ${categoryIdNum}:`, {
+                subCategoryTagId: subCategoryTagId,
+                subCategoryTagIdNum: subCategoryTagIdNum,
+                categoryIdNum: categoryIdNum,
+                tagObject: subCategory.tag,
+                directTagId: subCategory.tag_id,
+                fullSubCategory: subCategory
+              });
+            }
+            return; // Skip if doesn't match category
+          }
+          
+          // Log ALL matching items for debugging
+          console.log(`✅ MATCH: Subcategory "${subCategory.name}" (ID: ${subCategory.id}) matches category ${categoryIdNum}`, {
+            subCategoryTagId: subCategoryTagId,
+            subCategoryTagIdNum: subCategoryTagIdNum,
+            categoryIdNum: categoryIdNum,
+            tagObject: subCategory.tag
+          });
+        } else {
+          // No category filter - log first few items
+          if (index < 3) {
+            console.log(`📋 No category filter: Processing subcategory "${subCategory.name}" (ID: ${subCategory.id}, tag_id: ${subCategoryTagId})`);
+          }
+        }
+
+        // Add to map if not already present
+        if (!subCategoryMap.has(subCategory.id)) {
+          processedCount++;
+          subCategoryMap.set(subCategory.id, {
+            id: Number(subCategory.id),
+            name: String(subCategory.name || 'Unnamed'),
+            tag_id: Number(subCategoryTagId || 0),
+          });
+          console.log(`➕ Added subcategory "${subCategory.name}" (ID: ${subCategory.id}, tag_id: ${subCategoryTagId}) to map`);
+        } else {
+          console.log(`⏭️ Subcategory "${subCategory.name}" (ID: ${subCategory.id}) already in map, skipping duplicate`);
+        }
+      } catch (error) {
+        logger.warn(`extractSubCategories: Error processing fatwa at index ${index}`, { error, fatwa });
+        console.error(`❌ extractSubCategories: Error at index ${index}:`, error, fatwa);
+        skippedCount++;
+      }
+    });
+
+    const subCategories = Array.from(subCategoryMap.values());
+    
+    // Comprehensive final summary
+    console.log(`📊 extractSubCategories FINAL SUMMARY:`, {
+      totalFatwas: fatwas.length,
+      extractedSubCategories: subCategories.length,
+      categoryId: categoryIdNum,
+      processedCount,
+      skippedCount,
+      noSubCategoryCount,
+      categoryMismatchCount: categoryIdNum !== null ? categoryMismatchCount : 'N/A (no filter)',
+      extractedSubCategoriesList: subCategories.map(s => ({ 
+        id: s.id, 
+        name: s.name, 
+        tag_id: s.tag_id 
+      }))
+    });
+    
+    logger.info(`extractSubCategories: Extracted ${subCategories.length} subcategories from ${fatwas.length} fatwas${categoryIdNum ? ` for category ${categoryIdNum}` : ''} (processed: ${processedCount}, skipped: ${skippedCount}, no subcategory: ${noSubCategoryCount}, mismatch: ${categoryMismatchCount})`);
+    
+    return subCategories;
+  }
+
+  static async getSubCategories(params: ListParams = {}): Promise<ApiResponse<any[]>> {
+    const { page: rawPage, limit: rawLimit, ...rest } = params;
+    const page = rawPage ?? 1;
+    const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
+
+    try {
+      logger.info('Fetching iftah subcategories from API', { page, limit, ...rest });
+      // Use local API route proxy which forwards to external API
+      const result = await apiClient.get('/api/iftah/sub-categories', {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      const subCategoriesData = Array.isArray(result.data) ? result.data : [];
+      logger.info('Successfully fetched iftah subcategories', { 
+        count: subCategoriesData.length 
+      });
+
+      if (result.pagination) {
+        return {
+          ...result,
+          data: subCategoriesData,
+        } as ApiResponse<any[]>;
+      }
+
+      const total = subCategoriesData.length || limit;
+
+      return {
+        ...result,
+        data: subCategoriesData,
+        pagination: createPaginationMeta({ page, limit, total }),
+      } as ApiResponse<any[]>;
+    } catch (error) {
+      logger.warn('Iftah getSubCategories failed', { error });
+      return {
+        data: [],
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        pagination: createPaginationMeta({ page, limit, total: 0 }),
+      };
+    }
+  }
+
+  // Get subcategory by ID (includes all iftah items for that subcategory)
+  static async getSubCategoryById(subCategoryId: number | string): Promise<ApiResponse<{ sub_category_id: string | number; total: number; data: any[] }>> {
+    try {
+      logger.info('Fetching subcategory by ID from API', { subCategoryId });
+      // Use local API route proxy which forwards to external API
+      const result = await apiClient.get(`/api/iftah/sub-category/${subCategoryId}`);
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      // The API returns: { sub_category_id: "1", total: 2, data: [...] }
+      const responseData = result.data as any;
+      logger.info('Successfully fetched subcategory by ID', { 
+        subCategoryId,
+        hasSubCategoryId: !!responseData?.sub_category_id,
+        hasData: !!responseData?.data,
+        dataCount: Array.isArray(responseData?.data) ? responseData.data.length : 0,
+        total: responseData?.total
+      });
+      
+      return {
+        ...result,
+        data: responseData || { sub_category_id: subCategoryId, total: 0, data: [] },
+        success: true,
+      };
+    } catch (error) {
+      logger.warn('Iftah getSubCategoryById failed', { subCategoryId, error });
+      return {
+        data: { sub_category_id: subCategoryId, total: 0, data: [] },
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        pagination: null,
+      };
+    }
+  }
+
+  // Get all tags
+  static async getTags(params: ListParams = {}): Promise<ApiResponse<any[]>> {
+    const { page: rawPage, limit: rawLimit, ...rest } = params;
+    const page = rawPage ?? 1;
+    const limit = rawLimit ?? 100; // Default to 100 for tags
+
+    try {
+      logger.info('Fetching iftah tags from API', { page, limit, ...rest });
+      // Use local API route proxy which forwards to external API
+      const result = await apiClient.get('/api/iftah/tags', {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      const tagsData = Array.isArray(result.data) ? result.data : [];
+      logger.info('Successfully fetched iftah tags', { 
+        count: tagsData.length 
+      });
+
+      if (result.pagination) {
+        return {
+          ...result,
+          data: tagsData,
+        } as ApiResponse<any[]>;
+      }
+
+      const total = tagsData.length || limit;
+
+      return {
+        ...result,
+        data: tagsData,
+        pagination: createPaginationMeta({ page, limit, total }),
+      } as ApiResponse<any[]>;
+    } catch (error) {
+      logger.warn('Iftah getTags failed', { error });
+      return {
+        data: [],
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        pagination: createPaginationMeta({ page, limit, total: 0 }),
+      };
+    }
+  }
+
+  // Get iftah items by tag ID (fetches all iftah with this tag)
+  static async getByTag(tagId: number | string, params: ListParams = {}): Promise<ApiResponse<any[]>> {
+    const { limit: rawLimit, ...rest } = params;
+    const limit = rawLimit ?? 100;
+
+    try {
+      logger.info('Fetching iftah by tag from API', { tagId, limit });
+      const result = await apiClient.get(endpoints.iftah, {
+        params: { 
+          tag_id: tagId,
+          limit, 
+          ...rest 
+        },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      const iftahData = Array.isArray(result.data) ? result.data : [];
+      logger.info('Successfully fetched iftah by tag', { 
+        tagId, 
+        count: iftahData.length 
+      });
+
+      if (result.pagination) {
+        return {
+          ...result,
+          data: iftahData,
+        } as ApiResponse<any[]>;
+      }
+
+      const total = iftahData.length || limit;
+
+      return {
+        ...result,
+        data: iftahData,
+        success: true,
+        pagination: createPaginationMeta({ page: 1, limit, total }),
+      };
+    } catch (error) {
+      logger.warn('Iftah getByTag failed', { tagId, error });
+      return {
+        data: [],
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        pagination: createPaginationMeta({ page: 1, limit, total: 0 }),
+      };
+    }
+  }
+
+  // Get tag information by tag ID (includes tag info and all iftah items for that tag)
+  static async getTagById(tagId: number | string): Promise<ApiResponse<{ tag_id: string | number; data: any[]; pagination?: any }>> {
+    try {
+      logger.info('Fetching tag by ID from API', { tagId });
+      // Use local API route proxy which forwards to external API
+      const result = await apiClient.get(`/api/iftah/tag/${tagId}`);
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      // The API returns: { tag_id: "1", data: [...], pagination: {...} }
+      const responseData = result.data as any;
+      logger.info('Successfully fetched tag by ID', { 
+        tagId, 
+        hasData: !!responseData?.data,
+        dataCount: Array.isArray(responseData?.data) ? responseData.data.length : 0 
+      });
+      
+      return {
+        ...result,
+        data: responseData || { tag_id: tagId, data: [], pagination: null },
+        success: true,
+        pagination: responseData?.pagination || result.pagination || null,
+      };
+    } catch (error) {
+      logger.warn('Iftah getTagById failed', { tagId, error });
+      return {
+        data: { tag_id: tagId, data: [], pagination: null },
+        success: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+        pagination: null,
+      };
+    }
+  }
 }
 
 // Iftah Question Form API

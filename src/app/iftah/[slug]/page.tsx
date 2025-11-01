@@ -41,6 +41,15 @@ interface Iftah {
   attachment?: string | null;
   mufti?: Mufti;
   tag?: Tag;
+  iftah_sub_category?: {
+    id: number;
+    name: string;
+    tag_id?: number;
+    tag?: {
+      id: number;
+      name: string;
+    };
+  };
 }
 
 const buildAssetUrl = (path?: string | null) => buildStorageUrl(path) ?? undefined;
@@ -134,7 +143,16 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
       <div className="relative z-10">
         <main className="max-w-4xl mx-auto" dir="rtl">
         {/* Go Back Button */}
-        <div className="mb-6">
+        <div className="mb-6 flex flex-wrap gap-3">
+          {iftah.iftah_sub_category && (
+            <Link
+              href={`/iftah/sub-category/${iftah.iftah_sub_category.id}`}
+              className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 group shadow-md"
+            >
+              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+              <span className="font-medium">Back to {iftah.iftah_sub_category.name}</span>
+            </Link>
+          )}
           {iftah.tag && (
             <Link
             href={`/iftah/category/${encodeURIComponent(iftah.tag.name)}`}
@@ -149,11 +167,38 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
         {/* Main Fatwa Document */}
         <div className="bg-white shadow-md border border-gray-200 rounded-lg p-8">
           {/* Category/Breadcrumb */}
-          {iftah.tag && (
-            <div className="mb-6 text-right">
-              <p className="text-gray-600 text-sm mb-2">عبادات &gt; &gt; {iftah.tag.name}</p>
-            </div>
-          )}
+          <div className="mb-6">
+            {/* Subcategory Info */}
+            {iftah.iftah_sub_category && (
+              <div className="mb-4 p-4 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-lg">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">📁</span>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1" style={{ fontFamily: 'Amiri, serif' }}>
+                      {iftah.iftah_sub_category.name}
+                    </h3>
+                    {iftah.iftah_sub_category.tag && (
+                      <p className="text-sm text-teal-700">
+                        Tag: {iftah.iftah_sub_category.tag.name}
+                      </p>
+                    )}
+                    <Link
+                      href={`/iftah/sub-category/${iftah.iftah_sub_category.id}`}
+                      className="text-xs text-teal-600 hover:text-teal-800 underline mt-1 inline-block"
+                    >
+                      View all questions in this subcategory →
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            {iftah.tag && (
+              <div className="text-right">
+                <p className="text-gray-600 text-sm mb-2">عبادات &gt; &gt; {iftah.tag.name}</p>
+              </div>
+            )}
+          </div>
 
           {/* Question Number */}
           <div className="mb-6">

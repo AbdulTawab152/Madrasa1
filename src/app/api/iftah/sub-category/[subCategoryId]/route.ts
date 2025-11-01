@@ -14,22 +14,23 @@ export async function GET(
 
     console.log('🔍 Iftah Subcategory API endpoint called - fetching from external API:', apiUrl);
 
-    const response = await fetch(apiUrl, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      cache: 'no-store'
-    });
-
-    if (!response.ok) {
-      console.warn(`⚠️ External API responded with status: ${response.status}`);
+    let response: Response;
+    try {
+      response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        cache: 'no-store'
+      });
+    } catch (fetchError) {
+      console.error('❌ Network error fetching subcategory:', fetchError);
       return NextResponse.json(
         { 
-          data: [],
+          data: { sub_category_id: subCategoryId, total: 0, data: [] },
           success: false,
-          error: `API responded with status: ${response.status}`
+          error: `Network error: ${fetchError instanceof Error ? fetchError.message : 'Unknown network error'}`
         },
         { 
           status: 200,
@@ -42,21 +43,77 @@ export async function GET(
       );
     }
 
-    const data = await response.json();
-    console.log('✅ Iftah subcategory data received from API');
-    
-    // Handle different response formats
-    if (Array.isArray(data)) {
-      return NextResponse.json({ data, success: true }, {
-        status: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => 'Unknown error');
+      console.warn(`⚠️ External API responded with status: ${response.status}`, errorText);
+      return NextResponse.json(
+        { 
+          data: { sub_category_id: subCategoryId, total: 0, data: [] },
+          success: false,
+          error: `API responded with status: ${response.status} - ${errorText}`
         },
-      });
-    } else if (data && Array.isArray(data.data)) {
-      return NextResponse.json(data, {
+        { 
+          status: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          },
+        }
+      );
+    }
+
+    let data: any;
+    try {
+      const responseText = await response.text();
+      if (!responseText || responseText.trim() === '') {
+        console.warn('⚠️ Empty response from API');
+        return NextResponse.json(
+          { 
+            data: { sub_category_id: subCategoryId, total: 0, data: [] },
+            success: false,
+            error: 'Empty response from API'
+          },
+          { 
+            status: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+              'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            },
+          }
+        );
+      }
+      data = JSON.parse(responseText);
+      console.log('✅ Iftah subcategory data received from API:', data);
+    } catch (parseError) {
+      console.error('❌ Error parsing JSON response:', parseError);
+      return NextResponse.json(
+        { 
+          data: { sub_category_id: subCategoryId, total: 0, data: [] },
+          success: false,
+          error: `Failed to parse API response: ${parseError instanceof Error ? parseError.message : 'Unknown parsing error'}`
+        },
+        { 
+          status: 200,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+          },
+        }
+      );
+    }
+    
+    // Handle the API response structure: { sub_category_id: "1", total: 2, data: [...] }
+    if (data && typeof data === 'object') {
+      // The API returns: { sub_category_id: "1", total: 2, data: [...] }
+      return NextResponse.json({ 
+        data: data, // Return full structure including sub_category_id, total, and data array
+        success: true,
+        sub_category_id: data.sub_category_id,
+        total: data.total
+      }, {
         status: 200,
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -66,7 +123,7 @@ export async function GET(
       });
     }
 
-    return NextResponse.json({ data: data || [], success: true }, {
+    return NextResponse.json({ data: data || { sub_category_id: subCategoryId, total: 0, data: [] }, success: true }, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -78,7 +135,7 @@ export async function GET(
     console.error('❌ Error fetching iftah subcategory:', error);
     return NextResponse.json(
       { 
-        data: [],
+        data: { sub_category_id: subCategoryId, total: 0, data: [] },
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error'
       },
