@@ -126,20 +126,18 @@ export default function AdmissionPage() {
       // The Laravel database doesn't have degree_id 1, so we skip it
       // This will be saved locally instead
 
+      console.log('📝 [FORM] Submitting admission data to API...');
+      console.log('📝 [FORM] Submission data:', submissionData);
+      
       const result = await AdmissionsApi.submit(submissionData);
       
+      console.log('📥 [FORM] API response received:', result);
+      
       if (result.success) {
-        if (result.data?.stored_locally) {
-          console.log('✅ Form submitted but saved locally (API unavailable)');
-        } else {
-          console.log('✅ Form submitted successfully to dashboard!');
-        }
+        console.log('✅ [FORM] Form submitted successfully to Laravel dashboard!');
         setSubmitSuccess(true);
-        if (result.data?.stored_locally) {
-          toast.success("Admission form submitted and saved locally! You can view it in the admin dashboard.");
-        } else {
-          toast.success("Admission form submitted successfully!");
-        }
+        toast.success("Admission form submitted successfully to the dashboard!");
+        
         // Reset form
         setFormData({
           unique_id: "",
@@ -166,8 +164,17 @@ export default function AdmissionPage() {
         setErrors({});
       }
     } catch (error: any) {
-      // All errors are handled by the submit() fallback
-      // User sees success message for local storage save
+      console.error('❌ [FORM] Form submission error:', error);
+      console.error('❌ [FORM] Error message:', error.message);
+      
+      // Show user-friendly error message
+      const errorMessage = error.message || 'Failed to submit admission form. Please check your connection and try again.';
+      toast.error(`Submission failed: ${errorMessage}`);
+      
+      // Set a general error
+      setErrors({ 
+        submit: errorMessage 
+      });
     } finally {
       setLoading(false);
     }

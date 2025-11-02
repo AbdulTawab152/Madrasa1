@@ -844,39 +844,215 @@ export class AdmissionsApi {
 
   // 🔹 Create a new admission (POST) - Direct to Laravel API
   static async create(data: AdmissionFormData) {
+    // Try multiple URLs in case one doesn't work
+    const apiUrls = [
+      'http://localhost:8000/api/admissions',
+      'http://127.0.0.1:8000/api/admissions',
+    ];
+    
+    let lastError: any = null;
+    
     try {
-      console.log('🚀 Sending admission data to Laravel API:', endpoints.admissions);
-      console.log('📤 Data being sent:', JSON.stringify(data, null, 2));
-
-      // Send directly to Laravel API
-      const response = await fetch(endpoints.admissions, {
-        method: 'POST',
-        headers: {
+      // Try each URL until one works
+      for (const apiUrl of apiUrls) {
+      try {
+        // Log request URL
+        console.log('🚀 [ADMISSION API] Attempting request to:', apiUrl);
+        console.log('📤 [ADMISSION API] Data being sent:', JSON.stringify(data, null, 2));
+        console.log('📤 [ADMISSION API] Data object:', data);
+        console.log('📋 [ADMISSION API] Headers:', {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+          'X-Requested-With': 'XMLHttpRequest',
+        });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('❌ API Error: Data could NOT be sent to dashboard');
-        console.error('❌ Error details:', errorText);
-        throw new Error('Validation failed');
+        // Send directly to Laravel API with explicit CORS mode
+        const response = await fetch(apiUrl, {
+          method: 'POST',
+          mode: 'cors', // Explicitly enable CORS
+          cache: 'no-cache',
+          credentials: 'omit', // Don't send cookies (helps with CORS)
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest', // Laravel recognizes this as AJAX request
+          },
+          body: JSON.stringify(data),
+        });
+
+        // Log response status
+        console.log('📥 [ADMISSION API] Response status:', response.status);
+        console.log('📥 [ADMISSION API] Response status text:', response.statusText);
+        console.log('📥 [ADMISSION API] Response headers:', Object.fromEntries(response.headers.entries()));
+
+        if (!response.ok) {
+          const errorText = await response.text();
+          console.error('❌ [ADMISSION API] Request failed!');
+          console.error('❌ [ADMISSION API] Status:', response.status);
+          console.error('❌ [ADMISSION API] Error response body:', errorText);
+          
+          // Try to parse as JSON if possible
+          try {
+            const errorJson = JSON.parse(errorText);
+            console.error('❌ [ADMISSION API] Error JSON:', errorJson);
+          } catch (e) {
+            // Not JSON, that's fine
+          }
+          
+          throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+        }
+
+        const result = await response.json();
+        console.log('✅ [ADMISSION API] SUCCESS: Data sent to Laravel dashboard!');
+        console.log('✅ [ADMISSION API] Successfully connected to:', apiUrl);
+        console.log('✅ [ADMISSION API] Response data:', JSON.stringify(result, null, 2));
+        console.log('✅ [ADMISSION API] Response object:', result);
+
+        return {
+          data: result,
+          success: true,
+          message: 'Admission submitted successfully',
+        };
+      } catch (error: any) {
+        // If this is a network/CORS error, try the next URL
+        const isNetworkError = 
+          error.message.includes('Failed to fetch') || 
+          error.name === 'TypeError';
+        
+        if (isNetworkError && apiUrls.indexOf(apiUrl) < apiUrls.length - 1) {
+          console.warn(`⚠️ [ADMISSION API] Failed to connect to ${apiUrl}, trying next URL...`);
+          lastError = error;
+          continue; // Try next URL
+        }
+        
+        // If not a network error or it's the last URL, throw the error
+        lastError = error;
+        throw error;
       }
-
-      const result = await response.json();
-      console.log('✅ SUCCESS: Data sent to dashboard successfully!');
-      console.log('✅ Response:', result);
-
-      return {
-        data: result,
-        success: true,
-        message: 'Admission submitted successfully',
-      };
-    } catch (error: any) {
-      throw error;
     }
+    
+    // If we get here, all URLs failed
+    if (lastError) {
+      throw lastError;
+    }
+    throw new Error('Failed to connect to any API endpoint');
+  } catch (error: any) {
+    console.error('❌ [ADMISSION API] Exception occurred:', error);
+    console.error('❌ [ADMISSION API] Error message:', error.message);
+    console.error('❌ [ADMISSION API] Error name:', error.name);
+    
+    // Extract the actual error from the stack if available
+    const errorStack = error.stack || '';
+    const isConnectionRefused = 
+      errorStack.includes('ERR_CONNECTION_REFUSED') ||
+      errorStack.includes('connection refused') ||
+      errorStack.includes('ECONNREFUSED') ||
+      error.message.includes('connection refused') ||
+      error.message.includes('CONNECTION_REFUSED');
+    
+    // Check if it's a network/CORS error
+    const isNetworkError = 
+      error.message.includes('Failed to fetch') || 
+      error.message.includes('fetch') || 
+      error.message.includes('CORS') || 
+      error.message.includes('network') ||
+      error.name === 'TypeError';
+    
+    if (isConnectionRefused) {
+      // Connection refused - server is not running
+      console.error('');
+      console.error('❌ [ADMISSION API] ============================================');
+      console.error('❌ [ADMISSION API] CONNECTION REFUSED - Server Not Running!');
+      console.error('❌ [ADMISSION API] ============================================');
+      console.error('');
+      console.error('🔴 [ADMISSION API] The Laravel server is NOT running!');
+      console.error('');
+      console.error('📋 [ADMISSION API] To fix this:');
+      console.error('');
+      console.error('1. ✅ START YOUR LARAVEL SERVER:');
+      console.error('   Open a new terminal/command prompt');
+      console.error('   Navigate to your Laravel project: cd path/to/laravel/project');
+      console.error('   Start the server: php artisan serve');
+      console.error('   (Server should start on http://localhost:8000)');
+      console.error('');
+      console.error('2. ✅ Verify server is running:');
+      console.error('   Open in browser: http://localhost:8000');
+      console.error('   You should see the Laravel welcome page or your app');
+      console.error('');
+      console.error('3. ✅ Test the API endpoint:');
+      console.error('   Open: http://localhost:8000/api/admissions');
+      console.error('   (You should see a response, even if it\'s a 405 Method Not Allowed)');
+      console.error('   This confirms the route exists and server is running');
+      console.error('');
+      console.error('4. ✅ Configure CORS (if not already done):');
+      console.error('   Edit: config/cors.php');
+      console.error('   Make sure allowed_origins includes: http://localhost:3002');
+      console.error('   Make sure paths includes: api/*');
+      console.error('');
+      console.error('5. ✅ Once server is running, try submitting the form again');
+      console.error('');
+      
+      const helpfulError = new Error(
+        `Laravel server is not running! ` +
+        `Please start your Laravel server with: php artisan serve ` +
+        `(Should run on http://localhost:8000). ` +
+        `Tried connecting to: ${apiUrls.join(', ')}`
+      );
+      
+      helpfulError.name = error.name;
+      helpfulError.stack = error.stack;
+      
+      throw helpfulError;
+    } else if (isNetworkError) {
+      // Other network/CORS error
+      const lastAttemptedUrl = apiUrls[apiUrls.length - 1];
+      
+      console.error('');
+      console.error('❌ [ADMISSION API] ============================================');
+      console.error('❌ [ADMISSION API] Network/CORS Error Detected!');
+      console.error('❌ [ADMISSION API] ============================================');
+      console.error('');
+      console.error('📋 [ADMISSION API] Troubleshooting Steps:');
+      console.error('');
+      console.error('1. ✅ Verify Laravel server is running:');
+      console.error('   php artisan serve');
+      console.error('   Open: http://localhost:8000/api/admissions');
+      console.error('   (Should see a response, not "can\'t connect")');
+      console.error('');
+      console.error('2. ✅ Check Laravel CORS configuration (config/cors.php):');
+      console.error('   Make sure it includes:');
+      console.error('   - paths: [\'api/*\']');
+      console.error('   - allowed_origins: [\'http://localhost:3002\']');
+      console.error('   - allowed_methods: [\'POST\', \'GET\', \'OPTIONS\']');
+      console.error('   - supports_credentials: false');
+      console.error('');
+      console.error('3. ✅ Verify Laravel route exists:');
+      console.error('   Route should be: POST /api/admissions');
+      console.error('   Check routes/api.php or routes/web.php');
+      console.error('');
+      console.error('4. ✅ If using Laravel Sanctum, make sure CORS is configured');
+      console.error('   before Sanctum middleware');
+      console.error('');
+      console.error('5. ✅ Try accessing the API directly:');
+      console.error(`   curl -X POST ${lastAttemptedUrl} -H "Content-Type: application/json" -d '{"test":"data"}'`);
+      console.error('');
+      
+      const helpfulError = new Error(
+        `Network/CORS Error: Cannot connect to Laravel API. ` +
+        `Tried: ${apiUrls.join(', ')}. ` +
+        `Please check: 1) Laravel server is running (php artisan serve), ` +
+        `2) CORS is configured in config/cors.php to allow requests from http://localhost:3002, ` +
+        `3) The route POST /api/admissions exists.`
+      );
+      
+      helpfulError.name = error.name;
+      helpfulError.stack = error.stack;
+      
+      throw helpfulError;
+    }
+    
+    throw error;
+  }
   }
 
   // 🔹 Update admission (POST)
@@ -909,9 +1085,30 @@ export class AdmissionsApi {
 
   // 🔹 Submit admission form
   static async submit(data: AdmissionFormData) {
+    console.log('📝 [ADMISSION SUBMIT] Starting form submission...');
+    console.log('📝 [ADMISSION SUBMIT] Form data:', data);
+    
     try {
-      return await this.create(data);
+      const result = await this.create(data);
+      console.log('✅ [ADMISSION SUBMIT] Form submission successful!');
+      return result;
     } catch (error: any) {
+      // Log the error for debugging
+      console.error('❌ [ADMISSION SUBMIT] API submission failed:', error);
+      console.error('❌ [ADMISSION SUBMIT] Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
+      // Re-throw the error so the form can handle it properly
+      // The form should show the actual error to the user
+      throw error;
+      
+      // Note: The fallback local storage code is removed because
+      // we want to ensure the API request succeeds before showing success
+      // If you want to keep the fallback, uncomment the code below:
+      /*
       // API failed - save locally and show message
       console.warn('⚠️ WARNING: Could not send to dashboard. Saving data locally for manual processing.');
       console.warn('⚠️ Local backup saved successfully. Data can be retrieved from localStorage.');
@@ -946,6 +1143,7 @@ export class AdmissionsApi {
         success: true,
         error: null,
       };
+      */
     }
   }
 
@@ -1627,14 +1825,38 @@ export class IftahApi {
         throw new Error(result.error || 'API request failed');
       }
 
-      // The API returns: { sub_category_id: "1", total: 2, data: [...] }
-      const responseData = result.data as any;
-      logger.info('Successfully fetched subcategory by ID', { 
+      // The API route returns: { data: { sub_category_id: "1", total: 2, data: [...] }, success: true }
+      // But apiClient might unwrap it. Check both structures
+      let responseData = result.data as any;
+      
+      // If the apiClient unwrapped the response, the structure might be different
+      // Check if we have the nested structure: { data: { sub_category_id, total, data: [...] } }
+      if (responseData && typeof responseData === 'object') {
+        // If responseData has a data property with sub_category_id, that's our structure
+        if (responseData.sub_category_id !== undefined || responseData.data !== undefined) {
+          // This is the correct structure: { sub_category_id: "1", total: 2, data: [...] }
+          logger.info('Successfully fetched subcategory by ID', { 
+            subCategoryId,
+            hasSubCategoryId: !!responseData?.sub_category_id,
+            hasData: !!responseData?.data,
+            dataCount: Array.isArray(responseData?.data) ? responseData.data.length : 0,
+            total: responseData?.total,
+            keys: Object.keys(responseData)
+          });
+          
+          return {
+            ...result,
+            data: responseData,
+            success: true,
+          };
+        }
+      }
+      
+      // Fallback: try to use result.data as is
+      logger.info('Using fallback response structure', { 
         subCategoryId,
-        hasSubCategoryId: !!responseData?.sub_category_id,
-        hasData: !!responseData?.data,
-        dataCount: Array.isArray(responseData?.data) ? responseData.data.length : 0,
-        total: responseData?.total
+        dataType: typeof result.data,
+        keys: result.data ? Object.keys(result.data as any) : []
       });
       
       return {

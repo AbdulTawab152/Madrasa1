@@ -1,4 +1,6 @@
-module.exports = {
+import type { NextConfig } from 'next';
+
+const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
@@ -39,3 +41,5 @@ module.exports = {
     optimizePackageImports: ["lucide-react", "framer-motion"],
   },
 };
+
+export default nextConfig;

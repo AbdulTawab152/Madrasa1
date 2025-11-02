@@ -275,6 +275,14 @@
         "completeRequiredFields": "مهرباني وکړئ ټول اړین ساحې بشپړې کړئ: نوم، بریښنالیک، کټګوري، او پوښتنه.",
         "completeFollowingFields": "مهرباني وکړئ لاندې اړینو ساحو بشپړولو:"
       }
+    },
+    "categoryPage": {
+      "backToIftah": "بیا افتاء ته",
+      "tagId": "د نښې ID",
+      "questions": "پوښتنې",
+      "subcategory": "فرعي کټګوري",
+      "subcategories": "فرعي کټګورۍ",
+      "clickToViewQuestions": "د پوښتنو لیدو لپاره کلیک وکړئ"
     }
   },
   "courses": {

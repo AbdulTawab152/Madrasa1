@@ -172,22 +172,11 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             {iftah.iftah_sub_category && (
               <div className="mb-4 p-4 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">📁</span>
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-1" style={{ fontFamily: 'Amiri, serif' }}>
                       {iftah.iftah_sub_category.name}
                     </h3>
-                    {iftah.iftah_sub_category.tag && (
-                      <p className="text-sm text-teal-700">
-                        Tag: {iftah.iftah_sub_category.tag.name}
-                      </p>
-                    )}
-                    <Link
-                      href={`/iftah/sub-category/${iftah.iftah_sub_category.id}`}
-                      className="text-xs text-teal-600 hover:text-teal-800 underline mt-1 inline-block"
-                    >
-                      View all questions in this subcategory →
-                    </Link>
+                   
                   </div>
                 </div>
               </div>
@@ -274,10 +263,24 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             </p>
           </div>
 
-          {/* Mufti Name */}
+          {/* Mufti/Author Information - Simplified */}
           {iftah.mufti && (
-            <div className="mb-6 text-left" dir="ltr">
-              <p className="text-sm text-gray-700 font-medium">Mufti: {cleanText(iftah.mufti.full_name)}</p>
+            <div className="mb-6 p-5 bg-white rounded-lg">
+              <h3 className="text-lg font-bold text-gray-900 mb-4 text-right" style={{ fontFamily: 'Amiri, serif' }}>
+                معلومات مفتی
+              </h3>
+              <div className="space-y-3 text-right" dir="rtl">
+                <div className="flex items-center gap-3 py-2 justify-end">
+                  <span className="text-gray-900 text-base">{cleanText(iftah.mufti.full_name)}</span>
+                  <span className="font-semibold text-gray-700 text-base">بشپړ نوم:</span>
+                </div>
+                {iftah.mufti.father_name && (
+                  <div className="flex items-center gap-3 py-2 justify-end">
+                    <span className="text-gray-900 text-base">{cleanText(iftah.mufti.father_name)}</span>
+                    <span className="font-semibold text-gray-700 text-base">د پلار نوم:</span>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -287,10 +290,6 @@ export default function IftahDetailsPage({ params }: { params: Promise<{ slug: s
             <p className="text-sm text-gray-700">اَلْجَامِعْةُ اَنوَار الْعُلُوْم اَلْاِسْلاَمِیّة اَلْمَدْرَسَةٌ خلیفه صاحب ارغندی (رح)</p>
           </div>
 
-          {/* Metadata */}
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600 mt-6 pt-6 border-t border-gray-200 text-left" dir="ltr">
-            <span>📅 {formattedDate}</span>
-          </div>
 
           {/* Attachment */}
           {iftah.attachment && (

@@ -30,13 +30,10 @@ interface IftahItem {
   tag_id?: number | null;
   is_published?: boolean | number;
   viewCount?: number;
-<<<<<<< HEAD
   iftah_sub_category_id?: number;
   iftah_sub_category?: IftahSubCategory;
   attachment?: string | null;
   note?: string | null;
-=======
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
 }
 
 interface DarulUloomIftahSectionProps {
@@ -62,7 +59,6 @@ export default function DarulUloomIftahSection({
   };
 
   const [searchTerm, setSearchTerm] = useState("");
-<<<<<<< HEAD
   const [selectedCategory, setSelectedCategory] = useState<string | number | null>(null);
   const [selectedSubCategory, setSelectedSubCategory] = useState<string | number | null>(null);
   // Start with questions view if fatwas are provided, otherwise categories
@@ -334,23 +330,6 @@ export default function DarulUloomIftahSection({
     selectedCategory,
     selectedSubCategory
   });
-=======
-  const [selectedCategory, setSelectedCategory] = useState("");
-
-  // Filter content
-  const filteredFatwas = fatwas.filter(item => {
-    const cleanTitle = cleanText(item.title);
-    const cleanQuestion = cleanText(item.question);
-    
-    const matchesSearch = cleanTitle.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         cleanQuestion.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory || item.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
-
-  const displayFatwas = showAll ? filteredFatwas : filteredFatwas.slice(0, 8);
-  const categories = [...new Set(fatwas.map(item => item.category).filter(Boolean))];
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50">
@@ -410,7 +389,6 @@ export default function DarulUloomIftahSection({
                         نئے سوالات
                       </h3>
                       <p className="text-emerald-700 text-sm mt-1">
-<<<<<<< HEAD
                         {viewMode === 'categories' && (
                           <>
                             {categories.length} categories available
@@ -432,9 +410,6 @@ export default function DarulUloomIftahSection({
                           </>
                         )}
                         {viewMode === 'questions' && `${displayFatwas.length} questions available`}
-=======
-                        {displayFatwas.length} questions available
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
                       </p>
                     </div>
                   </div>
@@ -445,7 +420,6 @@ export default function DarulUloomIftahSection({
                 </div>
               </div>
 
-<<<<<<< HEAD
               {/* Categories View */}
               {viewMode === 'categories' && (
                 <div className="p-8">
@@ -810,11 +784,6 @@ export default function DarulUloomIftahSection({
                   ) : displayFatwas.length > 0 ? (
                     <div className="divide-y divide-emerald-100">
                       {displayFatwas.map((item) => (
-=======
-              {/* Enhanced Content List */}
-              <div className="divide-y divide-emerald-100">
-                {displayFatwas.map((item, index) => (
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
                   <div key={item.id} className="group hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all duration-300">
                     <div className="px-8 py-6">
                       <div className="flex items-start justify-between">
@@ -823,7 +792,6 @@ export default function DarulUloomIftahSection({
                             <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium mr-3 bg-emerald-100 text-emerald-800">
                               ❓ Q&A
                             </span>
-<<<<<<< HEAD
                             {/* Subcategory Badge */}
                             {item.iftah_sub_category && (
                               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800 mr-2">
@@ -880,11 +848,6 @@ export default function DarulUloomIftahSection({
                           {item.is_published && (
                               <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                 ✓ Published
-=======
-                            {item.category && (
-                              <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-teal-100 text-teal-800">
-                                {cleanText(item.category)}
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
                               </span>
                             )}
                           </div>
@@ -922,14 +885,10 @@ export default function DarulUloomIftahSection({
                                     <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
                                   </svg>
                                 </div>
-<<<<<<< HEAD
                                 <span className="font-medium">{cleanText(item.mufti?.full_name || item.mufti?.name || "Anonymous")}</span>
                                 {item.mufti.father_name && (
                                   <span className="text-gray-400">({cleanText(item.mufti.father_name)})</span>
                                 )}
-=======
-                                <span>{cleanText(item.mufti?.name || "Anonymous")}</span>
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
                               </div>
                             )}
                             {/* Date */}
@@ -978,7 +937,6 @@ export default function DarulUloomIftahSection({
                     </div>
                   </div>
                 ))}
-<<<<<<< HEAD
                     </div>
                   ) : (
                     <div className="px-8 py-12 text-center">
@@ -1007,85 +965,6 @@ export default function DarulUloomIftahSection({
               )}
             </div>
           </div>
-=======
-              </div>
-
-              {/* Empty State */}
-              {displayFatwas.length === 0 && (
-                <div className="px-8 py-12 text-center">
-                  <div className="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <svg className="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No Questions Found</h3>
-                  <p className="text-gray-600">Try adjusting your search criteria</p>
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Enhanced Sidebar */}
-          <div className="lg:col-span-1">
-            <div className="bg-white rounded-2xl shadow-lg border border-emerald-100 overflow-hidden">
-              {/* Search Section Header */}
-              <div className="bg-gradient-to-r from-emerald-500 to-teal-500 px-6 py-4">
-                <div className="flex gap-2 items-center">
-                  <div className="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-3">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                  </div>
-                  <h4 className="text-lg font-semibold text-white">Search & Filter</h4>
-                </div>
-              </div>
-              
-              <div className="p-6">
-                <div className="space-y-5">
-                  {/* Search Term */}
-                  <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">
-                      Desired Word
-                    </label>
-                    <div className="relative">
-                      <input
-                        type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        placeholder="Enter search term..."
-                        className="w-full px-4 py-3 pl-10 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                      />
-                      <svg className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Category Filter */}
-                  {categories.length > 0 && (
-                    <div>
-                      <label className="block text-sm font-semibold text-gray-700 mb-2">
-                        Category
-                      </label>
-                      <select
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                      >
-                        <option value="">All Categories</option>
-                        {categories.map((category) => (
-                          <option key={category} value={category}>
-                            {cleanText(category)}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
->>>>>>> 0073ca1 (anzoor add some sections and add some part)
         </div>
 
         {/* Enhanced View All Button */}
