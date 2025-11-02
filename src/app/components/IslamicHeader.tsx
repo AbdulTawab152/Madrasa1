@@ -190,7 +190,7 @@ export default function IslamicHeader({
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className={`flex flex-col gap-4 mt-10 sm:mt-20 ${alignmentClasses}`}>
           <div className="flex flex-col gap-3">
-            <h1 className="text-3xl font-bold text-white drop-shadow-sm sm:text-4xl lg:text-5xl">
+            <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
               {finalTitle}
             </h1>
             {finalSubtitle ? (

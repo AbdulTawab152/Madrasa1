@@ -92,7 +92,6 @@ export default function EventsSection({
                   <span className="bg-gradient-to-r from-amber-500 via-orange-400 to-orange-600 bg-clip-text text-transparent  text-4xl md:text-6xl font-black tracking-tight">
                     {t('events.events')}
                   </span>
-                  <span className="absolute left-1/2 -translate-x-1/2 top-1/2 -z-10 w-40 h-10 bg-orange-100 rounded-full blur-2xl opacity-60"></span>
                 </span>
               </h2>
               <p className="mt-4 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto font-medium">
@@ -138,7 +137,7 @@ export default function EventsSection({
                 {idx < displayEvents.length - 1 ? (
                   <span className="pointer-events-none absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100" />
                 ) : null}
-                <div className="relative flex w-full flex-col overflow-hidden bg-white/95 backdrop-blur md:flex-row  shadow-none hover:shadow-none">
+                <div className="relative flex w-full flex-col overflow-hidden bg-white/95 md:flex-row  shadow-none hover:shadow-none">
 
                     <div className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3] relative">
                       <Image

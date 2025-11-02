@@ -10,6 +10,7 @@ import IslamicHeader from "../components/IslamicHeader";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
 import { NoDataEmptyState } from "@/components/EmptyState";
+import { useTranslation } from "@/hooks/useTranslation";
 import {
   FaUser,
   FaAward,
@@ -24,6 +25,14 @@ import {
 } from "react-icons/fa";
 
 export default function AwlyaaListPage() {
+  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
+  
+  // Create a wrapper that always returns a string
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+
   const [awlyaa, setAwlyaa] = useState<Awlyaa[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -105,28 +114,28 @@ export default function AwlyaaListPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="mb-16"
+          className="mb-8"
         >
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-gradient-to-r from-white to-orange-50 rounded-3xl p-10 border border-orange-100">
-              <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mb-4 shadow-md">
-                  <FaSearch className="text-white text-3xl" />
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-white to-orange-50 rounded-2xl p-6 border border-orange-100">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mb-3 shadow-md">
+                  <FaSearch className="text-white text-xl" />
                 </div>
-                <h2 className="text-3xl font-extrabold text-gray-800 mb-2 tracking-tight">Find Your Scholar</h2>
-                <p className="text-gray-600 text-lg">Search our collection of distinguished scholars by name, expertise, or location.</p>
+                <h2 className="text-xl font-extrabold text-gray-800 mb-1 tracking-tight">{t('awlayaa.findYourScholar')}</h2>
+                <p className="text-gray-600 text-sm">{t('awlayaa.findYourScholarDesc')}</p>
               </div>
               
-              <div className="relative max-w-3xl mx-auto">
-                <div className="absolute inset-y-0 left-0 pl-6 flex items-center pointer-events-none">
-                  <FaSearch className="text-orange-500 text-xl" />
+              <div className="relative max-w-2xl mx-auto">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <FaSearch className="text-orange-500 text-base" />
                 </div>
                 <input
                   type="text"
-                  placeholder="Search by name, expertise, or location..."
+                  placeholder={t('awlayaa.searchPlaceholder')}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-16 pr-6 py-5 border-2 border-orange-200 rounded-2xl focus:ring-4 focus:ring-orange-100 focus:border-orange-400 text-lg transition-all duration-300 bg-white outline-none"
+                  className="w-full pl-12 pr-6 py-3 border-2 border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-100 focus:border-orange-400 text-base transition-all duration-300 bg-white outline-none"
                 />
                 {searchTerm && (
                   <div className="absolute inset-y-0 right-0 pr-6 flex items-center">
@@ -147,10 +156,13 @@ export default function AwlyaaListPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="mt-4 text-center"
+                  className="mt-3 text-center"
                 >
-                  <p className="text-orange-600 font-semibold text-base">
-                    {filteredAwlyaa.length} scholar{filteredAwlyaa.length !== 1 ? 's' : ''} found
+                  <p className="text-orange-600 font-semibold text-sm">
+                    {filteredAwlyaa.length === 1 
+                      ? t('awlayaa.scholarFound').replace('{count}', filteredAwlyaa.length.toString())
+                      : t('awlayaa.scholarsFound').replace('{count}', filteredAwlyaa.length.toString())
+                    }
                   </p>
                 </motion.div>
               )}

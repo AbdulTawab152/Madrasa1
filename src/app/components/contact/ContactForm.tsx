@@ -122,62 +122,93 @@ function Contact() {
 
 
   return (
-    <div className="w-full bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 py-8 sm:py-16">
+    <div className="w-full bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 py-10 sm:py-16" dir="rtl">
       {/* Contact Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col lg:flex-row gap-8 lg:gap-12">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12">
         {/* Left Info */}
         <div className="lg:w-1/2 space-y-6 sm:space-y-8">
-          <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">{t('contact.getInTouch')}</h2>
-            <p className="text-base sm:text-lg text-gray-600 mb-6 sm:mb-8">
-              {t('contact.loveToHear')}
-            </p>
-
-            <div className="flex gap-3 sm:gap-4 mb-6 sm:mb-8">
-              <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 bg-amber-600 text-white rounded-xl flex items-center justify-center hover:bg-amber-700 transition-all transform hover:-translate-y-1 shadow-sm">
-                <FaFacebook className="text-lg sm:text-xl" />
-              </a>
-              <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all transform hover:-translate-y-1 shadow-sm">
-                <FaWhatsapp className="text-lg sm:text-xl" />
-              </a>
-              <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 bg-red-600 text-white rounded-xl flex items-center justify-center hover:bg-red-700 transition-all transform hover:-translate-y-1 shadow-sm">
-                <FaYoutube className="text-lg sm:text-xl" />
-              </a>
-              <a href="#" className="w-10 h-10 sm:w-12 sm:h-12 bg-pink-500 text-white rounded-xl flex items-center justify-center hover:bg-pink-600 transition-all transform hover:-translate-y-1 shadow-sm">
-                <FaInstagram className="text-lg sm:text-xl" />
-              </a>
+          <div className="space-y-5">
+            <div className="space-y-3">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">{t('contact.getInTouch')}</h2>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                {t('contact.loveToHear')}
+              </p>
             </div>
 
-            <div className="space-y-4 sm:space-y-6">
-              <div className="flex items-start p-4 sm:p-6 bg-white rounded-2xl shadow-sm border border-amber-100 transition-all">
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4 group-hover:bg-amber-200 transition-colors">
-                  <FaMapMarkerAlt className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">{t('contact.address')}</h3>
-                  <p className="text-sm sm:text-base text-gray-600">410 Sandtown, California 94001, USA</p>
+            {/* Social Media Icons */}
+            <div className="flex flex-wrap gap-3 sm:gap-4 pt-2">
+              <a 
+                href="#" 
+                className="group w-12 h-12 sm:w-14 sm:h-14 bg-amber-600 text-white rounded-xl flex items-center justify-center hover:bg-amber-700 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
+                aria-label="Facebook"
+              >
+                <FaFacebook className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
+              </a>
+              <a 
+                href="#" 
+                className="group w-12 h-12 sm:w-14 sm:h-14 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
+                aria-label="WhatsApp"
+              >
+                <FaWhatsapp className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
+              </a>
+              <a 
+                href="#" 
+                className="group w-12 h-12 sm:w-14 sm:h-14 bg-red-600 text-white rounded-xl flex items-center justify-center hover:bg-red-700 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
+                aria-label="YouTube"
+              >
+                <FaYoutube className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
+              </a>
+              <a 
+                href="#" 
+                className="group w-12 h-12 sm:w-14 sm:h-14 bg-pink-500 text-white rounded-xl flex items-center justify-center hover:bg-pink-600 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
+                aria-label="Instagram"
+              >
+                <FaInstagram className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
+              </a>
+            </div>
+          </div>
+
+          {/* Contact Information Cards */}
+          <div className="space-y-4 sm:space-y-5 pt-2">
+            {/* Address Card */}
+            <div className="group flex items-start gap-4 p-5 sm:p-6 bg-white rounded-xl shadow-md hover:shadow-lg border border-amber-100 hover:border-amber-200 transition-all duration-300">
+              <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-100 transition-all duration-300 shadow-sm">
+                <FaMapMarkerAlt className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" />
+              </div>
+              <div className="flex-1 space-y-1.5">
+                <h3 className="font-bold text-gray-900 text-base sm:text-lg">{t('contact.address')}</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">410 Sandtown, California 94001, USA</p>
+              </div>
+            </div>
+
+            {/* Contact Card */}
+            <div className="group flex items-start gap-4 p-5 sm:p-6 bg-white rounded-xl shadow-md hover:shadow-lg border border-amber-100 hover:border-amber-200 transition-all duration-300">
+              <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-100 transition-all duration-300 shadow-sm">
+                <FaPhone className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" />
+              </div>
+              <div className="flex-1 space-y-1.5">
+                <h3 className="font-bold text-gray-900 text-base sm:text-lg">{t('contact.contact')}</h3>
+                <div className="space-y-1">
+                  <p className="text-sm sm:text-base text-gray-600 flex items-center gap-2">
+                    <span className="inline-block w-1 h-1 bg-amber-500 rounded-full"></span>
+                    888-123-4567
+                  </p>
+                  <p className="text-sm sm:text-base text-gray-600 flex items-center gap-2">
+                    <span className="inline-block w-1 h-1 bg-amber-500 rounded-full"></span>
+                    info@example.com
+                  </p>
                 </div>
               </div>
+            </div>
 
-              <div className="flex items-start p-4 sm:p-6 bg-white rounded-2xl shadow-sm border border-amber-100 transition-all">
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4 group-hover:bg-amber-200 transition-colors">
-                  <FaPhone className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">{t('contact.contact')}</h3>
-                  <p className="text-sm sm:text-base text-gray-600 mb-1">888-123-4567</p>
-                  <p className="text-sm sm:text-base text-gray-600">info@example.com</p>
-                </div>
+            {/* Opening Hours Card */}
+            <div className="group flex items-start gap-4 p-5 sm:p-6 bg-white rounded-xl shadow-md hover:shadow-lg border border-amber-100 hover:border-amber-200 transition-all duration-300">
+              <div className="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-amber-100 to-amber-50 rounded-lg flex items-center justify-center group-hover:from-amber-200 group-hover:to-amber-100 transition-all duration-300 shadow-sm">
+                <FaClock className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" />
               </div>
-
-              <div className="flex items-start p-4 sm:p-6 bg-white rounded-2xl shadow-sm border border-amber-100 transition-all group">
-                <div className="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-amber-100 rounded-xl flex items-center justify-center mr-3 sm:mr-4 group-hover:bg-amber-200 transition-colors">
-                  <FaClock className="w-4 h-4 sm:w-5 sm:h-5 text-amber-600" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900 text-base sm:text-lg mb-1 sm:mb-2">{t('contact.openingHours')}</h3>
-                  <p className="text-sm sm:text-base text-gray-600">Mon - Fri: 10:30am - 7:00pm</p>
-                </div>
+              <div className="flex-1 space-y-1.5">
+                <h3 className="font-bold text-gray-900 text-base sm:text-lg">{t('contact.openingHours')}</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">Mon - Fri: 10:30am - 7:00pm</p>
               </div>
             </div>
           </div>
@@ -185,13 +216,18 @@ function Contact() {
 
         {/* Right Form */}
         <div className="lg:w-1/2">
-          <div className="bg-white p-4 sm:p-6 lg:p-8 rounded-2xl shadow-sm border border-amber-100" id="contact-form">
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4">{t('contact.sendMessage')}</h3>
-            <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">{t('contact.respondSoon')}</p>
+          <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-lg border border-amber-100" id="contact-form">
+            <div className="space-y-3 mb-6">
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">{t('contact.sendMessage')}</h3>
+              <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{t('contact.respondSoon')}</p>
+            </div>
           
-            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5">
+              {/* Name Field */}
               <div className="relative">
-                <FiUser className="absolute left-3 sm:left-4 top-3 sm:top-4 text-gray-400 z-10" />
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
+                  <FiUser className="w-5 h-5 text-amber-500" />
+                </div>
                 <input
                   type="text"
                   name="name"
@@ -199,20 +235,24 @@ function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  className={`w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white text-sm sm:text-base ${
-                    errors.name ? "border-red-300 focus:ring-red-500" : "border-gray-200"
+                  dir="rtl"
+                  className={`w-full pr-11 pl-4 py-3.5 border-2 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base placeholder-gray-400 ${
+                    errors.name ? "border-red-400 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                   }`}
                 />
                 {errors.name && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center gap-1">
+                  <p className="text-red-500 text-xs sm:text-sm mt-1.5 flex items-center gap-2 mr-1">
                     <span>⚠️</span>
                     {errors.name}
                   </p>
                 )}
               </div>
 
+              {/* Email Field */}
               <div className="relative">
-                <FiMail className="absolute left-3 sm:left-4 top-3 sm:top-4 text-gray-400 z-10" />
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
+                  <FiMail className="w-5 h-5 text-amber-500" />
+                </div>
                 <input
                   type="email"
                   name="email"
@@ -220,32 +260,40 @@ function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  className={`w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white text-sm sm:text-base ${
-                    errors.email ? "border-red-300 focus:ring-red-500" : "border-gray-200"
+                  dir="rtl"
+                  className={`w-full pr-11 pl-4 py-3.5 border-2 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base placeholder-gray-400 ${
+                    errors.email ? "border-red-400 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                   }`}
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center gap-1">
+                  <p className="text-red-500 text-xs sm:text-sm mt-1.5 flex items-center gap-2 mr-1">
                     <span>⚠️</span>
                     {errors.email}
                   </p>
                 )}
               </div>
 
+              {/* Phone Field */}
               <div className="relative">
-                <FiPhone className="absolute left-3 sm:left-4 top-3 sm:top-4 text-gray-400 z-10" />
+                <div className="absolute right-3.5 top-1/2 -translate-y-1/2 z-10 pointer-events-none">
+                  <FiPhone className="w-5 h-5 text-amber-500" />
+                </div>
                 <input
                   type="tel"
                   name="phone"
                   placeholder={t('contact.yourPhone')}
                   value={formData.phone}
                   onChange={handleChange}
-                  className="w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 border border-gray-200 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white text-sm sm:text-base"
+                  dir="rtl"
+                  className="w-full pr-11 pl-4 py-3.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base placeholder-gray-400"
                 />
               </div>
 
+              {/* Message Field */}
               <div className="relative">
-                <FiMessageSquare className="absolute left-3 sm:left-4 top-3 sm:top-4 text-gray-400 z-10" />
+                <div className="absolute right-3.5 top-4 z-10 pointer-events-none">
+                  <FiMessageSquare className="w-5 h-5 text-amber-500" />
+                </div>
                 <textarea
                   name="message"
                   placeholder={t('contact.yourMessage') + '*'}
@@ -253,42 +301,44 @@ function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  className={`w-full pl-10 sm:pl-12 pr-4 py-3 sm:py-4 border rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-transparent outline-none transition bg-white text-sm sm:text-base resize-none ${
-                    errors.message ? "border-red-300 focus:ring-red-500" : "border-gray-200"
+                  dir="rtl"
+                  className={`w-full pr-11 pl-4 py-3.5 border-2 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base resize-none placeholder-gray-400 ${
+                    errors.message ? "border-red-400 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                   }`}
                 ></textarea>
                 {errors.message && (
-                  <p className="text-red-500 text-xs sm:text-sm mt-1 flex items-center gap-1">
+                  <p className="text-red-500 text-xs sm:text-sm mt-1.5 flex items-center gap-2 mr-1">
                     <span>⚠️</span>
                     {errors.message}
                   </p>
                 )}
               </div>
 
-
+              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white py-3 sm:py-4 rounded-xl font-semibold hover:opacity-90 transition-all transform hover:-translate-y-0.5 shadow-sm disabled:opacity-70 disabled:transform-none flex items-center justify-center gap-2 text-sm sm:text-base"
+                className="w-full bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 text-white py-3.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-base hover:from-amber-600 hover:via-amber-700 hover:to-orange-600 transition-all duration-300 transform hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-70 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center gap-2.5 shadow-md"
               >
                 {loading ? (
                   <>
-                    <svg className="animate-spin h-4 w-4 sm:h-5 sm:w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    {t('contact.sending')}
+                    <span>{t('contact.sending')}</span>
                   </>
                 ) : (
                   <>
-                    <FiSend className="text-base sm:text-lg" />
-                    {t('contact.sendMessageButton')}
+                    <FiSend className="text-lg sm:text-xl" />
+                    <span>{t('contact.sendMessageButton')}</span>
                   </>
                 )}
               </button>
 
+              {/* Status Message */}
               {status && (
-                <div className={`rounded-xl p-3 sm:p-4 text-center text-sm sm:text-base ${status.startsWith("✅") ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"}`}>
+                <div className={`rounded-lg p-4 text-center text-sm sm:text-base font-medium ${status.startsWith("✅") ? "bg-green-50 text-green-800 border-2 border-green-200" : "bg-red-50 text-red-800 border-2 border-red-200"}`}>
                   {status}
                 </div>
               )}

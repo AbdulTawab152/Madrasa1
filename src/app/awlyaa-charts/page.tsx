@@ -6,8 +6,8 @@ export default function AwlyaaChartsPage() {
     <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <IslamicHeader 
         pageType="awlayaa" 
-        title="Awlyaa Charts"
-        subtitle="Explore the spiritual lineage and connections of our Islamic scholars"
+        title="تشجیر اولیاء"
+        subtitle="  د نقشبندیه طریقه مشایخو روحاني سلسله، له رسول الله ﷺ تر مشایخو پورې په برکتي تسلسل کې "
         alignment="center"
         cta={{
           label: "View Charts",

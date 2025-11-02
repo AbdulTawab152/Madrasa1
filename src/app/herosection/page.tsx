@@ -108,8 +108,8 @@ const Hero = () => {
       {/* Gradient Overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20 z-21" />
       
-      {/* Custom Gradient Overlay */}
-      <div className="w-full h-full bg-gradient-to-tr from-black via-yellow-100 to-transparent blur-md absolute inset-0 z-22" />
+      {/* Custom Gradient Overlay - removed blur for better text visibility */}
+      <div className="w-full h-full bg-gradient-to-tr from-black/40 via-transparent to-transparent absolute inset-0 z-22" />
 
       {/* Scrolling Rows — 4 rows stacked vertically with smooth animation */}
       <div className="relative z-30 flex flex-col space-y-2 py-30">
@@ -155,13 +155,13 @@ const Hero = () => {
             </Link>
             
             <Link href="/courses">
-              <Button variant="outline" size="lg" className="rounded-full shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] bg-white/10 backdrop-blur-sm border-orange-400 text-orange-300 hover:bg-orange-500/25 hover:text-white">
+              <Button variant="outline" size="lg" className="rounded-full shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)] bg-white/10 border-orange-400 text-orange-300 hover:bg-orange-500/25 hover:text-white">
                 {t("hero.ourCourses")}
               </Button>
             </Link>
           </div>
 
-          <div className="w-full h-full bg-gradient-to-tr from-black via-yellow-100 to-transparent blur-md" />
+
         </div>
      
 

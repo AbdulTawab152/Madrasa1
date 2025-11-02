@@ -101,13 +101,13 @@ export default function ContentSection({
         </div>
 
         {/* Floating Elements */}
-        <div className="absolute top-12 left-12 w-28 h-28 bg-gradient-to-br from-amber-300/30 to-orange-300/20 rounded-full blur-2xl animate-float-slow"></div>
+        <div className="absolute top-12 left-12 w-28 h-28 bg-gradient-to-br from-amber-300/30 to-orange-300/20 rounded-full animate-float-slow"></div>
         <div
-          className="absolute bottom-12 right-16 w-20 h-20 bg-gradient-to-br from-orange-300/30 to-amber-300/20 rounded-full blur-2xl animate-float-medium"
+          className="absolute bottom-12 right-16 w-20 h-20 bg-gradient-to-br from-orange-300/30 to-amber-300/20 rounded-full animate-float-medium"
           style={{ animationDelay: "1.5s" }}
         ></div>
         <div
-          className="absolute top-1/3 right-1/4 w-16 h-16 bg-gradient-to-br from-amber-300/20 to-orange-200/10 rounded-full blur-xl animate-float-slow"
+          className="absolute top-1/3 right-1/4 w-16 h-16 bg-gradient-to-br from-amber-300/20 to-orange-200/10 rounded-full animate-float-slow"
           style={{ animationDelay: "2.5s" }}
         ></div>
 
@@ -116,7 +116,7 @@ export default function ContentSection({
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.9, ease: "easeOut" }}
-          className="text-center relative z-10 max-w-4xl mx-auto bg-white/40 backdrop-blur-sm rounded-2xl py-12 px-8 border border-white/50 shadow-sm"
+          className="text-center relative z-10 max-w-4xl mx-auto bg-white/40 rounded-2xl py-12 px-8 border border-white/50 shadow-sm"
         >
           {/* Icon Badge */}
           <motion.div

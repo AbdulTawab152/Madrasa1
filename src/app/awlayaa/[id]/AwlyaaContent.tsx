@@ -244,15 +244,18 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
 
                 <div className="flex items-center gap-2">
                   <MapPin className="text-gray-400" size={16} />
-                  <span className="text-gray-700">
-                    {cleanText([
-                      awlyaa.birth_place,
-                      awlyaa.birth_city,
-                      awlyaa.birth_country,
-                    ]
-                      .filter(Boolean)
-                      .join(", ") || t('awlyaaDetail.notSpecified'))}
-                  </span>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.birthPlace')}</span>
+                    <span className="text-gray-700">
+                      {cleanText([
+                        awlyaa.birth_place,
+                        awlyaa.birth_city,
+                        awlyaa.birth_country,
+                      ]
+                        .filter(Boolean)
+                        .join(", ") || t('awlyaaDetail.notSpecified'))}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -275,15 +278,18 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
 
                   <div className="flex items-center gap-2">
                     <MapPin className="text-gray-400" size={16} />
-                    <span className="text-gray-700">
-                      {cleanText([
-                        awlyaa.death_place,
-                        awlyaa.death_city,
-                        awlyaa.death_country,
-                      ]
-                        .filter(Boolean)
-                        .join(", ") || t('awlyaaDetail.notSpecified'))}
-                    </span>
+                    <div className="flex flex-col">
+                      <span className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.deathPlace')}</span>
+                      <span className="text-gray-700">
+                        {cleanText([
+                          awlyaa.death_place,
+                          awlyaa.death_city,
+                          awlyaa.death_country,
+                        ]
+                          .filter(Boolean)
+                          .join(", ") || t('awlyaaDetail.notSpecified'))}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

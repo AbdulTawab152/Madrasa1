@@ -318,14 +318,14 @@ export default function DonationPage() {
                 </div>
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">د مرستې تصدیق</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">ستاسو ته به د مرستې د ترلاسه کولو تصدیق رسول شي</p>
+              <p className="text-gray-600 leading-relaxed text-lg">د خپلو مرستو د رسیدلو تصدیق تر لاسه کړئ</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Trust Indicators */}
-      <section className="py-20 sm:py-24 bg-white">
+      {/* <section className="py-20 sm:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="text-center mb-16">
             <div className="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
@@ -366,7 +366,7 @@ export default function DonationPage() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
     </main>
   );
 }

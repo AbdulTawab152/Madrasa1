@@ -233,8 +233,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-transparent to-transparent"></div>
           
           {/* Subtle Light Effects */}
-          <div className="absolute top-20 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 left-0 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
+          <div className="absolute top-20 right-0 w-96 h-96 bg-amber-500/10 rounded-full"></div>
+          <div className="absolute bottom-20 left-0 w-96 h-96 bg-emerald-500/10 rounded-full"></div>
         </div>
 
         {/* Hero Content */}
@@ -264,9 +264,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
               )}
 
               {/* Decorative Elements */}
-              <div className="absolute top-24 -left-24 w-72 h-72 bg-amber-400/15 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="absolute bottom-24 -right-24 w-72 h-72 bg-emerald-400/15 rounded-full blur-3xl pointer-events-none"></div>
-              <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 w-40 h-4 bg-gradient-to-r from-emerald-400 via-amber-400 to-emerald-200 rounded-full opacity-50 blur pointer-events-none"></div>
+              <div className="absolute top-24 -left-24 w-72 h-72 bg-amber-400/15 rounded-full pointer-events-none"></div>
+              <div className="absolute bottom-24 -right-24 w-72 h-72 bg-emerald-400/15 rounded-full pointer-events-none"></div>
             </div>
           </div>
         </div>
@@ -457,8 +456,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                 Contact us for enrollment details
               </p>
               <a
-                href={`https://wa.me/+1234567890?text=${encodeURIComponent(
-                  `Hi! I'm interested in the course: ${course.title}. Can you provide me with more information about enrollment, pricing, and course details?`
+                href={`https://wa.me/+93796148087?text=${encodeURIComponent(
+                  `Hi! I'm interested in this course: ${course.title}. سلام! زه د «کمپیوټر» کورس کې علاقه لرم. کولای شئ ماته د نوم لیکنې، بيې، او د کورس جزییاتو په اړه نور معلومات راکړئ؟?`
                 )}`}
                 target="_blank"
                 rel="noopener noreferrer"

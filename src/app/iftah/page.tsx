@@ -114,10 +114,10 @@ export default async function IftahPage() {
         </div>
         
         {/* Floating Decorative Islamic Elements */}
-        <div className="absolute top-5 left-5 w-40 h-40 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-5 right-10 w-52 h-52 bg-teal-300/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }}></div>
-        <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-emerald-200/8 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '3s' }}></div>
-        <div className="absolute bottom-1/3 left-1/4 w-36 h-36 bg-teal-200/8 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-5 left-5 w-40 h-40 bg-white/5 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-5 right-10 w-52 h-52 bg-teal-300/10 rounded-full animate-pulse" style={{ animationDelay: '1.5s' }}></div>
+        <div className="absolute top-1/3 right-1/4 w-32 h-32 bg-emerald-200/8 rounded-full animate-pulse" style={{ animationDelay: '3s' }}></div>
+        <div className="absolute bottom-1/3 left-1/4 w-36 h-36 bg-teal-200/8 rounded-full animate-pulse" style={{ animationDelay: '2s' }}></div>
       
      
         
@@ -135,7 +135,7 @@ export default async function IftahPage() {
           <div className="absolute top-4 left-6">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 backdrop-blur-md px-4 py-2 rounded-lg transition-all duration-300 group border border-white/20"
+              className="inline-flex items-center gap-2 bg-white/15 hover:bg-white/25 px-4 py-2 rounded-lg transition-all duration-300 group border border-white/20"
             >
               <svg className="w-5 h-5 group-hover:-translate-x-1 transition-transform text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -145,20 +145,21 @@ export default async function IftahPage() {
           </div>
           
           {/* Central Logo/Icon */}
-          <div className="inline-flex items-center justify-center w-32 h-32 bg-white/15 backdrop-blur-xl rounded-full mb-8 hover:scale-110 transition-all duration-500 shadow-2xl ring-4 ring-white/10 relative">
-            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 opacity-25 blur-2xl animate-pulse"></div>
+          <div className="inline-flex items-center justify-center w-32 h-32 bg-white/15 rounded-full mb-8 hover:scale-110 transition-all duration-500 shadow-2xl ring-4 ring-white/10 relative">
+            <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 opacity-25 animate-pulse"></div>
             <div className="relative z-10 text-5xl">📿</div>
           </div>
           
       
           {/* English Title */}
           <p className="text-3xl md:text-4xl text-emerald-100 mb-4 animate-fadeInUp" style={{ animationDelay: '0.2s', fontWeight: '700' }}>
-            Online Fatwa Service
+           دانلاین فتوا خدامات
           </p>
           
           {/* Subtitle */}
           <p className="text-xl md:text-2xl text-emerald-50 mb-8 animate-fadeInUp" style={{ animationDelay: '0.4s' }}>
-            Expert Islamic Guidance & Religious Rulings
+           د حنفي فقهې د اصولو په رڼا کې 
+شرعي لارښوونې، هر وخت او هر ځای.
           </p>
         
     

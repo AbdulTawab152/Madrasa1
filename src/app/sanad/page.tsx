@@ -1,3 +1,5 @@
+"use client";
+
 import ShajaraSection from "../components/sanad/SanadSection";
 import IslamicHeader from "../components/IslamicHeader";
 import { useTranslation } from "@/hooks/useTranslation";

@@ -47,7 +47,7 @@ export default function CoursesPage() {
   }, [items]);
 
   return (
-    <main className="w-full min-h-screen bg-gradient-to-b from-amber-50 to-white">
+    <main className="w-full min-h-screen ">
       <IslamicHeader
         pageType="courses"
         alignment="center"

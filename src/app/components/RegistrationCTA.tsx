@@ -13,12 +13,12 @@ export default function RegistrationCTA() {
     <section className="py-12 bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 relative overflow-hidden">
       {/* Subtle background elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-5 right-5 w-20 h-20 bg-amber-200/20 rounded-full blur-xl"></div>
-        <div className="absolute bottom-5 left-5 w-24 h-24 bg-orange-200/20 rounded-full blur-xl"></div>
+        <div className="absolute top-5 right-5 w-20 h-20 bg-amber-200/20 rounded-full"></div>
+        <div className="absolute bottom-5 left-5 w-24 h-24 bg-orange-200/20 rounded-full"></div>
       </div>
 
       <div className="max-w-3xl mx-auto px-6 text-center relative z-10">
-        <div className="inline-flex items-center px-3 py-1 bg-white/80 backdrop-blur-sm text-amber-800 text-xs font-medium rounded-full mb-4 shadow-sm border border-amber-200/50">
+        <div className="inline-flex items-center px-3 py-1 bg-white/80 text-amber-800 text-xs font-medium rounded-full mb-4 shadow-sm border border-amber-200/50">
           <span className="text-sm mr-1">📚</span>
           Enroll in Classes
         </div>

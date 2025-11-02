@@ -105,7 +105,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
         <div className="relative">
           {/* Simpler, friendlier background */}
           <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-amber-50 via-yellow-50 to-transparent blur-sm opacity-70 rounded-t-3xl" />
+            <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-amber-50 via-yellow-50 to-transparent opacity-70 rounded-t-3xl" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {graduations.slice(0, PAGE_SIZE).map((grad, idx) => (
@@ -140,7 +140,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                     />
 
                     {/* Year badge */}
-                    <div className="absolute top-3 right-3 rounded-lg px-3 py-1 bg-white/90 backdrop-blur-[2px] flex items-center gap-2 text-[11px] font-semibold text-amber-700 border border-amber-200 shadow-sm">
+                    <div className="absolute top-3 right-3 rounded-lg px-3 py-1 bg-white/90 flex items-center gap-2 text-[11px] font-semibold text-amber-700 border border-amber-200 shadow-sm">
                       <FaCalendarAlt className="text-amber-400" />
                       <span>{grad.graduation_year || "N/A"}</span>
                     </div>

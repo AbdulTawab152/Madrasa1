@@ -585,4 +585,189 @@
   .hero-scroll-container * {
     direction: ltr !important;
   }
+
+  /* Professional Icon Animations */
+  .icon-scroll {
+    animation: scrollUnroll 3s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes scrollUnroll {
+    0%, 100% {
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      transform: rotate(-5deg) scale(1.05);
+    }
+    50% {
+      transform: rotate(5deg) scale(1.1);
+    }
+    75% {
+      transform: rotate(-5deg) scale(1.05);
+    }
+  }
+
+  .icon-graduation {
+    animation: graduationFloat 4s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: center bottom;
+  }
+
+  @keyframes graduationFloat {
+    0%, 100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    25% {
+      transform: translateY(-8px) rotate(-3deg);
+    }
+    50% {
+      transform: translateY(-12px) rotate(3deg);
+    }
+    75% {
+      transform: translateY(-8px) rotate(-3deg);
+    }
+  }
+
+  .icon-heart {
+    animation: heartBeat 2s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% {
+      transform: scale(1);
+    }
+    10%, 30% {
+      transform: scale(1.15);
+    }
+    20%, 40% {
+      transform: scale(1.1);
+    }
+  }
+
+  .icon-pencil {
+    animation: pencilWrite 3s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: bottom right;
+  }
+
+  @keyframes pencilWrite {
+    0%, 100% {
+      transform: rotate(0deg) translateY(0);
+    }
+    25% {
+      transform: rotate(5deg) translateY(-2px);
+    }
+    50% {
+      transform: rotate(-5deg) translateY(-4px);
+    }
+    75% {
+      transform: rotate(3deg) translateY(-2px);
+    }
+  }
+
+  .icon-star {
+    animation: starTwinkle 2s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes starTwinkle {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1) rotate(0deg);
+    }
+    50% {
+      opacity: 0.7;
+      transform: scale(1.2) rotate(180deg);
+    }
+  }
+
+  /* Donation Icon Animations */
+  .icon-coins {
+    animation: coinsRotate 4s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes coinsRotate {
+    0%, 100% {
+      transform: rotate(0deg) scale(1);
+    }
+    25% {
+      transform: rotate(10deg) scale(1.05);
+    }
+    50% {
+      transform: rotate(-10deg) scale(1.1);
+    }
+    75% {
+      transform: rotate(5deg) scale(1.05);
+    }
+  }
+
+  .icon-sprout {
+    animation: sproutGrow 3s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: center bottom;
+  }
+
+  @keyframes sproutGrow {
+    0%, 100% {
+      transform: scale(1) translateY(0);
+    }
+    50% {
+      transform: scale(1.15) translateY(-5px);
+    }
+  }
+
+  .icon-heart-handshake {
+    animation: heartPulse 2.5s ease-in-out infinite;
+    display: inline-block;
+  }
+
+  @keyframes heartPulse {
+    0%, 100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    25% {
+      transform: scale(1.1);
+      opacity: 0.9;
+    }
+    50% {
+      transform: scale(1.15);
+      opacity: 1;
+    }
+    75% {
+      transform: scale(1.05);
+      opacity: 0.95;
+    }
+  }
+
+  /* Donation Card Animations */
+  .donation-card {
+    animation: cardFadeIn 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .donation-card:nth-child(1) {
+    animation-delay: 0.1s;
+  }
+
+  .donation-card:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+
+  .donation-card:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes cardFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }

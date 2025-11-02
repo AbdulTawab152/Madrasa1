@@ -39,8 +39,8 @@ export default function EventsPage() {
   }, [items]);
 
   return (
-    <main className="w-full min-h-screen">
-      <IslamicHeader pageType="events" title="Islamic Events" />
+    <main className="w-full min-h-screen ">
+      <IslamicHeader pageType="events" title="علمی مجالس " />
       <div className="pb-16">
         {isLoadingInitial ? (
           <UnifiedLoader variant="card-grid" count={6} showFilters={false} />

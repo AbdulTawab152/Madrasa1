@@ -10,6 +10,7 @@ import { useTranslation } from "@/hooks/useTranslation";
 import { Button } from "@/components/ui/button";
 import { CoursesApi } from "@/lib/api";
 import type { Course as CourseType } from "@/lib/types";
+import { HeartHandshake, Sprout, Coins } from "lucide-react";
 
 // Lazy load heavy components
 const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
@@ -62,17 +63,18 @@ export default function HomePage() {
 
 
       {/* Courses Section */}
-      <section className="py-6 bg-gradient-to-b from-gray-50 to-white relative">
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+      <section className="py-6 bg-primary-50">
+    
+
+
+        <div className="max-w-7xl mx-auto px-6 text-center">
           {/* Simple Hero Text */}
           <div className="mb-8">
-            <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
+            <p className="inline-block px-4 py-2 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/20 text-amber-700 text-sm font-semibold mb-4">
               {t('home.exploreKnowledge')}
             </p>
 
-            <h2 className="text-3xl md:text-5xl font-bold text-black mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-primary-700 mb-4">
               {t('home.popularCourses')}
             </h2>
 
@@ -85,7 +87,7 @@ export default function HomePage() {
           <div className="mt-8">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                <div className="w-8 h-8 border-4 border-amber-800/50 border-t-amber-500 rounded-full animate-spin"></div>
                 <span className="ml-3 text-gray-600">{t('home.loadingCourses')}</span>
               </div>
             ) : error ? (
@@ -100,7 +102,7 @@ export default function HomePage() {
                 <div className="mt-8 text-center">
                   <Link
                     href="/courses"
-                    className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
                   >
                     <span>{t('home.viewAllCourses')}</span>
                   </Link>
@@ -114,14 +116,12 @@ export default function HomePage() {
       {/* gragurtion */}
 
       {/* Events Section - Lazy Loaded */}
-      <section className="py-10 relative">
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none"></div>
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <section className="py-10 bg-white">
+        <div className="max-w-7xl mx-auto px-6">
           <Suspense
           fallback={
             <div className="flex items-center justify-center py-20">
-              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+             
               <span className="ml-4 text-gray-600 font-medium">
                 {t('home.loadingEvents')}
               </span>
@@ -135,17 +135,15 @@ export default function HomePage() {
 
       {/* Books */}
 
-      <section className="relative py-12 bg-gradient-to-b from-amber-50 to-white">
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-        <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
+      <section className="relative py-12 bg-primary-50">
+        <div className="max-w-7xl mx-auto px-6 text-center">
           {/* Simple Hero Text */}
           <div className="mb-8">
-            <p className="inline-block px-4 py-2 rounded-full bg-amber-100 text-amber-600 text-sm font-medium mb-4">
+            <p className="inline-block px-4 py-2 rounded-full bg-gradient-to-r from-amber-400/20 to-amber-500/20 text-amber-700 text-sm font-semibold mb-4">
               {t('home.exploreKnowledge')}
             </p>
 
-            <h2 className="text-4xl md:text-5xl font-bold text-black mb-4">
+            <h2 className="text-4xl md:text-5xl font-bold text-primary-700 mb-4">
               {t('home.ourBooks')}
             </h2>
 
@@ -159,7 +157,7 @@ export default function HomePage() {
             <Suspense
               fallback={
                 <div className="flex items-center justify-center py-12">
-                  <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+                  <div className="w-8 h-8 border-4 border-amber-800/50 border-t-amber-500 rounded-full animate-spin"></div>
                   <span className="ml-3 text-gray-600">{t('home.loadingBooks')}</span>
                 </div>
               }
@@ -171,7 +169,7 @@ export default function HomePage() {
                 <div className="mt-8 text-center">
                   <Link
                     href="/book"
-                    className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
                   >
                     <span>{t('home.viewAllBooks')}</span>
                   </Link>
@@ -183,34 +181,19 @@ export default function HomePage() {
       </section>
 
       {/* Sanad Section */}
-      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-purple-50 via-white to-indigo-50">
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-        {/* Animated Gradient Blobs */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-purple-200/30 to-indigo-200/30 rounded-full blur-3xl animate-pulse z-0" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-indigo-200/30 to-purple-200/30 rounded-full blur-3xl animate-pulse z-0" />
-
-        {/* Subtle Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238b5cf6' fill-opacity='0.08'%3E%3Cpath d='M50 0L60 40L100 50L60 60L50 100L40 60L0 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-        </div>
-
+      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-primary-50 via-teal-50/50 to-primary-100">
         <div className="relative max-w-7xl mx-auto px-6 text-center z-10">
           {/* Hero Text */}
           <div className="mb-14">
-            <div className="inline-flex items-center px-5 py-2 bg-purple-100 text-purple-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
-              📜 زموږ د سند ځانګړنه
+            <div className="inline-flex items-center px-5 py-2 bg-gradient-to-r from-primary-400/20 to-primary-500/20 text-primary-700 text-sm font-semibold rounded-full mb-6 animate-fade-in backdrop-blur-sm">
+              <span className="icon-scroll">📜</span> زموږ د سند ځانګړنه
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
-              زموږ سند (د انتقال تسلسل)
+            <h2 className="text-4xl md:text-5xl font-extrabold text-primary-700 mb-5 ">
+            شجره
+             نقشبندیه
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
-              زموږ د روحاني نسب او انتقال تسلسل وپلټئ. موږ ته ویاړ دی چې دا درسونه خوندي او دوام ورکوو.
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed ">
+            د اولیاؤ او عارفانو روحاني سلسله
             </p>
           </div>
 
@@ -219,7 +202,7 @@ export default function HomePage() {
             <Suspense
               fallback={
                 <div className="flex items-center justify-center py-16">
-                  <div className="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+                  <div className="w-10 h-10 border-4 border-primary-300/50 border-t-primary-500 rounded-full animate-spin"></div>
                   <span className="ml-4 text-gray-600 font-medium">
                     د سند معلومات بارېږي...
                   </span>
@@ -233,7 +216,7 @@ export default function HomePage() {
               <div className="mt-10 text-center">
                 <Link
                   href="/sanad"
-                  className="inline-flex items-center gap-2 px-6 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
                 >
                   <span>ټول سند وګورئ</span>
                 </Link>
@@ -244,54 +227,34 @@ export default function HomePage() {
       </section>
 
       {/* Gallery - Lazy Loaded */}
-      <div className="relative">
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-        <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-20 relative z-10">
-              <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
+      <Suspense
+        fallback={
+          <div className="flex items-center justify-center py-20">
+              <div className="w-10 h-10 border-4 border-amber-800/50 border-t-amber-500 rounded-full animate-spin"></div>
               <span className="ml-4 text-gray-600 font-medium">
                 {t('home.loadingGallery')}
               </span>
-            </div>
-          }
-        >
-          <div className="relative z-10">
-            <LazyGallerySection />
           </div>
-        </Suspense>
-      </div>
+        }
+      >
+        <LazyGallerySection />
+      </Suspense>
 
       {/* gragutaion */}
 
-      <section className="relative py-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50">
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-        {/* Animated Gradient Blobs */}
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full blur-3xl animate-pulse z-0" />
-        <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse z-0" />
-        {/* Subtle Pattern Overlay */}
-        <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none">
-          <div
-            className="absolute inset-0"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f59e42' fill-opacity='0.08'%3E%3Cpath d='M50 0L60 40L100 50L60 60L50 100L40 60L0 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E")`,
-            }}
-          />
-        </div>
+      <section className="relative py-20 overflow-hidden bg-primary-50">
         <div className="relative max-w-7xl mx-auto px-6 text-center z-10">
           {/* Hero Text */}
           <div className="mb-14">
-            <div className="inline-flex items-center px-5 py-2 bg-orange-100 text-orange-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
-              🎓 {t('home.celebratingSuccess')}
+            <div className="inline-flex items-center px-5 py-2 bg-gradient-to-r from-orange-400/20 to-orange-500/20 text-orange-700 text-sm font-semibold rounded-full mb-6 animate-fade-in backdrop-blur-sm">
+              <span className="icon-graduation">🎓</span> {t('home.celebratingSuccess')}
             </div>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
+            <h2 className="text-4xl md:text-5xl font-extrabold text-primary-700 mb-5 leading-tight animate-fade-in-up">
               {t('home.ourGraduates')}
             </h2>
-            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
+              <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
               {t('home.graduatesDescription')}{" "}
-              <span className="inline-block animate-bounce">🌟</span>
+              <span className="icon-star inline-block">🌟</span>
             </p>
           </div>
           {/* Graduates Section */}
@@ -299,7 +262,7 @@ export default function HomePage() {
             <Suspense
               fallback={
                 <div className="flex items-center justify-center py-16">
-                  <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
+                  <div className="w-10 h-10 border-4 border-orange-800/50 border-t-orange-400 rounded-full animate-spin"></div>
                   <span className="ml-4 text-gray-600 font-medium">
                     {t('home.loadingGraduates')}
                   </span>
@@ -313,7 +276,7 @@ export default function HomePage() {
                <div className="mt-10 text-center">
                   <Link
                     href="/graduated-students"
-                    className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
                   >
                     <span>{t('home.viewAllGraduation')}</span>
                   </Link>
@@ -326,44 +289,28 @@ export default function HomePage() {
       {/* blogs Section */}
    
 
- <section className="relative py-20 overflow-hidden bg-gradient-to-br from-orange-50 via-white to-yellow-50">
-  {/* Dark Overlay */}
-  <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-  {/* Animated Gradient Blobs */}
-  <div className="absolute -top-32 -left-32 w-96 h-96 bg-gradient-to-br from-orange-200/30 to-yellow-200/30 rounded-full blur-3xl animate-pulse z-0" />
-  <div className="absolute -bottom-32 -right-32 w-96 h-96 bg-gradient-to-tr from-yellow-200/30 to-orange-200/30 rounded-full blur-3xl animate-pulse z-0" />
-
-  {/* Subtle Pattern Overlay */}
-  <div className="absolute inset-0 opacity-[0.03] z-0 pointer-events-none">
-    <div
-      className="absolute inset-0"
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23f59e42' fill-opacity='0.08'%3E%3Cpath d='M50 0L60 40L100 50L60 60L50 100L40 60L0 50L40 40Z'/%3E%3C/g%3E%3C/svg%3E")`,
-      }}
-    />
-  </div>
-
+ <section className="relative py-20 overflow-hidden bg-white">
   <div className="relative max-w-7xl mx-auto px-6 text-center z-10">
     {/* Hero Text */}
-    <div className="mb-14">
-      <div className="inline-flex items-center px-5 py-2 bg-orange-100 text-orange-700 text-sm font-semibold rounded-full mb-6 shadow-sm animate-fade-in">
-        📝 {t('home.readOurBlog')}
+    <div className="mb-2">
+      <div className="inline-flex items-center px-5 py-2 bg-gradient-to-r from-orange-400/20 to-orange-500/20 text-orange-700 text-sm font-semibold rounded-full mb-4 animate-fade-in backdrop-blur-sm">
+        <span className="icon-pencil">📝</span> {t('home.readOurBlog')}
       </div>
-      <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-5 leading-tight animate-fade-in-up">
+      <h2 className="text-4xl md:text-5xl font-extrabold text-primary-700 mb-3 leading-tight animate-fade-in-up">
         {t('home.exploreOurBlog')}
       </h2>
-      <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100">
+      <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed font-light animate-fade-in-up delay-100 mb-2">
         {t('home.blogDescription')}{" "}
-        <span className="inline-block animate-bounce">🌟</span>
+        <span className="icon-star inline-block">🌟</span>
       </p>
     </div>
 
     {/* Blog Section */}
-    <div className="mt-12 relative">
+    <div className="relative">
       <Suspense
         fallback={
           <div className="flex items-center justify-center py-16">
-            <div className="w-10 h-10 border-4 border-orange-200 border-t-orange-600 rounded-full animate-spin"></div>
+            <div className="w-10 h-10 border-4 border-orange-800/50 border-t-orange-400 rounded-full animate-spin"></div>
             <span className="ml-4 text-gray-600 font-medium">
               {t('home.loadingBlogPosts')}
             </span>
@@ -376,7 +323,7 @@ export default function HomePage() {
          <div className="mt-4 text-center">
                   <Link
                     href="/blogs"
-                    className="inline-flex items-center gap-2 px-6 py-2 bg-amber-600 text-white font-medium rounded-lg hover:bg-amber-700 transition-colors"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
                   >
                     <span>{t('home.viewAllBlogs')}</span>
                   </Link>
@@ -392,148 +339,81 @@ export default function HomePage() {
     
 
       {/* Donation Section */}
-      <section className="py-16 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-amber-500/20 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-amber-400/20 rounded-full blur-3xl"></div>
-        </div>
-
+      <section className="py-16 bg-primary-50 relative overflow-hidden">
         <div className="max-w-6xl mx-auto text-center px-6 relative z-10">
-          <div className="inline-flex items-center px-3 py-1 bg-white/20 text-white text-xs font-medium rounded-full mb-4 backdrop-blur-sm">
-            💝 {t('home.supportOurMission')}
+          <div className="inline-flex items-center px-3 py-1 bg-gradient-to-r from-pink-400/20 to-pink-500/20 text-pink-700 text-xs font-semibold rounded-full mb-4 backdrop-blur-sm">
+            <span className="icon-heart">💝</span> {t('home.supportOurMission')}
           </div>
-          <h2 className="text-3xl font-bold text-white mb-4">
+          <h2 className="text-3xl font-bold text-primary-700 mb-4">
             {t('home.helpUsContinue')}
           </h2>
-          <p className="text-gray-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
             {t('home.donationDescription')}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             {[
               {
-                amount: "$50",
+                icon: Coins,
                 period: t('home.monthlySupport'),
                 desc: t('home.helpStudentMonthly'),
               },
               {
-                amount: "$100",
+                icon: Sprout,
                 period: t('home.quarterlyDonation'),
                 desc: t('home.supportPrograms'),
               },
               {
-                amount: "$500",
+                icon: HeartHandshake,
                 period: t('home.annualContribution'),
                 desc: t('home.transformLivesYearly'),
               },
-            ].map((tier, index) => (
-              <div
-                key={`tier-${tier.amount}-${index}`}
-                className="bg-white/10 p-6 rounded-lg backdrop-blur-sm border border-white/20 hover:bg-white/20 transition-all duration-300"
-              >
-                <div className="text-4xl font-bold text-white mb-2">
-                  {tier.amount}
+            ].map((tier, index) => {
+              const IconComponent = tier.icon;
+              // Assign animation class based on icon type
+              let iconAnimationClass = '';
+              
+              if (tier.icon === Coins) {
+                iconAnimationClass = 'icon-coins';
+              } else if (tier.icon === Sprout) {
+                iconAnimationClass = 'icon-sprout';
+              } else if (tier.icon === HeartHandshake) {
+                iconAnimationClass = 'icon-heart-handshake';
+              }
+              
+              return (
+                <div
+                  key={`tier-${index}`}
+                  className="donation-card relative overflow-hidden bg-white p-6 rounded-xl border border-gray-200/60"
+                >
+                  {/* Content */}
+                  <div className="relative z-10">
+                    <div className="flex justify-center mb-4">
+                      <div className="relative p-4 bg-teal-50 rounded-xl">
+                        <IconComponent className={`relative w-12 h-12 text-teal-600 ${iconAnimationClass}`} />
+                      </div>
+                    </div>
+                    
+                    <div className="text-center">
+                      <h3 className="text-gray-800 font-bold text-base mb-2">
+                        {tier.period}
+                      </h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">{tier.desc}</p>
+                    </div>
+                  </div>
                 </div>
-                <div className="text-amber-100 font-semibold mb-2">
-                  {tier.period}
-                </div>
-                <div className="text-amber-200 text-sm">{tier.desc}</div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          <Button variant="outline" className="bg-white text-amber-600 hover:bg-amber-50">
-            {t('home.donateNow')}
-          </Button>
+          <Link href="/donation">
+            <Button variant="outline" className="bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 px-8 py-3 rounded-xl font-semibold transform hover:-translate-y-0.5 transition-all duration-300">
+              {t('home.donateNow')}
+            </Button>
+          </Link>
         </div>
       </section>
 
-      {/* Contact Section */}
-      {/* <section className="py-16 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="text-center mb-12">
-            <div className="inline-flex items-center px-3 py-1 bg-amber-100 text-amber-800 text-xs font-medium rounded-full mb-4">
-              📞 Get In Touch
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Contact Us
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              We'd love to hear from you. Reach out for more information about
-              our programs
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
-            <div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-8">
-                Contact Information
-              </h3>
-              <div className="space-y-6">
-                {[
-                  {
-                    icon: "📍",
-                    title: "Address",
-                    info: "123 Islamic Center, Karachi, Pakistan",
-                  },
-                  { icon: "📞", title: "Phone", info: "+92 21 1234 5678" },
-                  {
-                    icon: "✉️",
-                    title: "Email",
-                    info: "info@anwarululoom.edu.pk",
-                  },
-                  {
-                    icon: "🕒",
-                    title: "Hours",
-                    info: "Mon-Fri: 8AM-6PM, Sat: 9AM-3PM",
-                  },
-                ].map((contact, index) => (
-                  <div
-                    key={`contact-${contact.title}-${index}`}
-                    className="flex items-center"
-                  >
-                    <div className="w-14 h-14 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl flex items-center justify-center mr-6 shadow-lg">
-                      <span className="text-2xl">{contact.icon}</span>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900 text-lg">
-                        {contact.title}
-                      </div>
-                      <div className="text-gray-600">{contact.info}</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Send Message
-              </h3>
-              <div className="space-y-6">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-amber-600 transition-colors text-sm"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-amber-600 transition-colors text-sm"
-                />
-                <textarea
-                  placeholder="Your Message"
-                  rows={4}
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-amber-600 transition-colors text-sm resize-none"
-                ></textarea>
-                <Button variant="primary" fullWidth>
-                  Send Message
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 }

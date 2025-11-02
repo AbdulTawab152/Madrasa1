@@ -65,54 +65,9 @@ export default async function BlogDetailsPage({ params }: Params) {
       {/* Header with orange gradient */}
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Enhanced Breadcrumb */}
-        <nav className="flex mb-8 bg-white p-4 rounded-xl shadow-sm border border-amber-100">
-          <ol className="flex items-center space-x-1 text-sm font-medium">
-            <li>
-              <Link
-                href="/"
-                className="flex items-center text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                </svg>
-                {t('blog.home')}
-              </Link>
-            </li>
-            <li className="flex items-center">
-              <svg
-                className="w-4 h-4 mx-2 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <Link
-                href="/blogs"
-                className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0 "
-              >
-                {t('blog.blogs')}
-              </Link>
-            </li>
-            {/* <li className="flex items-center">
-              <svg className="w-4 h-4 mx-2 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clipRule="evenodd" />
-              </svg>
-              <span className="text-gray-700 font-medium truncate max-w-xs md:max-w-md">{blog.title}</span>
-            </li> */}
-          </ol>
-        </nav>
 
         {/* Article Header */}
-        <article className="mb-16">
+        <article className="mt-24">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-5 leading-tight tracking-tight drop-shadow-sm">
             {blog.title}
           </h1>

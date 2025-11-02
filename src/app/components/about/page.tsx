@@ -51,10 +51,8 @@ const About = () => {
   ];
 
   return (
-  <section className="py-20 bg-white relative">
-  {/* Dark Overlay */}
-  <div className="absolute inset-0 bg-black/20 pointer-events-none z-0"></div>
-  <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+  <section className="py-20 bg-white">
+  <div className="max-w-7xl mx-auto px-6 lg:px-8">
 
     {/* Header */}
     <div className="text-center mb-16">
