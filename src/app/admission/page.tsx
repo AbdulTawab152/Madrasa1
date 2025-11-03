@@ -1,15 +1,17 @@
 "use client";
 
-import { useState } from "react";
-import { AdmissionsApi } from "@/lib/api";
+import { useState, useEffect } from "react";
+import { AdmissionsApi, DegreesApi } from "@/lib/api";
 import { useToast } from "@/components/Toast";
 import { FiUser, FiPhone, FiMail, FiCalendar, FiMapPin, FiBook, FiHome, FiGlobe } from "react-icons/fi";
 
 export default function AdmissionPage() {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
+  const [loadingDegrees, setLoadingDegrees] = useState(true);
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [degrees, setDegrees] = useState<Array<{id: number, name: string}>>([
+    // Fallback degrees while loading
     { id: 1, name: 'درجه اول' },
     { id: 2, name: 'درجه دوم' },
     { id: 3, name: 'درجه سوم' },
@@ -33,7 +35,7 @@ export default function AdmissionPage() {
     whatsapp_no: "",
     dob: "",
     blood_type: "",
-    degree_id: "",
+    degree_id: 1, // Default to degree 1 (required field)
     previous_degree: "",
     previous_madrasa: "",
     location_madrasa: "",
@@ -42,8 +44,45 @@ export default function AdmissionPage() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
-  // No need to fetch degrees - API doesn't exist yet
-  // Using hardcoded degrees directly
+  // Fetch degrees from API on component mount
+  useEffect(() => {
+    const fetchDegrees = async () => {
+      try {
+        setLoadingDegrees(true);
+        console.log('📚 [ADMISSION] Fetching degrees from API...');
+        
+        const result = await DegreesApi.getAll({ limit: 100 });
+        
+        if (result.success && Array.isArray(result.data) && result.data.length > 0) {
+          // Map API response to expected format
+          const formattedDegrees = result.data.map((degree: any) => ({
+            id: Number(degree.id) || degree.id,
+            name: degree.name || degree.title || String(degree.id),
+          }));
+          
+          console.log('✅ [ADMISSION] Degrees fetched successfully:', formattedDegrees);
+          setDegrees(formattedDegrees);
+          
+          // Set default degree_id to first degree from API
+          if (formattedDegrees.length > 0) {
+            setFormData(prev => ({
+              ...prev,
+              degree_id: prev.degree_id || formattedDegrees[0].id,
+            }));
+          }
+        } else {
+          console.warn('⚠️ [ADMISSION] No degrees received from API, using fallback');
+        }
+      } catch (error) {
+        console.error('❌ [ADMISSION] Error fetching degrees:', error);
+        toast.error('Failed to load degrees. Using default values.');
+      } finally {
+        setLoadingDegrees(false);
+      }
+    };
+
+    fetchDegrees();
+  }, []); // Run once on mount
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -54,12 +93,18 @@ export default function AdmissionPage() {
       return;
     }
     
+    // Handle degree_id conversion to number
+    let processedValue: string | number = value;
+    if (name === 'degree_id') {
+      processedValue = Number(value) || 1; // Convert to number, default to 1 if invalid
+    }
+    
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors({ ...errors, [name]: "" });
     }
     
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [name]: processedValue });
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -116,24 +161,25 @@ export default function AdmissionPage() {
         whatsapp_no: formData.whatsapp_no || "",
         dob: formData.dob || "",
         blood_type: formData.blood_type ? formData.blood_type.substring(0, 5) : "",
+        degree_id: formData.degree_id ? Number(formData.degree_id) : 1, // Default to 1 if not set
         previous_degree: formData.previous_degree || "",
         previous_madrasa: formData.previous_madrasa || "",
         location_madrasa: formData.location_madrasa || "",
         location: formData.location || "",
       };
 
-      // DO NOT include degree_id - it causes validation error
-      // The Laravel database doesn't have degree_id 1, so we skip it
-      // This will be saved locally instead
-
       console.log('📝 [FORM] Submitting admission data to API...');
-      console.log('📝 [FORM] Submission data:', submissionData);
+      console.log('📝 [FORM] Submission data:', JSON.stringify(submissionData, null, 2));
+      
+      // Ensure we're calling the API
+      console.log('🌐 [FORM] About to call AdmissionsApi.submit...');
       
       const result = await AdmissionsApi.submit(submissionData);
       
       console.log('📥 [FORM] API response received:', result);
+      console.log('📥 [FORM] Response success status:', result?.success);
       
-      if (result.success) {
+      if (result && result.success) {
         console.log('✅ [FORM] Form submitted successfully to Laravel dashboard!');
         setSubmitSuccess(true);
         toast.success("Admission form submitted successfully to the dashboard!");
@@ -155,13 +201,17 @@ export default function AdmissionPage() {
           whatsapp_no: "",
           dob: "",
           blood_type: "",
-          degree_id: "",
+          degree_id: 1, // Reset to default value 1
           previous_degree: "",
           previous_madrasa: "",
           location_madrasa: "",
           location: "",
         });
         setErrors({});
+      } else {
+        console.warn('⚠️ [FORM] API returned but success is false:', result);
+        const errorMsg = (result as any)?.error || result?.message || 'Submission failed - unknown error';
+        throw new Error(errorMsg);
       }
     } catch (error: any) {
       console.error('❌ [FORM] Form submission error:', error);
@@ -442,20 +492,25 @@ export default function AdmissionPage() {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Degree field temporarily removed due to validation error */}
-              {/* <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">درجه (اختیاری)</label>
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  درجه *
+                  {loadingDegrees && (
+                    <span className="text-xs text-gray-500 mr-2">(در حال بارگذاری...)</span>
+                  )}
+                </label>
                 <select
                   name="degree_id"
-                  value={formData.degree_id}
+                  value={formData.degree_id || (degrees.length > 0 ? degrees[0].id : 1)}
                   onChange={handleChange}
+                  disabled={loadingDegrees}
                   className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent ${
                     errors.degree_id ? "border-red-300" : "border-gray-300"
-                  }`}
+                  } ${loadingDegrees ? "opacity-50 cursor-not-allowed" : ""}`}
+                  required
                 >
-                  <option value="">-- انتخاب نکنید --</option>
                   {degrees.map((degree) => (
-                    <option key={degree.id} value={String(degree.id)}>
+                    <option key={degree.id} value={degree.id}>
                       {degree.name}
                     </option>
                   ))}
@@ -463,7 +518,7 @@ export default function AdmissionPage() {
                 {errors.degree_id && (
                   <p className="text-red-500 text-sm mt-1">{errors.degree_id}</p>
                 )}
-              </div> */}
+              </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">مدرک قبلی</label>
