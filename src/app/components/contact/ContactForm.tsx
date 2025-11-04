@@ -122,7 +122,7 @@ function Contact() {
 
 
   return (
-    <div className="w-full bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 py-10 sm:py-16" dir="rtl">
+    <div className="w-full bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 py-10 sm:py-16">
       {/* Contact Content */}
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row gap-8 lg:gap-12">
         {/* Left Info */}
@@ -138,32 +138,42 @@ function Contact() {
             {/* Social Media Icons */}
             <div className="flex flex-wrap gap-3 sm:gap-4 pt-2">
               <a 
-                href="#" 
+                href="https://www.facebook.com/profile.php?id=100085056932016&mibextid=ZbWKwL"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group w-12 h-12 sm:w-14 sm:h-14 bg-amber-600 text-white rounded-xl flex items-center justify-center hover:bg-amber-700 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
                 aria-label="Facebook"
               >
                 <FaFacebook className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
               </a>
-              <a 
-                href="#" 
+        
+              <a
+                href={`https://wa.me/+93796148087?text=${encodeURIComponent(
+                  `Hi!اسلام علیکم ورحمته الله وبرکاته `
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group w-12 h-12 sm:w-14 sm:h-14 bg-green-500 text-white rounded-xl flex items-center justify-center hover:bg-green-600 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
-                aria-label="WhatsApp"
               >
-                <FaWhatsapp className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
+               <FaWhatsapp className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
               </a>
               <a 
-                href="#" 
+                href="https://youtube.com/@Anwar231?si=xp-rKjC7ACzAsyB6"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group w-12 h-12 sm:w-14 sm:h-14 bg-red-600 text-white rounded-xl flex items-center justify-center hover:bg-red-700 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
                 aria-label="YouTube"
               >
                 <FaYoutube className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
               </a>
               <a 
-                href="#" 
-                className="group w-12 h-12 sm:w-14 sm:h-14 bg-pink-500 text-white rounded-xl flex items-center justify-center hover:bg-pink-600 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
-                aria-label="Instagram"
+                href="https://twitter.com/khaksarpaktiawa/status/1760494499027931617?t=ep_4SWVp_FHLDvsS2w-cQA&s=19"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group w-12 h-12 sm:w-14 sm:h-14 bg-sky-500 text-white rounded-xl flex items-center justify-center hover:bg-sky-600 transition-all duration-300 transform hover:-translate-y-1 hover:scale-105 shadow-md hover:shadow-lg"
+                aria-label="Twitter"
               >
-                <FaInstagram className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
+                <FaTwitter className="text-lg sm:text-xl transition-transform group-hover:scale-110" />
               </a>
             </div>
           </div>
@@ -177,7 +187,7 @@ function Contact() {
               </div>
               <div className="flex-1 space-y-1.5">
                 <h3 className="font-bold text-gray-900 text-base sm:text-lg">{t('contact.address')}</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">410 Sandtown, California 94001, USA</p>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">ارغندی، پغمان، کابل افغانیستان</p>
               </div>
             </div>
 
@@ -191,7 +201,7 @@ function Contact() {
                 <div className="space-y-1">
                   <p className="text-sm sm:text-base text-gray-600 flex items-center gap-2">
                     <span className="inline-block w-1 h-1 bg-amber-500 rounded-full"></span>
-                    888-123-4567
+                   93772046406
                   </p>
                   <p className="text-sm sm:text-base text-gray-600 flex items-center gap-2">
                     <span className="inline-block w-1 h-1 bg-amber-500 rounded-full"></span>
@@ -208,7 +218,7 @@ function Contact() {
               </div>
               <div className="flex-1 space-y-1.5">
                 <h3 className="font-bold text-gray-900 text-base sm:text-lg">{t('contact.openingHours')}</h3>
-                <p className="text-sm sm:text-base text-gray-600 leading-relaxed">Mon - Fri: 10:30am - 7:00pm</p>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed"> 6:30am - 11:00pm</p>
               </div>
             </div>
           </div>
@@ -235,7 +245,6 @@ function Contact() {
                   value={formData.name}
                   onChange={handleChange}
                   required
-                  dir="rtl"
                   className={`w-full pr-11 pl-4 py-3.5 border-2 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base placeholder-gray-400 ${
                     errors.name ? "border-red-400 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                   }`}
@@ -260,7 +269,6 @@ function Contact() {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  dir="rtl"
                   className={`w-full pr-11 pl-4 py-3.5 border-2 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base placeholder-gray-400 ${
                     errors.email ? "border-red-400 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                   }`}
@@ -284,7 +292,6 @@ function Contact() {
                   placeholder={t('contact.yourPhone')}
                   value={formData.phone}
                   onChange={handleChange}
-                  dir="rtl"
                   className="w-full pr-11 pl-4 py-3.5 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base placeholder-gray-400"
                 />
               </div>
@@ -301,7 +308,6 @@ function Contact() {
                   value={formData.message}
                   onChange={handleChange}
                   required
-                  dir="rtl"
                   className={`w-full pr-11 pl-4 py-3.5 border-2 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-300 bg-gray-50 focus:bg-white text-sm sm:text-base resize-none placeholder-gray-400 ${
                     errors.message ? "border-red-400 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                   }`}

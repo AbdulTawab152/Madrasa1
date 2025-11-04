@@ -23,8 +23,8 @@ export default async function BookDetailsPage({ params }: Params) {
         <div className="min-h-screen  flex items-center justify-center bg-gradient-to-b from-amber-50 to-white">
           <div className="text-center p-8 bg-white rounded-2xl shadow-lg max-w-md mx-4 border border-amber-100">
             <div className="text-6xl mb-4">📚</div>
-            <h1 className="text-2xl font-bold text-black mb-4">Book Not Found</h1>
-            <p className="text-gray-600 mb-6">Sorry, the book you're looking for doesn't exist.</p>
+            <h1 className="text-2xl font-bold text-black mb-4">کتاب پیدا نشوو</h1>
+            <p className="text-gray-600 mb-6">بښنه غواړم کوم کتاب چی ته غواړی هغه اوس موجود نه دي</p>
             <Link
               href="/book"
               className="inline-block px-6 py-3  bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors shadow-md"

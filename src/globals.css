@@ -1,6 +1,6 @@
 /* Import fonts */
-/* Poppins for Pashto */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+/* Scheherazade New for Pashto - supports Arabic script beautifully */
+@import url('https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
 
 @tailwind base;
@@ -68,37 +68,73 @@
 /* Base styles */
 @layer base {
   body {
-    @apply bg-background-primary text-text-primary;
+    @apply bg-background-primary text-text-primary text-lg;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Text alignment based on direction */
+  [dir="ltr"] {
+    text-align: left;
+  }
+  
+  [dir="rtl"] {
+    text-align: right;
+  }
+  
+  /* Ensure main content respects document direction */
+  html[dir="ltr"] main,
+  html[dir="ltr"] body {
+    direction: ltr;
+    text-align: left;
+  }
+  
+  html[dir="rtl"] main,
+  html[dir="rtl"] body {
+    direction: rtl;
+    text-align: right;
   }
   
   /* Apple font (SF Pro) for English */
   html[lang="en"] body,
-  html[lang="en"] {
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  html[lang="en"],
+  html[lang="en"] * {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   }
   
-  /* Poppins for Pashto and other non-English languages */
+  /* Scheherazade New for Pashto */
   html[lang="ps"] body,
+  html[lang="ps"],
+  html[lang="ps"] *,
   html[lang="prs"] body,
-  html[lang="fa"] body,
-  html[lang="ar"] body,
-  html[lang="ur"] body,
-  html[lang="tr"] body,
-  html[lang="uz"] body,
-  html:not([lang]) body {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  html[lang="prs"],
+  html[lang="prs"] * {
+    font-family: 'Scheherazade New', serif !important;
   }
   
-  html[lang="ps"],
-  html[lang="prs"],
+  /* Scheherazade New for other RTL languages (Arabic, Persian, Urdu) */
+  html[lang="fa"] body,
   html[lang="fa"],
+  html[lang="fa"] *,
+  html[lang="ar"] body,
   html[lang="ar"],
+  html[lang="ar"] *,
+  html[lang="ur"] body,
   html[lang="ur"],
+  html[lang="ur"] * {
+    font-family: 'Scheherazade New', serif !important;
+  }
+  
+  /* Default to Apple fonts for other languages */
+  html[lang="tr"] body,
   html[lang="tr"],
+  html[lang="tr"] *,
+  html[lang="uz"] body,
   html[lang="uz"],
-  html:not([lang]) {
-    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  html[lang="uz"] *,
+  html:not([lang]) body,
+  html:not([lang]),
+  html:not([lang]) * {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
   }
   
   html {
@@ -135,7 +171,7 @@
   }
   
   p {
-    @apply text-base leading-relaxed text-text-secondary;
+    @apply text-lg leading-relaxed text-text-secondary;
   }
   
   /* Arabic text support */

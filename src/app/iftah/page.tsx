@@ -210,10 +210,10 @@ export default async function IftahPage() {
      
         
         {/* Quranic Ayah Decoration */}
-        <div className="absolute right-8 top-40 text-white/10" style={{ fontSize: '5rem', fontFamily: 'Amiri, serif' }}>
+        <div className="absolute right-8 top-48 text-white/10" style={{ fontSize: '5rem', fontFamily: 'Amiri, serif' }}>
             ﷽
           </div>
-          <div className="absolute left-8 bottom-0 text-white/10 rotate " style={{ fontSize: '5rem', fontFamily: 'Amiri, serif' }}>
+          <div className="absolute left-8 bottom-12 text-white/10 rotate " style={{ fontSize: '5rem', fontFamily: 'Amiri, serif' }}>
             ﷽
           </div>
         
@@ -325,7 +325,7 @@ export default async function IftahPage() {
                   <div className="flex items-center justify-center">
                     <span className="text-sm md:text-base font-semibold text-teal-700 group-hover:text-emerald-700 transition-colors duration-300 flex items-center gap-2">
                       <span className="text-lg">→</span>
-                      <span>Click to view questions</span>
+                      <span>د پوښتنو د لیدو لپاره کلیک وکړئ</span>
                     </span>
                   </div>
                   
@@ -334,7 +334,7 @@ export default async function IftahPage() {
                     <div className="mt-3 flex items-center justify-center">
                       <div className="px-3 py-1.5 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-full shadow-sm">
                         <span className="text-xs font-bold text-white">
-                          {category.count} Questions
+                          {category.count} پوښتنې
                         </span>
                       </div>
                     </div>

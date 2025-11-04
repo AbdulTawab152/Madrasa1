@@ -1,7 +1,12 @@
-// Simple utility for RTL support - always returns RTL for Pashto
-export const getLanguageDirection = (_language?: string): 'ltr' | 'rtl' => {
-  // Always RTL since we only use Pashto
-  return 'rtl';
+// Simple utility for RTL support - returns direction based on language
+export const getLanguageDirection = (language?: string): 'ltr' | 'rtl' => {
+  // Get language from parameter or localStorage
+  const lang = language || (typeof window !== 'undefined' ? localStorage.getItem('i18nextLng') : null) || 'ps';
+  
+  // RTL languages: Pashto, Dari, Arabic, Persian, Urdu
+  const rtlLanguages = ['ps', 'prs', 'ar', 'fa', 'ur'];
+  
+  return rtlLanguages.includes(lang) ? 'rtl' : 'ltr';
 };
 
 // Language name mapping for display (kept for backward compatibility)

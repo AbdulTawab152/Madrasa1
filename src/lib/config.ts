@@ -100,6 +100,7 @@ export const navigation = {
   main: [
     { name: 'home', href: '/', icon: 'home' },
     { name: 'courses', href: '/courses', icon: 'course' },
+    { name: 'onlineCourses', href: '/onlin-courses', icon: 'online-course' },
     { name: 'iftah', href: '/iftah', icon: 'fatwa' },
     { name: 'article', href: '/articles', icon: 'article' },
     { name: 'awlayaa', href: '/awlayaa', icon: 'awlayaa' },
@@ -114,6 +115,6 @@ export const navigation = {
     { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'sanad', href: '/sanad', icon: 'sanad' },
     { name: 'contact', href: '/contact', icon: 'contact' },  
-    // { name: 'Gallery', href: '/gallery', icon: '' },
+    // { name: 'Gallery', href: '/gallery', icon: '' }, 
   ],
 } as const;

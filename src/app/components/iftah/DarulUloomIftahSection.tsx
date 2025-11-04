@@ -441,7 +441,7 @@ export default function DarulUloomIftahSection({
                         onClick={() => setViewMode('questions')}
                         className="px-4 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors text-sm font-medium"
                       >
-                        📋 View All Questions ({effectiveFatwas.length})
+                        📋 ټولې پوښتنې وګورئ ({effectiveFatwas.length})
                       </button>
                       {categories.length > 0 && (
                         <button
@@ -513,7 +513,7 @@ export default function DarulUloomIftahSection({
                           onClick={() => setViewMode('questions')}
                           className="mt-4 px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
                         >
-                          View All Questions ({effectiveFatwas.length})
+                         ټولې پوښتنې وګورئ ({effectiveFatwas.length})
                         </button>
                       )}
                       {isFetching && (
@@ -674,7 +674,7 @@ export default function DarulUloomIftahSection({
                                   {subcategory.name ? cleanText(subcategory.name) : `Subcategory ${subcategory.id}`}
                             </h4>
                                 <p className="text-sm text-teal-700 mb-1">
-                              Click to view questions
+                                د پوښتنو د لیدو لپاره کلیک وکړئ
                             </p>
                                 {subcategory.tag_id && (
                                   <p className="text-xs text-teal-600 font-medium">
@@ -945,7 +945,7 @@ export default function DarulUloomIftahSection({
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
-                      <p className="text-gray-600 text-lg mb-2">No questions found</p>
+                      <p className="text-gray-600 text-lg mb-2">پوښتنه پیدا نشوه</p>
                       <p className="text-gray-500 text-sm">
                         {searchTerm 
                           ? `No questions match your search "${searchTerm}"`

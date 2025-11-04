@@ -3,9 +3,10 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Facebook, Twitter, Instagram, Linkedin, Mail, Phone, MapPin, Heart, GraduationCap } from "lucide-react";
+import { Facebook, Twitter, Instagram, Mail, Phone, MapPin, Heart, GraduationCap } from "lucide-react";
 import { useTranslation } from '@/hooks/useTranslation';
 import { Button } from "@/components/ui/button";
+import { FaWhatsapp } from "react-icons/fa";
 
 const Footer = () => {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
@@ -28,56 +29,37 @@ const Footer = () => {
     <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"></div>
     
     <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-8">
-      {/* Brand Header */}
-      <div className="text-center mb-8">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center shadow-lg">
-            <Image
-              src="/1.jpg" 
-              alt={t('footer.brandName')} 
-              width={30}
-              height={30}
-              className="object-contain rounded"
-            />
-          </div>
-          <div className="text-left">
-            <h2 className="text-xl font-bold text-white">{t('footer.brandName')}</h2>
-            <p className="text-amber-200 text-sm">{t('footer.tagline')}</p>
-          </div>
-        </div>
-      </div>
-
       {/* Main Footer Content */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
         {/* Navigation */}
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-white mb-4 border-b border-amber-500 pb-2">
-            Navigation
+            {t('footer.quickLinks')}
           </h3>
           <div className="grid grid-cols-2 gap-2">
             <Link href="/courses" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Courses
+              {t('navbar.courses')}
             </Link>
-            <Link href="/books" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Books
+            <Link href="/book" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
+              {t('navbar.books')}
             </Link>
             <Link href="/authors" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Authors
+              {t('navbar.author')}
             </Link>
             <Link href="/blogs" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Blogs
+              {t('navbar.blogs')}
             </Link>
             <Link href="/articles" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Articles
+              {t('navbar.article')}
             </Link>
-            <Link href="/events" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Events
+            <Link href="/event" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
+              {t('navbar.event')}
             </Link>
-            <Link href="/graduated" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              Graduates
+            <Link href="/graduated-students" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
+              {t('navbar.graduation')}
             </Link>
             <Link href="/about" className="text-gray-300 hover:text-amber-300 transition-colors text-sm">
-              About
+              {t('header.about.title')}
             </Link>
           </div>
         </div>
@@ -86,7 +68,7 @@ const Footer = () => {
         {/* Contact & Social */}
         <div className="space-y-4">
           <h3 className="text-lg font-bold text-white mb-4 border-b border-amber-500 pb-2">
-            Contact
+            {t('footer.contactInfo')}
           </h3>
           <div className="space-y-3">
             <div className="flex items-center gap-3">
@@ -104,48 +86,68 @@ const Footer = () => {
               <span className="text-gray-300 text-sm">{t('footer.email')}</span>
             </div>
           </div>
-          
-          {/* Social Media */}
-          <div className="pt-4">
-            <h4 className="text-sm font-semibold text-white mb-3">Follow Us</h4>
-            <div className="flex gap-3">
-              <Button variant="ghost" size="icon" className="w-9 h-9 bg-slate-700/50 text-gray-300 hover:bg-amber-500 hover:text-white transition-all duration-300">
-                <Facebook className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="w-9 h-9 bg-slate-700/50 text-gray-300 hover:bg-amber-500 hover:text-white transition-all duration-300">
-                <Twitter className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="w-9 h-9 bg-slate-700/50 text-gray-300 hover:bg-amber-500 hover:text-white transition-all duration-300">
-                <Instagram className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="icon" className="w-9 h-9 bg-slate-700/50 text-gray-300 hover:bg-amber-500 hover:text-white transition-all duration-300">
-                <Linkedin className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
         </div>
 
-        {/* Newsletter */}
+        {/* Logo & Social Media */}
         <div className="space-y-4">
-          <h3 className="text-lg font-bold text-white mb-4 border-b border-amber-500 pb-2">
-            Stay Updated
-          </h3>
-          
-          <div className="bg-slate-800/50 rounded-lg p-4 border border-slate-700/50">
-            <form className="space-y-3">
-              <input 
-                type="email" 
-                placeholder={t('footer.emailPlaceholder')} 
-                className="w-full px-3 py-2 bg-slate-700/50 border border-slate-600/50 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-amber-400 transition-all duration-300 text-sm"
-              />
-              <Button 
-                type="submit" 
-                variant="primary"
-                className="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2 rounded-lg transition-all duration-300 text-sm"
-              >
-                {t('footer.subscribe')}
-              </Button>
-            </form>
+          <div className="flex flex-col items-center md:items-start">
+            {/* Logo */}
+            <div className="flex items-center gap-4 mb-6">
+              <div className="relative w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center shadow-xl border-4 border-amber-400/30 flex-shrink-0 overflow-hidden">
+                <Image
+                  src="/logo.png" 
+                  alt={t('footer.brandName')} 
+                  width={120}
+                  height={120}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 object-contain rounded-full w-full h-full scale-110"
+                />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-lg font-bold text-white mb-1" dir="rtl">{t('footer.brandName')}</h2>
+                <p className="text-amber-200 text-xs" dir="rtl">{t('footer.tagline')}</p>
+              </div>
+            </div>
+
+            {/* Social Media */}
+            <div>
+              <h4 className="text-sm font-semibold text-white mb-4">{t('footer.followUs')}</h4>
+              <div className="flex gap-3">
+                <a
+                  href="https://www.facebook.com/profile.php?id=100085056932016&mibextid=ZbWKwL"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-slate-700/50 text-gray-300 hover:bg-blue-500 hover:text-white transition-all duration-300 rounded-md"
+                >
+                  <Facebook className="h-5 w-5" />
+                </a>
+                <a
+                  href="https://twitter.com/khaksarpaktiawa/status/1760494499027931617?t=ep_4SWVp_FHLDvsS2w-cQA&s=19"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-slate-700/50 text-gray-300 hover:bg-sky-500 hover:text-white transition-all duration-300 rounded-md"
+                >
+                  <Twitter className="h-5 w-5" />
+                </a>
+                <a
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-slate-700/50 text-gray-300 hover:bg-amber-500 hover:text-white transition-all duration-300 rounded-md"
+                >
+                  <Instagram className="h-5 w-5" />
+                </a>
+                <a
+                  href={`https://wa.me/+93796148087?text=${encodeURIComponent(
+                    `Hi!اسلام علیکم ورحمته الله وبرکاته `
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center w-10 h-10 bg-slate-700/50 text-gray-300 hover:bg-green-500 hover:text-white transition-all duration-300 rounded-md"
+                >
+                  <FaWhatsapp className="h-5 w-5" />
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>

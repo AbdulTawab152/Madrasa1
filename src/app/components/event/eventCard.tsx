@@ -71,7 +71,7 @@ export default function EventsSection({
     
 
       {/* Events Section */}
-      <section className="w-full px-4 md:px-8 md:pt-10 max-w-6xl mx-auto">
+      <section className="w-full px-4 md:px-8 md:pt-10 max-w-7xl mx-auto">
         <div className="relative text-center mb-10">
           {/* Subtle background accent */}
        

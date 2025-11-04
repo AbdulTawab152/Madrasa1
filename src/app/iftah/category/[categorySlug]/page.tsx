@@ -462,7 +462,7 @@ export default function IftahCategoryPage({
                     <div className="p-3 md:p-4 pt-2 md:pt-3">
                       <div className="flex items-center justify-center">
                         <span className="text-xs md:text-sm font-semibold text-teal-700 group-hover:text-emerald-700 transition-colors duration-300 flex items-center gap-1.5">
-                          <span>See More</span>
+                          <span>نور وګورئ</span>
                           <span className="text-base md:text-lg">→</span>
                         </span>
                       </div>

@@ -117,7 +117,7 @@ export default function CoursesSection({
 
   return (
     <section className="px-4 pb-16 pt-2 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl space-y-10">
+      <div className="mx-auto max-w-7xl space-y-10">
         {heading ? (
           <motion.header
             initial={{ opacity: 0, y: 16 }}

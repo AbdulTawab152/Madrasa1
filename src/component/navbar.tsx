@@ -22,6 +22,7 @@ const NAV_LABELS: Record<string, string> = {
   awlyaacharts: "اولیا چارټونه",
   admission: "نوم لیکنه",
   books: "کتابتون",
+  onlineCourses: "انلاین کورسونه",
   donation: "مرسته",
   blogs: "د علم څرک",
   author: "لیکوالان",
@@ -36,19 +37,42 @@ const Navbar = memo(function Navbar() {
   const pathname = usePathname();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
+  const [isCoursesMenuOpen, setCoursesMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isSearchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [currentLang, setCurrentLang] = useState<string>('ps');
   const searchRef = useRef<HTMLDivElement>(null);
+  const coursesMenuRef = useRef<HTMLDivElement>(null);
+  const moreMenuRef = useRef<HTMLDivElement>(null);
 
-  const isRTL = true;
-
+  // Get language and direction dynamically
   useEffect(() => {
-    if (typeof document !== "undefined") {
-      document.documentElement.setAttribute('dir', 'rtl');
-      document.documentElement.setAttribute('lang', 'ps');
+    if (typeof window !== 'undefined') {
+      const savedLang = localStorage.getItem('i18nextLng') || 'ps';
+      setCurrentLang(savedLang);
+      
+      // Update when language changes
+      const handleLanguageChange = () => {
+        const lang = localStorage.getItem('i18nextLng') || 'ps';
+        setCurrentLang(lang);
+      };
+      
+      window.addEventListener('languagechange', handleLanguageChange);
+      window.addEventListener('storage', (e) => {
+        if (e.key === 'i18nextLng') {
+          handleLanguageChange();
+        }
+      });
+      
+      return () => {
+        window.removeEventListener('languagechange', handleLanguageChange);
+      };
     }
   }, []);
+
+  const isRTL = currentLang === 'ps' || currentLang === 'prs' || currentLang === 'ar' || currentLang === 'fa' || currentLang === 'ur';
+  const direction = isRTL ? 'rtl' : 'ltr';
 
   useEffect(() => {
     const handleScroll = () => setHasScrolled(window.scrollY > 10);
@@ -59,24 +83,46 @@ const Navbar = memo(function Navbar() {
   useEffect(() => {
     setMobileMenuOpen(false);
     setMoreMenuOpen(false);
+    setCoursesMenuOpen(false);
   }, [pathname]);
 
-  // Close search when clicking outside
+  // Close search, courses menu, and more menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      const target = event.target as HTMLElement;
+      
+      // Close search if clicking outside
+      if (searchRef.current && !searchRef.current.contains(target as Node)) {
         setSearchOpen(false);
+      }
+      
+      // Close courses menu if clicking outside
+      if (isCoursesMenuOpen) {
+        const coursesMenuElement = coursesMenuRef.current;
+        const coursesLi = coursesMenuElement?.closest('li.group');
+        if (coursesLi && !coursesLi.contains(target)) {
+          setCoursesMenuOpen(false);
+        }
+      }
+      
+      // Close more menu if clicking outside
+      if (isMoreMenuOpen) {
+        const moreMenuElement = moreMenuRef.current;
+        const moreLi = moreMenuElement?.closest('li.relative');
+        if (moreLi && !moreLi.contains(target)) {
+          setMoreMenuOpen(false);
+        }
       }
     };
 
-    if (isSearchOpen) {
+    if (isSearchOpen || isCoursesMenuOpen || isMoreMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isSearchOpen]);
+  }, [isSearchOpen, isCoursesMenuOpen, isMoreMenuOpen]);
 
 
   const { desktop, mobile } = useMemo(() => {
@@ -117,7 +163,7 @@ const Navbar = memo(function Navbar() {
   }, []);
 
   const primaryLinks = useMemo(
-    () => navigation.main.slice(0, PRIMARY_LINK_LIMIT).map(link => ({
+    () => navigation.main.slice(0, PRIMARY_LINK_LIMIT).filter(link => link.name !== 'onlineCourses').map(link => ({
       ...link,
       name: NAV_LABELS[link.name as keyof typeof NAV_LABELS] || link.name
     })),
@@ -130,6 +176,16 @@ const Navbar = memo(function Navbar() {
     })),
     []
   );
+  
+  // Get courses links for dropdown
+  const coursesLinks = useMemo(() => {
+    const courses = navigation.main.find(link => link.name === 'courses');
+    const onlineCourses = navigation.main.find(link => link.name === 'onlineCourses');
+    return [
+      { ...courses!, name: NAV_LABELS['courses' as keyof typeof NAV_LABELS] || courses!.name },
+      { ...onlineCourses!, name: NAV_LABELS['onlineCourses' as keyof typeof NAV_LABELS] || onlineCourses!.name }
+    ].filter(Boolean);
+  }, []);
 
   const toggleMobileMenu = useCallback(() => {
     setMobileMenuOpen((previous) => !previous);
@@ -137,6 +193,10 @@ const Navbar = memo(function Navbar() {
 
   const toggleMoreMenu = useCallback(() => {
     setMoreMenuOpen((previous) => !previous);
+  }, []);
+
+  const toggleCoursesMenu = useCallback(() => {
+    setCoursesMenuOpen((previous) => !previous);
   }, []);
 
   const toggleSearch = useCallback(() => {
@@ -155,9 +215,10 @@ const Navbar = memo(function Navbar() {
 
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
   const closeMoreMenu = useCallback(() => setMoreMenuOpen(false), []);
+  const closeCoursesMenu = useCallback(() => setCoursesMenuOpen(false), []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50" dir="rtl" lang="ps">
+    <header className="fixed inset-x-0 top-0 z-50" dir={direction} lang={currentLang}>
       <div className="relative overflow-hidden bg-gradient-to-r from-primary-900 via-primary-800 to-primary-900 text-white">
         <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.18),_rgba(255,255,255,0))]" aria-hidden="true" />
         <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
@@ -177,7 +238,7 @@ const Navbar = memo(function Navbar() {
               <svg
                 className="h-3 w-3 text-primary-200"
                 fill="currentColor"
-                viewBox="0 0 20 20"
+                viewBox="0 0 20 20" 
                 aria-hidden="true"
               >
                 <path
@@ -219,10 +280,10 @@ const Navbar = memo(function Navbar() {
               
               </div>
               <div className={isRTL ? 'text-right' : 'text-left'}>
-                <div className="text-lg font-bold text-primary-900">
+                <div className="text-xl font-bold text-primary-900">
                   {appConfig.name}
                 </div>
-                <div className="text-xs text-primary-600 font-medium">
+                <div className="text-sm text-primary-600 font-bold">
                   د اسلامي زده کړو پلیټفارم
                 </div>
               </div>
@@ -233,11 +294,81 @@ const Navbar = memo(function Navbar() {
               <ul className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
                 {primaryLinks.map(({ href, name }) => {
                   const isActive = pathname === href;
+                  const isCoursesLink = name === NAV_LABELS['courses'];
+                  
+                  if (isCoursesLink) {
+                    // Courses dropdown
+                    const coursesActive = pathname === '/courses' || pathname === '/onlin-courses';
+                    return (
+                      <li key={href} className="group relative">
+                        <button
+                          type="button"
+                          onClick={toggleCoursesMenu}
+                          className={`font-bold text-base uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none flex items-center gap-1 ${
+                            coursesActive ? "text-primary-600" : ""
+                          }`}
+                          aria-haspopup="true"
+                          aria-expanded={isCoursesMenuOpen}
+                        >
+                          {name}
+                          <svg
+                            className={`h-4 w-4 transition-transform ${
+                              isCoursesMenuOpen ? "rotate-180" : ""
+                            }`}
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                            aria-hidden="true"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                        <div
+                          ref={coursesMenuRef}
+                          className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
+                            isRTL ? 'right-0' : 'left-0'
+                          } ${
+                            isCoursesMenuOpen
+                              ? "visible opacity-100"
+                              : "invisible -translate-y-2 opacity-0"
+                          }`}
+                          role="menu"
+                        >
+                          <ul className="py-3">
+                            {coursesLinks.map(({ href: courseHref, name: courseName }) => {
+                              const courseIsActive = pathname === courseHref;
+                              return (
+                                <li key={courseHref}>
+                                  <Link
+                                    href={courseHref}
+                                    onClick={closeCoursesMenu}
+                                    className={`block px-4 py-3 uppercase text-sm font-bold transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
+                                      isRTL ? 'text-right' : 'text-left'
+                                    } ${
+                                      courseIsActive
+                                        ? "bg-primary-50 text-primary-700"
+                                        : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
+                                    }`}
+                                  >
+                                    {courseName}
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      </li>
+                    );
+                  }
+                  
                   return (
                     <li key={href} className="group relative">
                       <Link
                         href={href}
-                        className={`font-medium text-[13px] uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                        className={`font-bold text-base uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
                           isActive ? "text-primary-600" : ""
                         } ${isRTL ? 'text-right' : 'text-left'}`}
                       >
@@ -260,7 +391,7 @@ const Navbar = memo(function Navbar() {
                     <button
                       type="button"
                       onClick={toggleMoreMenu}
-                      className="flex items-center gap-2 font-medium text-[13px] uppercase tracking-wide text-primary-800 hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:outline-none"
+                      className="flex items-center gap-2 font-bold text-base uppercase tracking-wide text-primary-800 hover:text-primary-600 transition-colors duration-200 focus:outline-none focus-visible:outline-none"
                       aria-haspopup="true"
                       aria-expanded={isMoreMenuOpen}
                     >
@@ -281,6 +412,7 @@ const Navbar = memo(function Navbar() {
                       </svg>
                     </button>
                 <div
+                  ref={moreMenuRef}
                   className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
                     isRTL ? 'right-0' : 'left-1/2 -translate-x-1/2'
                   } ${
@@ -298,11 +430,11 @@ const Navbar = memo(function Navbar() {
                           <Link
                             href={href}
                             onClick={closeMoreMenu}
-                            className={`block px-4 py-3 uppercase text-xs transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
+                            className={`block px-4 py-3 uppercase text-sm font-bold transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
                               isRTL ? 'text-right' : 'text-left'
                             } ${
                               isActive
-                                ? "bg-primary-50 font-semibold text-primary-700"
+                                ? "bg-primary-50 text-primary-700"
                                 : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
                             }`}
                           >
@@ -432,7 +564,7 @@ const Navbar = memo(function Navbar() {
                 priority
               />
             </div>
-            <span className={`text-lg font-semibold text-primary-900 tracking-wide ${isRTL ? 'text-right' : 'text-left'}`}>{appConfig.name}</span>
+            <span className={`text-xl font-bold text-primary-900 tracking-wide ${isRTL ? 'text-right' : 'text-left'}`}>{appConfig.name}</span>
           </div>
           
           <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
@@ -464,12 +596,74 @@ const Navbar = memo(function Navbar() {
           <div className="space-y-3">
             {primaryLinks.map(({ href, name }) => {
               const isActive = pathname === href;
+              const isCoursesLink = name === NAV_LABELS['courses'];
+              
+              if (isCoursesLink) {
+                const coursesActive = pathname === '/courses' || pathname === '/onlin-courses';
+                return (
+                  <div key={href}>
+                    <button
+                      type="button"
+                      onClick={toggleCoursesMenu}
+                      className={`flex w-full items-center justify-between rounded-xl p-4 text-base font-bold transition-all duration-200 shadow-sm ${
+                        coursesActive
+                          ? `${isRTL ? 'border-r-4' : 'border-l-4'} border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900`
+                          : "text-primary-800/90 hover:bg-primary-100/40"
+                      }`}
+                      aria-expanded={isCoursesMenuOpen}
+                    >
+                      <span className={isRTL ? 'text-right' : 'text-left'}>{name}</span>
+                      <svg
+                        className={`h-4 w-4 text-primary-500 transition-transform ${
+                          isCoursesMenuOpen ? "rotate-180" : ""
+                        }`}
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                        aria-hidden="true"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    <div
+                      className={`mt-2 space-y-2 overflow-hidden transition-all duration-300 ${
+                        isCoursesMenuOpen ? "max-h-96" : "max-h-0"
+                      }`}
+                    >
+                      {coursesLinks.map(({ href: courseHref, name: courseName }) => {
+                        const courseIsActive = pathname === courseHref;
+                        return (
+                          <Link
+                            key={courseHref}
+                            href={courseHref}
+                            onClick={() => {
+                              closeMobileMenu();
+                              closeCoursesMenu();
+                            }}
+                            className={`block rounded-lg p-3 text-base font-bold transition-all duration-200 ${
+                              courseIsActive
+                                ? "bg-primary-100/50 text-primary-900"
+                                : "text-primary-700 hover:bg-primary-100/30"
+                            }`}
+                          >
+                            {courseName}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                );
+              }
+              
               return (
                 <Link
                   key={href}
                   href={href}
                   onClick={closeMobileMenu}
-                  className={`flex items-center justify-between rounded-xl p-4 text-sm font-medium transition-all duration-200 shadow-sm ${
+                  className={`flex items-center justify-between rounded-xl p-4 text-base font-bold transition-all duration-200 shadow-sm ${
                     isActive
                       ? `${isRTL ? 'border-r-4' : 'border-l-4'} border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900`
                       : "text-primary-800/90 hover:bg-primary-100/40"
@@ -485,7 +679,7 @@ const Navbar = memo(function Navbar() {
                 <button
                   type="button"
                   onClick={toggleMoreMenu}
-                  className="flex w-full items-center justify-between rounded-xl bg-primary-100/40 p-4 text-sm font-semibold text-primary-800 hover:bg-primary-100/60 transition-all duration-200 focus:outline-none focus-visible:outline-none"
+                  className="flex w-full items-center justify-between rounded-xl bg-primary-100/40 p-4 text-base font-bold text-primary-800 hover:bg-primary-100/60 transition-all duration-200 focus:outline-none focus-visible:outline-none"
                   aria-expanded={isMoreMenuOpen}
                 >
                   <span className="flex items-center gap-3">
@@ -536,7 +730,7 @@ const Navbar = memo(function Navbar() {
                           closeMobileMenu();
                           closeMoreMenu();
                         }}
-                        className={`block rounded-lg p-3 text-sm font-medium transition-all duration-200 ${
+                        className={`block rounded-lg p-3 text-base font-bold transition-all duration-200 ${
                           isActive
                             ? "bg-primary-100/50 text-primary-900"
                             : "text-primary-700 hover:bg-primary-100/30"
