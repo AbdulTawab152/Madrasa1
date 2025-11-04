@@ -1904,386 +1904,225 @@ export class IftahQuestionApi {
     phone?: string;
     whatsapp?: string;
     question: string;
+    tagId?: number; // Changed from tag_id to tagId
+    iftah_sub_category_id?: number;
   }) {
+    logger.info('Submitting Iftah question', { payload });
+    
     try {
-      console.log("📤 Sending Iftah question to server:", payload);
+      const apiUrl = endpoints.IftahQuestionForm;
+      console.log("🚀 [IFTAH QUESTION API] Starting request to:", apiUrl);
 
-      // Get CSRF token
+      // ✅ STEP 1: Get CSRF cookie FIRST (CRITICAL!)
+      console.log("🔑 [IFTAH QUESTION API] Step 1: Fetching CSRF cookie...");
+      try {
+        const csrfResponse = await fetch(endpoints.csrfCookie, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        console.log("📥 [IFTAH QUESTION API] CSRF cookie response:", {
+          status: csrfResponse.status,
+          statusText: csrfResponse.statusText,
+          ok: csrfResponse.ok,
+        });
+
+        if (!csrfResponse.ok) {
+          console.warn("⚠️ [IFTAH QUESTION API] CSRF cookie fetch failed, continuing anyway...");
+        } else {
+          // Wait for cookie to be set
+          await new Promise((resolve) => setTimeout(resolve, 150));
+        }
+      } catch (csrfError: any) {
+        console.warn("⚠️ [IFTAH QUESTION API] CSRF cookie fetch error:", csrfError);
+        console.warn("⚠️ [IFTAH QUESTION API] Continuing without CSRF cookie - API may still work");
+      }
+
+      // ✅ STEP 2: Get the CSRF token from cookies
+      console.log("🔑 [IFTAH QUESTION API] Step 2: Extracting CSRF token from cookies...");
       const csrfToken = await this.getCsrfToken();
 
-      // Prepare headers with CSRF token
+      // ✅ STEP 3: Prepare headers
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
       };
 
       // Add CSRF token if available
       if (csrfToken) {
-        headers["X-CSRF-TOKEN"] = csrfToken;
-        console.log("🔑 Using CSRF token:", csrfToken);
+        console.log("✅ [IFTAH QUESTION API] CSRF token obtained:", csrfToken.substring(0, 30) + "...");
+        headers["X-XSRF-TOKEN"] = csrfToken; // Laravel Sanctum expects this header name
       } else {
-        console.log("⚠️ No CSRF token available, proceeding without it");
+        console.warn("⚠️ [IFTAH QUESTION API] No CSRF token available (may be due to CORS restrictions)");
+        console.warn("⚠️ [IFTAH QUESTION API] Proceeding without CSRF token - API route may not require it");
       }
 
-      const response = await fetch(endpoints.IftahQuestionForm, {
-        method: "POST",
-        headers,
-        // Remove credentials to avoid CORS wildcard issue
-        body: JSON.stringify({
-          name: payload.name,
-          email: payload.email,
-          phone: payload.phone,
-          whatsapp: payload.whatsapp,
-          message: `Iftah Question: ${payload.question}`,
-          subject: "Iftah Question Submission",
-          type: "iftah-question"
-        }),
+      // Prepare request body for iftah_questions table
+      // Database columns: name, email, phone, whatsapp, question, tag_id, iftah_sub_category_id, created_at, updated_at
+      
+      const requestBody: Record<string, string | number> = {
+        name: payload.name.trim(),
+        email: payload.email.trim(),
+        question: payload.question.trim(),
+      };
+      
+      // Only include phone if it's provided and not empty
+      if (payload.phone && payload.phone.trim()) {
+        requestBody.phone = payload.phone.trim();
+      }
+      
+      // Only include whatsapp if it's provided and not empty
+      if (payload.whatsapp && payload.whatsapp.trim()) {
+        requestBody.whatsapp = payload.whatsapp.trim();
+      }
+      
+      // Include tagId if provided (send as "tagId" to backend)
+      if (payload.tagId && payload.tagId > 0) {
+        requestBody.tagId = payload.tagId;
+        console.log("🏷️ [IFTAH QUESTION API] Including tagId:", payload.tagId);
+      }
+      
+      // Include iftah_sub_category_id if provided
+      if (payload.iftah_sub_category_id && payload.iftah_sub_category_id > 0) {
+        requestBody.iftah_sub_category_id = payload.iftah_sub_category_id;
+        console.log("📁 [IFTAH QUESTION API] Including iftah_sub_category_id:", payload.iftah_sub_category_id);
+      }
+      
+      const safeRequestBody = requestBody;
+
+      console.log("📤 [IFTAH QUESTION API] Request URL:", apiUrl);
+      console.log("📤 [IFTAH QUESTION API] Request headers:", headers);
+      console.log("📤 [IFTAH QUESTION API] Request body (final):", JSON.stringify(safeRequestBody, null, 2));
+      console.log("📤 [IFTAH QUESTION API] Request body keys:", Object.keys(safeRequestBody));
+      console.log("📤 [IFTAH QUESTION API] Fields included:", {
+        hasTagId: 'tagId' in safeRequestBody,
+        hasSubCategoryId: 'iftah_sub_category_id' in safeRequestBody,
+        tagIdValue: safeRequestBody.tagId || 'not included',
+        subCategoryIdValue: safeRequestBody.iftah_sub_category_id || 'not included',
+        bodyKeys: Object.keys(safeRequestBody)
       });
 
-      console.log("📥 Response status:", response.status);
+      // ✅ STEP 4: Send POST request with credentials
+      // Sending all fields including tag_id and iftah_sub_category_id if provided
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include", // Must include credentials to send cookies
+        headers,
+        body: JSON.stringify(safeRequestBody), // Includes tag_id and iftah_sub_category_id if provided
+      });
+
+      console.log("📥 [IFTAH QUESTION API] Response received!");
+      console.log("📥 [IFTAH QUESTION API] Response status:", response.status);
+      console.log("📥 [IFTAH QUESTION API] Response status text:", response.statusText);
 
       if (!response.ok) {
-        console.log("🔄 Main API failed, trying alternative approaches...");
+        const errorText = await response.text();
+        console.error("❌ [IFTAH QUESTION API] Request failed!");
+        console.error("❌ [IFTAH QUESTION API] Status:", response.status);
+        console.error("❌ [IFTAH QUESTION API] Status Text:", response.statusText);
+        console.error("❌ [IFTAH QUESTION API] Error response (raw):", errorText);
+        console.error("❌ [IFTAH QUESTION API] Request body that was sent:", JSON.stringify(requestBody, null, 2));
+
+        let errorMessage = `API request failed with status ${response.status}`;
+        let errorDetails: any = null;
         
-        // Try FormData approach as fallback
         try {
-          console.log("🔄 Trying FormData approach...");
-          const formData = new FormData();
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-              formData.append(key, String(value));
+          const errorJson = JSON.parse(errorText);
+          console.error("❌ [IFTAH QUESTION API] Error JSON:", JSON.stringify(errorJson, null, 2));
+          errorMessage = errorJson.message || errorJson.error || errorMessage;
+          errorDetails = errorJson;
+          
+          // Show more details for 500 errors
+          if (response.status === 500) {
+            console.error("❌ [IFTAH QUESTION API] 500 Internal Server Error Details:");
+            console.error("   - Message:", errorJson.message);
+            console.error("   - Error:", errorJson.error);
+            console.error("   - File:", errorJson.file);
+            console.error("   - Line:", errorJson.line);
+            console.error("   - Trace:", errorJson.trace);
+            
+            // Get tag/subcategory names from payload for better error messages
+            const tagName = payload.tagId ? `Tag ID: ${payload.tagId}` : 'No tag';
+            const subCategoryName = payload.iftah_sub_category_id ? `Subcategory ID: ${payload.iftah_sub_category_id}` : 'No subcategory';
+            
+            if (errorJson.message?.includes("Column not found") || errorJson.message?.includes("tagId") || errorJson.message?.includes("tag_id")) {
+              errorMessage = `خطای پایگاه داده: ستون tagId در جدول iftah_questions وجود ندارد. ${tagName !== 'No tag' ? `(${tagName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+            } else if (errorJson.message?.includes("iftah_sub_category_id")) {
+              errorMessage = `خطای پایگاه داده: ستون iftah_sub_category_id در جدول iftah_questions وجود ندارد. ${subCategoryName !== 'No subcategory' ? `(${subCategoryName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+            } else {
+              // Generic 500 error with context
+              errorMessage = `خطای سرور (500). ${tagName !== 'No tag' || subCategoryName !== 'No subcategory' ? `${tagName}, ${subCategoryName}. ` : ''}لطفاً بعداً تلاش کنید یا با مدیر سیستم تماس بگیرید.`;
             }
-          });
-
-          const formResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Accept": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-            // Remove credentials to avoid CORS wildcard issue
-            body: formData,
-          });
-
-          console.log("📥 FormData response status:", formResponse.status);
-
-          if (formResponse.ok) {
-            const data = await formResponse.json();
-            console.log("✅ FormData success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
           }
-        } catch (formError) {
-          console.log("❌ FormData approach also failed:", formError);
+          
+          if (errorMessage.includes("CSRF")) {
+            throw new Error(
+              `CSRF token mismatch (${response.status}). The CSRF token may not have been set correctly. Check browser console for cookie information.`
+            );
+          }
+        } catch (e) {
+          // Not JSON, use the text as is
+          const tagName = payload.tagId ? `Tag ID: ${payload.tagId}` : '';
+          if (errorText.includes("Column not found") || errorText.includes("tagId") || errorText.includes("tag_id")) {
+            errorMessage = `خطای پایگاه داده: ستون tagId در جدول iftah_questions وجود ندارد. ${tagName ? `(${tagName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+          } else if (errorText.includes("iftah_sub_category_id")) {
+            const subCategoryName = payload.iftah_sub_category_id ? `Subcategory ID: ${payload.iftah_sub_category_id}` : '';
+            errorMessage = `خطای پایگاه داده: ستون iftah_sub_category_id در جدول iftah_questions وجود ندارد. ${subCategoryName ? `(${subCategoryName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+          }
         }
 
-        // Try GET request with query parameters as final fallback
-        try {
-          console.log("🔄 Trying GET request with query parameters...");
-          const queryParams = new URLSearchParams();
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-              queryParams.append(key, String(value));
-            }
-          });
-
-          const getResponse = await fetch(`${endpoints.IftahQuestionForm}?${queryParams.toString()}`, {
-            method: "GET",
-            headers: {
-              "Accept": "application/json",
-            },
-          });
-
-          console.log("📥 GET response status:", getResponse.status);
-
-          if (getResponse.ok) {
-            const data = await getResponse.json();
-            console.log("✅ GET success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (getError) {
-          console.log("❌ GET approach also failed:", getError);
-        }
-
-        // Try direct server submission without CSRF as final attempt
-        try {
-          console.log("🔄 Trying direct server submission without CSRF...");
-          const directResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-            // No credentials to avoid CORS issues
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              whatsapp: payload.whatsapp,
-              message: `Iftah Question: ${payload.question}`,
-              subject: "Iftah Question Submission",
-              type: "iftah-question",
-              _token: csrfToken || 'bypass-csrf', // Add token in body
-            }),
-          });
-
-          console.log("📥 Direct response status:", directResponse.status);
-
-          if (directResponse.ok) {
-            const data = await directResponse.json();
-            console.log("✅ Direct submission success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (directError) {
-          console.log("❌ Direct submission also failed:", directError);
-        }
-
-        // Try simple POST without any special headers
-        try {
-          console.log("🔄 Trying simple POST without special headers...");
-          const simpleResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              whatsapp: payload.whatsapp,
-              message: `Iftah Question: ${payload.question}`,
-              subject: "Iftah Question Submission",
-              type: "iftah-question"
-            }),
-          });
-
-          console.log("📥 Simple response status:", simpleResponse.status);
-
-          if (simpleResponse.ok) {
-            const data = await simpleResponse.json();
-            console.log("✅ Simple submission success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (simpleError) {
-          console.log("❌ Simple submission also failed:", simpleError);
-        }
-
-        // If all approaches fail, try to send via IftahQuestionForm endpoint as fallback
-        try {
-          console.log("🔄 Trying IftahQuestionForm endpoint as fallback...");
-          const contactResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-            },
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              whatsapp: payload.whatsapp,
-              message: `Iftah Question: ${payload.question}`,
-              subject: "Iftah Question Submission",
-            }),
-          });
-
-          console.log("📥 IftahQuestionForm response status:", contactResponse.status);
-
-          if (contactResponse.ok) {
-            const data = await contactResponse.json();
-            console.log("✅ IftahQuestionForm fallback success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (contactError) {
-          console.log("❌ IftahQuestionForm fallback also failed:", contactError);
-        }
-
-        // If all API approaches fail, log the data for manual processing
-        console.log("📝 All API approaches failed, but data was captured:");
-        console.log("Name:", payload.name);
-        console.log("Email:", payload.email);
-        console.log("Phone:", payload.phone);
-        console.log("WhatsApp:", payload.whatsapp);
-        console.log("Question:", payload.question);
-
-        return {
-          data: { 
-            message: 'Iftah question submitted successfully (data logged for manual processing)',
-            id: Date.now(),
-            timestamp: new Date().toISOString()
-          },
-          success: true,
-          error: null,
-        };
+        const fullError = new Error(errorMessage);
+        (fullError as any).details = errorDetails;
+        (fullError as any).status = response.status;
+        throw fullError;
       }
 
-      const data = await response.json();
-      console.log("✅ Success! Response data:", data);
+      const result = await response.json();
+      console.log("✅ [IFTAH QUESTION API] SUCCESS: Data sent to Laravel dashboard!");
+      console.log("✅ [IFTAH QUESTION API] Response data:", JSON.stringify(result, null, 2));
 
       return {
-        data,
         success: true,
-        error: null,
+        data: result.data || result,
+        message: result.message || 'Question submitted successfully',
       };
+
     } catch (error: any) {
-      console.error("❌ Failed to submit Iftah question:", error);
+      console.error("❌ [IFTAH QUESTION API] Exception occurred:", error);
+      console.error("❌ [IFTAH QUESTION API] Error message:", error.message);
+      logger.error('Iftah question submission failed', { error, payload });
       
-      // Try simple POST as first fallback
-      try {
-        console.log("🔄 Trying simple POST as fallback...");
-        const simpleResponse = await fetch(endpoints.IftahQuestionForm, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: payload.name,
-            email: payload.email,
-            phone: payload.phone,
-            whatsapp: payload.whatsapp,
-            message: `Iftah Question: ${payload.question}`,
-            subject: "Iftah Question Submission",
-            type: "iftah-question"
-          }),
-        });
-
-        console.log("📥 Simple response status:", simpleResponse.status);
-
-        if (simpleResponse.ok) {
-          const data = await simpleResponse.json();
-          console.log("✅ Simple submission success! Response data:", data);
-          return {
-            data,
-            success: true,
-            error: null,
+      // Try to store in localStorage as fallback (for manual processing)
+      if (typeof window !== 'undefined') {
+        try {
+          const questionData = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            ...payload,
+            status: 'pending',
+            source: 'iftah-form',
+            error: error?.message || 'API submission failed'
           };
+          
+          const existingQuestions = JSON.parse(localStorage.getItem('iftah-questions') || '[]');
+          existingQuestions.unshift(questionData);
+          localStorage.setItem('iftah-questions', JSON.stringify(existingQuestions));
+          
+          console.log('📝 [IFTAH QUESTION] Data stored in localStorage as fallback');
+        } catch (storageError) {
+          console.error('Failed to store in localStorage:', storageError);
         }
-      } catch (simpleError) {
-        console.log("❌ Simple submission also failed:", simpleError);
-      }
-
-      // Try IftahQuestionForm endpoint as final fallback
-      try {
-        console.log("🔄 Trying IftahQuestionForm endpoint as final fallback...");
-        const contactResponse = await fetch(endpoints.IftahQuestionForm, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({
-            name: payload.name,
-            email: payload.email,
-            phone: payload.phone,
-            whatsapp: payload.whatsapp,
-            message: `Iftah Question: ${payload.question}`,
-            subject: "Iftah Question Submission",
-          }),
-        });
-
-        console.log("📥 IftahQuestionForm response status:", contactResponse.status);
-
-        if (contactResponse.ok) {
-          const data = await contactResponse.json();
-          console.log("✅ IftahQuestionForm fallback success! Response data:", data);
-          return {
-            data,
-            success: true,
-            error: null,
-          };
-        }
-      } catch (contactError) {
-        console.log("❌ IftahQuestionForm fallback also failed:", contactError);
       }
       
-      // Even if there's an error, try alternative data delivery methods
-      console.log("📝 All approaches failed, trying alternative data delivery...");
-      
-      // Store data in localStorage for manual processing
-      try {
-        const questionData = {
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
-          ...payload,
-          status: 'pending',
-          source: 'iftah-form'
-        };
-        
-        // Store in localStorage
-        const existingQuestions = JSON.parse(localStorage.getItem('iftah-questions') || '[]');
-        existingQuestions.unshift(questionData);
-        localStorage.setItem('iftah-questions', JSON.stringify(existingQuestions));
-        
-        console.log("💾 Data stored in localStorage for manual processing");
-      } catch (storageError) {
-        console.log("❌ Failed to store in localStorage:", storageError);
-      }
-
-      // Try to send via email using mailto link
-      try {
-        const subject = `Iftah Question from ${payload.name}`;
-        const body = `
-Name: ${payload.name}
-Email: ${payload.email}
-Phone: ${payload.phone || 'Not provided'}
-WhatsApp: ${payload.whatsapp || 'Not provided'}
-
-Question:
-${payload.question}
-
----
-This question was submitted via the Iftah form on ${new Date().toLocaleString()}
-        `.trim();
-        
-        const mailtoLink = `mailto:admin@lawngreen-dragonfly-304220.hostingersite.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        // Open email client
-        window.open(mailtoLink, '_blank');
-        console.log("📧 Email client opened with question data");
-      } catch (emailError) {
-        console.log("❌ Failed to open email client:", emailError);
-      }
-
-      // Log data for manual processing
-      console.log("📝 Data captured for manual processing:");
-      console.log("Name:", payload.name);
-      console.log("Email:", payload.email);
-      console.log("Phone:", payload.phone);
-      console.log("WhatsApp:", payload.whatsapp);
-      console.log("Question:", payload.question);
-      
-      return {
-        data: { 
-          message: 'Iftah question submitted successfully! Data has been stored locally and email client opened for manual processing.',
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
-          stored_locally: true,
-          email_opened: true
-        },
-        success: true,
-        error: null,
-      };
+      // Re-throw the error so the UI can handle it
+      throw error;
     }
   }
 

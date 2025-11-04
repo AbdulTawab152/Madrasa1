@@ -1,6 +1,7 @@
 // app/iftah/page.tsx
 import { IftahApi } from "../../lib/api";
 import Link from "next/link";
+import IftahQuestionButton from "../components/iftah/IftahQuestionButton";
 
 // Islamic Icon Components - Improved SVG icons
 const CrescentStarIcon = ({ className }: { className?: string }) => (
@@ -232,6 +233,11 @@ export default async function IftahPage() {
             </Link>
           </div>
           
+          {/* Ask Question Button */}
+          <div className="absolute top-4 right-6">
+            <IftahQuestionButton variant="header" />
+          </div>
+          
           {/* Central Logo/Icon */}
           <div className="inline-flex items-center justify-center w-32 h-32 bg-white/15 rounded-full mb-8 hover:scale-110 transition-all duration-500 shadow-2xl ring-4 ring-white/10 relative">
             <div className="absolute inset-0 rounded-full bg-gradient-to-r from-emerald-400 to-teal-400 opacity-25 animate-pulse"></div>
@@ -266,8 +272,13 @@ export default async function IftahPage() {
             <span className="text-emerald-600 text-sm font-semibold uppercase tracking-wider">اختر الموضوع</span>
             <div className="w-16 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent"></div>
           </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2" style={{ fontFamily: 'Amiri, serif' }}>فتاویٰ ډولونه
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-6" style={{ fontFamily: 'Amiri, serif' }}>فتاویٰ ډولونه
           </h2>
+          
+          {/* Ask Question Button - Prominent */}
+          <div className="flex justify-center mb-8">
+            <IftahQuestionButton variant="prominent" />
+          </div>
         </div>
         
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">

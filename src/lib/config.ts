@@ -114,7 +114,6 @@ export const navigation = {
     { name: 'graduation', href: '/graduated-students', icon: 'graduation' },
     { name: 'sanad', href: '/sanad', icon: 'sanad' },
     { name: 'contact', href: '/contact', icon: 'contact' },  
-    { name: 'Admissinon', href: '/admissin', icon: 'contact' },  
-    // { name: 'Gallery', href: '/gallery', icon: '' },
+  
   ],
 } as const;

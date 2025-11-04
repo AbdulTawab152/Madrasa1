@@ -288,9 +288,9 @@ export default function IftahSubCategoryPage({
           <div className="flex items-center justify-between gap-4 mb-6">
             <Link
               href="/iftah"
-              className="inline-flex items-center gap-2 bg-white hover:bg-emerald-50 text-emerald-700 border-2 border-emerald-200 hover:border-emerald-400 px-5 py-2.5 rounded-xl transition-colors shadow-sm"
+              className="inline-flex items-center gap-2 bg-white hover:bg-emerald-50 text-emerald-700 border-2 border-emerald-200 hover:border-emerald-400 px-5 py-.5 rounded-xl transition-colors shadow-sm"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-5 h-8" />
               <span className="font-medium">بېرته کور ته</span>
             </Link>
           </div>

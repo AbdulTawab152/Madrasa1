@@ -393,11 +393,13 @@ export default function IftahCategoryPage({
             {/* Back Button - Right Side */}
             <Link
               href="/iftah"
-              className="inline-flex mt-10 items-center gap-2 bg-gray-200 hover:bg-gray-300 text-emerald-800 px-3 md:px-4 py-2 md:py-3 rounded-lg transition-all duration-300 group shadow-sm text-sm md:text-base order-1 sm:order-2 self-end sm:self-auto sm:mt-10"
-              style={{ width: "120px", maxWidth: "100%" }}
+              className="inline-flex items-center gap-2 px-5 py-2.5 md:py-3 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white shadow-lg font-semibold rounded-xl transition-all duration-300 group text-base md:text-lg order-1 sm:order-2 self-end sm:self-auto sm:mt-0 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              style={{ minWidth: "150px", maxWidth: "100%" }}
             >
-              <span className="font-medium">{t('iftah.categoryPage.backToIftah')}</span>
-              <ChevronLeft className="w-4 h-4 md:w-5 md:h-5 group-hover:translate-x-1 transition-transform" />
+              <ChevronLeft className="w-5 h-5 md:w-6 md:h-6 mr-1 group-hover:-translate-x-1 transition-transform duration-200" />
+              <span className="font-medium tracking-wide" style={{ fontFamily: 'Amiri, serif' }}>
+                {t('iftah.categoryPage.backToIftah')}
+              </span>
             </Link>
           </div>
 
