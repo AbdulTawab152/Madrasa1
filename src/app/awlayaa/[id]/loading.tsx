@@ -1,5 +1,5 @@
-import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 export default function LoadingAwlayaaDetail() {
-  return <DetailPageSkeleton type="awlayaa" showSidebar={false} showComments={false} showRelated={true} />;
+  return <UnifiedLoader variant="detail" />;
 }

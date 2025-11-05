@@ -5,6 +5,7 @@ import Navbar from "../component/navbar";
 import Footer from "@/component/footer";
 import { ToastProvider } from "@/components/Toast";
 import DocumentAttributes from "@/components/DocumentAttributes";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
   title: "Madsreqa - Islamic Learning Platform",
@@ -18,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html data-scroll-behavior="smooth">
+    <html data-scroll-behavior="smooth" dir="rtl" lang="ps">
       <body suppressHydrationWarning>
         <Script
           id="gtranslate-settings"
@@ -42,6 +43,7 @@ export default function RootLayout({
           <DocumentAttributes />
           <Navbar />
           <main>
+            <Breadcrumb />
             {children}
           </main>
           <Footer/>

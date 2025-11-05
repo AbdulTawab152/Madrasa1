@@ -25,6 +25,8 @@ import {
 } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import {DonationApi} from "../../lib/api";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface DonationInfo {
   id: number;
@@ -77,26 +79,19 @@ export default function DonationPage() {
   const fadeIn = {
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.6 }
+    transition: { duration: 0.15 }
   };
 
   const staggerChildren = {
     animate: {
       transition: {
-        staggerChildren: 0.1
+        // No staggerChildren delay - instant rendering
       }
     }
   };
 
   if (loading) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-orange-500 border-t-transparent mx-auto"></div>
-          <p className="mt-6 text-lg text-gray-700 font-medium">{t('donation.loadingInfo')}</p>
-        </div>
-      </main>
-    );
+    return <UnifiedLoader variant="detail" />;
   }
 
   if (error) {
@@ -118,6 +113,7 @@ export default function DonationPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <IslamicHeader pageType="donation" />
+      <Breadcrumb />
       
    
 
@@ -127,7 +123,7 @@ export default function DonationPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.15 }}
             viewport={{ once: true }}
             className="inline-block mb-6"
           >
@@ -138,7 +134,7 @@ export default function DonationPage() {
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.15 }}
             viewport={{ once: true }}
             className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6"
           >
@@ -147,7 +143,7 @@ export default function DonationPage() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.15 }}
             viewport={{ once: true }}
             className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4"
           >
@@ -177,7 +173,7 @@ export default function DonationPage() {
               <motion.div
                 key={donation.id}
                 variants={fadeIn}
-                className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 group border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1"
+                className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-200 group border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1"
               >
                 <div className="flex flex-col lg:flex-row min-h-[300px]">
                   {/* Header Section */}
@@ -198,7 +194,7 @@ export default function DonationPage() {
                   <div className="p-6 sm:p-8 lg:w-2/3 bg-gray-50/50">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                       {donation.whatsapp && (
-                        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-150">
                           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                             <FaWhatsapp className="text-white text-lg" />
                           </div>
@@ -210,7 +206,7 @@ export default function DonationPage() {
                       )}
 
                       {donation.email && (
-                        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-150">
                           <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                             <FaEnvelope className="text-white text-lg" />
                           </div>
@@ -221,7 +217,7 @@ export default function DonationPage() {
                         </div>
                       )}
 
-                      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 sm:col-span-2">
+                      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 sm:col-span-2">
                         <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                           <FaMapMarkerAlt className="text-white text-lg" />
                         </div>
@@ -239,7 +235,7 @@ export default function DonationPage() {
                         rel="noopener noreferrer"
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`flex-1 bg-gradient-to-r ${currentGradient} text-white py-4 px-6 rounded-xl font-semibold text-center hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20`}
+                        className={`flex-1 bg-gradient-to-r ${currentGradient} text-white py-4 px-6 rounded-xl font-semibold text-center hover:shadow-xl transition-all duration-150 flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20`}
                       >
                         <FaWhatsapp className="text-xl" />
                         <span>{t('donation.contactWhatsapp')}</span>
@@ -250,7 +246,7 @@ export default function DonationPage() {
                           href={`mailto:${donation.email}`}
                           whileHover={{ scale: 1.02, y: -2 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex-1 bg-gradient-to-r from-slate-500 to-slate-600 text-white py-4 px-6 rounded-xl font-semibold text-center hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20"
+                          className="flex-1 bg-gradient-to-r from-slate-500 to-slate-600 text-white py-4 px-6 rounded-xl font-semibold text-center hover:shadow-xl transition-all duration-150 flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20"
                         >
                           <FaEnvelope className="text-xl" />
                           <span>{t('donation.sendEmail')}</span>
@@ -284,40 +280,40 @@ export default function DonationPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             <div className="group text-center">
               <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
                   <span className="text-3xl font-bold">1</span>
                 </div>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
                   <span className="text-xs font-bold text-yellow-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">{t('donation.contactStep')}</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-150">{t('donation.contactStep')}</h3>
               <p className="text-gray-600 leading-relaxed text-lg">{t('donation.contactStepDesc')}</p>
             </div>
 
             <div className="group text-center">
               <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
                   <span className="text-3xl font-bold">2</span>
                 </div>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
                   <span className="text-xs font-bold text-blue-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">{t('donation.donateStep')}</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-150">{t('donation.donateStep')}</h3>
               <p className="text-gray-600 leading-relaxed text-lg">{t('donation.donateStepDesc')}</p>
             </div>
 
             <div className="group text-center">
               <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
                   <span className="text-3xl font-bold">3</span>
                 </div>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
                   <span className="text-xs font-bold text-green-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-300">د مرستې تصدیق</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-150">د مرستې تصدیق</h3>
               <p className="text-gray-600 leading-relaxed text-lg">د خپلو مرستو د رسیدلو تصدیق تر لاسه کړئ</p>
             </div>
           </div>
@@ -341,27 +337,27 @@ export default function DonationPage() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200">
-              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-150 border border-gray-100 hover:border-green-200">
+              <div className="w-20 h-20 bg-gradient-to-br from-green-500 to-green-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
                 <FaShieldAlt className="text-2xl" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition-colors duration-300">100% امن دی</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-green-600 transition-colors duration-150">100% امن دی</h3>
               <p className="text-gray-600 leading-relaxed text-lg">ستاسو مرستې د لوړو امنیت معیارونو او تایید شوي حفاظت سره پروسس کیږي</p>
             </div>
 
-            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200">
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-150 border border-gray-100 hover:border-blue-200">
+              <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
                 <FaCheckCircle className="text-2xl" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-300">{t('donation.verifiedTitle')}</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-blue-600 transition-colors duration-150">{t('donation.verifiedTitle')}</h3>
               <p className="text-gray-600 leading-relaxed text-lg">{t('donation.verifiedDescription')}</p>
             </div>
 
-            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200">
-              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105">
+            <div className="group text-center bg-gray-50 rounded-3xl p-8 hover:bg-white hover:shadow-xl transition-all duration-150 border border-gray-100 hover:border-purple-200">
+              <div className="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 text-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
                 <FaClock className="text-2xl" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors duration-300">24/7 ملاتړ</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-purple-600 transition-colors duration-150">24/7 ملاتړ</h3>
               <p className="text-gray-600 leading-relaxed text-lg">موږ د ټولو پوښتنو او د مرستې اړتیاوو لپاره د ورځې او شپې ملاتړ وړاندې کوو</p>
             </div>
           </div>

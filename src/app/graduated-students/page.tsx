@@ -1,5 +1,6 @@
 import GraduationsSection from "../components/graduation/TopGraduations";
 import IslamicHeader from "../components/IslamicHeader";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function GraduationsPage() {
   return (
@@ -9,6 +10,7 @@ export default function GraduationsPage() {
         alignment="center"
        
       />
+      <Breadcrumb />
       <div className="max-w-7xl mx-auto px-6 py-12">
         <GraduationsSection showAll={true} />
       </div>

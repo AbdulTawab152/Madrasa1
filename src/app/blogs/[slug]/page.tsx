@@ -5,6 +5,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
 import { getTranslation } from "@/lib/translations";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface Blog {
   name: string;
@@ -63,7 +64,7 @@ export default async function BlogDetailsPage({ params }: Params) {
   return (
     <main className="min-h-screen mt-24 bg-gray-50 font-sans">
       {/* Header with orange gradient */}
-
+      <Breadcrumb />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* Article Header */}
@@ -124,10 +125,10 @@ export default async function BlogDetailsPage({ params }: Params) {
                 alt={blog.title}
                 fill
                 sizes="100vw"
-                className="object-cover group-hover:scale-103 transition-transform duration-700"
+                className="object-cover group-hover:scale-103 transition-transform duration-200"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
             </div>
           )}
 
@@ -155,7 +156,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                   <Link
                     key={tag}
                     href={`/blogs/tag/${tag}`}
-                    className="px-4 py-2 bg-amber-50 hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 text-amber-800 hover:text-white rounded-full text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg"
+                    className="px-4 py-2 bg-amber-50 hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 text-amber-800 hover:text-white rounded-full text-sm font-medium transition-all duration-150 shadow-md hover:shadow-lg"
                   >
                     #{tag}
                   </Link>
@@ -197,7 +198,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                 <Link
                   key={rb.slug}
                   href={`/blogs/${rb.slug}`}
-                  className="group rounded-2xl overflow-hidden border border-gray-200 hover:border-orange-300 transition-all duration-300 hover:shadow-xl flex flex-col h-full bg-white outline-none focus:outline-none focus:ring-0"
+                  className="group rounded-2xl overflow-hidden border border-gray-200 hover:border-orange-300 transition-all duration-150 hover:shadow-xl flex flex-col h-full bg-white outline-none focus:outline-none focus:ring-0"
                 >
                   <div className="relative w-full h-48 overflow-hidden">
                     <Image
@@ -208,7 +209,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                       alt={rb.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover group-hover:scale-105 transition-transform duration-200"
                       priority={false}
                     />
                     {rb.is_top && (
@@ -216,7 +217,7 @@ export default async function BlogDetailsPage({ params }: Params) {
                         {t('blog.featured')}
                       </span>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   </div>
                   <div className="p-6 flex-1 flex flex-col">
                     <h3 className="font-bold text-xl text-gray-900 group-hover:text-amber-600 transition-colors line-clamp-2 mb-3">

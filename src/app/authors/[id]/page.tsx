@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { FaPhone, FaUser } from "react-icons/fa6";
 import { getImageUrl } from "@/lib/utils";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface AuthorPageProps {
   params: Promise<{ id: string }>;
@@ -42,6 +43,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
 
   return (
     <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
+      <Breadcrumb />
       <div className="bg-white rounded-3xl overflow-hidden p-8">
         {/* Profile Image */}
         <div className="flex flex-col items-center text-center relative">
@@ -55,7 +57,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
                 alt={`${author.first_name} ${author.last_name}`}
                 width={200}
                 height={200}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-600">

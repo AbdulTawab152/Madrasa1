@@ -86,7 +86,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
             onMouseLeave={() => setHoveredBook(null)}
           >
             <div className="block h-full">
-              <div className="bg-white rounded-2xl shadow-sm hover:shadow-md  transition-all duration-500 transform hover:-translate-y-3 border border-amber-100 overflow-hidden relative h-full flex flex-col group-hover:border-amber-200">
+              <div className="bg-white rounded-2xl shadow-sm hover:shadow-md  transition-all duration-200 transform hover:-translate-y-3 border border-amber-100 overflow-hidden relative h-full flex flex-col group-hover:border-amber-200">
                 {/* Book Image Container */}
                 
                 <div className="relative h-64 overflow-hidden flex-shrink-0">
@@ -96,7 +96,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                       alt={book.title}
                       width={400}
                       height={400}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
@@ -110,7 +110,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   )}
                   
                   {/* Enhanced Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-amber-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-amber-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
                   
                   {/* Book Badge */}
                   <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg">
@@ -119,14 +119,14 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                   </div>
                   
                   {/* Quick Actions */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-150 transform translate-y-2 group-hover:translate-y-0">
                     <Button variant="ghost" size="icon" className="bg-white/90 hover:bg-white text-amber-600 rounded-full shadow-lg hover:scale-110">
                       <FaHeart className="w-4 h-4" />
                     </Button>
                   </div>
                   
                   {/* View Details Button */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-4 group-hover:translate-y-0">
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-150 translate-y-4 group-hover:translate-y-0">
                     <Link
                       href={`/book/${book.id}`}
                       className="bg-amber-900/60 text-white hover:text-amber-100 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2 outline-none focus:outline-none focus:ring-0"
@@ -165,7 +165,7 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
                 </div>
                 
                 {/* Hover Glow Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
+                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
               </div>
             </div>
           </div>

@@ -11,18 +11,8 @@ import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
 import { NoDataEmptyState } from "@/components/EmptyState";
 import { useTranslation } from "@/hooks/useTranslation";
-import {
-  FaUser,
-  FaAward,
-  FaSearch,
-  FaHeart,
-  FaStar,
-  FaUsers,
-  FaGlobe,
-  FaRibbon,
-  FaQuoteLeft,
-  FaArrowRight,
-} from "react-icons/fa";
+import Breadcrumb from "@/components/Breadcrumb";
+import { Search } from "lucide-react";
 
 export default function AwlyaaListPage() {
   const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
@@ -61,13 +51,13 @@ export default function AwlyaaListPage() {
       (item.title || "").toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Animation variants
+  // Animation variants - optimized for instant rendering
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        // No staggerChildren delay - instant rendering
       },
     },
   };
@@ -78,20 +68,21 @@ export default function AwlyaaListPage() {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.15, // Reduced from 0.5 for instant feel
       },
     },
   };
 
   if (loading) {
-    return <UnifiedLoader variant="card-grid" count={6} showFilters={false} />;
+    return <UnifiedLoader variant="grid" count={6} showFilters={false} />;
   }
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+      <div className="min-h-screen bg-gray-50" dir="rtl">
         <IslamicHeader pageType="awlayaa" />
-        <div className="max-w-7xl mx-auto px-6 py-16">
+        <Breadcrumb />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16" dir="rtl">
           <ErrorDisplay 
             error={error} 
             variant="full" 
@@ -103,70 +94,59 @@ export default function AwlyaaListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-gray-50" dir="rtl">
       <IslamicHeader pageType="awlayaa" />
+      <Breadcrumb />
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-6 pb-16 relative z-20">
-      
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 relative z-20" dir="rtl">
         {/* Search Bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
+          transition={{ duration: 0.15 }}
           className="mb-8"
         >
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-white to-orange-50 rounded-2xl p-6 border border-orange-100">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-orange-500 to-amber-500 rounded-full mb-3 shadow-md">
-                  <FaSearch className="text-white text-xl" />
-                </div>
-                <h2 className="text-xl font-extrabold text-gray-800 mb-1 tracking-tight">{t('awlayaa.findYourScholar')}</h2>
-                <p className="text-gray-600 text-sm">{t('awlayaa.findYourScholarDesc')}</p>
+          <div className="max-w-2xl mx-auto">
+            <div className="relative">
+              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <Search className="w-5 h-5" />
               </div>
-              
-              <div className="relative max-w-2xl mx-auto">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <FaSearch className="text-orange-500 text-base" />
-                </div>
-                <input
-                  type="text"
-                  placeholder={t('awlayaa.searchPlaceholder')}
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-12 pr-6 py-3 border-2 border-orange-200 rounded-xl focus:ring-2 focus:ring-orange-100 focus:border-orange-400 text-base transition-all duration-300 bg-white outline-none"
-                />
-                {searchTerm && (
-                  <div className="absolute inset-y-0 right-0 pr-6 flex items-center">
-                    <button
-                      onClick={() => setSearchTerm("")}
-                      className="text-gray-400 hover:text-orange-500 transition-colors"
-                      aria-label="Clear search"
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                      </svg>
-                    </button>
-                  </div>
-                )}
-              </div>
-              
+              <input
+                type="text"
+                placeholder={t('awlayaa.searchPlaceholder')}
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-4 pr-12 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition-colors bg-white shadow-sm"
+                dir="rtl"
+              />
               {searchTerm && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mt-3 text-center"
-                >
-                  <p className="text-orange-600 font-semibold text-sm">
-                    {filteredAwlyaa.length === 1 
-                      ? t('awlayaa.scholarFound').replace('{count}', filteredAwlyaa.length.toString())
-                      : t('awlayaa.scholarsFound').replace('{count}', filteredAwlyaa.length.toString())
-                    }
-                  </p>
-                </motion.div>
+                <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
+                  <button
+                    onClick={() => setSearchTerm("")}
+                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    aria-label="Clear search"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
               )}
             </div>
+            {searchTerm && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-3 text-right"
+              >
+                <p className="text-gray-600 font-medium text-sm">
+                  {filteredAwlyaa.length === 1 
+                    ? t('awlayaa.scholarFound').replace('{count}', filteredAwlyaa.length.toString())
+                    : t('awlayaa.scholarsFound').replace('{count}', filteredAwlyaa.length.toString())
+                  }
+                </p>
+              </motion.div>
+            )}
           </div>
         </motion.div>
 
@@ -177,14 +157,25 @@ export default function AwlyaaListPage() {
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7"
           >
             {filteredAwlyaa.map((item) => (
               <motion.div key={item.id} variants={itemVariants}>
                 <Link href={`/awlayaa/${item.id}`}>
-                  <div className="bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-md transition-all duration-300 border border-gray-200 group cursor-pointer h-full flex flex-col transform hover:-translate-y-1">
+                  <div className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full flex flex-col" dir="rtl">
+                    {/* Decorative right border accent */}
+                    <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200 group-hover:from-gray-500 group-hover:via-gray-400 group-hover:to-gray-300 transition-colors"></div>
+                    
+                    {/* Subtle pattern overlay */}
+                    <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity" style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10zm-10 0c0-2.762 2.238-5 5-5s5 2.238 5 5-2.238 5-5 5-5-2.238-5-5z'/%3E%3C/g%3E%3C/svg%3E")`
+                    }}></div>
+                    
+                    {/* Decorative corner element */}
+                    <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-gray-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                    
                     {/* Image Section */}
-                    <div className="relative h-64 overflow-hidden">
+                    <div className="relative h-56 overflow-hidden">
                       {item.profile_image ? (
                         <img
                           src={
@@ -192,75 +183,47 @@ export default function AwlyaaListPage() {
                             "/placeholder-awlyaa.jpg"
                           }
                           alt={item.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-orange-100 via-amber-50 to-orange-200 flex items-center justify-center">
-                          <div className="relative">
-                            <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-amber-500 rounded-full flex items-center justify-center shadow-lg">
-                              <FaUser className="text-4xl text-white" />
-                            </div>
-                            <div className="absolute -top-2 -right-2 w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                              <FaStar className="text-white text-sm" />
-                            </div>
+                        <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                          <div className="w-20 h-20 bg-gray-200 rounded-full flex items-center justify-center">
+                            <svg className="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
                           </div>
                         </div>
                       )}
-                      
-                      {/* Overlay Gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      
-                      {/* Action Buttons */}
-                      <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                        <div className="p-3 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors shadow-lg">
-                          <FaHeart className="text-orange-500 text-lg" />
-                        </div>
-                        <div className="p-3 bg-white/90 backdrop-blur-sm rounded-full hover:bg-white transition-colors shadow-lg">
-                          <FaUsers className="text-blue-500 text-lg" />
-                        </div>
-                      </div>
-
-                      {/* Expertise Badge */}
-                    
                     </div>
 
                     {/* Content Section */}
-                    <div className="p-5 flex flex-col flex-grow">
-                      <div className="mb-4">
-                        <h2 className="text-xl font-bold text-gray-800 mb-2 group-hover:text-orange-600 transition-colors">
+                    <div className="p-6 sm:p-8 flex flex-col flex-grow relative z-10">
+                      <div className="mb-4 flex-grow">
+                        <h2 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-gray-700 transition-colors" style={{ fontFamily: 'Amiri, serif' }}>
                           {item.name}
                         </h2>
                         {item.nickname && (
-                          <p className="text-orange-600 font-medium text-sm mb-2">
+                          <p className="text-gray-600 font-medium text-sm mb-2" style={{ fontFamily: 'Amiri, serif' }}>
                             "{item.nickname}"
                           </p>
                         )}
                         {item.title && (
-                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2">
+                          <p className="text-gray-600 text-sm leading-relaxed line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
                             {item.title}
                           </p>
                         )}
                       </div>
 
-                      {/* Age Information */}
-                      {/* {item.age_at_death && (
-                        <div className="mb-4 flex items-center justify-center">
-                          <div className="bg-gradient-to-r from-orange-100 to-amber-100 rounded-full px-4 py-2">
-                            <span className="text-orange-600 font-semibold text-sm">
-                              Age: {item.age_at_death} years
-                            </span>
-                          </div>
-                        </div>
-                      )} */}
-
                       {/* Action Button */}
-                      <div className="mt-auto pt-3 border-t border-gray-100">
+                      <div className="mt-auto pt-4 border-t border-gray-100">
                         <div className="flex items-center justify-between">
-                          <span className="inline-flex items-center text-orange-600 text-sm font-medium">
-                            View Profile
+                          <span className="text-gray-600 text-sm font-medium">
+                            د پروفایل کتل
                           </span>
-                          <div className="w-7 h-7 bg-orange-100 rounded-full flex items-center justify-center group-hover:bg-orange-500 transition-all duration-300">
-                            <FaArrowRight className="text-orange-500 group-hover:text-white transition-colors text-xs transform group-hover:translate-x-1" />
+                          <div className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
+                            <svg className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
+                            </svg>
                           </div>
                         </div>
                       </div>

@@ -12,6 +12,7 @@ import { AuthorsApi } from "../../lib/api";
 import { Author } from "../../lib/types";
 import { getImageUrl } from "@/lib/utils";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
+import Breadcrumb from "@/components/Breadcrumb";
 
 const isPublishedAndAlive = (author: Author): boolean => {
   return Boolean(author.is_published && author.is_alive);
@@ -35,6 +36,7 @@ export default function AuthorsPage() {
     return (
       <main className="min-h-screen bg-background-primary">
         <IslamicHeader pageType="authors" />
+        <Breadcrumb />
         <div className="max-w-7xl mx-auto px-6 py-16">
           <ErrorDisplay 
             error={error} 
@@ -49,6 +51,7 @@ export default function AuthorsPage() {
   return (
     <main className="min-h-screen bg-background-primary">
       <IslamicHeader pageType="authors" />
+      <Breadcrumb />
       <div className="max-w-7xl mx-auto px-6 space-y-12 pb-16">
         {authors.filter(isPublishedAndAlive).length === 0 ? (
           <ComingSoonEmptyState
@@ -63,7 +66,7 @@ export default function AuthorsPage() {
               .map((author) => (
                 <article
                   key={author.id}
-                  className="group relative rounded-3xl border border-primary-100/60 bg-white/90 p-8 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
+                  className="group relative rounded-3xl border border-primary-100/60 bg-white/90 p-8 shadow-soft transition-all duration-150 hover:-translate-y-1 hover:shadow-medium"
                 >
                   <div className="flex justify-center -mt-16 mb-6">
                     <div className="relative h-32 w-32 overflow-hidden rounded-full border-4 border-white shadow-lg ring-4 ring-primary-200 transition group-hover:ring-primary-300">
@@ -72,7 +75,7 @@ export default function AuthorsPage() {
                         alt={`${author.first_name || "Unknown"} ${author.last_name || ""}`}
                         width={200}
                         height={200}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
                       />
                       {/* Live indicator dot */}
                       <div

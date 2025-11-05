@@ -6,6 +6,7 @@ import { Sanad } from "../../../lib/types";
 import { motion } from "framer-motion";
 import { ComingSoonEmptyState } from "@/components/EmptyState";
 import { useTranslation } from "@/hooks/useTranslation";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 interface SanadSectionProps {
   showAll?: boolean;
@@ -41,12 +42,7 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
   }, [showAll]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-8 h-8 border-4 border-gray-200 border-t-blue-600 rounded-full animate-spin"></div>
-        <span className="ml-3 text-gray-600">د شجرو معلومات راټولول...</span>
-      </div>
-    );
+    return <UnifiedLoader variant="list" count={4} className="pt-0" />;
   }
 
   if (!sanads.length) {
@@ -82,8 +78,8 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
-                duration: 0.5, 
-                delay: idx * 0.1,
+                duration: 0.15, 
+                // No delay - instant rendering
                 ease: "easeOut"
               }}
               className="group"

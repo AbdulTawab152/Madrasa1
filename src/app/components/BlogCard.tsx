@@ -18,14 +18,14 @@ export default function BlogCard({ blog }: { blog: Blog }) {
   const imageUrl = getImageUrl(blog.image, fallbackImage) ?? fallbackImage;
 
   return (
-    <div className="h-full group relative overflow-hidden rounded-3xl border border-primary-100/70 bg-white shadow-[0_18px_40px_-28px_rgba(15,23,42,0.45)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_28px_60px_-30px_rgba(15,23,42,0.55)]">
+    <div className="h-full group relative overflow-hidden rounded-3xl border border-primary-100/70 bg-white shadow-[0_18px_40px_-28px_rgba(15,23,42,0.45)] transition-all duration-150 hover:-translate-y-1 hover:shadow-[0_28px_60px_-30px_rgba(15,23,42,0.55)]">
       <div className="aspect-[16/10] relative isolate overflow-hidden rounded-3xl border border-white/10 bg-slate-950/5">
         <Image
           src={imageUrl}
           alt={blog.title}
           fill
           sizes="(min-width: 1280px) 340px, (min-width: 768px) 45vw, 90vw"
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
           priority={false}
         />
 
@@ -35,7 +35,7 @@ export default function BlogCard({ blog }: { blog: Blog }) {
       </div>
 
       <div className="flex h-full flex-col gap-4 p-6">
-        <h3 className="text-xl font-semibold leading-tight text-primary-900 transition-colors duration-300 group-hover:text-primary-600">
+        <h3 className="text-xl font-semibold leading-tight text-primary-900 transition-colors duration-150 group-hover:text-primary-600">
           {blog.title}
         </h3>
 

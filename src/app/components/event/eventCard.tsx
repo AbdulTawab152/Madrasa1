@@ -84,7 +84,7 @@ export default function EventsSection({
               className="inline-block relative mb-4"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.15 }}
             >
               <h2 className="text-3xl md:text-5xl font-extrabold text-gray-900 tracking-tight ">
                
@@ -130,7 +130,7 @@ export default function EventsSection({
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1 }}
+                transition={{ duration: 0.15 }}
                 className="group relative mb-12 pl-4 md:pl-24"
               >
                 <div className="pointer-events-none absolute -left-4 md:left-6 top-5 h-5 w-5 rounded-full border-4 border-white bg-primary-500" />

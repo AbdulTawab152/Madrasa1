@@ -229,7 +229,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                 hidden: { opacity: 0 },
                 visible: {
                   opacity: 1,
-                  transition: { staggerChildren: 0.08 },
+                  transition: { duration: 0.15 },
                 },
               }}
             >
@@ -239,7 +239,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                   <motion.article
                     key={item.slug}
                     variants={{ hidden: { opacity: 0, y: 18 }, visible: { opacity: 1, y: 0 } }}
-                    className="group flex h-full flex-col overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-300 hover:-translate-y-1 hover:shadow-medium"
+                    className="group flex h-full flex-col overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-150 hover:-translate-y-1 hover:shadow-medium"
                   >
                   <div className="relative h-52 overflow-hidden">
                     <Image
@@ -247,7 +247,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
                       alt={item.title || 'Blog post'}
                       width={720}
                       height={480}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-105"
                       priority={homePage}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-primary-900/70 via-primary-900/20 to-transparent" />

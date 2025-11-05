@@ -169,7 +169,7 @@ function ToastItem({ toast, onDismiss }: ToastItemProps) {
         ${style.bg} ${style.text}
         border rounded-lg shadow-lg px-4 py-3 
         flex items-start gap-3 min-w-[320px] max-w-md
-        transition-all duration-300 ease-out
+        transition-all duration-150 ease-out
         ${isExiting ? 'opacity-0 translate-x-full' : 'opacity-100 translate-x-0'}
       `}
       role="alert"

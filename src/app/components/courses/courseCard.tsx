@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowUpRight, BookOpen, Clock, UserRound, Star } from "lucide-react";
+import { BookOpen, Clock, UserRound } from "lucide-react";
 import { getImageUrl } from "@/lib/utils";
 import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -116,27 +116,27 @@ export default function CoursesSection({
   }
 
   return (
-    <section className="px-4 pb-16 pt-2 sm:px-6 lg:px-8">
+    <section className="px-4 pb-16 pt-2 sm:px-6 lg:px-8" dir="rtl">
       <div className="mx-auto max-w-7xl space-y-10">
         {heading ? (
           <motion.header
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
             className="mx-auto max-w-3xl space-y-4 text-center"
           >
             {heading.eyebrow ? (
-              <span className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-primary-600">
+              <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-gray-600">
                 {heading.eyebrow}
               </span>
             ) : null}
             {heading.title ? (
-              <h2 className="text-3xl font-semibold text-primary-900 md:text-4xl">
+              <h2 className="text-3xl font-semibold text-gray-900 md:text-4xl" style={{ fontFamily: 'Amiri, serif' }}>
                 {heading.title}
               </h2>
             ) : null}
             {heading.subtitle ? (
-              <p className="text-sm text-primary-600 sm:text-base">
+              <p className="text-sm text-gray-600 sm:text-base" style={{ fontFamily: 'Amiri, serif' }}>
                 {heading.subtitle}
               </p>
             ) : null}
@@ -146,8 +146,8 @@ export default function CoursesSection({
         <motion.div
           initial="hidden"
           animate="visible"
-          transition={{ staggerChildren: 0.1, delayChildren: 0.08 }}
-          className="grid gap-5  sm:px-0 sm:grid-cols-2 lg:grid-cols-3"
+          transition={{ duration: 0.15 }}
+          className="grid gap-5 md:gap-7 sm:px-0 sm:grid-cols-2 lg:grid-cols-3"
         >
           {displayCourses.map((course) => {
             try {
@@ -163,51 +163,63 @@ export default function CoursesSection({
               <motion.article
                 key={course.id}
                 variants={cardVariants}
-                className="h-full sm:px-4"
+                className="h-full"
               >
-                <div className="group flex h-full flex-col rounded-3xl border border-gray-200/50 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-amber-400/50 hover:shadow-amber-100/20">
-                  <div className="aspect-[4/3] overflow-hidden rounded-t-3xl relative">
+                <Link
+                  href={`/courses/${course.slug}`}
+                  className="group relative flex h-full flex-col bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
+                  dir="rtl"
+                >
+                  {/* Decorative right border accent */}
+                  <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200 group-hover:from-gray-500 group-hover:via-gray-400 group-hover:to-gray-300 transition-colors"></div>
+                  
+                  {/* Subtle pattern overlay */}
+                  <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity" style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10zm-10 0c0-2.762 2.238-5 5-5s5 2.238 5 5-2.238 5-5 5-5-2.238-5-5z'/%3E%3C/g%3E%3C/svg%3E")`
+                  }}></div>
+                  
+                  {/* Decorative corner element */}
+                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-gray-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  
+                  <div className="aspect-[4/3] overflow-hidden relative">
                     <Image
                       src={coverImage}
                       alt={course.title}
                       fill
                       sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 90vw"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                       onError={(e) => {
                         console.error('Image load error:', coverImage, e);
                         e.currentTarget.src = fallbackCourseImage;
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-                    <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-                      <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
-                        <ArrowUpRight className="h-4 w-4 text-amber-600" />
-                      </div>
+                    
+                    {/* Category Badge */}
+                    <div className="absolute top-4 right-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-700 border border-gray-200">
+                        {publishedOn}
+                      </span>
                     </div>
                   </div>
 
-                  <div className="flex-1 flex flex-col gap-2 px-4 py-4">
-                    <div className="space-y-2">
-                      <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-amber-700 bg-amber-50 px-2 py-1 rounded-full">
-                        {publishedOn}
-                      </span>
-
-                      <h3 className="text-lg font-bold leading-tight text-gray-900 group-hover:text-amber-600 transition-colors duration-500 line-clamp-2">
+                  <div className="flex-1 flex flex-col p-6 sm:p-8 relative z-10">
+                    <div className="space-y-3 mb-4">
+                      <h3 className="text-xl font-bold leading-tight text-gray-900 group-hover:text-gray-700 transition-colors line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
                         {course.title}
                       </h3>
 
-                      <p className="text-gray-600 leading-relaxed line-clamp-2 text-xs">
+                      <p className="text-gray-600 leading-relaxed line-clamp-2 text-sm" style={{ fontFamily: 'Amiri, serif' }}>
                         {stripHtml(course.description) || t('courses.immersiveLearning')}
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 mt-1">
+                    <div className="grid grid-cols-2 gap-3 mb-4">
                       <CourseMetaItem
-                        icon={<Clock className="h-3.5 w-3.5" />}
+                        icon={<Clock className="h-4 w-4" />}
                         label={course.duration || t('courses.selfPaced')}
                       />
                       <CourseMetaItem
-                        icon={<BookOpen className="h-3.5 w-3.5" />}
+                        icon={<BookOpen className="h-4 w-4" />}
                         label={
                           course.video_quantity
                             ? `${course.video_quantity} ${t('courses.lessons')}`
@@ -216,24 +228,25 @@ export default function CoursesSection({
                       />
                     </div>
 
-                    <div className="mt-auto pt-3">
-                      <div className="flex items-center gap-2 mb-3 p-2 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-100 hover:border-amber-200 hover:shadow-md transition-all duration-300 group">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md group-hover:scale-105 transition-all duration-300">
-                          <UserRound className="h-4 w-4" />
+                    <div className="mt-auto pt-4 border-t border-gray-100">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 group-hover:bg-gray-200 transition-colors">
+                            <UserRound className="h-4 w-4 text-gray-600" />
+                          </div>
+                          <p className="text-sm font-medium text-gray-900 truncate" style={{ fontFamily: 'Amiri, serif' }}>
+                            {instructorName(course, t)}
+                          </p>
                         </div>
-                        <p className="text-sm font-semibold text-gray-900 group-hover:text-amber-700 truncate transition-colors duration-300">{instructorName(course, t)}</p>
+                        <div className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
+                          <svg className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </div>
                       </div>
-
-                      <Link
-                        href={`/courses/${course.slug}`}
-                        className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold py-2.5 px-3 rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-500/30 focus:ring-offset-2 transform group-hover:shadow-xl"
-                      >
-                        <span className="text-xs">{t('courses.viewCourse')}</span>
-                        <ArrowUpRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
-                      </Link>
                     </div>
                   </div>
-                </div>
+                </Link>
               </motion.article>
             );
             } catch (error) {
@@ -254,10 +267,10 @@ const CourseMetaItem = ({
   icon: ReactNode;
   label: string;
 }) => (
-  <div className="flex items-center gap-2 rounded-md bg-gray-50/50 px-2 py-1.5">
-    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600">
+  <div className="flex items-center gap-2 rounded-lg bg-gray-50 px-3 py-2 border border-gray-100">
+    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gray-200 text-gray-600 flex-shrink-0">
       {icon}
     </span>
-    <span className="text-xs font-medium text-gray-700 truncate">{label}</span>
+    <span className="text-xs font-medium text-gray-700 truncate" style={{ fontFamily: 'Amiri, serif' }}>{label}</span>
   </div>
 );

@@ -12,12 +12,11 @@ export default function DocumentAttributes() {
         // Set language attribute for font selection
         document.documentElement.lang = savedLang;
         
-        // Set direction based on language - English should be LTR, Pashto and other RTL languages should be RTL
-        const isRTL = savedLang === 'ps' || savedLang === 'prs' || savedLang === 'ar' || savedLang === 'fa' || savedLang === 'ur';
-        document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+        // Always set RTL direction since website only has RTL languages
+        document.documentElement.dir = 'rtl';
         
         // Also set body direction to ensure consistency
-        document.body.dir = isRTL ? 'rtl' : 'ltr';
+        document.body.dir = 'rtl';
       };
       
       // Initialize immediately

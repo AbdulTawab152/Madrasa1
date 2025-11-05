@@ -7,6 +7,7 @@ import { Metadata } from "next";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import VideoPlayer from "@/app/components/VideoPlayer";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface Article {
   title: string;
@@ -77,46 +78,8 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen mt-32 bg-gradient-to-b from-amber-50/30 to-white">
+      <Breadcrumb />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Breadcrumb */}
-        <nav className="flex mb-8 bg-white p-4 rounded-xl border border-amber-100">
-          <ol className="flex items-center space-x-1 text-sm font-medium">
-            <li>
-              <Link
-                href="/"
-                className="flex items-center text-amber-600 hover:text-amber-700 transition-colors"
-              >
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-                </svg>
-                Home
-              </Link>
-            </li>
-            <li className="flex items-center">
-              <svg
-                className="w-4 h-4 mx-2 text-amber-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <Link
-                href="/articles"
-                className="text-amber-600 hover:text-amber-700 transition-colors"
-              >
-                Articles
-              </Link>
-            </li>
-          </ol>
-        </nav>
 
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-8">
@@ -164,10 +127,10 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                 alt={article.title}
                 fill
                 sizes="100vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-700"
+                className="object-cover group-hover:scale-105 transition-transform duration-200"
                 priority
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
             </div>
           )}
 
@@ -208,7 +171,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                         <Link
                           key={item.slug}
                           href={`/articles/${item.slug}`}
-                          className="group block p-4 bg-gray-50 rounded-xl hover:bg-blue-50  transition-all duration-300 border border-gray-100 hover:border-blue-200"
+                          className="group block p-4 bg-gray-50 rounded-xl hover:bg-blue-50  transition-all duration-150 border border-gray-100 hover:border-blue-200"
                         >
                           {/* Article Image */}
                           <div className="relative h-32 rounded-lg overflow-hidden mb-3">
@@ -220,7 +183,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                                   alt={item.title}
                                   fill
                                   sizes="320px"
-                                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                  className="object-cover group-hover:scale-105 transition-transform duration-150"
                                 />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100">
@@ -279,7 +242,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                 <Link
                   key={item.slug}
                   href={`/articles/${item.slug}`}
-                      className="group flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-all duration-300 border border-gray-100 hover:border-blue-200"
+                      className="group flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-all duration-150 border border-gray-100 hover:border-blue-200"
                     >
                       {/* Article Image */}
                       <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
@@ -291,7 +254,7 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                               alt={item.title}
                               fill
                               sizes="96px"
-                              className="object-cover group-hover:scale-105 transition-transform duration-300"
+                              className="object-cover group-hover:scale-105 transition-transform duration-150"
                             />
                           ) : (
                             <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100">

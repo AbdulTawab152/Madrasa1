@@ -39,20 +39,20 @@
 //             key={item.link}
 //             onMouseEnter={() => setHoveredIndex(idx)}
 //             onMouseLeave={() => setHoveredIndex(null)}
-//             className="relative group block h-96 w-full rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-500"
+//             className="relative group block h-96 w-full rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-200"
 //           >
 //             {/* Background Image */}
 //             <motion.img
 //               src={item.image}
 //               alt={item.title}
-//               className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-in-out group-hover:scale-110"
+//               className="absolute inset-0 w-full h-full object-cover transition-transform duration-200 ease-in-out group-hover:scale-110"
 //             />
 
 //             {/* Dark Blur Overlay */}
 //             <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/70 to-transparent backdrop-blur-sm" />
 
 //             {/* Text Content */}
-//             <div className="relative z-10 h-full w-full flex flex-col justify-end p-6 text-white space-y-2 transition-all duration-300">
+//             <div className="relative z-10 h-full w-full flex flex-col justify-end p-6 text-white space-y-2 transition-all duration-150">
 //               <motion.h3
 //                 initial={{ opacity: 0, y: 10 }}
 //                 whileInView={{ opacity: 1, y: 0 }}
@@ -95,12 +95,12 @@
 //                 }}
 //                 transition={{ duration: 0.3 }}
 //                 className={cn(
-//                   "inline-flex items-center gap-2 mt-4 px-5 py-2 rounded-full text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300",
+//                   "inline-flex items-center gap-2 mt-4 px-5 py-2 rounded-full text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 shadow-lg hover:shadow-xl transition-all duration-150",
 //                   hoveredIndex === idx ? "pointer-events-auto" : "pointer-events-none"
 //                 )}
 //               >
 //                 See More
-//                 <span className="transform transition-transform duration-300 group-hover:translate-x-1">
+//                 <span className="transform transition-transform duration-150 group-hover:translate-x-1">
 //                   →
 //                 </span>
 //               </motion.a>

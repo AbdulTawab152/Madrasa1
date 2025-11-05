@@ -1,16 +1,11 @@
-"use client";
-
-import { useEffect, useState, use } from "react";
 import { IftahApi } from "@/lib/api";
 import { buildStorageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
-import {
-  Download,
-  ChevronLeft,
-  BookOpen,
-  Lightbulb,
-} from "lucide-react";
-import Link from "next/link";
+import { Download } from "lucide-react";
+import { notFound } from "next/navigation";
+import Breadcrumb from "@/components/Breadcrumb";
+import IftahQuestionButton from "../../components/iftah/IftahQuestionButton";
+import IslamicHeader from "../../components/IslamicHeader";
 
 interface Mufti {
   id: number;
@@ -54,259 +49,135 @@ interface Iftah {
 
 const buildAssetUrl = (path?: string | null) => buildStorageUrl(path) ?? undefined;
 
-export default function IftahDetailsPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = use(params);
-  const [iftah, setIftah] = useState<Iftah | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+// Enable caching for faster loads
+export const revalidate = 60; // Revalidate every 60 seconds
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchData = async () => {
-      try {
-        setIsLoading(true);
-        const response = await IftahApi.getIftah(slug);
-        if (!isMounted) return;
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
-        if (response.success) {
-          setIftah((response.data as Iftah) ?? null);
-        } else {
-          setIftah(null);
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        if (isMounted) {
-          setIftah(null);
-        }
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-    fetchData();
-    return () => {
-      isMounted = false;
-    };
-  }, [slug]);
+export default async function IftahDetailsPage({ params }: PageProps) {
+  const { slug } = await params;
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br  from-amber-50 via-white to-amber-25 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-amber-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <BookOpen className="w-6 h-6 text-amber-600 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
-          </div>
-          <p className="text-gray-600 font-medium mt-2">Loading divine wisdom...</p>
-        </div>
-      </div>
-    );
+  const response = await IftahApi.getIftah(slug);
+  
+  if (!response.success || !response.data) {
+    notFound();
   }
+
+  const iftah = response.data as Iftah;
 
   if (!iftah) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-25 flex items-center justify-center p-4">
-        <div className="text-center p-8 bg-white rounded-2xl shadow-sm max-w-md mx-auto border border-amber-100">
-          <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <Lightbulb className="w-8 h-8 text-amber-600" />
-          </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-3">Content Not Found</h1>
-          <p className="text-gray-600 mb-6">The requested question and answer could not be found.</p>
-          <Link 
-            href="/"
-            className="inline-flex items-center px-5 py-2.5 bg-amber-500 text-white rounded-xl hover:bg-amber-600 transition-colors shadow-md hover:shadow-sm"
-          >
-            <ChevronLeft className="w-5 h-5 mr-2" />
-            Back to Home
-          </Link>
-        </div>
-      </div>
-    );
+    notFound();
   }
 
-  // Format date if available
-  const formattedDate = iftah.date 
-    ? new Date(iftah.date).toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
-      })
-    : "N/A";
-
   return (
-    <div className="min-h-screen mt-40 md:mt-32 bg-white relative py-12 px-4">
-      {/* Islamic Pattern Background */}
-      <div className="absolute inset-0 opacity-5" style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='60'  height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm-20 0c0-5.523 4.477-10 10-10s10 4.477 10 10-4.477 10-10 10-10-4.477-10-10z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
-      }}></div>
+    <div className="min-h-screen bg-gray-50" dir="rtl">
+      <IslamicHeader 
+        pageType="iftah" 
+        title={cleanText(iftah.iftah_sub_category?.name)} 
+      />
+      <Breadcrumb />
+      <IftahQuestionButton variant="floating" />
       
-      <div className="relative z-10">
-        <main className="max-w-4xl mx-auto" dir="rtl">
-        {/* Go Back Button */}
-        <div className="mb-6 flex flex-wrap gap-3">
-          {iftah.iftah_sub_category && (
-            <Link
-              href={`/iftah/sub-category/${iftah.iftah_sub_category.id}`}
-              className="inline-flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-3 rounded-lg transition-all duration-300 group shadow-md"
-            >
-              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-medium">Back to {iftah.iftah_sub_category.name}</span>
-            </Link>
-          )}
-          {iftah.tag && (
-            <Link
-            href={`/iftah/category/${encodeURIComponent(iftah.tag.name)}`}
-            className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-3 rounded-lg transition-all duration-300 group shadow-md"
-          >
-            <ChevronLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            <span className="font-medium">Back to {iftah.tag.name}</span>
-          </Link>
-          )}
-        </div>
-
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12" dir="rtl">
         {/* Main Fatwa Document */}
-        <div className="bg-white shadow-md border border-gray-200 rounded-lg p-8">
-          {/* Category/Breadcrumb */}
-          <div className="mb-6">
-            {/* Subcategory Info */}
-            {iftah.iftah_sub_category && (
-              <div className="mb-4 p-4 bg-gradient-to-r from-teal-50 to-emerald-50 border border-teal-200 rounded-lg">
-                <div className="flex items-center gap-3">
-                  <div>
-                    <h3 className="font-semibold text-gray-900 mb-1" style={{ fontFamily: 'Amiri, serif' }}>
-                      {iftah.iftah_sub_category.name}
-                    </h3>
-                   
-                  </div>
-                </div>
-              </div>
-            )}
+
+         
             
-            {iftah.tag && (
-              <div className="text-right">
-                <p className="text-gray-600 text-sm mb-2">عبادات &gt; &gt; {iftah.tag.name}</p>
+        <div className="bg-white shadow-sm border border-gray-200 rounded-lg overflow-hidden">
+          {/* Content Section */}
+          <div className="px-6 sm:px-8 py-8">
+            {/* Question Section */}
+            <div className="mb-8">
+              <h2 className="text-lg font-bold text-gray-900 mb-3">سوال</h2>
+              <div className="bg-gray-50 p-5 rounded-lg border-r-4 border-gray-300">
+                <p className="text-gray-800 leading-relaxed text-base sm:text-lg" style={{ fontFamily: 'Amiri, serif' }}>
+                  {cleanText(iftah.question)}
+                </p>
+              </div>
+            </div>
+
+            {/* Simple Divider */}
+            <div className="border-t border-gray-200 my-8"></div>
+   {/* Bismillah */}
+   <div className="text-center mb-8">
+              <p className="text-2xl sm:text-3xl text-gray-700 font-bold" style={{ fontFamily: 'serif' }}>
+                بسم اللہ الرحمن الرحیم
+              </p>
+            </div>
+
+            {/* Answer Section */}
+            <div className="mb-8">
+              <h2 className="text-lg font-bold text-gray-900 mb-3">جواب</h2>
+              <div className="bg-gray-50 p-5 rounded-lg border-r-4 border-gray-300">
+                <p className="text-gray-800 leading-relaxed text-base sm:text-lg" style={{ fontFamily: 'Amiri, serif' }}>
+                  {cleanText(iftah.answer)}
+                </p>
+              </div>
+            </div>
+
+            {/* Note Section - If Available */}
+            {iftah.note && (
+              <div className="mb-8 mt-6">
+                <h2 className="text-sm font-bold text-gray-900 mb-3">نوٹ</h2>
+                  <p className="text-gray-800 leading-relaxed text-base sm:text-lg" style={{ fontFamily: 'Amiri, serif' }}>
+                    {cleanText(iftah.note)}
+                  </p>
+              </div>
+            )}
+
+            {/* Closing */}
+            <div className="mt-10 mb-8 text-center">
+              <p className="text-xl sm:text-2xl text-gray-700 font-bold" style={{ fontFamily: 'serif' }}>
+                واللہ تعالیٰ اعلم
+              </p>
+            </div>
+
+            {/* Mufti Information */}
+            {iftah.mufti && (
+              <div className="mb-8 ml-auto max-w-md text-right" dir="rtl">
+                <h3 className="text-sm font-semibold text-gray-700 mb-3">د مفتی شهرت</h3>
+                <div className="space-y-1.5">
+                  <p className="text-gray-900 text-base">
+                    <span className="text-gray-600 text-sm">بشپړ نوم: </span>
+                    {cleanText(iftah.mufti.full_name)}
+                  </p>
+                  {iftah.mufti.father_name && (
+                    <p className="text-gray-900 text-base">
+                      <span className="text-gray-600 text-sm">د پلار نوم: </span>
+                      {cleanText(iftah.mufti.father_name)}
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Institution Footer */}
+            <div className="mt-8 pt-6 border-t border-gray-200">
+              <p className="text-sm font-semibold text-gray-700 mb-1">دار الافتاء</p>
+              <p className="text-xs text-gray-600 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
+                اَلْجَامِعْةُ اَنوَار الْعُلُوْم اَلْاِسْلاَمِیّة اَلْمَدْرَسَةٌ خلیفه صاحب ارغندی (رح)
+              </p>
+            </div>
+
+            {/* Attachment */}
+            {iftah.attachment && (
+              <div className="mt-6 pt-6 border-t border-gray-200 text-right" dir="rtl">
+                <a
+                  href={buildAssetUrl(iftah.attachment)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-gray-800 text-white font-semibold rounded-lg hover:bg-gray-900 transition-colors duration-200"
+                >
+                  <Download className="w-5 h-5" />
+                  <span>د فایل ډاونلوډ</span>
+                </a>
               </div>
             )}
           </div>
-
-          {/* Question Number */}
-          <div className="mb-6">
-            <p className="text-gray-700 text-sm">سوال نمبر: {iftah.id}</p>
-          </div>
-
-          {/* Title - Inline Design */}
-          <div className="mb-6 flex items-start gap-4 bg-blue-50 p-4 rounded-lg border-r-4 border-blue-600">
-            <div className="flex-shrink-0">
-              <p className="font-bold text-gray-900 whitespace-nowrap">عنوان:</p>
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.title)}</p>
-            </div>
-          </div>
-
-          {/* Question - Inline Design */}
-          <div className="mb-8 flex items-start gap-4 bg-green-50 p-4 rounded-lg border-r-4 border-green-600">
-            <div className="flex-shrink-0">
-              <p className="font-bold text-gray-900 whitespace-nowrap">سوال:</p>
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.question)}</p>
-            </div>
-          </div>
-
-          {/* Divider Line */}
-          <div className="border-t border-gray-300 my-6"></div>
-
-          {/* Answer Number */}
-          <div className="mb-6">
-            <p className="text-gray-700 text-sm">جواب نمبر: {iftah.id}</p>
-          </div>
-
-          {/* Bismillah - Centered */}
-          <div className="text-center mb-6">
-            <p className="text-2xl text-gray-800 font-bold" style={{ fontFamily: 'serif' }}>
-              بسم اللہ الرحمن الرحیم
-            </p>
-          </div>
-
-          {/* Fatwa ID */}
-          <div className="mb-6 text-left" dir="ltr">
-            <p className="text-sm text-gray-600">Fatwa: {iftah.id}</p>
-          </div>
-
-          {/* Answer - Enhanced Design */}
-          <div className="mb-8 flex items-start gap-4 bg-amber-50 p-4 rounded-lg border-r-4 border-amber-600">
-            <div className="flex-shrink-0">
-              <p className="font-bold text-gray-900 whitespace-nowrap">جواب:</p>
-            </div>
-            <div className="flex-1">
-              <p className="text-gray-800 leading-relaxed">{cleanText(iftah.answer)}</p>
-            </div>
-          </div>
-
-          {/* Note if available - Enhanced Design */}
-          {iftah.note && (
-            <div className="mb-8 flex items-start gap-4 bg-purple-50 p-4 rounded-lg border-r-4 border-purple-600">
-              <div className="flex-shrink-0">
-                <p className="font-bold text-gray-900 whitespace-nowrap">نوٹ:</p>
-              </div>
-              <div className="flex-1">
-                <p className="text-gray-800 leading-relaxed">{cleanText(iftah.note)}</p>
-              </div>
-            </div>
-          )}
-
-          {/* Closing */}
-          <div className="mt-8 mb-6 text-center">
-            <p className="text-xl text-gray-800 font-bold" style={{ fontFamily: 'serif' }}>
-              واللہ تعالیٰ اعلم
-            </p>
-          </div>
-
-          {/* Mufti/Author Information - Simplified */}
-          {iftah.mufti && (
-            <div className="mb-6 p-5 bg-white rounded-lg">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 text-right" style={{ fontFamily: 'Amiri, serif' }}>
-                معلومات مفتی
-              </h3>
-              <div className="space-y-3 text-right" dir="rtl">
-                <div className="flex items-center gap-3 py-2 justify-end">
-                  <span className="text-gray-900 text-base">{cleanText(iftah.mufti.full_name)}</span>
-                  <span className="font-semibold text-gray-700 text-base">بشپړ نوم:</span>
-                </div>
-                {iftah.mufti.father_name && (
-                  <div className="flex items-center gap-3 py-2 justify-end">
-                    <span className="text-gray-900 text-base">{cleanText(iftah.mufti.father_name)}</span>
-                    <span className="font-semibold text-gray-700 text-base">د پلار نوم:</span>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
-
-          {/* Institution Footer */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <p className="text-sm text-gray-700">دار الافتاء،</p>
-            <p className="text-sm text-gray-700">اَلْجَامِعْةُ اَنوَار الْعُلُوْم اَلْاِسْلاَمِیّة اَلْمَدْرَسَةٌ خلیفه صاحب ارغندی (رح)</p>
-          </div>
-
-
-          {/* Attachment */}
-          {iftah.attachment && (
-            <div className="mt-6 pt-6 border-t border-gray-200 text-left" dir="ltr">
-              <a
-                href={buildAssetUrl(iftah.attachment)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-4 py-2 bg-amber-500 text-white rounded-lg hover:bg-amber-600 transition-colors shadow-sm"
-              >
-                <Download className="w-4 h-4 mr-2" /> Download Attachment
-              </a>
-            </div>
-          )}
         </div>
-        </main>
-      </div>
+      </main>
     </div>
   );
 }

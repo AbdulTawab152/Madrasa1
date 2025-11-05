@@ -1,5 +1,5 @@
-import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 export default function LoadingAboutPage() {
-  return <DetailPageSkeleton type="article" showSidebar={false} showComments={false} showRelated={false} />;
+  return <UnifiedLoader variant="detail" />;
 }

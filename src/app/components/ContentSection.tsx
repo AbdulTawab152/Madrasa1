@@ -74,7 +74,7 @@ export default function ContentSection({
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        // No staggerChildren delay - instant rendering
       },
     },
   };
@@ -85,7 +85,7 @@ export default function ContentSection({
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.5,
+        duration: 0.15,
         ease: "easeOut" as const,
       },
     },
@@ -115,7 +115,7 @@ export default function ContentSection({
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: "easeOut" }}
+          transition={{ duration: 0.15, ease: "easeOut" }}
           className="text-center relative z-10 max-w-4xl mx-auto bg-white/40 rounded-2xl py-12 px-8 border border-white/50 shadow-sm"
         >
           {/* Icon Badge */}
@@ -123,7 +123,7 @@ export default function ContentSection({
             initial={{ scale: 0, rotate: -15 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{
-              delay: 0.2,
+              // No delay - instant rendering
               type: "spring",
               stiffness: 120,
               damping: 10,
@@ -149,7 +149,7 @@ export default function ContentSection({
           <motion.h2
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ duration: 0.15 }}
             className="text-4xl md:text-5xl font-bold mb-6 leading-tight tracking-tight"
           >
             <span className="bg-gradient-to-r from-amber-700 to-orange-700 bg-clip-text text-transparent drop-shadow-sm">
@@ -161,7 +161,7 @@ export default function ContentSection({
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ duration: 0.15 }}
             className="text-lg md:text-xl text-amber-900/90 max-w-2xl mx-auto mb-10 leading-relaxed font-medium"
           >
             {subtitle}
@@ -171,7 +171,7 @@ export default function ContentSection({
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: "100px" }}
-            transition={{ delay: 0.8, duration: 0.8 }}
+            transition={{ duration: 0.15 }}
             className="h-1 bg-gradient-to-r from-amber-300 to-orange-400 mx-auto mb-10 rounded-full"
           ></motion.div>
 
@@ -179,7 +179,7 @@ export default function ContentSection({
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
+            transition={{ duration: 0.15 }}
             className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
           >
             {[
@@ -201,7 +201,7 @@ export default function ContentSection({
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 1.2 }}
+            transition={{ duration: 0.15 }}
             className="flex justify-center space-x-3"
           >
             <div className="w-3 h-3 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full animate-ping-slow"></div>
@@ -230,10 +230,10 @@ export default function ContentSection({
             key={`${item.type}-${item.id}`}
             variants={itemVariants}
             whileHover={{ y: -5 }}
-            className="bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-300 border border-amber-100 group relative overflow-hidden"
+            className="bg-white rounded-2xl p-6 hover:shadow-xl transition-all duration-150 border border-amber-100 group relative overflow-hidden"
           >
             {/* Animated background element */}
-            <div className="absolute -inset-2 bg-gradient-to-r from-amber-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl -z-10"></div>
+            <div className="absolute -inset-2 bg-gradient-to-r from-amber-50 to-orange-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-3xl -z-10"></div>
 
             {/* Shimmer effect on hover */}
             <div className="absolute inset-0 -z-20 overflow-hidden">
@@ -253,7 +253,7 @@ export default function ContentSection({
                       alt={item.title}
                       fill
                       sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-cover group-hover:scale-105 transition-transform duration-200"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
 
@@ -450,7 +450,7 @@ export default function ContentSection({
                           key={tag}
                           initial={{ opacity: 0, scale: 0 }}
                           animate={{ opacity: 1, scale: 1 }}
-                          transition={{ delay: i * 0.1 }}
+                          transition={{ duration: 0.15 }}
                           whileHover={{ scale: 1.1 }}
                           className="px-2.5 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-medium cursor-pointer hover:bg-amber-100 transition-colors"
                         >
@@ -503,7 +503,7 @@ export default function ContentSection({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ duration: 0.15 }}
           className="mt-16 flex justify-center"
         >
           <Link

@@ -1,41 +1,37 @@
 /**
  * UnifiedLoader - Single source of truth for all loading states
- * Supports multiple variants for different UI patterns
+ * Only skeleton loading with 3 variants: grid, list, detail
  */
 
 interface UnifiedLoaderProps {
-  variant?: 'card-grid' | 'list' | 'detail' | 'form' | 'inline';
+  variant?: 'grid' | 'list' | 'detail';
   count?: number;
   showFilters?: boolean;
   className?: string;
 }
 
 export default function UnifiedLoader({
-  variant = 'card-grid',
+  variant = 'grid',
   count = 6,
   showFilters = false,
   className = '',
 }: UnifiedLoaderProps) {
   switch (variant) {
-    case 'card-grid':
-      return <CardGridLoader count={count} showFilters={showFilters} className={className} />;
+    case 'grid':
+      return <GridLoader count={count} showFilters={showFilters} className={className} />;
     case 'list':
       return <ListLoader count={count} showFilters={showFilters} className={className} />;
     case 'detail':
       return <DetailLoader className={className} />;
-    case 'form':
-      return <FormLoader className={className} />;
-    case 'inline':
-      return <InlineLoader className={className} />;
     default:
-      return <CardGridLoader count={count} showFilters={showFilters} className={className} />;
+      return <GridLoader count={count} showFilters={showFilters} className={className} />;
   }
 }
 
-// Card Grid Loader (for blogs, articles, courses, etc.)
-function CardGridLoader({ count, showFilters, className }: { count: number; showFilters: boolean; className?: string }) {
+// Grid Loader (for blogs, articles, courses, books, authors, events, etc.)
+function GridLoader({ count, showFilters, className }: { count: number; showFilters: boolean; className?: string }) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 ${className}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 pt-[140px] md:pt-[160px] ${className}`}>
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="space-y-8">
           {/* Filter Section */}
@@ -67,7 +63,7 @@ function CardGridLoader({ count, showFilters, className }: { count: number; show
 // List Loader (for table-like views)
 function ListLoader({ count, showFilters, className }: { count: number; showFilters: boolean; className?: string }) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 ${className}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 pt-[140px] md:pt-[160px] ${className}`}>
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="space-y-6">
           {/* Filter Section */}
@@ -90,7 +86,7 @@ function ListLoader({ count, showFilters, className }: { count: number; showFilt
 // Detail Page Loader
 function DetailLoader({ className }: { className?: string }) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 ${className}`}>
+    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 pt-[140px] md:pt-[160px] ${className}`}>
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-amber-50 to-orange-100 py-16">
         <div className="max-w-7xl mx-auto px-6">
@@ -173,42 +169,10 @@ function DetailLoader({ className }: { className?: string }) {
   );
 }
 
-// Form Loader
-function FormLoader({ className }: { className?: string }) {
-  return (
-    <div className={`bg-white rounded-2xl shadow-lg border border-amber-100 p-8 ${className}`}>
-      <div className="space-y-6">
-        {/* Form Fields */}
-        {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="space-y-2">
-            <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
-            <div className="h-12 w-full bg-gray-200 rounded-xl animate-pulse"></div>
-          </div>
-        ))}
-        
-        {/* Submit Button */}
-        <div className="h-12 w-full bg-gray-200 rounded-xl animate-pulse"></div>
-      </div>
-    </div>
-  );
-}
-
-// Inline Loader (for small loading states)
-function InlineLoader({ className }: { className?: string }) {
-  return (
-    <div className={`flex items-center justify-center py-8 ${className}`}>
-      <div className="flex items-center gap-3">
-        <div className="w-8 h-8 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-        <span className="text-gray-600 font-medium">Loading...</span>
-      </div>
-    </div>
-  );
-}
-
 // Reusable Card Skeleton - Professional Design
 function CardSkeleton() {
   return (
-    <div className="group overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-300">
+    <div className="group overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-150">
       {/* Image Placeholder */}
       <div className="relative h-52 w-full overflow-hidden">
         <div className="h-full w-full bg-gradient-to-br from-primary-100/80 via-primary-50/60 to-amber-100/40 animate-pulse"></div>
@@ -266,4 +230,3 @@ function ListItemSkeleton() {
     </div>
   );
 }
-

@@ -364,7 +364,7 @@ export default function IftahQuestionForm({ isOpen, onClose }: IftahQuestionForm
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md animate-in fade-in duration-200"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-300" dir="rtl">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col animate-in slide-in-from-bottom-4 duration-150" dir="rtl">
         {/* سرلیک */}
         <div className="sticky top-0 bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-600 text-white p-5 sm:p-6 z-10 shadow-lg">
           <div className="flex items-center justify-between">

@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaArrowRight } from "react-icons/fa6";
 import { useTranslation } from "@/hooks/useTranslation";
-import { getLanguageDirection } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
 
 // ✅ Array of images from public folder
@@ -39,10 +38,8 @@ const Ship = "/ship.png";
 // ✅ Scrolling row — smooth and natural animation
 const ScrollingRow = ({
   direction = "left",
-  delay = 0,
 }: {
   direction?: "left" | "right";
-  delay?: number;
 }) => {
   // Create a seamless loop by duplicating images
   const repeatedImages = [...images, ...images];
@@ -63,7 +60,7 @@ const ScrollingRow = ({
         repeatType: "loop",
         duration: 120, // Faster movement (smaller duration = faster)
         ease: "linear",
-        delay,
+        // No delay - instant animation
       }}
       style={{
         width: totalWidth * 2, // Double width for seamless loop
@@ -77,7 +74,7 @@ const ScrollingRow = ({
           alt={`scrolling-${index}`}
           width={320}
           height={210}
-          className="w-[220px] h-[140px] sm:w-[250px] sm:h-[180px] lg:w-[320px] lg:h-[210px] rounded-lg object-cover shadow-2xl drop-shadow-[8px_8px_16px_rgba(0,0,0,0.8)] hover:shadow-3xl transition-shadow duration-300 flex-shrink-0"
+          className="w-[220px] h-[140px] sm:w-[250px] sm:h-[180px] lg:w-[320px] lg:h-[210px] rounded-lg object-cover shadow-2xl drop-shadow-[8px_8px_16px_rgba(0,0,0,0.8)] hover:shadow-3xl transition-shadow duration-150 flex-shrink-0"
         />
       ))}
     </motion.div>
@@ -86,12 +83,11 @@ const ScrollingRow = ({
 
 const Hero = () => {
   const { t, i18n } = useTranslation("common", { useSuspense: false });
-  const isRTL = getLanguageDirection(i18n?.language || "ps") === 'rtl';
 
   return (
     <section
       className="relative bg-green-800 overflow-hidden mt-32  flex flex-col justify-center"
-      dir="ltr"
+      dir="rtl"
     >
       {/* Background Ship */}
       <Image
@@ -114,16 +110,16 @@ const Hero = () => {
       {/* Scrolling Rows — 4 rows stacked vertically with smooth animation */}
       <div className="relative z-30 flex flex-col space-y-2 py-30">
         <div className="overflow-hidden">
-          <ScrollingRow direction="left" delay={0} />
+          <ScrollingRow direction="left" />
         </div>
         <div className="overflow-hidden">
-          <ScrollingRow direction="right" delay={1} />
+          <ScrollingRow direction="right" />
         </div>
         <div className="overflow-hidden">
-          <ScrollingRow direction="left" delay={2} />
+          <ScrollingRow direction="left" />
         </div>
         <div className="overflow-hidden">
-          <ScrollingRow direction="right" delay={3} />
+          <ScrollingRow direction="right" />
         </div>
       </div>
 
@@ -150,7 +146,7 @@ const Hero = () => {
           <div className="flex flex-wrap gap-4 justify-center mt-8">
             <Link href="/about">
               <Button variant="primary" size="lg" className="rounded-full shadow-2xl drop-shadow-[0_6px_12px_rgba(0,0,0,0.8)]">
-                {t("hero.aboutUs")} <FaArrowRight className="ml-2" />
+                {t("hero.aboutUs")} <FaArrowRight className="ml-2 rotate-180" />
               </Button>
             </Link>
             

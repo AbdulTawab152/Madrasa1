@@ -195,7 +195,7 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
       </video>
 
       {/* Custom Controls */}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
         {/* Progress Bar */}
         <div className="w-full px-4 py-2 pointer-events-auto">
           <input
@@ -283,7 +283,7 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <button
             onClick={handleVideoClick}
-            className="pointer-events-auto w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-300 hover:scale-110"
+            className="pointer-events-auto w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-150 hover:scale-110"
           >
             {isLoading ? (
               <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

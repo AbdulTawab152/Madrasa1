@@ -35,7 +35,8 @@ const PaginationControls = memo(function PaginationControls({
     const result = tRaw(key);
     return typeof result === "string" ? result : key;
   };
-  const isRTL = i18n.language === "ps" || i18n.language === "prs";
+  // Always RTL since website only has RTL languages
+  const isRTL = true;
   const safeTotal = useMemo(() => {
     if (typeof totalPages === "number" && totalPages > 0) {
       return Math.floor(totalPages);

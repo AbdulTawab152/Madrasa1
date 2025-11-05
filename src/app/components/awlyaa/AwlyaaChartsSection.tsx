@@ -5,6 +5,7 @@ import { FaTimes, FaChevronDown, FaChevronUp, FaStar } from "react-icons/fa";
 import { AwlyaaChartsApi } from "@/lib/api";
 import { AwlyaaChart } from "@/lib/types";
 import { apiConfig } from "@/lib/config";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 export default function AwlyaaChartsSection() {
   const [charts, setCharts] = useState<AwlyaaChart[]>([]);
@@ -136,7 +137,7 @@ export default function AwlyaaChartsSection() {
         {/* Node Card */}
         <div 
           className={`
-            relative group cursor-pointer transition-all duration-300
+            relative group cursor-pointer transition-all duration-150
             ${isFocused ? 'scale-110 z-20' : 'hover:scale-105'}
             ${isRoot ? 'mb-4' : 'mb-2'}
           `}
@@ -249,16 +250,7 @@ export default function AwlyaaChartsSection() {
   };
 
   if (loading) {
-    return (
-      <div className="w-full py-16 bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="flex items-center justify-center py-20">
-            <div className="w-12 h-12 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-            <span className="ml-4 text-gray-600 font-medium text-lg">Loading...</span>
-          </div>
-        </div>
-      </div>
-    );
+    return <UnifiedLoader variant="grid" count={6} className="pt-0" />;
   }
 
   if (error) {
@@ -337,7 +329,7 @@ export default function AwlyaaChartsSection() {
           style={{ 
             height: '70vh', 
             minHeight: '500px',
-            direction: 'ltr'
+            direction: 'rtl'
           }}
         >
           <div className="flex justify-center min-w-max">

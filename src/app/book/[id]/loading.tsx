@@ -1,5 +1,5 @@
-import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 export default function LoadingBookDetail() {
-  return <DetailPageSkeleton type="book" showSidebar={true} showComments={false} showRelated={true} />;
+  return <UnifiedLoader variant="detail" />;
 }

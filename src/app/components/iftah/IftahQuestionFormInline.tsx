@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import { IftahQuestionApi } from "@/lib/api";
 import { useTranslation } from "@/hooks/useTranslation";
-import { getLanguageDirection } from "@/lib/i18n";
 import { 
   FaQuestionCircle, 
   FaUser, 
@@ -26,9 +25,8 @@ export default function IftahQuestionFormInline() {
     return typeof result === 'string' ? result : key;
   };
 
-  // Get current language and direction
-  const currentLanguage = i18n.language;
-  const isRTL = getLanguageDirection(currentLanguage) === 'rtl';
+  // Always RTL since website only has RTL languages
+  const isRTL = true;
 
   const [form, setForm] = useState({
     name: "",
@@ -280,9 +278,9 @@ export default function IftahQuestionFormInline() {
                 
                 <button
                   onClick={() => setShowQuestionFormModal(true)}
-                  className={`group flex gap-2 items-center justify-center px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm ${isRTL ? 'flex-row-reverse' : ''}`}
+                  className={`group flex gap-2 items-center justify-center px-8 py-3 rounded-xl bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 hover:from-amber-500 hover:via-orange-500 hover:to-amber-600 text-white font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-150 transform hover:-translate-y-0.5 border border-amber-200/50 backdrop-blur-sm ${isRTL ? 'flex-row-reverse' : ''}`}
                 >
-                  <FaQuestionCircle className={`${isRTL ? 'ml-1.5' : 'mr-1.5'} text-sm group-hover:rotate-12 transition-transform duration-300`} />
+                  <FaQuestionCircle className={`${isRTL ? 'ml-1.5' : 'mr-1.5'} text-sm group-hover:rotate-12 transition-transform duration-150`} />
                   <span>{t('iftah.form.askAQuestion')}</span>
                 
                 </button>
@@ -377,7 +375,7 @@ export default function IftahQuestionFormInline() {
                         errors.name ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterFullName')}
-                      dir={isRTL ? 'rtl' : 'ltr'}
+                      dir="rtl"
                     />
                     {errors.name && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -403,7 +401,7 @@ export default function IftahQuestionFormInline() {
                         errors.email ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterEmail')}
-                      dir={isRTL ? 'rtl' : 'ltr'}
+                      dir="rtl"
                     />
                     {errors.email && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -431,7 +429,7 @@ export default function IftahQuestionFormInline() {
                         errors.phone ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterPhoneOptional')}
-                      dir={isRTL ? 'rtl' : 'ltr'}
+                      dir="rtl"
                     />
                     {errors.phone && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -456,7 +454,7 @@ export default function IftahQuestionFormInline() {
                         errors.whatsapp ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.enterWhatsappOptional')}
-                      dir={isRTL ? 'rtl' : 'ltr'}
+                      dir="rtl"
                     />
                     {errors.whatsapp && (
                       <p className="text-red-500 text-xs flex items-center gap-1 mt-1">
@@ -490,7 +488,7 @@ export default function IftahQuestionFormInline() {
                       className={`w-full border-2 rounded-lg px-3 py-2 focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none transition-all duration-200 shadow-sm hover:border-amber-300 text-xs sm:text-sm bg-gray-50 focus:bg-white ${
                         errors.category ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
-                      style={{ direction: currentLanguage === 'ar' ? 'rtl' : 'ltr' }}
+                      dir="rtl"
                     >
                       <option value="">{t('iftah.form.selectCategory')}</option>
                       {categories.map((category) => (
@@ -530,7 +528,7 @@ export default function IftahQuestionFormInline() {
                         errors.question ? "border-red-300 focus:ring-red-500 focus:border-red-500" : "border-gray-200"
                       }`}
                       placeholder={t('iftah.form.writeQuestionHere')}
-                      dir={isRTL ? 'rtl' : 'ltr'}
+                      dir="rtl"
                     />
                     {/* Character Counter */}
                     <div className="absolute bottom-2 right-2 text-xs text-gray-400 bg-white/80 px-1.5 py-0.5 rounded">
@@ -551,9 +549,9 @@ export default function IftahQuestionFormInline() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl text-sm transition-all duration-300 transform hover:-translate-y-0.5 disabled:opacity-60 disabled:transform-none flex items-center justify-center gap-2 relative overflow-hidden group"
+                  className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl text-sm transition-all duration-150 transform hover:-translate-y-0.5 disabled:opacity-60 disabled:transform-none flex items-center justify-center gap-2 relative overflow-hidden group"
                 >
-                  <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                  <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-150 origin-left"></div>
                   {loading ? (
                     <>
                       <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -564,9 +562,9 @@ export default function IftahQuestionFormInline() {
                     </>
                   ) : (
                     <>
-                      <FaQuestionCircle className="text-sm relative z-10 group-hover:rotate-12 transition-transform duration-300" />
+                      <FaQuestionCircle className="text-sm relative z-10 group-hover:rotate-12 transition-transform duration-150" />
                       <span className="relative z-10">{t('iftah.form.submitQuestion')}</span>
-                      <FaArrowRight className="text-xs relative z-10 group-hover:translate-x-1 transition-transform duration-200" />
+                      <FaArrowRight className="text-xs relative z-10 rotate-180 group-hover:-translate-x-1 transition-transform duration-200" />
                     </>
                   )}
                 </button>
@@ -615,10 +613,10 @@ export default function IftahQuestionFormInline() {
               
               <button
                 onClick={() => setShowSuccessModal(false)}
-                className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm"
+                className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-150 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm"
               >
                 <span>{t('iftah.form.continue')}</span>
-                <FaArrowRight className="text-xs" />
+                <FaArrowRight className="text-xs rotate-180" />
               </button>
             </div>
           </div>

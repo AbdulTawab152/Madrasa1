@@ -5,6 +5,7 @@ import { AdmissionsApi, DegreesApi } from "@/lib/api";
 import { useToast } from "@/components/Toast";
 import { FiUser, FiPhone, FiMail, FiCalendar, FiMapPin, FiBook, FiHome, FiGlobe } from "react-icons/fi";
 import IslamicHeader from "@/app/components/IslamicHeader";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function AdmissionPage() {
   const toast = useToast();
@@ -318,6 +319,7 @@ export default function AdmissionPage() {
         alignment="center"
         pageType="registration"
       />
+      <Breadcrumb />
 
       {/* Form Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -793,9 +795,9 @@ export default function AdmissionPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 transform disabled:opacity-70 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-xl relative overflow-hidden group"
+              className="w-full bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-150 transform disabled:opacity-70 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-xl relative overflow-hidden group"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-amber-700 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-gradient-to-r from-amber-700 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></span>
               <span className="relative z-10 flex items-center gap-3">
               {loading ? (
                 <>

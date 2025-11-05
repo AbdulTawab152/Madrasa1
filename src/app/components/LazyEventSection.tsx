@@ -4,6 +4,7 @@ import Event from "./event/eventCard";
 import { Event as EventType } from "../../lib/types";
 import { EventsApi } from "../../lib/api";
 import { ComingSoonEmptyState } from "@/components/EmptyState";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 export default function LazyEventSection() {
   const [events, setEvents] = useState<EventType[]>([]);
@@ -30,14 +31,7 @@ export default function LazyEventSection() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center py-20">
-        <div className="w-10 h-10 border-4 border-amber-200 border-t-amber-600 rounded-full animate-spin"></div>
-        <span className="ml-4 text-gray-600 font-medium">
-          Loading events...
-        </span>
-      </div>
-    );
+    return <UnifiedLoader variant="grid" count={3} className="pt-0" />;
   }
 
   if (events.length === 0) {

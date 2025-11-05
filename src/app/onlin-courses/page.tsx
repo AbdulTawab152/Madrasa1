@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import IslamicHeader from '../components/IslamicHeader';
 import { useDirection } from '@/hooks/useDirection';
+import Breadcrumb from '@/components/Breadcrumb';
 
 // Static Course Data
 const onlineCourses = [
@@ -155,6 +156,7 @@ export default function OnlineCoursesPage() {
         pageType="courses"
         alignment="center"
       />
+      <Breadcrumb />
 
       {/* Courses Section */}
       <section className="w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
@@ -163,7 +165,7 @@ export default function OnlineCoursesPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.15 }}
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
@@ -178,14 +180,14 @@ export default function OnlineCoursesPage() {
           <motion.div
             initial="hidden"
             animate="visible"
-            transition={{ staggerChildren: 0.1, delayChildren: 0.1 }}
+            transition={{ duration: 0.15 }}
             className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
           >
             {onlineCourses.map((course) => (
               <motion.article
                 key={course.id}
                 variants={cardVariants}
-                className="group h-full flex flex-col rounded-3xl border border-gray-200/50 bg-white transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl hover:border-amber-400/50 hover:shadow-amber-100/20"
+                className="group h-full flex flex-col rounded-3xl border border-gray-200/50 bg-white transition-all duration-200 hover:-translate-y-3 hover:shadow-2xl hover:border-amber-400/50 hover:shadow-amber-100/20"
               >
                 {/* Course Image */}
                 <div className="aspect-[4/3] overflow-hidden rounded-t-3xl relative">
@@ -194,15 +196,15 @@ export default function OnlineCoursesPage() {
                     alt={course.title}
                     fill
                     sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 90vw"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
                   <div className="absolute top-4 left-4">
                     <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-white bg-amber-600/90 px-3 py-1 rounded-full backdrop-blur-sm">
                       {course.level}
                     </span>
                   </div>
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
+                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
                     <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
                       <ExternalLink className="h-4 w-4 text-amber-600" />
                     </div>
@@ -212,7 +214,7 @@ export default function OnlineCoursesPage() {
                 {/* Course Content */}
                 <div className="flex-1 flex flex-col gap-3 px-5 py-5">
                   <div className="space-y-2">
-                    <h3 className="text-xl font-bold leading-tight text-gray-900 group-hover:text-amber-600 transition-colors duration-500">
+                    <h3 className="text-xl font-bold leading-tight text-gray-900 group-hover:text-amber-600 transition-colors duration-200">
                       {course.title}
                     </h3>
                     <p className="text-gray-600 leading-relaxed text-sm line-clamp-2">
@@ -258,7 +260,7 @@ export default function OnlineCoursesPage() {
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold py-2.5 px-3 rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-300 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-500/30 focus:ring-offset-2"
+                      className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold py-2.5 px-3 rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-150 hover:scale-105 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-amber-500/30 focus:ring-offset-2"
                     >
                       <span className="text-sm">همدا اوس داخله وکړئ</span>
                       <ExternalLink className="h-3.5 w-3.5" />
@@ -273,12 +275,12 @@ export default function OnlineCoursesPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.15 }}
             className="flex items-center justify-center gap-4 mt-12 mb-8"
           >
             <button
               onClick={handleLike}
-              className={`group flex items-center gap-3 px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+              className={`group flex items-center gap-3 px-6 py-3 rounded-xl font-semibold transition-all duration-150 ${
                 liked
                   ? 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/50'
                   : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200 hover:border-red-300'
@@ -297,7 +299,7 @@ export default function OnlineCoursesPage() {
 
             <button
               onClick={handleShare}
-              className="group flex items-center gap-3 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:from-amber-700 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="group flex items-center gap-3 px-6 py-3 rounded-xl font-semibold bg-gradient-to-r from-amber-600 to-orange-600 text-white hover:from-amber-700 hover:to-orange-700 transition-all duration-150 shadow-lg hover:shadow-xl"
             >
               <Share2 className="h-5 w-5" />
               <span>شیر کړئ</span>
@@ -324,7 +326,7 @@ export default function OnlineCoursesPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.15 }}
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
@@ -344,9 +346,9 @@ export default function OnlineCoursesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-2xl border border-blue-500/30"
+              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl hover:from-blue-700 hover:to-blue-800 transition-all duration-150 shadow-lg hover:shadow-2xl border border-blue-500/30"
             >
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                 <FaFacebook className="text-3xl text-white" />
               </div>
               <span className="text-white font-semibold text-lg">فیسبوک</span>
@@ -359,9 +361,9 @@ export default function OnlineCoursesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl hover:from-red-700 hover:to-red-800 transition-all duration-300 shadow-lg hover:shadow-2xl border border-red-500/30"
+              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-red-600 to-red-700 rounded-2xl hover:from-red-700 hover:to-red-800 transition-all duration-150 shadow-lg hover:shadow-2xl border border-red-500/30"
             >
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                 <FaYoutube className="text-3xl text-white" />
               </div>
               <span className="text-white font-semibold text-lg">یوټیوب</span>
@@ -374,9 +376,9 @@ export default function OnlineCoursesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl hover:from-sky-600 hover:to-sky-700 transition-all duration-300 shadow-lg hover:shadow-2xl border border-sky-400/30"
+              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-sky-500 to-sky-600 rounded-2xl hover:from-sky-600 hover:to-sky-700 transition-all duration-150 shadow-lg hover:shadow-2xl border border-sky-400/30"
             >
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                 <FaTwitter className="text-3xl text-white" />
               </div>
               <span className="text-white font-semibold text-lg">ټویټر</span>
@@ -389,9 +391,9 @@ export default function OnlineCoursesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-blue-400 to-blue-500 rounded-2xl hover:from-blue-500 hover:to-blue-600 transition-all duration-300 shadow-lg hover:shadow-2xl border border-blue-400/30"
+              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-blue-400 to-blue-500 rounded-2xl hover:from-blue-500 hover:to-blue-600 transition-all duration-150 shadow-lg hover:shadow-2xl border border-blue-400/30"
             >
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                 <FaTelegram className="text-3xl text-white" />
               </div>
               <span className="text-white font-semibold text-lg">ټیلیګرام</span>
@@ -404,9 +406,9 @@ export default function OnlineCoursesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl hover:from-cyan-600 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-2xl border border-cyan-400/30"
+              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-cyan-500 to-cyan-600 rounded-2xl hover:from-cyan-600 hover:to-cyan-700 transition-all duration-150 shadow-lg hover:shadow-2xl border border-cyan-400/30"
             >
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                 <FaTelegram className="text-3xl text-white" />
               </div>
               <span className="text-white font-semibold text-lg text-center">ټیلیګرام د ترجمې چینل</span>
@@ -419,9 +421,9 @@ export default function OnlineCoursesPage() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.05, y: -5 }}
               whileTap={{ scale: 0.95 }}
-              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg hover:shadow-2xl border border-green-400/30"
+              className="group flex flex-col items-center justify-center gap-4 p-8 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl hover:from-green-600 hover:to-green-700 transition-all duration-150 shadow-lg hover:shadow-2xl border border-green-400/30"
             >
-              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                 <FaWhatsapp className="text-3xl text-white" />
               </div>
               <span className="text-white font-semibold text-lg text-center">واټساپ چینل</span>
@@ -432,7 +434,7 @@ export default function OnlineCoursesPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.15 }}
             className="mt-12"
           >
             <h3 className="text-2xl font-bold text-white mb-6 text-center">
@@ -447,9 +449,9 @@ export default function OnlineCoursesPage() {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.05, y: -3 }}
                   whileTap={{ scale: 0.95 }}
-                  className="group flex items-center justify-center gap-3 p-5 bg-gradient-to-br from-green-600 to-green-700 rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-300 shadow-lg hover:shadow-xl border border-green-500/30"
+                  className="group flex items-center justify-center gap-3 p-5 bg-gradient-to-br from-green-600 to-green-700 rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-150 shadow-lg hover:shadow-xl border border-green-500/30"
                 >
-                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-300">
+                  <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center backdrop-blur-sm group-hover:bg-white/30 transition-all duration-150">
                     <FaWhatsapp className="text-xl text-white" />
                   </div>
                   <div className="flex-1 min-w-0">

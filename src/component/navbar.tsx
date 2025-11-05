@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { memo, useCallback, useEffect, useMemo, useState, useRef } from "react";
 import { PiList } from "react-icons/pi";
 
@@ -35,6 +35,7 @@ const NAV_LABELS: Record<string, string> = {
 
 const Navbar = memo(function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isMoreMenuOpen, setMoreMenuOpen] = useState(false);
   const [isCoursesMenuOpen, setCoursesMenuOpen] = useState(false);
@@ -71,8 +72,9 @@ const Navbar = memo(function Navbar() {
     }
   }, []);
 
-  const isRTL = currentLang === 'ps' || currentLang === 'prs' || currentLang === 'ar' || currentLang === 'fa' || currentLang === 'ur';
-  const direction = isRTL ? 'rtl' : 'ltr';
+  // Always RTL since website only has RTL languages
+  const isRTL = true;
+  const direction = 'rtl';
 
   useEffect(() => {
     const handleScroll = () => setHasScrolled(window.scrollY > 10);
@@ -206,12 +208,12 @@ const Navbar = memo(function Navbar() {
   const handleSearch = useCallback((e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // TODO: Implement search functionality
-      console.log('Searching for:', searchQuery);
-      // You can redirect to a search results page or filter content
-      // Example: router.push(`/search?q=${encodeURIComponent(searchQuery)}`);
+      // Redirect to search page with query
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchOpen(false);
+      setSearchQuery("");
     }
-  }, [searchQuery]);
+  }, [searchQuery, router]);
 
   const closeMobileMenu = useCallback(() => setMobileMenuOpen(false), []);
   const closeMoreMenu = useCallback(() => setMoreMenuOpen(false), []);
@@ -224,8 +226,8 @@ const Navbar = memo(function Navbar() {
         <div className="absolute -left-12 top-6 h-24 w-24 rounded-full bg-primary-700/40 blur-2xl" aria-hidden="true" />
         <div className="absolute -right-10 bottom-0 h-20 w-20 rounded-full bg-secondary-400/30 blur-2xl" aria-hidden="true" />
         <div className="max-w-screen-xl relative mx-auto px-4 py-2 md:py-4">
-          <div className={`hidden md:flex items-center justify-between text-sm text-primary-50/90 ${isRTL ? 'flex-row-reverse' : ''}`}>
-            <span className={isRTL ? 'text-right' : 'text-left'}>{desktop}</span>
+          <div className="hidden md:flex items-center justify-between text-sm text-primary-50/90 flex-row-reverse">
+            <span className="text-right">{desktop}</span>
             <span className="arabic text-xl font-bold tracking-widest text-secondary-100 drop-shadow-sm">
               بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
             </span>
@@ -260,13 +262,13 @@ const Navbar = memo(function Navbar() {
         aria-label="Primary"
       >
         <div className="max-w-screen-xl mx-auto px-4 lg:px-6 py-2">
-          <div className={`flex items-center justify-between gap-4 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className="flex items-center justify-between gap-4 flex-row-reverse">
             {/* Logo - Will be on right for RTL */}
             <Link
               href="/"
-              className={`flex items-center gap-3 hover:opacity-80 transition-opacity duration-200 ${isRTL ? 'flex-row-reverse' : ''}`}
+              className="flex items-center gap-3 hover:opacity-80 transition-opacity duration-200 flex-row-reverse"
             >
-              <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className="flex items-center gap-3 flex-row-reverse">
                 <div className="relative w-12 h-12 sm:w-14 sm:h-14">
                   <Image
                     src="/logo.png"
@@ -279,7 +281,7 @@ const Navbar = memo(function Navbar() {
                 </div>
               
               </div>
-              <div className={isRTL ? 'text-right' : 'text-left'}>
+              <div className="text-right">
                 <div className="text-xl font-bold text-primary-900">
                   {appConfig.name}
                 </div>
@@ -291,7 +293,7 @@ const Navbar = memo(function Navbar() {
 
             {/* Navigation - Center */}
             <div className="hidden lg:flex py-3 items-center justify-center flex-1">
-              <ul className={`flex items-center gap-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <ul className="flex items-center gap-6" dir="rtl">
                 {primaryLinks.map(({ href, name }) => {
                   const isActive = pathname === href;
                   const isCoursesLink = name === NAV_LABELS['courses'];
@@ -328,9 +330,7 @@ const Navbar = memo(function Navbar() {
                         </button>
                         <div
                           ref={coursesMenuRef}
-                          className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
-                            isRTL ? 'right-0' : 'left-0'
-                          } ${
+                          className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 right-0 ${
                             isCoursesMenuOpen
                               ? "visible opacity-100"
                               : "invisible -translate-y-2 opacity-0"
@@ -345,9 +345,7 @@ const Navbar = memo(function Navbar() {
                                   <Link
                                     href={courseHref}
                                     onClick={closeCoursesMenu}
-                                    className={`block px-4 py-3 uppercase text-sm font-bold transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
-                                      isRTL ? 'text-right' : 'text-left'
-                                    } ${
+                                    className={`block px-4 py-3 uppercase text-sm font-bold transition-colors duration-200 focus:outline-none focus-visible:outline-none text-right ${
                                       courseIsActive
                                         ? "bg-primary-50 text-primary-700"
                                         : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
@@ -368,16 +366,14 @@ const Navbar = memo(function Navbar() {
                     <li key={href} className="group relative">
                       <Link
                         href={href}
-                        className={`font-bold text-base uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none ${
+                        className={`font-bold text-base uppercase tracking-wide transition-colors duration-200 py-2 text-primary-800 outline-none focus:outline-none focus:ring-0 focus-visible:outline-none text-right ${
                           isActive ? "text-primary-600" : ""
-                        } ${isRTL ? 'text-right' : 'text-left'}`}
+                        }`}
                       >
                         {name}
                       </Link>
                       <span
-                        className={`absolute -bottom-1 h-0.5 w-full rounded-full bg-secondary-500 transition-opacity duration-200 ${
-                          isRTL ? 'right-0' : 'left-0'
-                        } ${
+                        className={`absolute -bottom-1 h-0.5 w-full rounded-full bg-secondary-500 transition-opacity duration-200 right-0 ${
                           isActive ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                         }`}
                         aria-hidden="true"
@@ -411,36 +407,32 @@ const Navbar = memo(function Navbar() {
                         />
                       </svg>
                     </button>
-                <div
-                  ref={moreMenuRef}
-                  className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 ${
-                    isRTL ? 'right-0' : 'left-1/2 -translate-x-1/2'
-                  } ${
-                    isMoreMenuOpen
-                      ? "visible opacity-100"
-                      : "invisible -translate-y-2 opacity-0"
-                  }`}
-                  role="menu"
-                >
-                  <ul className="py-3">
-                    {secondaryLinks.map(({ href, name }) => {
-                      const isActive = pathname === href;
-                      return (
-                        <li key={href}>
-                          <Link
-                            href={href}
-                            onClick={closeMoreMenu}
-                            className={`block px-4 py-3 uppercase text-sm font-bold transition-colors duration-200 focus:outline-none focus-visible:outline-none ${
-                              isRTL ? 'text-right' : 'text-left'
-                            } ${
-                              isActive
-                                ? "bg-primary-50 text-primary-700"
-                                : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
-                            }`}
-                          >
-                            {name}
-                          </Link>
-                        </li>
+                    <div
+                      ref={moreMenuRef}
+                      className={`absolute top-full mt-3 w-56 rounded-xl border border-primary-100 bg-white shadow-xl transition-all duration-200 right-0 ${
+                        isMoreMenuOpen
+                          ? "visible opacity-100"
+                          : "invisible -translate-y-2 opacity-0"
+                      }`}
+                      role="menu"
+                    >
+                      <ul className="py-3">
+                        {secondaryLinks.map(({ href, name }) => {
+                          const isActive = pathname === href;
+                          return (
+                            <li key={href}>
+                              <Link
+                                href={href}
+                                onClick={closeMoreMenu}
+                                className={`block px-4 py-3 uppercase text-sm font-bold transition-colors duration-200 focus:outline-none focus-visible:outline-none text-right ${
+                                  isActive
+                                    ? "bg-primary-50 text-primary-700"
+                                    : "text-primary-700 hover:bg-primary-50 hover:text-primary-600"
+                                }`}
+                              >
+                                {name}
+                              </Link>
+                            </li>
                           );
                         })}
                       </ul>
@@ -451,7 +443,7 @@ const Navbar = memo(function Navbar() {
             </div>
 
             {/* Left side - Search, Mobile Menu, Donation for RTL */}
-            <div className={`flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
+            <div className="flex items-center gap-2 flex-row-reverse">
               {/* Search Button */}
               <div ref={searchRef} className="relative">
                 <button
@@ -465,7 +457,7 @@ const Navbar = memo(function Navbar() {
                 
                 {/* Search Overlay */}
                 {isSearchOpen && (
-                  <div className={`absolute top-full mt-4 z-50 ${isRTL ? 'right-0' : 'left-0'}`}>
+                  <div className="absolute top-full mt-4 z-50 right-0">
                     <form onSubmit={handleSearch} className="relative">
                       <div className="bg-white rounded-xl shadow-xl border border-primary-200 p-4">
                         <div className="flex items-center gap-2">
@@ -546,14 +538,12 @@ const Navbar = memo(function Navbar() {
 
       <aside
         className={`lg:hidden fixed inset-y-0 z-50 w-4/5 max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
-          isRTL 
-            ? (isMobileMenuOpen ? "translate-x-0" : "translate-x-full") 
-            : (isMobileMenuOpen ? "translate-x-0" : "-translate-x-full")
-        } ${isRTL ? 'right-0' : 'left-0'}`}
+          isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+        } right-0`}
         aria-label="Mobile navigation"
       >
-        <div className={`flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100 ${isRTL ? 'flex-row-reverse' : ''}`}>
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+        <div className="flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100 flex-row-reverse">
+          <div className="flex items-center gap-3 flex-row-reverse">
             <div className="relative w-10 h-10">
               <Image
                 src="/logo.png"
@@ -564,10 +554,10 @@ const Navbar = memo(function Navbar() {
                 priority
               />
             </div>
-            <span className={`text-xl font-bold text-primary-900 tracking-wide ${isRTL ? 'text-right' : 'text-left'}`}>{appConfig.name}</span>
+            <span className="text-xl font-bold text-primary-900 tracking-wide text-right">{appConfig.name}</span>
           </div>
           
-          <div className={`flex items-center gap-3 ${isRTL ? 'flex-row-reverse' : ''}`}>
+          <div className="flex items-center gap-3 flex-row-reverse">
             <button
               type="button"
               onClick={closeMobileMenu}
@@ -607,12 +597,12 @@ const Navbar = memo(function Navbar() {
                       onClick={toggleCoursesMenu}
                       className={`flex w-full items-center justify-between rounded-xl p-4 text-base font-bold transition-all duration-200 shadow-sm ${
                         coursesActive
-                          ? `${isRTL ? 'border-r-4' : 'border-l-4'} border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900`
+                          ? 'border-r-4 border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900'
                           : "text-primary-800/90 hover:bg-primary-100/40"
                       }`}
                       aria-expanded={isCoursesMenuOpen}
                     >
-                      <span className={isRTL ? 'text-right' : 'text-left'}>{name}</span>
+                      <span className="text-right">{name}</span>
                       <svg
                         className={`h-4 w-4 text-primary-500 transition-transform ${
                           isCoursesMenuOpen ? "rotate-180" : ""
@@ -665,11 +655,11 @@ const Navbar = memo(function Navbar() {
                   onClick={closeMobileMenu}
                   className={`flex items-center justify-between rounded-xl p-4 text-base font-bold transition-all duration-200 shadow-sm ${
                     isActive
-                      ? `${isRTL ? 'border-r-4' : 'border-l-4'} border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900`
+                      ? 'border-r-4 border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900'
                       : "text-primary-800/90 hover:bg-primary-100/40"
                   }`}
                 >
-                  <span className={isRTL ? 'text-right' : 'text-left'}>{name}</span>
+                  <span className="text-right">{name}</span>
                 </Link>
               );
             })}

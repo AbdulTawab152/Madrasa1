@@ -490,7 +490,7 @@ export default function DarulUloomIftahSection({
                               console.log('🖱️ Category clicked:', category);
                               handleCategoryClick(category.id);
                             }}
-                        className="group bg-gradient-to-br from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 rounded-xl p-6 border border-emerald-200 hover:border-emerald-300 transition-all duration-300 text-right shadow-sm hover:shadow-md"
+                        className="group bg-gradient-to-br from-emerald-50 to-teal-50 hover:from-emerald-100 hover:to-teal-100 rounded-xl p-6 border border-emerald-200 hover:border-emerald-300 transition-all duration-150 text-right shadow-sm hover:shadow-md"
                             style={{ display: 'block', width: '100%' }}
                       >
                         <div className="flex items-center justify-between">
@@ -680,7 +680,7 @@ export default function DarulUloomIftahSection({
                               console.log('🖱️ Subcategory clicked:', subcategory);
                               handleSubCategoryClick(subcategory.id);
                             }}
-                        className="group bg-gradient-to-br from-teal-50 to-emerald-50 hover:from-teal-100 hover:to-emerald-100 rounded-xl p-6 border border-teal-200 hover:border-teal-300 transition-all duration-300 text-right shadow-sm hover:shadow-md"
+                        className="group bg-gradient-to-br from-teal-50 to-emerald-50 hover:from-teal-100 hover:to-emerald-100 rounded-xl p-6 border border-teal-200 hover:border-teal-300 transition-all duration-150 text-right shadow-sm hover:shadow-md"
                       >
                         <div className="flex items-center justify-between">
                           <svg className="w-6 h-6 text-teal-600 group-hover:text-teal-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -801,7 +801,7 @@ export default function DarulUloomIftahSection({
                   ) : displayFatwas.length > 0 ? (
                     <div className="divide-y divide-emerald-100">
                       {displayFatwas.map((item) => (
-                  <div key={item.id} className="group hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all duration-300">
+                  <div key={item.id} className="group hover:bg-gradient-to-r hover:from-emerald-50 hover:to-teal-50 transition-all duration-150">
                     <div className="px-8 py-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1 pr-4">
@@ -944,7 +944,7 @@ export default function DarulUloomIftahSection({
                         </div>
                         
                         <div className="flex-shrink-0">
-                          <Link className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center group-hover:from-emerald-200 group-hover:to-teal-200 transition-all duration-300 shadow-sm group-hover:shadow-md" href={`/iftah/${item.slug}`}>
+                          <Link className="w-12 h-12 bg-gradient-to-br from-emerald-100 to-teal-100 rounded-xl flex items-center justify-center group-hover:from-emerald-200 group-hover:to-teal-200 transition-all duration-150 shadow-sm group-hover:shadow-md" href={`/iftah/${item.slug}`}>
                             <svg className="w-6 h-6 text-emerald-600 group-hover:text-teal-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                             </svg>
@@ -989,9 +989,9 @@ export default function DarulUloomIftahSection({
           <div className="mt-12 text-center">
             <Link
               href="/iftah"
-              className="inline-flex items-center px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-lg rounded-2xl hover:from-emerald-700 hover:to-teal-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 relative overflow-hidden group"
+              className="inline-flex items-center px-10 py-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-bold text-lg rounded-2xl hover:from-emerald-700 hover:to-teal-700 transition-all duration-150 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 relative overflow-hidden group"
             >
-              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-150"></span>
               <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>

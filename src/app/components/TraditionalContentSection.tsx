@@ -100,7 +100,7 @@ export default function TraditionalContentSection({
               {/* Enhanced Content List */}
               <div className="divide-y divide-amber-100">
                 {displayContent.map((item) => (
-                  <div key={`${item.type}-${item.id}`} className="group hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-300">
+                  <div key={`${item.type}-${item.id}`} className="group hover:bg-gradient-to-r hover:from-amber-50 hover:to-orange-50 transition-all duration-150">
                     <div className="px-8 py-6">
                       <div className="flex items-start justify-between">
                         <div className="flex-1 pr-4">
@@ -163,7 +163,7 @@ export default function TraditionalContentSection({
                         
                         <div className="flex-shrink-0">
                       
-                          <Link className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover:from-amber-200 group-hover:to-orange-200 transition-all duration-300 shadow-sm group-hover:shadow-md"  href={item.type === 'article' ? `/articles/${item.slug}` : `/iftah/${item.slug}`}>
+                          <Link className="w-12 h-12 bg-gradient-to-br from-amber-100 to-orange-100 rounded-xl flex items-center justify-center group-hover:from-amber-200 group-hover:to-orange-200 transition-all duration-150 shadow-sm group-hover:shadow-md"  href={item.type === 'article' ? `/articles/${item.slug}` : `/iftah/${item.slug}`}>
                           
                             <svg className="w-6 h-6 text-amber-600 group-hover:text-orange-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -226,9 +226,9 @@ export default function TraditionalContentSection({
           <div className="mt-12 text-center">
             <Link
               href={fatwas.length > 0 ? "/iftah" : "/articles"}
-              className="inline-flex items-center px-10 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-amber-700 hover:to-orange-700 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 relative overflow-hidden group"
+              className="inline-flex items-center px-10 py-4 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-bold text-lg rounded-2xl hover:from-amber-700 hover:to-orange-700 transition-all duration-150 shadow-xl hover:shadow-2xl transform hover:-translate-y-1 relative overflow-hidden group"
             >
-              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-150"></span>
               <svg className="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>

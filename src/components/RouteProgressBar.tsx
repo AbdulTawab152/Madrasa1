@@ -8,19 +8,7 @@ const RouteProgressBar = () => {
   const searchParams = useSearchParams();
   const [progress, setProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const timeoutsRef = useRef<number[]>([]);
-  const completionTimeoutRef = useRef<number | null>(null);
   const isAnimatingRef = useRef(false);
-
-  const clearScheduledUpdates = useCallback(() => {
-    timeoutsRef.current.forEach((timeout) => window.clearTimeout(timeout));
-    timeoutsRef.current = [];
-
-    if (completionTimeoutRef.current !== null) {
-      window.clearTimeout(completionTimeoutRef.current);
-      completionTimeoutRef.current = null;
-    }
-  }, []);
 
   const hideProgress = useCallback(() => {
     setIsVisible(false);
@@ -31,28 +19,17 @@ const RouteProgressBar = () => {
   const finishProgress = useCallback(() => {
     if (!isAnimatingRef.current) return;
 
-    clearScheduledUpdates();
     setProgress(100);
-
-    completionTimeoutRef.current = window.setTimeout(() => {
-      hideProgress();
-    }, 200);
-  }, [clearScheduledUpdates, hideProgress]);
+    // Hide immediately, no delay
+    hideProgress();
+  }, [hideProgress]);
 
   const startProgress = useCallback(() => {
-    clearScheduledUpdates();
     isAnimatingRef.current = true;
     setIsVisible(true);
-    setProgress(12);
-
-    const checkpoints = [38, 56, 74, 87];
-    checkpoints.forEach((value, index) => {
-      const timeout = window.setTimeout(() => {
-        setProgress((previous) => (previous < value ? value : previous));
-      }, 120 + index * 140);
-      timeoutsRef.current.push(timeout);
-    });
-  }, [clearScheduledUpdates]);
+    // Start at 50% for instant feedback, no artificial delays
+    setProgress(50);
+  }, []);
 
   useEffect(() => {
     const handleLinkNavigation = (event: MouseEvent) => {
@@ -90,12 +67,8 @@ const RouteProgressBar = () => {
   }, [pathname, searchParams, finishProgress]);
 
   useEffect(() => {
-    startProgress();
-    const initialCompletion = window.setTimeout(() => {
-      finishProgress();
-    }, 300);
-
-    return () => window.clearTimeout(initialCompletion);
+    // Only show progress on actual navigation, not on initial load
+    // This prevents unnecessary progress bar on page load
   }, [startProgress, finishProgress]);
 
   if (!isVisible) return null;
@@ -104,7 +77,7 @@ const RouteProgressBar = () => {
     <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[3px] bg-transparent">
       <div className="h-full overflow-hidden rounded-full bg-primary-100/50">
         <div
-          className="h-full bg-gradient-to-r from-secondary-400 via-secondary-500 to-secondary-600 transition-all duration-150 ease-out"
+          className="h-full bg-gradient-to-r from-secondary-400 via-secondary-500 to-secondary-600 transition-all duration-100 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>

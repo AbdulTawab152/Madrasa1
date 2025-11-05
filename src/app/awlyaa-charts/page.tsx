@@ -1,5 +1,6 @@
 import IslamicHeader from "../components/IslamicHeader";
 import AwlyaaChartsSection from "../components/awlyaa/AwlyaaChartsSection";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function AwlyaaChartsPage() {
   return (
@@ -14,6 +15,7 @@ export default function AwlyaaChartsPage() {
           href: "#charts-section"
         }}
       />
+      <Breadcrumb />
       <div id="charts-section" className="w-full">
         <AwlyaaChartsSection />
       </div>

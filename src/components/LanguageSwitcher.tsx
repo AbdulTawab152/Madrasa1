@@ -48,8 +48,8 @@ export default function LanguageSwitcher() {
       
       // Also update document attributes immediately
       document.documentElement.lang = langCode;
-      const isRTL = langCode === 'ps' || langCode === 'prs' || langCode === 'ar' || langCode === 'fa' || langCode === 'ur';
-      document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+      // Always set RTL since website only has RTL languages
+      document.documentElement.dir = 'rtl';
     }
     
     setIsOpen(false);
@@ -57,7 +57,7 @@ export default function LanguageSwitcher() {
   };
 
   const currentLanguage = languages.find(lang => lang.code === currentLang) || languages[0];
-  const isRTL = currentLang === 'ps' || currentLang === 'prs';
+  const isRTL = true; // Always RTL since website only has RTL languages
 
   return (
     <div className="relative" ref={dropdownRef}>

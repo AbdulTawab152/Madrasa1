@@ -257,7 +257,7 @@ export default function ArticlesCard({ limit, showAll = true, homePage = false }
     : filteredArticles;
 
   if (isLoadingInitial) {
-    return <UnifiedLoader variant="card-grid" count={6} showFilters={!homePage} />;
+    return <UnifiedLoader variant="grid" count={6} showFilters={!homePage} />;
   }
 
   if (error) {
@@ -273,27 +273,24 @@ export default function ArticlesCard({ limit, showAll = true, homePage = false }
   }
 
   return (
-    <div className={`${homePage ? '' : 'min-h-screen'} bg-gradient-to-br from-gray-50 via-white to-blue-50`}>
-      <div className="max-w-7xl mx-auto px-6 py-8">
+    <div className={`${homePage ? '' : 'min-h-screen'} bg-gray-50`} dir="rtl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8" dir="rtl">
         {/* Modern Category Filter - Hidden on Homepage */}
         {!homePage && (
-          <div className="mb-12">
-            <div className="flex flex-wrap items-center gap-3 justify-center bg-gradient-to-r from-blue-50 via-white to-cyan-50 py-5 px-3 rounded-2xl border border-blue-100 shadow-sm">
+          <div className="mb-8">
+            <div className="flex flex-wrap items-center gap-3 justify-center bg-white py-4 px-4 rounded-xl border border-gray-200 shadow-sm">
               {/* All Button */}
               <button
                 onClick={() => setSelectedCategory("")}
-                className={`px-5 py-2.5 rounded-full text-base font-semibold shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300
                   ${
                     selectedCategory === ""
-                      ? "bg-blue-600 text-white shadow-lg shadow-blue-100 scale-105 ring-2 ring-blue-300"
-                      : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50 hover:text-blue-900"
+                      ? "bg-gray-800 text-white shadow-sm"
+                      : "bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200"
                   }
                 `}
               >
-                 <span className="inline-flex items-center gap-2">
-                   <svg className="w-4 h-4 opacity-60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path d="M13 16h-1v-4h-1m3 1a4 4 0 10-4-4 4 4 0 004 4zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                   {t('home.allArticles')}
-                 </span>
+                {t('home.allArticles')}
               </button>
 
               {/* Dynamic Category Buttons */}
@@ -302,18 +299,15 @@ export default function ArticlesCard({ limit, showAll = true, homePage = false }
                   <button
                     key={cat.id}
                     onClick={() => setSelectedCategory(cat.name)}
-                    className={`px-5 py-2.5 rounded-full text-base font-semibold shadow-sm flex items-center transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-300
+                    className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-gray-300
                       ${
                         selectedCategory === cat.name
-                          ? "bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg scale-105 ring-2 ring-blue-300"
-                          : "bg-white text-blue-700 border border-blue-200 hover:bg-blue-50 hover:text-blue-900"
+                          ? "bg-gray-800 text-white shadow-sm"
+                          : "bg-gray-100 text-gray-700 border border-gray-200 hover:bg-gray-200"
                       }
                     `}
                   >
-                    <span className="inline-flex items-center gap-2">
-                      <svg className="w-4 h-4 text-blue-400" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="8" opacity="0.2"/><circle cx="10" cy="10" r="5"/></svg>
-                      {cat.name}
-                    </span>
+                    {cat.name}
                   </button>
                 );
               })}
@@ -322,25 +316,9 @@ export default function ArticlesCard({ limit, showAll = true, homePage = false }
               {categories.length > 4 && (
                 <button
                   onClick={() => setShowAllCategories(!showAllCategories)}
-                  className="px-5 py-2.5 rounded-full text-base font-semibold border border-blue-200 bg-white text-blue-700 hover:bg-blue-50 hover:text-blue-900 transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  className="px-4 py-2 rounded-lg text-sm font-medium border border-gray-200 bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all duration-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
                 >
-                  <span className="inline-flex items-center gap-1">
-                    {showAllCategories ? (
-                      <>
-                        <svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24">
-                          <path d="M19 9l-7 7-7-7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        {t('home.showLess')}
-                      </>
-                    ) : (
-                      <>
-                        <svg className="w-3 h-3 text-blue-400" fill="none" viewBox="0 0 24 24">
-                          <path d="M5 15l7-7 7 7" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
-                        {`+${categories.length - 4} ${t('home.showMore')}`}
-                      </>
-                    )}
-                  </span>
+                  {showAllCategories ? t('home.showLess') : `+${categories.length - 4} ${t('home.showMore')}`}
                 </button>
               )}
             </div>
@@ -349,85 +327,96 @@ export default function ArticlesCard({ limit, showAll = true, homePage = false }
 
         {/* Modern Article List Design */}
         {displayArticles.length > 0 ? (
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-7">
             {displayArticles.map((article, index) => (
               <Link
                 key={article.id}
                 href={`/articles/${article.slug}`}
-                className="group bg-white rounded-2xl transition-all duration-500 overflow-hidden cursor-pointer block"
+                className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
+                dir="rtl"
               >
-                <div className="flex flex-col h-96 lg:flex-row">
-                  {/* Image Section */}
-                  <div className="relative w-full lg:w-80 h-52 lg:h-auto overflow-hidden">
-                    {(() => {
-                      const imageUrl = getImageUrl(article.image);
-                      return imageUrl ? (
-                        <Image
-                          src={imageUrl}
-                          alt={article.title}
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 320px"
-                          className="object-cover group-hover:scale-105 transition-transform duration-700"
-                          onError={(event) => {
-                            event.currentTarget.style.display = "none";
-                          }}
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
-                          <div className="text-6xl text-blue-400">📄</div>
-                        </div>
-                      );
-                    })()}
- 
-                    {/* Category Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-blue-700 border border-blue-200">
-                        {String(article.category)}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Content Section */}
-                  <div className="flex-1 p-4 sm:p-8">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-2 sm:mb-4 gap-2">
-                      <div className="flex-1 space-y-10 min-w-0">
-                        <h3 className="text-lg sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-3 group-hover:text-blue-700 transition-colors line-clamp-2 break-words">
-                          {article.title}
-                        </h3>
-                        <p className="
-                          text-gray-600 leading-relaxed mb-10 sm:mb-6 md:text-lg sm:text-base
-                          line-clamp-4
-                          sm:line-clamp-7
-                          lg:line-clamp-6
-                        ">
-                          {article.description}
-                        </p>
+                {/* Decorative right border accent */}
+                <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200 group-hover:from-gray-500 group-hover:via-gray-400 group-hover:to-gray-300 transition-colors"></div>
+                
+                {/* Subtle pattern overlay */}
+                <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10zm-10 0c0-2.762 2.238-5 5-5s5 2.238 5 5-2.238 5-5 5-5-2.238-5-5z'/%3E%3C/g%3E%3C/svg%3E")`
+                }}></div>
+                
+                {/* Decorative corner element */}
+                <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-gray-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                
+                {/* Image Section */}
+                <div className="relative w-full h-48 overflow-hidden">
+                  {(() => {
+                    const imageUrl = getImageUrl(article.image);
+                    return imageUrl ? (
+                      <Image
+                        src={imageUrl}
+                        alt={article.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(event) => {
+                          event.currentTarget.style.display = "none";
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                        <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
                       </div>
-                    </div>
+                    );
+                  })()}
+                  
+                  {/* Category Badge */}
+                  <div className="absolute top-4 right-4">
+                    <span className="inline-flex items-center px-3 py-1 rounded-lg text-xs font-medium bg-white/90 backdrop-blur-sm text-gray-700 border border-gray-200">
+                      {String(article.category)}
+                    </span>
+                  </div>
+                </div>
 
-                    {/* Reading Time and Date */}
+                {/* Content Section */}
+                <div className="p-6 sm:p-8 relative z-10">
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-gray-700 transition-colors line-clamp-2 leading-tight" style={{ fontFamily: 'Amiri, serif' }}>
+                    {article.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm leading-relaxed line-clamp-3 mb-4" style={{ fontFamily: 'Amiri, serif' }}>
+                    {article.description}
+                  </p>
+                  
+                  {/* Arrow Icon */}
+                  <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <span className="text-gray-600 text-sm font-medium">د لوستلو لپاره</span>
+                    <div className="w-8 h-8 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
+                      <svg className="w-4 h-4 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <div className="text-gray-300 text-8xl mb-6">📚</div>
-            <h3 className="text-2xl font-semibold text-gray-600 mb-3">
-              No Articles Found
+          <div className="text-center py-20 bg-white rounded-xl border border-gray-200 shadow-sm" dir="rtl">
+            <div className="text-gray-300 text-6xl mb-6">📚</div>
+            <h3 className="text-xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+              مقالې ونه موندل شوې
             </h3>
-            <p className="text-gray-500 text-lg mb-6">
+            <p className="text-gray-600 text-sm mb-6" style={{ fontFamily: 'Amiri, serif' }}>
               {searchTerm
-                ? "Try adjusting your search terms"
-                : "No articles available at the moment"}
+                ? "د لټون اصطلاح بدل کړئ"
+                : "په دې وخت کې مقالې نشته."}
             </p>
             {searchTerm && (
               <button
                 onClick={() => setSearchTerm("")}
-                className="px-6 py-3 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition-colors font-medium"
+                className="px-6 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors font-medium"
               >
-                Clear Search
+                لټون پاک کړئ
               </button>
             )}
           </div>

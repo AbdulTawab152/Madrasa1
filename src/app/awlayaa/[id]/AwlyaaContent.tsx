@@ -5,19 +5,8 @@ import { Awlyaa } from "../../../lib/types";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import { getTranslation } from "@/lib/translations";
-import {
-  User,
-  Calendar,
-  BookOpen,
-  GraduationCap,
-  Users,
-  Heart,
-  Quote,
-  Star,
-  Award,
-  MapPin,
-  BookText,
-} from "lucide-react";
+import Breadcrumb from "@/components/Breadcrumb";
+import { User } from "lucide-react";
 
 interface AwlyaaContentProps {
   awlyaa: Awlyaa;
@@ -41,88 +30,96 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 pt-32 pb-20 font-sans">
-      <div className="max-w-6xl mx-auto px-6">
+    <main className="min-h-screen bg-gray-50 pt-32 pb-20" dir="rtl">
+      <Breadcrumb />
+      <div className="max-w-6xl mx-auto px-4 sm:px-6" dir="rtl">
         {/* Header Section */}
-        <div className="bg-white rounded-3xl overflow-hidden mb-10 border border-gray-200">
-          <div className="relative h-48 bg-gradient-to-r from-orange-500 to-amber-500">
-            <div className="absolute bottom-0 left-0 w-full h-24 bg-gradient-to-t from-white to-transparent"></div>
-          </div>
-
-          <div className="px-8 pb-8 -mt-20 relative z-10">
+        <div className="relative bg-white rounded-xl overflow-hidden mb-8 border border-gray-200 shadow-sm">
+          {/* Decorative right border accent */}
+          <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200"></div>
+          
+          {/* Subtle pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10zm-10 0c0-2.762 2.238-5 5-5s5 2.238 5 5-2.238 5-5 5-5-2.238-5-5z'/%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+          
+          <div className="px-6 sm:px-8 py-10 relative z-10">
             {/* Profile Image */}
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-6">
               <div className="relative">
                 {awlyaa.profile_image ? (
-                  <Image
-                    src={
-                      getImageUrl(awlyaa.profile_image, "/placeholder-author.jpg") ||
-                      "/placeholder-author.jpg"
-                    }
-                    alt={awlyaa.name}
-                    width={200}
-                    height={200}
-                    className="w-40 h-40 rounded-full object-cover border-4 border-white shadow-2xl"
-                  />
+                  <div className="relative">
+                    <Image
+                      src={
+                        getImageUrl(awlyaa.profile_image, "/placeholder-author.jpg") ||
+                        "/placeholder-author.jpg"
+                      }
+                      alt={awlyaa.name}
+                      width={200}
+                      height={200}
+                      className="w-36 h-36 sm:w-44 sm:h-44 rounded-full object-cover border-4 border-gray-200 shadow-xl"
+                    />
+                    <div className="absolute inset-0 rounded-full border-4 border-gray-100 opacity-50"></div>
+                  </div>
                 ) : (
-                  <div className="w-40 h-40 flex items-center justify-center rounded-full bg-gray-300 text-gray-600 border-4 border-white">
-                    <User size={60} />
+                  <div className="w-36 h-36 sm:w-44 sm:h-44 flex items-center justify-center rounded-full bg-gray-100 text-gray-400 border-4 border-gray-200 shadow-xl">
+                    <User size={70} />
                   </div>
                 )}
-                <div className="absolute -bottom-2 -right-2 bg-amber-500 text-white p-2 rounded-full">
-                  <Award size={20} />
-                </div>
               </div>
             </div>
 
             {/* Name and Title */}
-            <div className="text-center mt-6">
-              <h1 className="text-xl md:text-2xl font-bold text-gray-900">
+            <div className="text-center">
+              <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3 leading-tight" style={{ fontFamily: 'Amiri, serif' }}>
                 {cleanText(awlyaa.name)}
               </h1>
-              <p className="text-md md:text-xl text-amber-600 font-medium mt-2">
+              <p className="text-xl sm:text-2xl text-gray-700 font-medium mb-3" style={{ fontFamily: 'Amiri, serif' }}>
                 {cleanText(awlyaa.title || t('awlyaaDetail.distinguishedScholar'))}
               </p>
               {awlyaa.nickname && (
-                <p className="text-gray-500 mt-1">"{cleanText(awlyaa.nickname)}"</p>
+                <p className="text-gray-600 text-lg font-medium" style={{ fontFamily: 'Amiri, serif' }}>"{cleanText(awlyaa.nickname)}"</p>
               )}
             </div>
           </div>
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Personal Info */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Right Column - Personal Info */}
           <div className="lg:col-span-1 space-y-6">
             {/* Teachers */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <GraduationCap className="text-amber-500" size={24} />
+            <div className="relative bg-white rounded-xl p-6 border border-gray-200 shadow-sm overflow-hidden">
+              {/* Decorative right border accent */}
+              <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-300 to-gray-200"></div>
+              
+              <h2 className="text-lg font-bold text-gray-900 mb-4 relative z-10" style={{ fontFamily: 'Amiri, serif' }}>
                 {t('awlyaaDetail.teachers')}
               </h2>
 
               {awlyaa.teachers &&
               Array.isArray(awlyaa.teachers) &&
               awlyaa.teachers.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4">
+                <div className="space-y-3">
                   {awlyaa.teachers.map((t: any) => (
                     <div
                       key={t.id}
-                      className="flex items-center gap-3 p-3 bg-amber-50 rounded-lg"
+                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100"
                     >
-                      <div className="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
-                        <User className="text-amber-600" size={16} />
+                      <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="text-gray-600" size={14} />
                       </div>
                       {t.teacher?.id ? (
                         <a
                           href={`/awlayaa/${t.teacher.id}`}
-                          className="font-semibold text-[12px] text-amber-700 hover:underline transition-colors outline-none focus:outline-none focus:ring-0"
+                          className="font-medium text-sm text-gray-900 hover:text-gray-700 transition-colors flex-1"
                           title={t('awlyaaDetail.viewTeacherDetails')}
+                          style={{ fontFamily: 'Amiri, serif' }}
                         >
                           {cleanText(t.teacher?.name || t('awlyaaDetail.unknownTeacher'))}
                         </a>
                       ) : (
-                        <span className="font-semibold text-[12px]">
+                        <span className="font-medium text-sm text-gray-900 flex-1" style={{ fontFamily: 'Amiri, serif' }}>
                           {cleanText(t.teacher?.name || t('awlyaaDetail.unknownTeacher'))}
                         </span>
                       )}
@@ -130,41 +127,44 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 italic">
+                <p className="text-gray-500 text-sm" style={{ fontFamily: 'Amiri, serif' }}>
                   {t('awlyaaDetail.noTeacherInfo')}
                 </p>
               )}
             </div>
 
             {/* Students Section */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-              <h2 className="text-lg md:text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Users className="text-amber-500" size={24} />
+            <div className="relative bg-white rounded-xl p-6 border border-gray-200 shadow-sm overflow-hidden">
+              {/* Decorative right border accent */}
+              <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-300 to-gray-200"></div>
+              
+              <h2 className="text-lg font-bold text-gray-900 mb-4 relative z-10" style={{ fontFamily: 'Amiri, serif' }}>
                 {t('awlyaaDetail.students')}
               </h2>
 
               {awlyaa.students &&
               Array.isArray(awlyaa.students) &&
               awlyaa.students.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4">
+                <div className="space-y-3">
                   {awlyaa.students.map((s: any) => (
                     <div
                       key={s.id}
-                      className="flex items-center gap-3 p-3 bg-orange-50 rounded-lg"
+                      className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100"
                     >
-                      <div className="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
-                        <User className="text-orange-600" size={16} />
+                      <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center flex-shrink-0">
+                        <User className="text-gray-600" size={14} />
                       </div>
                       {s.student?.id ? (
                         <a
                           href={`/awlayaa/${s.student.id}`}
-                          className="font-semibold text-[12px] text-orange-700 hover:underline transition-colors outline-none focus:outline-none focus:ring-0"
+                          className="font-medium text-sm text-gray-900 hover:text-gray-700 transition-colors flex-1"
                           title={t('awlyaaDetail.viewStudentDetails')}
+                          style={{ fontFamily: 'Amiri, serif' }}
                         >
                           {cleanText(s.student?.name || t('awlyaaDetail.unknownStudent'))}
                         </a>
                       ) : (
-                        <span className="font-semibold text-[12px]">
+                        <span className="font-medium text-sm text-gray-900 flex-1" style={{ fontFamily: 'Amiri, serif' }}>
                           {cleanText(s.student?.name || t('awlyaaDetail.unknownStudent'))}
                         </span>
                       )}
@@ -172,54 +172,44 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 italic">
+                <p className="text-gray-500 text-sm" style={{ fontFamily: 'Amiri, serif' }}>
                   {t('awlyaaDetail.noStudentInfo')}
                 </p>
               )}
             </div>
 
             {/* Quick Facts Card */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <User className="text-amber-500" size={24} />
+            <div className="relative bg-white rounded-xl p-6 border border-gray-200 shadow-sm overflow-hidden">
+              {/* Decorative right border accent */}
+              <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-300 to-gray-200"></div>
+              
+              <h2 className="text-lg font-bold text-gray-900 mb-4 relative z-10" style={{ fontFamily: 'Amiri, serif' }}>
                 {t('awlyaaDetail.personalInformation')}
               </h2>
 
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <User
-                    className="text-amber-500 mt-1 flex-shrink-0"
-                    size={18}
-                  />
-                  <div>
-                    <p className="text-sm text-gray-500">{t('awlyaaDetail.fathersName')}</p>
-                    <p className="font-semibold">
+                  <div className="flex-1">
+                    <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.fathersName')}</p>
+                    <p className="font-medium text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
                       {cleanText(awlyaa.father_name || t('awlyaaDetail.notSpecified'))}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <Users
-                    className="text-amber-500 mt-1 flex-shrink-0"
-                    size={18}
-                  />
-                  <div>
-                    <p className="text-sm text-gray-500">{t('awlyaaDetail.children')}</p>
-                    <p className="font-medium">
+                  <div className="flex-1">
+                    <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.children')}</p>
+                    <p className="font-medium text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
                       {awlyaa.number_of_children || t('awlyaaDetail.notSpecified')}
                     </p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
-                  <BookOpen
-                    className="text-amber-500 mt-1 flex-shrink-0"
-                    size={18}
-                  />
-                  <div>
-                    <p className="text-sm font-semibold text-gray-500">{t('awlyaaDetail.booksWritten')}</p>
-                    <p className="text-sm">
+                  <div className="flex-1">
+                    <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.booksWritten')}</p>
+                    <p className="text-sm text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
                       {cleanText(awlyaa.books_written || t('awlyaaDetail.notSpecified'))}
                     </p>
                   </div>
@@ -228,132 +218,144 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
             </div>
 
             {/* Birth Information */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <Calendar className="text-amber-500" size={24} />
+            <div className="relative bg-white rounded-xl p-6 border border-gray-200 shadow-sm overflow-hidden">
+              {/* Decorative right border accent */}
+              <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-300 to-gray-200"></div>
+              
+              <h2 className="text-lg font-bold text-gray-900 mb-4 relative z-10" style={{ fontFamily: 'Amiri, serif' }}>
                 {t('awlyaaDetail.birthDetails')}
               </h2>
 
               <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <Calendar className="text-gray-400" size={16} />
-                  <span className="text-gray-700">
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.birthDate')}</p>
+                  <p className="text-sm text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
                     {formatDate(awlyaa.birth_date)}
-                  </span>
+                  </p>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  <MapPin className="text-gray-400" size={16} />
-                  <div className="flex flex-col">
-                    <span className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.birthPlace')}</span>
-                    <span className="text-gray-700">
-                      {cleanText([
-                        awlyaa.birth_place,
-                        awlyaa.birth_city,
-                        awlyaa.birth_country,
-                      ]
-                        .filter(Boolean)
-                        .join(", ") || t('awlyaaDetail.notSpecified'))}
-                    </span>
-                  </div>
+                <div>
+                  <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.birthPlace')}</p>
+                  <p className="text-sm text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
+                    {cleanText([
+                      awlyaa.birth_place,
+                      awlyaa.birth_city,
+                      awlyaa.birth_country,
+                    ]
+                      .filter(Boolean)
+                      .join(", ") || t('awlyaaDetail.notSpecified'))}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Death Information (if applicable) */}
             {awlyaa.death_date && (
-              <div className="bg-white rounded-2xl p-6 border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Heart className="text-amber-500" size={24} />
+              <div className="relative bg-white rounded-xl p-6 border border-gray-200 shadow-sm overflow-hidden">
+                {/* Decorative right border accent */}
+                <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-gray-300 to-gray-200"></div>
+                
+                <h2 className="text-lg font-bold text-gray-900 mb-4 relative z-10" style={{ fontFamily: 'Amiri, serif' }}>
                   {t('awlyaaDetail.deathDetails')}
                 </h2>
 
                 <div className="space-y-3">
-                  <div className="flex items-center gap-2">
-                    <Calendar className="text-gray-400" size={16} />
-                    <span className="text-gray-700">
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.deathDate')}</p>
+                    <p className="text-sm text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
                       {formatDate(awlyaa.death_date)}
-                    </span>
+                    </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <MapPin className="text-gray-400" size={16} />
-                    <div className="flex flex-col">
-                      <span className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.deathPlace')}</span>
-                      <span className="text-gray-700">
-                        {cleanText([
-                          awlyaa.death_place,
-                          awlyaa.death_city,
-                          awlyaa.death_country,
-                        ]
-                          .filter(Boolean)
-                          .join(", ") || t('awlyaaDetail.notSpecified'))}
-                      </span>
-                    </div>
+                  <div>
+                    <p className="text-xs text-gray-500 mb-1">{t('awlyaaDetail.deathPlace')}</p>
+                    <p className="text-sm text-gray-900" style={{ fontFamily: 'Amiri, serif' }}>
+                      {cleanText([
+                        awlyaa.death_place,
+                        awlyaa.death_city,
+                        awlyaa.death_country,
+                      ]
+                        .filter(Boolean)
+                        .join(", ") || t('awlyaaDetail.notSpecified'))}
+                    </p>
                   </div>
                 </div>
               </div>
             )}
           </div>
 
-          {/* Right Column - Detailed Info */}
+          {/* Left Column - Detailed Info */}
           <div className="lg:col-span-2 space-y-6">
-            <div className="bg-white rounded-2xl p-6 border border-gray-200">
-              <div className="mb-6 text-left">
-                <p className="text-sm text-gray-500">{t('awlyaaDetail.education')}</p>
-                <p className="font">
+            <div className="relative bg-white rounded-xl p-6 sm:p-8 border border-gray-200 shadow-sm overflow-hidden">
+              {/* Decorative right border accent */}
+              <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200"></div>
+              
+              {/* Subtle pattern overlay */}
+              <div className="absolute inset-0 opacity-[0.02]" style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10zm-10 0c0-2.762 2.238-5 5-5s5 2.238 5 5-2.238 5-5 5-5-2.238-5-5z'/%3E%3C/g%3E%3C/svg%3E")`
+              }}></div>
+              
+              <div className="mb-6 relative z-10">
+                <h2 className="text-lg font-bold text-gray-900 mb-3" style={{ fontFamily: 'Amiri, serif' }}>
+                  {t('awlyaaDetail.education')}
+                </h2>
+                <p className="text-gray-700 leading-relaxed text-base" style={{ fontFamily: 'Amiri, serif' }}>
                   {cleanText(awlyaa.education || t('awlyaaDetail.notSpecified'))}
                 </p>
               </div>
 
               {/* Famous Works Section */}
-              <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <BookText className="text-amber-500" size={24} />
-                {t('awlyaaDetail.famousWorksContributions')}
-              </h2>
+              <div className="border-t border-gray-200 pt-6 relative z-10">
+                <h2 className="text-lg font-bold text-gray-900 mb-4" style={{ fontFamily: 'Amiri, serif' }}>
+                  {t('awlyaaDetail.famousWorksContributions')}
+                </h2>
 
-              {awlyaa.famous_works &&
-              Array.isArray(awlyaa.famous_works) &&
-              awlyaa.famous_works.length > 0 ? (
-                <div className="space-y-3">
-                  {awlyaa.famous_works.map((work: any, idx: number) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3"
-                    >
-                      <Star
-                        className="text-amber-500 mt-1 flex-shrink-0"
-                        size={16}
-                      />
-                      <span className="font-medium">{cleanText(work)}</span>
-                    </div>
-                  ))}
-                </div>
-              ) : awlyaa.famous_works ? (
-                <div className="flex items-start gap-3 rounded-lg">
-                  <Star
-                    className="text-amber-500 mt-1 flex-shrink-0"
-                    size={16}
-                  />
-                  <span className="font-semibold text-sm">{cleanText(awlyaa.famous_works)}</span>
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">
-                  {t('awlyaaDetail.noFamousWorks')}
-                </p>
-              )}
+                {awlyaa.famous_works &&
+                Array.isArray(awlyaa.famous_works) &&
+                awlyaa.famous_works.length > 0 ? (
+                  <div className="space-y-3">
+                    {awlyaa.famous_works.map((work: any, idx: number) => (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg border border-gray-100"
+                      >
+                        <span className="font-medium text-gray-900 flex-1" style={{ fontFamily: 'Amiri, serif' }}>
+                          {cleanText(work)}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : awlyaa.famous_works ? (
+                  <div className="p-3 bg-gray-50 rounded-lg border border-gray-100">
+                    <span className="font-medium text-gray-900 text-sm" style={{ fontFamily: 'Amiri, serif' }}>
+                      {cleanText(awlyaa.famous_works)}
+                    </span>
+                  </div>
+                ) : (
+                  <p className="text-gray-500 text-sm" style={{ fontFamily: 'Amiri, serif' }}>
+                    {t('awlyaaDetail.noFamousWorks')}
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Extra Information */}
             {awlyaa.extra_information && (
-              <div className="bg-white rounded-2xl p-6 shadow-md border border-gray-200">
-                <h2 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                  <Quote className="text-amber-500" size={24} />
+              <div className="relative bg-white rounded-xl p-6 sm:p-8 border border-gray-200 shadow-sm overflow-hidden">
+                {/* Decorative right border accent */}
+                <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200"></div>
+                
+                {/* Subtle pattern overlay */}
+                <div className="absolute inset-0 opacity-[0.02]" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.4'%3E%3Cpath d='M20 20c0-5.523-4.477-10-10-10s-10 4.477-10 10 4.477 10 10 10 10-4.477 10-10zm-10 0c0-2.762 2.238-5 5-5s5 2.238 5 5-2.238 5-5 5-5-2.238-5-5z'/%3E%3C/g%3E%3C/svg%3E")`
+                }}></div>
+                
+                <h2 className="text-lg font-bold text-gray-900 mb-4 relative z-10" style={{ fontFamily: 'Amiri, serif' }}>
                   {t('awlyaaDetail.additionalInformation')}
                 </h2>
 
-                <div className="prose prose-gray max-w-none">
-                  <p className="text-gray-700 leading-relaxed">
+                <div className="relative z-10">
+                  <p className="text-gray-700 leading-relaxed text-base" style={{ fontFamily: 'Amiri, serif' }}>
                     {cleanText(awlyaa.extra_information)}
                   </p>
                 </div>

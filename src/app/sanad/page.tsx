@@ -3,6 +3,7 @@
 import ShajaraSection from "../components/sanad/SanadSection";
 import IslamicHeader from "../components/IslamicHeader";
 import { useTranslation } from "@/hooks/useTranslation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function SanadPage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
@@ -21,6 +22,7 @@ export default function SanadPage() {
         subtitle={t('sanad.description')}
         alignment="center"
       />
+      <Breadcrumb />
       <div className="max-w-7xl mx-auto px-6 py-12">
         <ShajaraSection showAll={true} showHero={false} />
       </div>

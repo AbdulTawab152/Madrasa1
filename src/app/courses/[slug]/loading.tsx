@@ -1,5 +1,5 @@
-import DetailPageSkeleton from "@/components/loading/DetailPageSkeleton";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
 export default function LoadingCourseDetail() {
-  return <DetailPageSkeleton type="course" showSidebar={true} showComments={false} showRelated={true} />;
+  return <UnifiedLoader variant="detail" />;
 }

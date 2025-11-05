@@ -135,12 +135,12 @@ export default function EventSection({ limit = events.length }: EventSectionProp
           {displayedEvents.map((event, index) => (
             <div
               key={event.id}
-              className={`flex flex-col border md:flex-row items-center gap-10 p-8 bg-white rounded-3xl hover:shadow-sm transition-shadow duration-500 ${
+              className={`flex flex-col border md:flex-row items-center gap-10 p-8 bg-white rounded-3xl hover:shadow-sm transition-shadow duration-200 ${
                 index % 2 === 1 ? "md:flex-row-reverse" : ""
               }`}
             >
               {/* Image Container */}
-              <div className="relative w-full md:w-1/2 h-80 rounded-2xl overflow-hidden shadow-md transform transition-transform duration-500 hover:scale-105">
+              <div className="relative w-full md:w-1/2 h-80 rounded-2xl overflow-hidden shadow-md transform transition-transform duration-200 hover:scale-105">
                   <Image
                     src={event.image || "/placeholder-event.jpg"}
                     alt={event.title}
@@ -154,7 +154,7 @@ export default function EventSection({ limit = events.length }: EventSectionProp
 
               {/* Text Content */}
               <div className="w-full md:w-1/2 flex flex-col justify-center">
-                <h3 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4 transition-colors duration-300 group-hover:text-blue-600">
+                <h3 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4 transition-colors duration-150 group-hover:text-blue-600">
                   {event.title}
                 </h3>
 
@@ -178,7 +178,7 @@ export default function EventSection({ limit = events.length }: EventSectionProp
                   <Button
                     size="lg"
                     aria-label={`Learn more about ${event.title}`}
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-md transition-transform duration-300 transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-md transition-transform duration-150 transform hover:-translate-y-0.5"
                   >
                     View live
                     <ArrowRight size={18} />
@@ -195,7 +195,7 @@ export default function EventSection({ limit = events.length }: EventSectionProp
               <Button
                 size="lg"
                 aria-label="See more events"
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-3 rounded-full shadow-md transition-colors duration-300"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-10 py-3 rounded-full shadow-md transition-colors duration-150"
               >
                 See More Events
               </Button>

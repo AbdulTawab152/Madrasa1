@@ -115,8 +115,8 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                 initial={{ opacity: 0, y: 28, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{
-                  duration: 0.45,
-                  delay: idx * 0.10,
+                  duration: 0.15,
+                  // No delay - instant rendering
                   ease: "easeOut",
                 }}
                 whileHover={{
@@ -125,7 +125,7 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                   transition: { duration: 0.17, ease: "easeOut" },
                 }}
               >
-                <div className="flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-amber-100/70 hover:border-amber-200 hover:ring-1 hover:ring-amber-200 transition-all duration-300 overflow-hidden h-full">
+                <div className="flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-amber-100/70 hover:border-amber-200 hover:ring-1 hover:ring-amber-200 transition-all duration-150 overflow-hidden h-full">
                   {/* Profile/Main image */}
                   <div className="relative">
                     <Image

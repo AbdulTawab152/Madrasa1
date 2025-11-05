@@ -7,6 +7,7 @@ import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import { cookies } from "next/headers";
 import { getTranslation } from "@/lib/translations";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface Event {
   id: number;
@@ -96,29 +97,8 @@ export default async function EventDetailsPage({ params }: Params) {
 
   return (
     <main className="min-h-screen my-[60] bg-gradient-to-b from-amber-50/20 to-white pt-28 pb-16">
+      <Breadcrumb />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Breadcrumb */}
-        <nav className="flex mb-8">
-          <ol className="flex items-center space-x-2 text-sm">
-            <li>
-              <Link
-                href="/"
-                className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
-              >
-                {t('eventsPage.home')}
-              </Link>
-            </li>
-            <li className="flex items-center">
-              <span className="mx-2 text-amber-400">/</span>
-              <Link
-                href="/event"
-                className="text-amber-600 hover:text-amber-700 transition-colors outline-none focus:outline-none focus:ring-0"
-              >
-                {t('eventsPage.events')}
-              </Link>
-            </li>
-          </ol>
-        </nav>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
@@ -277,7 +257,7 @@ export default async function EventDetailsPage({ params }: Params) {
               <div
                 className="
                   bg-white rounded-2xl shadow-sm border border-amber-100 p-6 mb-0 flex flex-col gap-5
-                  sticky top-8 transition-all duration-300
+                  sticky top-8 transition-all duration-150
                 "
                 style={{
                   zIndex: 10,

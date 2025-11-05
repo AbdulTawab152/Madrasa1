@@ -53,7 +53,7 @@
 //       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 //         {displayBlogs.map(blog => (
 //           <Link key={blog.id} href={`/blogs/${blog.slug}`} className="group">
-//             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden border border-gray-100 h-[420px] flex flex-col">
+//             <div className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-150 transform hover:-translate-y-1 overflow-hidden border border-gray-100 h-[420px] flex flex-col">
               
 //               {/* Blog Image */}
 //               <div className="relative overflow-hidden h-48">
@@ -63,7 +63,7 @@
 //                     alt={blog.title}
 //                     width={400}
 //                     height={200}
-//                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+//                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-150"
 //                   />
 //                 ) : (
 //                   <div className="w-full h-full bg-gradient-to-br from-amber-100 via-amber-200 to-amber-300 flex items-center justify-center">
@@ -85,7 +85,7 @@
 //               {/* Blog Content */}
 //               <div className="p-4 flex-1 flex flex-col">
 //                 {/* Blog Title */}
-//                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors duration-300 line-clamp-2">
+//                 <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-amber-600 transition-colors duration-150 line-clamp-2">
 //                   {blog.title}
 //                 </h3>
                 
@@ -102,7 +102,7 @@
 //                 </div>
 
 //                 {/* Blog Details Button */}
-//                 <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-md text-sm">
+//                 <button className="w-full bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold py-2 px-4 rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-150 transform hover:scale-105 shadow-md text-sm">
 //                   Read More
 //                 </button>
 //               </div>
@@ -115,10 +115,10 @@
 //         <div className="mt-8 flex justify-center">
 //           <Link
 //             href="/blogs"
-//             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold text-base rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-300 transform hover:scale-105 shadow-lg"
+//             className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-amber-500 to-amber-600 text-white font-semibold text-base rounded-xl hover:from-amber-600 hover:to-amber-700 transition-all duration-150 transform hover:scale-105 shadow-lg"
 //           >
 //             Explore All Blogs
-//             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+//             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-150" fill="none" stroke="currentColor" viewBox="0 0 24 24">
 //               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
 //             </svg>
 //           </Link>

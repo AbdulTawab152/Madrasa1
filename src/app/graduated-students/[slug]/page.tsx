@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { GraduationsApi } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
+import Breadcrumb from "@/components/Breadcrumb";
 
 async function getGraduation(slug: string): Promise<any> {
   const result = await GraduationsApi.getBySlug(slug);
@@ -106,11 +107,12 @@ export default function GraduationDetailPage({
 
   return (
     <main className="mx-auto  mt-[180px] md:mt-24 sm:mt-10 max-w-7xl px-4 font-sans">
+      <Breadcrumb />
       {/* Hero Section */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.15 }}
         className="mb-24 relative overflow-hidden rounded-3xl p-6 md:p-8 lg:p-12 flex flex-col lg:flex-row gap-8 bg-gradient-to-r from-white to-gray-50"
       >
         <motion.div
@@ -132,7 +134,7 @@ export default function GraduationDetailPage({
                 className="w-full h-full object-cover rounded-2xl"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
+                transition={{ duration: 0.15 }}
               />
             )}
 
@@ -160,13 +162,13 @@ export default function GraduationDetailPage({
               {graduation.graduation_images.map((img: any, index: number) => (
                 <motion.div
                   key={img.id}
-                  className={`relative h-20 w-full cursor-pointer overflow-hidden rounded-lg shadow-md duration-300 ${
+                  className={`relative h-20 w-full cursor-pointer overflow-hidden rounded-lg shadow-md duration-150 ${
                     selectedImageIndex === index ? "ring-2 ring-orange-100" : ""
                   }`}
                   onClick={() => setSelectedImageIndex(index)}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ duration: 0.15 }}
                   layout
                 >
                   <img
@@ -189,7 +191,7 @@ export default function GraduationDetailPage({
             className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black drop-shadow-xl mb-4 md:mb-6"
             initial={{ opacity: 0, x: -40, scale: 0.95 }}
             animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.15 }}
           >
             {graduation.title}
             <span className="mt-3 block h-1 w-16 sm:w-28 rounded-full bg-gradient-to-r from-orange-600 to-yellow-500 shadow-lg"></span>
@@ -199,7 +201,7 @@ export default function GraduationDetailPage({
             className="text-gray-700 text-sm sm:text-base md:text-md leading-relaxed mb-6 md:mb-8"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
+            transition={{ duration: 0.15 }}
           >
             {graduation.description  ?.replace(/<[^>]*>/g, "")}
           </motion.p>
@@ -208,7 +210,7 @@ export default function GraduationDetailPage({
             className="grid grid-cols-1 gap-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
+            transition={{ duration: 0.15 }}
           >
             <InfoCard
               label={t('graduationDetail.date')}
@@ -249,7 +251,7 @@ export default function GraduationDetailPage({
           className="text-3xl sm:text-4xl font-extrabold mb-12 text-center text-gray-800"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.15 }}
         >
           {t('graduationDetail.esteemedGraduates')}
           <span className="block h-1.5 w-24 sm:w-28 bg-gradient-to-r from-orange-400 to-yellow-500 mt-3 mx-auto rounded-full"></span>
@@ -264,10 +266,10 @@ export default function GraduationDetailPage({
               return (
                 <motion.div
                   key={s.id}
-                  className="group relative overflow-hidden rounded-3xl shadow-md transition-transform duration-300 hover:scale-105 cursor-pointer"
+                  className="group relative overflow-hidden rounded-3xl shadow-md transition-transform duration-150 hover:scale-105 cursor-pointer"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ duration: 0.15 }}
                   onClick={() => openModal(s)}
                 >
                   <div className="relative h-72 md:h-80 w-full rounded-3xl overflow-hidden">

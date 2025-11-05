@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, lazy, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Hero from "../app/herosection/page";
 import About from "./components/about/page";
 import Blogs from "../app/components/blog/BlogCard";
@@ -11,17 +11,14 @@ import { Button } from "@/components/ui/button";
 import { CoursesApi } from "@/lib/api";
 import type { Course as CourseType } from "@/lib/types";
 import { HeartHandshake, Sprout, Coins } from "lucide-react";
+import UnifiedLoader from "@/components/loading/UnifiedLoader";
 
-// Lazy load heavy components
-const LazyEventSection = lazy(() => import("./components/LazyEventSection"));
-const GraduationsSection = lazy(
-  () => import("./components/graduation/TopGraduations")
-);
-const LazyGallerySection = lazy(
-  () => import("./components/LazyGallerySection")
-);
-const BooksSection = lazy(() => import("./components/books/BooksSection"));
-const ShajaraSection = lazy(() => import("./components/sanad/SanadSection"));
+// Import components directly - no lazy loading for instant rendering
+import LazyEventSection from "./components/LazyEventSection";
+import GraduationsSection from "./components/graduation/TopGraduations";
+import LazyGallerySection from "./components/LazyGallerySection";
+import BooksSection from "./components/books/BooksSection";
+import ShajaraSection from "./components/sanad/SanadSection";
 
 export default function HomePage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
@@ -86,10 +83,7 @@ export default function HomePage() {
           {/* Simple Courses Section */}
           <div className="mt-8">
             {loading ? (
-              <div className="flex items-center justify-center py-12">
-                <div className="w-8 h-8 border-4 border-amber-800/50 border-t-amber-500 rounded-full animate-spin"></div>
-                <span className="ml-3 text-gray-600">{t('home.loadingCourses')}</span>
-              </div>
+              <UnifiedLoader variant="grid" count={3} className="pt-0" />
             ) : error ? (
               <div className="text-center py-12">
                 <p className="text-red-600">{error}</p>
@@ -102,7 +96,7 @@ export default function HomePage() {
                 <div className="mt-8 text-center">
                   <Link
                     href="/courses"
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
+                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-150 transform hover:-translate-y-0.5"
                   >
                     <span>{t('home.viewAllCourses')}</span>
                   </Link>
@@ -115,21 +109,10 @@ export default function HomePage() {
 
       {/* gragurtion */}
 
-      {/* Events Section - Lazy Loaded */}
+      {/* Events Section */}
       <section className="py-10 bg-white">
         <div className="max-w-7xl mx-auto px-6">
-          <Suspense
-          fallback={
-            <div className="flex items-center justify-center py-20">
-             
-              <span className="ml-4 text-gray-600 font-medium">
-                {t('home.loadingEvents')}
-              </span>
-            </div>
-          }
-        >
           <LazyEventSection />
-        </Suspense>
         </div>
       </section>
 
@@ -154,28 +137,19 @@ export default function HomePage() {
 
           {/* Simple Books Section */}
           <div className="mt-8">
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center py-12">
-                  <div className="w-8 h-8 border-4 border-amber-800/50 border-t-amber-500 rounded-full animate-spin"></div>
-                  <span className="ml-3 text-gray-600">{t('home.loadingBooks')}</span>
-                </div>
-              }
-            >
-              <div className="relative">
-                <BooksSection showAll={false} />
+            <div className="relative">
+              <BooksSection showAll={false} />
 
-                {/* Simple Call to Action */}
-                <div className="mt-8 text-center">
-                  <Link
-                    href="/book"
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
-                  >
-                    <span>{t('home.viewAllBooks')}</span>
-                  </Link>
-                </div>
+              {/* Simple Call to Action */}
+              <div className="mt-8 text-center">
+                <Link
+                  href="/book"
+                  className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-150 transform hover:-translate-y-0.5"
+                >
+                  <span>{t('home.viewAllBooks')}</span>
+                </Link>
               </div>
-            </Suspense>
+            </div>
           </div>
         </div>
       </section>
@@ -199,46 +173,22 @@ export default function HomePage() {
 
           {/* Sanad Section */}
           <div className="mt-12 relative">
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center py-16">
-                  <div className="w-10 h-10 border-4 border-primary-300/50 border-t-primary-500 rounded-full animate-spin"></div>
-                  <span className="ml-4 text-gray-600 font-medium">
-                    د سند معلومات بارېږي...
-                  </span>
-                </div>
-              }
-            >
-              <div className="animate-fade-in-up">
-                <ShajaraSection showAll={false} showHero={false} />
-              </div>
-              {/* Call to Action */}
-              <div className="mt-10 text-center">
-                <Link
-                  href="/sanad"
-                  className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
-                >
-                  <span>ټول سند وګورئ</span>
-                </Link>
-              </div>
-            </Suspense>
+            <ShajaraSection showAll={false} showHero={false} />
+            {/* Call to Action */}
+            <div className="mt-10 text-center">
+              <Link
+                href="/sanad"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-150 transform hover:-translate-y-0.5"
+              >
+                <span>ټول سند وګورئ</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Gallery - Lazy Loaded */}
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-20">
-              <div className="w-10 h-10 border-4 border-amber-800/50 border-t-amber-500 rounded-full animate-spin"></div>
-              <span className="ml-4 text-gray-600 font-medium">
-                {t('home.loadingGallery')}
-              </span>
-          </div>
-        }
-      >
-        <LazyGallerySection />
-      </Suspense>
+      {/* Gallery */}
+      <LazyGallerySection />
 
       {/* gragutaion */}
 
@@ -259,29 +209,16 @@ export default function HomePage() {
           </div>
           {/* Graduates Section */}
           <div className="mt-12 relative">
-            <Suspense
-              fallback={
-                <div className="flex items-center justify-center py-16">
-                  <div className="w-10 h-10 border-4 border-orange-800/50 border-t-orange-400 rounded-full animate-spin"></div>
-                  <span className="ml-4 text-gray-600 font-medium">
-                    {t('home.loadingGraduates')}
-                  </span>
-                </div>
-              }
-            >
-              <div className="animate-fade-in-up">
-                <GraduationsSection showAll={false} />
-              </div>
-              {/* Call to Action */}
-               <div className="mt-10 text-center">
-                  <Link
-                    href="/graduated-students"
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
-                  >
-                    <span>{t('home.viewAllGraduation')}</span>
-                  </Link>
-                </div>
-            </Suspense>
+            <GraduationsSection showAll={false} />
+            {/* Call to Action */}
+            <div className="mt-10 text-center">
+              <Link
+                href="/graduated-students"
+                className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-150 transform hover:-translate-y-0.5"
+              >
+                <span>{t('home.viewAllGraduation')}</span>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
@@ -307,28 +244,15 @@ export default function HomePage() {
 
     {/* Blog Section */}
     <div className="relative">
-      <Suspense
-        fallback={
-          <div className="flex items-center justify-center py-16">
-            <div className="w-10 h-10 border-4 border-orange-800/50 border-t-orange-400 rounded-full animate-spin"></div>
-            <span className="ml-4 text-gray-600 font-medium">
-              {t('home.loadingBlogPosts')}
-            </span>
-          </div>
-        }
-      >
-        <div className="animate-fade-in-up">
-          <Blogs limit={3} homePage={true} />
-        </div>
-         <div className="mt-4 text-center">
-                  <Link
-                    href="/blogs"
-                    className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-300 transform hover:-translate-y-0.5"
-                  >
-                    <span>{t('home.viewAllBlogs')}</span>
-                  </Link>
-                </div>
-      </Suspense>
+      <Blogs limit={3} homePage={true} />
+      <div className="mt-4 text-center">
+        <Link
+          href="/blogs"
+          className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-semibold rounded-xl hover:from-primary-600 hover:to-primary-700 transition-all duration-150 transform hover:-translate-y-0.5"
+        >
+          <span>{t('home.viewAllBlogs')}</span>
+        </Link>
+      </div>
     </div>
   </div>
 </section>
@@ -407,7 +331,7 @@ export default function HomePage() {
           </div>
 
           <Link href="/donation">
-            <Button variant="outline" className="bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 px-8 py-3 rounded-xl font-semibold transform hover:-translate-y-0.5 transition-all duration-300">
+            <Button variant="outline" className="bg-gradient-to-r from-primary-500 to-primary-600 text-white hover:from-primary-600 hover:to-primary-700 px-8 py-3 rounded-xl font-semibold transform hover:-translate-y-0.5 transition-all duration-150">
               {t('home.donateNow')}
             </Button>
           </Link>

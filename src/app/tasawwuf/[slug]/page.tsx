@@ -3,6 +3,7 @@ import Image from "next/image";
 import { TasawwufApi } from "@/lib/api";
 import { buildStorageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface Tasawwuf {
   id: number;
@@ -42,6 +43,7 @@ export default async function TasawwufSinglePage({
 
   return (
     <main className="py-16 mt-20">
+      <Breadcrumb />
       <div className="max-w-3xl  mx-auto px-4">
         {/* Title */}
         <h1 className="text-3xl font-bold text-gray-900 mb-4">{cleanText(post.title)}</h1>

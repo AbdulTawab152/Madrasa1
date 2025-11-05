@@ -796,6 +796,20 @@
     animation-delay: 0.3s;
   }
 
+  /* Subtle bounce animation for floating button */
+  @keyframes bounce-subtle {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-bounce-subtle {
+    animation: bounce-subtle 2s ease-in-out infinite;
+  }
+
   @keyframes cardFadeIn {
     from {
       opacity: 0;

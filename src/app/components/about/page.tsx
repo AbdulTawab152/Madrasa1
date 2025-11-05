@@ -124,7 +124,7 @@ const About = () => {
           <Image
             src={img}
             alt="شیخ خلیفه صاحب ارغندی (رح) - د انوارالعلوم بنسټګر"
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
             priority
@@ -189,7 +189,7 @@ const About = () => {
         <Image
           src={img2}
           alt="شیخ خلیفه صاحب ارغندی (رح) - د انوارالعلوم بنسټګر"
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
           priority
@@ -203,7 +203,7 @@ const About = () => {
     <div className="relative w-full mb-8">
       <div className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] rounded-2xl overflow-hidden shadow-lg group">
         <video
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
           autoPlay
           muted
           loop
@@ -213,7 +213,7 @@ const About = () => {
           د ویډیو ملاتړ نشته. مهرباني وکړئ د خپل براوزر تازه کړئ.
         </video>
 
-        <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className="absolute inset-0 bg-black/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-150">
           <div className="w-14 h-14 bg-amber-500 rounded-full flex items-center justify-center shadow-lg">
             <svg
               className="w-6 h-6 text-white ml-1"
@@ -239,15 +239,15 @@ const About = () => {
       <div className="grid grid-cols-2 gap-3">
         {[img3, img2, img1, img].map((image, i) => (
           <div key={i} className="relative group">
-            <div className="relative w-full h-[120px] sm:h-[140px] rounded-lg overflow-hidden shadow-md group-hover:shadow-lg transition-all duration-300">
+            <div className="relative w-full h-[120px] sm:h-[140px] rounded-lg overflow-hidden shadow-md group-hover:shadow-lg transition-all duration-150">
               <Image
                 src={image}
                 alt="Gallery Image"
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-150"
                 fill
                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
               />
-              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+              <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-150 flex items-center justify-center">
                 <svg
                   className="w-5 h-5 text-white"
                   fill="none"

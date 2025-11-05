@@ -59,7 +59,7 @@ const MiniSlider = ({
       <img
         src={getImageUrlWithFallback(images[currentSlide]?.image, "/placeholder-about.biography.gallerySection.jpg")}
         alt={images[currentSlide]?.title || "Gallery image"}
-        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+        className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent">
@@ -253,7 +253,7 @@ export default function Gallery({
             <div className="md:hidden space-y-4">
               {/* Main slider */}
               <div
-                className="h-64 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="h-64 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl"
                 onClick={() => openLightbox(0)}
               >
                 <MiniSlider
@@ -270,17 +270,17 @@ export default function Gallery({
                   return (
                     <div
                       key={`mobile-item-${img.id}-${index}`}
-                      className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
+                      className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl h-48"
                       onClick={() => openLightbox(index)}
                     >
                       <div className="relative h-full overflow-hidden">
                         <img
                           src={getImageUrlWithFallback(img.image, "/placeholder-about.biography.gallerySection.jpg")}
                           alt={img.title || "Gallery image"}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                         />
 
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                           <div className="absolute bottom-4 left-4 right-4">
                             <p className="font-semibold text-white text-sm mb-1">
                               {img.title || translate('about.biography.gallerySection.untitled')}
@@ -305,7 +305,7 @@ export default function Gallery({
                   <div className="text-center">
                     <button
                       onClick={() => setShowAllImages(false)}
-                      className="bg-gray-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                      className="bg-gray-500 text-white px-6 py-2 rounded-full font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-150"
                     >
                       {translate('about.biography.gallerySection.showLess')}
                     </button>
@@ -317,17 +317,17 @@ export default function Gallery({
                       return (
                         <div
                           key={`mobile-all-item-${img.id}-${index + 3}`}
-                          className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-48"
+                          className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl h-48"
                           onClick={() => openLightbox(index + 3)}
                         >
                           <div className="relative h-full overflow-hidden">
                             <img
                               src={getImageUrlWithFallback(img.image, "/placeholder-about.biography.gallerySection.jpg")}
                               alt={img.title || "Gallery image"}
-                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                             />
 
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                               <div className="absolute bottom-4 left-4 right-4">
                                 <p className="font-semibold text-white text-sm mb-1">
                                   {img.title || translate('about.biography.gallerySection.untitled')}
@@ -350,7 +350,7 @@ export default function Gallery({
             <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-4">
             {/* First item - large slider */}
             <div
-                className="row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                className="row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl"
               onClick={() => openLightbox(0)}
             >
               <MiniSlider
@@ -366,17 +366,17 @@ export default function Gallery({
               return (
                 <div
                   key={`grid-item-${img.id}-${index}`}
-                    className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                    className="relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl"
                   onClick={() => openLightbox(index)}
                 >
                   <div className="relative overflow-hidden">
             <img
               src={getImageUrlWithFallback(img.image, "/placeholder-about.biography.gallerySection.jpg")}
                       alt={img.title || "Gallery image"}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
                           {img.title || translate('about.biography.gallerySection.untitled')}
@@ -399,7 +399,7 @@ export default function Gallery({
 
             {/* Fourth item - second slider */}
             <div
-              className=" hidden md:flex md:row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className=" hidden md:flex md:row-span-2 rounded-2xl overflow-hidden shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl"
               onClick={() => openLightbox(4)}
             >
               <MiniSlider
@@ -417,7 +417,7 @@ export default function Gallery({
               return (
                 <div
                   key={`grid-item-${img.id}-${index + 4}`}
-                  className={` hidden md:flex relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl 
+                  className={` hidden md:flex relative group overflow-hidden rounded-xl shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl 
                 ${isBig ? "md:col-span-2 md:row-span-2 h-[255px]" : "h-64"}
               `}
                           onClick={() => openLightbox(index + 3)} // slice starts at 3 → offset by 3
@@ -426,10 +426,10 @@ export default function Gallery({
                     <img
                       src={getImageUrlWithFallback(img.image, "/placeholder-about.biography.gallerySection.jpg")}
                       alt={img.title || "Gallery image"}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                     />
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
                           {img.title || translate('about.biography.gallerySection.untitled')}
@@ -458,16 +458,16 @@ export default function Gallery({
               return (
                 <div
                   key={`grid-item-${img.id}-${index + 8}`}
-                  className="relative group overflow-hidden rounded-4xl shadow-lg cursor-pointer bg-white transform transition-all duration-300 hover:-translate-y-1 hover:shadow-xl h-64"
+                  className="relative group overflow-hidden rounded-4xl shadow-lg cursor-pointer bg-white transform transition-all duration-150 hover:-translate-y-1 hover:shadow-xl h-64"
                   onClick={() => openLightbox(index + 8)}
                 >
                   <div className="relative h-64 w-full overflow-hidden">
                     <img
                       src={getImageUrlWithFallback(img.image, "/placeholder-about.biography.gallerySection.jpg")}
                       alt={img.title || "Gallery image"}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
                       <div className="absolute bottom-4 left-4 right-4">
                         <p className="font-semibold text-white text-sm mb-1">
                           {img.title || translate('about.biography.gallerySection.untitled')}

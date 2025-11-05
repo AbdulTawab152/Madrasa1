@@ -32,7 +32,7 @@ export default function RegistrationCTA() {
         </p>
 
         <button
-          className="px-8 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold text-sm rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          className="px-8 py-3 bg-gradient-to-r from-amber-600 to-orange-600 text-white font-semibold text-sm rounded-lg hover:from-amber-700 hover:to-orange-700 transition-all duration-150 transform hover:scale-105 shadow-lg hover:shadow-xl"
           onClick={goToRegistration}
         >
           Register for Classes

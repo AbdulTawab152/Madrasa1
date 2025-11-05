@@ -6,6 +6,7 @@ import { FaBook, FaCalendar, FaUser, FaArrowLeft, FaEye, FaHeart } from 'react-i
 import { FaDownload, FaDownLong } from "react-icons/fa6";
 import { buildStorageUrl, getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
+import Breadcrumb from "@/components/Breadcrumb";
 
 interface Params {
   params: Promise<{ id: string }>;
@@ -38,6 +39,7 @@ export default async function BookDetailsPage({ params }: Params) {
 
     return (
       <div className="min-h-screen mt-36 md:mt-[100px] bg-gradient-to-br from-slate-50 via-amber-50/20 to-white" dir="rtl">
+        <Breadcrumb />
         {/* Compact Header Section */}
         <div className="relative bg-white border-b border-gray-200/60">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
@@ -45,9 +47,9 @@ export default async function BookDetailsPage({ params }: Params) {
             <div className="mt-5">
               <Link 
                 href="/book" 
-                className="group inline-flex items-center gap-3 text-amber-700 hover:text-amber-800 transition-all duration-300 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 px-4 py-2 rounded-lg font-semibold border border-amber-200/50"
+                className="group inline-flex items-center gap-3 text-amber-700 hover:text-amber-800 transition-all duration-150 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 px-4 py-2 rounded-lg font-semibold border border-amber-200/50"
               >
-                <FaArrowLeft className="w-4 h-4  group-hover:-translate-x-1 transition-transform" />
+                <FaArrowLeft className="w-4 h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
                 <span className="text-sm">بیرته تلل کتابتون ته</span>
               </Link>
             </div>
@@ -77,7 +79,7 @@ export default async function BookDetailsPage({ params }: Params) {
             <div className="lg:col-span-2 space-y-5">
               {/* Description Card */}
               {book.description && (
-                <div className="group bg-white rounded-xl border border-gray-200/60 p-5 sm:p-6 transition-all duration-300">
+                <div className="group bg-white rounded-xl border border-gray-200/60 p-5 sm:p-6 transition-all duration-150">
                   <div className="flex items-center gap-3.5 mb-4 pb-3 border-b border-amber-100">
                     <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
                       <FaBook className="w-4 h-4 text-amber-600" />
@@ -95,7 +97,7 @@ export default async function BookDetailsPage({ params }: Params) {
 
               {/* Author Section */}
               {book.author && book.author.first_name && (
-                <div className="group bg-white rounded-xl border border-gray-200/60 p-5 sm:p-6 transition-all duration-300">
+                <div className="group bg-white rounded-xl border border-gray-200/60 p-5 sm:p-6 transition-all duration-150">
                   <div className="flex items-center gap-3.5 mb-5 pb-3 border-b border-amber-100">
                     <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center">
                       <FaUser className="w-4 h-4 text-amber-600" />
@@ -106,7 +108,7 @@ export default async function BookDetailsPage({ params }: Params) {
                     {book.author.image && (
                       <div className="flex-shrink-0">
                         <Link href={`/authors/${book.author.id}`} className="block group">
-                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border-4 border-amber-200 transition-all duration-300 group-hover:scale-105">
+                          <div className="relative w-24 h-24 sm:w-28 sm:h-28 rounded-xl overflow-hidden border-4 border-amber-200 transition-all duration-150 group-hover:scale-105">
                             <Image
                               src={getImageUrl(book.author.image) || ""}
                               alt={`${book.author.first_name} ${book.author.last_name || ''}`}
@@ -120,7 +122,7 @@ export default async function BookDetailsPage({ params }: Params) {
                     )}
                     <div className="flex-1 space-y-3">
                       <Link href={`/authors/${book.author.id}`}>
-                        <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 hover:text-amber-700 transition-colors duration-300">
+                        <h3 className="text-lg sm:text-xl font-extrabold text-gray-900 hover:text-amber-700 transition-colors duration-150">
                           {cleanText(book.author.first_name)} {cleanText(book.author.last_name || '')}
                         </h3>
                       </Link>

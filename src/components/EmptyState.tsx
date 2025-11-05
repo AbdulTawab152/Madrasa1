@@ -49,8 +49,8 @@ const contentVariants = {
     opacity: 1, 
     y: 0,
     transition: {
-      duration: 0.6,
-      delay: 0.2
+      duration: 0.15,
+      // No delay - instant rendering
     }
   }
 };
@@ -61,8 +61,8 @@ const buttonVariants = {
     opacity: 1, 
     y: 0,
     transition: {
-      duration: 0.4,
-      delay: 0.4
+      duration: 0.15,
+      // No delay - instant rendering
     }
   }
 };

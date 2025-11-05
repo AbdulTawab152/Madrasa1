@@ -38,7 +38,8 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
   };
 
   // Check if current language is RTL
-  const isRTL = i18n.language === 'ps' || i18n.language === 'prs';
+  // Always RTL since website only has RTL languages
+  const isRTL = true;
 
   const [posts, setPosts] = useState<Tasawwuf[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
@@ -134,7 +135,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
   {filteredPosts.map((post) => (
     <div
       key={post.id}
-      className="flex flex-col md:flex-row gap-6 p-6 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-all duration-300"
+      className="flex flex-col md:flex-row gap-6 p-6 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-all duration-150"
     >
       {/* Image */}
       {post.image && (
@@ -144,7 +145,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
                     alt={post.title}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    className="object-cover hover:scale-105 transition-transform duration-500"
+                    className="object-cover hover:scale-105 transition-transform duration-200"
                   />
           <div className="absolute top-3 left-3">
             <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-white/90 backdrop-blur-sm text-amber-700">
@@ -195,15 +196,15 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
             href={`/tasawwuf/${post.slug}`}
             className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-amber-700 bg-amber-50 rounded-lg hover:bg-amber-100 transition-colors duration-200 border border-amber-200 hover:border-amber-300 shadow-sm whitespace-nowrap outline-none focus:outline-none focus:ring-0"
           >
-            <span className={`flex items-center gap-1.5 ${isRTL ? 'flex-row-reverse' : 'flex-row'}`}>
+            <span className="flex items-center gap-1.5 flex-row-reverse">
               {t('home.readMore')}
-              {/* Arrow direction based on language: left for RTL, right for LTR */}
+              {/* Arrow flipped for RTL */}
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
                 className="h-4 w-4" 
                 viewBox="0 0 20 20" 
                 fill="currentColor"
-                style={{ transform: isRTL ? 'scaleX(-1)' : 'none' }}
+                style={{ transform: 'scaleX(-1)' }}
               >
                 <path 
                   fillRule="evenodd" 
@@ -224,7 +225,7 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
         <div className="text-center mt-12">
           <Link
             href="/tasawwuf"
-            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:opacity-90"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-medium rounded-lg shadow-md hover:shadow-lg transition-all duration-150 hover:opacity-90"
           >
             Explore All Content
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">

@@ -12,6 +12,7 @@ import { CoursesApi } from "@/lib/api";
 import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
 import ErrorDisplay from "@/components/ErrorDisplay";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function CoursesPage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
@@ -47,19 +48,16 @@ export default function CoursesPage() {
   }, [items]);
 
   return (
-    <main className="w-full min-h-screen ">
+    <main className="w-full min-h-screen bg-gray-50" dir="rtl">
       <IslamicHeader
         pageType="courses"
         alignment="center"
-        // cta={{
-        //   label: "Explore All Courses",
-        //   href: "/courses",
-        // }}
       />
 
-      <div className="w-full mx-auto py-1 px-4 sm:px-6 lg:px-8">
+      <Breadcrumb />
+      <div className="w-full mx-auto py-8 px-4 sm:px-6 lg:px-8" dir="rtl">
         {isLoadingInitial ? (
-          <UnifiedLoader variant="card-grid" count={6} showFilters={false} />
+          <UnifiedLoader variant="grid" count={6} showFilters={false} />
         ) : error ? (
           <ErrorDisplay 
             error={error} 

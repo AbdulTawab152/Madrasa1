@@ -6,6 +6,7 @@ import { getImageUrl } from "@/lib/utils";
 import type { Course } from "@/lib/types";
 import VideoPlayer from "../../components/VideoPlayer";
 import { getTranslation } from "@/lib/translations";
+import Breadcrumb from "@/components/Breadcrumb";
 
 
 interface Book {
@@ -165,55 +166,8 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
-      {/* Breadcrumb */}
-      <div className="max-w-7xl z-50 mx-auto px-4 py-6 flex flex-wrap items-center gap-2 text-sm md:text-base">
-        <Link
-          href="/"
-          className="inline-flex items-center text-amber-700 hover:text-amber-900 transition-colors group font-medium"
-        >
-          <svg
-            className="w-5 h-5 mr-2 text-amber-600 group-hover:text-amber-700 transition-colors"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-          >
-            <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
-          </svg>
-          {t('courses.home')}
-        </Link>
-
-        <svg
-          className="w-4 h-4 text-amber-400"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            fillRule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clipRule="evenodd"
-          />
-        </svg>
-
-        <Link
-          href="/courses"
-          className="inline-flex items-center text-amber-700 hover:text-amber-900 transition-colors font-medium"
-        >
-          {t('courses.title')}
-        </Link>
-
-        <svg
-          className="w-4 h-4 text-amber-400"
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path
-            fillRule="evenodd"
-            d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-            clipRule="evenodd"
-          />
-        </svg>
-
-        <span className="text-black font-medium">{course.title}</span>
-      </div>
+      <Breadcrumb />
+      <div className="max-w-7xl z-50 mx-auto px-4 py-6">
 
       {/* Hero Section - Modern & Clean Design */}
       <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[560px] lg:min-h-[600px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">0

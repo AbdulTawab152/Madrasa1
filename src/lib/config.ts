@@ -80,6 +80,7 @@ export const endpoints = {
   contact: `${apiConfig.baseUrl}/contact`,
   admissions: `${apiConfig.baseUrl}/admissions`,
   degrees: `${apiConfig.baseUrl}/degrees`, // Not implemented yet - uses fallback
+  search: `${apiConfig.baseUrl}/search`, // Search endpoint
 
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
   shajara: `${apiConfig.baseUrl}/awlyaa-sanads`,

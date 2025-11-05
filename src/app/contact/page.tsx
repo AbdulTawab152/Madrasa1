@@ -1,5 +1,6 @@
 import ContactForm from "../components/contact/ContactForm";
 import IslamicHeader from "../components/IslamicHeader";
+import Breadcrumb from "@/components/Breadcrumb";
 
 export default function ContactPage() {
   return (
@@ -12,6 +13,7 @@ export default function ContactPage() {
           href: "#contact-form"
         }}
       />
+      <Breadcrumb />
       <div className="w-full">
         <ContactForm />
       </div>

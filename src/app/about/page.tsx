@@ -4,36 +4,19 @@ import Link from "next/link";
 import IslamicHeader from "../components/IslamicHeader";
 import { BookOpen, Award, Heart, Users, Sparkles, Clock, GraduationCap, Target, Lightbulb, Star, CheckCircle, Quote, Trophy } from "lucide-react";
 import { useTranslation } from '@/hooks/useTranslation';
-import { getLanguageDirection } from '@/lib/i18n';
 import { getTranslation } from '@/lib/translations';
 import img from "../../../public/1.jpg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Breadcrumb from "@/components/Breadcrumb";
 
-// Custom Arrow Components
+// Custom Arrow Components - RTL version (swapped for RTL)
 const CustomNextArrow = ({ onClick }: { onClick?: () => void }) => (
   <button
     onClick={onClick}
-    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-50 transition-all duration-300 group border border-gray-200"
+    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-50 transition-all duration-150 group border border-gray-200"
     aria-label="Next slide"
-  >
-    <svg
-      className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:text-blue-600 transition-colors"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-    </svg>
-  </button>
-);
-
-const CustomPrevArrow = ({ onClick }: { onClick?: () => void }) => (
-  <button
-    onClick={onClick}
-    className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-50 transition-all duration-300 group border border-gray-200"
-    aria-label="Previous slide"
   >
     <svg
       className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:text-blue-600 transition-colors"
@@ -46,9 +29,27 @@ const CustomPrevArrow = ({ onClick }: { onClick?: () => void }) => (
   </button>
 );
 
+const CustomPrevArrow = ({ onClick }: { onClick?: () => void }) => (
+  <button
+    onClick={onClick}
+    className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full flex items-center justify-center hover:bg-blue-50 transition-all duration-150 group border border-gray-200"
+    aria-label="Previous slide"
+  >
+    <svg
+      className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600 group-hover:text-blue-600 transition-colors"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+    </svg>
+  </button>
+);
+
 const AboutPage = () => {
   const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
-  const isRTL = getLanguageDirection(i18n?.language || 'ps') === 'rtl';
+  // Always RTL since website only has RTL languages
+  const isRTL = true;
   
   // Create a string-safe wrapper function for string contexts
   const t = (key: string): string => {
@@ -116,10 +117,10 @@ const AboutPage = () => {
                     alt="شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)"
                     width={192}
                     height={192}
-                    className="object-cover w-full h-full rounded-full relative z-10 hover:scale-105 transition-transform duration-300"
+                    className="object-cover w-full h-full rounded-full relative z-10 hover:scale-105 transition-transform duration-150"
                       priority
                     />
-                  <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-gradient-to-r from-amber-300 to-amber-400 rounded-full flex items-center justify-center hover:rotate-12 transition-transform duration-300 z-20">
+                  <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-gradient-to-r from-amber-300 to-amber-400 rounded-full flex items-center justify-center hover:rotate-12 transition-transform duration-150 z-20">
                     <BookOpen className="h-5 w-5 text-white" />
                   </div>
                 </div>
@@ -144,7 +145,7 @@ const AboutPage = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100 hover:border-amber-300 group transition-all duration-300">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100 hover:border-amber-300 group transition-all duration-150">
                     <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
                       <div className="w-3 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
                       <GraduationCap className="h-6 w-6 text-amber-600" />
@@ -155,7 +156,7 @@ const AboutPage = () => {
                     </p>
                   </div>
 
-                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100 hover:border-amber-300 group transition-all duration-300">
+                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100 hover:border-amber-300 group transition-all duration-150">
                     <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
                       <div className="w-3 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
                       <BookOpen className="h-6 w-6 text-amber-600" />
@@ -184,7 +185,7 @@ const AboutPage = () => {
                       alt="د ارغندی د مدرسې بنسټ"
                       width={600}
                       height={400}
-                      className="rounded-2xl w-full h-64 md:h-80 object-cover relative z-10 group-hover:scale-105 transition-transform duration-300"
+                      className="rounded-2xl w-full h-64 md:h-80 object-cover relative z-10 group-hover:scale-105 transition-transform duration-150"
                     />
                   </div>
                   <div className="order-1 lg:order-2">
@@ -245,7 +246,7 @@ const AboutPage = () => {
                       alt="د خلیفه صاحب میراث"
                       width={600}
                       height={400}
-                      className="rounded-2xl w-full h-64 md:h-80 object-cover relative z-10 group-hover:scale-105 transition-transform duration-300"
+                      className="rounded-2xl w-full h-64 md:h-80 object-cover relative z-10 group-hover:scale-105 transition-transform duration-150"
                     />
                   </div>
                 </div>
@@ -301,8 +302,8 @@ const AboutPage = () => {
                   { name: 'عربي', icon: '🕌' },
                   { name: 'فن بیان', icon: '🎤' }
                 ].map((subject, index) => (
-                  <div key={index} className="text-center p-4 md:p-6 bg-white/90 backdrop-blur-sm rounded-2xl hover:bg-blue-50 hover:scale-105 transition-all duration-300 shadow-sm border-2 border-transparent hover:border-blue-200 group">
-                    <div className="text-4xl md:text-5xl mb-3 group-hover:scale-110 transition-transform duration-300">{subject.icon}</div>
+                  <div key={index} className="text-center p-4 md:p-6 bg-white/90 backdrop-blur-sm rounded-2xl hover:bg-blue-50 hover:scale-105 transition-all duration-150 shadow-sm border-2 border-transparent hover:border-blue-200 group">
+                    <div className="text-4xl md:text-5xl mb-3 group-hover:scale-110 transition-transform duration-150">{subject.icon}</div>
                     <p className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">{subject.name}</p>
                   </div>
                 ))}
@@ -350,7 +351,7 @@ const AboutPage = () => {
                   'حافظ صاحب رحمن‌الله قائد',
                   'حافظ صاحب صدیق‌الله'
                 ].map((teacher, index) => (
-                  <div key={index} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 hover:bg-green-50 hover:scale-105 transition-all duration-300 shadow-sm border-2 border-transparent hover:border-green-200 group">
+                  <div key={index} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 hover:bg-green-50 hover:scale-105 transition-all duration-150 shadow-sm border-2 border-transparent hover:border-green-200 group">
                     <p className="text-sm md:text-base font-semibold text-gray-800 text-center group-hover:text-green-700 transition-colors">{teacher}</p>
                       </div>
                     ))}
@@ -364,7 +365,7 @@ const AboutPage = () => {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-amber-300/20 rounded-bl-full blur-2xl"></div>
                 <div className="relative z-10">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-150">
                   <Users className="h-8 w-8 text-white" />
                 </div>
                   <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 to-amber-900 bg-clip-text text-transparent mb-3">د شاګردانو داخله</h3>
@@ -379,7 +380,7 @@ const AboutPage = () => {
                 <div className="absolute top-0 right-0 w-32 h-32 bg-green-300/20 rounded-bl-full blur-2xl"></div>
                 <div className="relative z-10">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-150">
                     <GraduationCap className="h-8 w-8 text-white" />
                 </div>
                   <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent mb-3">فارغین</h3>
@@ -413,11 +414,11 @@ const AboutPage = () => {
                     د ارغندی د خلیفه صاحب وروڼه
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                    <div className="bg-gradient-to-br from-indigo-50/60 to-indigo-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-300">
+                    <div className="bg-gradient-to-br from-indigo-50/60 to-indigo-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-150">
                       <h4 className="font-bold text-indigo-800 mb-3 text-lg group-hover:text-indigo-900 transition-colors">محترم احمدزی</h4>
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed">ده ښو اخلاقوڅښتن اومتقی شخص وه.</p>
                     </div>
-                    <div className="bg-gradient-to-br from-indigo-50/60 to-indigo-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-300">
+                    <div className="bg-gradient-to-br from-indigo-50/60 to-indigo-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-150">
                       <h4 className="font-bold text-indigo-800 mb-3 text-lg group-hover:text-indigo-900 transition-colors">جناب تاج المشائخ خلیفه صاحب سدوزی غریقي رحمه الله</h4>
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed">د ارغندی خلیفه صاحب ورور او په علمي ډګر کې ځای ناستی وو. د وخت جید عالم، مدرس، پیاوړۍ مجاهد او لـوی عـارف وو.</p>
             </div>
@@ -431,19 +432,19 @@ const AboutPage = () => {
                     د ارغندي خلیفه صاحب پنځه زامن
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-300">
+                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-150">
                       <h4 className="font-bold text-green-800 mb-3 text-base md:text-lg group-hover:text-green-900 transition-colors">جناب الحاج قاری صاحب عبدالعلیم فضلي</h4>
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed">مشر زوى، د ښواخلاقو څښتن اوزړه سواند شخصیت ده.</p>
                 </div>
-                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-300">
+                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-150">
                       <h4 className="font-bold text-green-800 mb-3 text-base md:text-lg group-hover:text-green-900 transition-colors">جناب الحاج خلیفه صاحب نعمت الله فضلي</h4>
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed">د قوي عزم خاوند، د تصوف او سلوک په ډګر کې د جناب قطب المشائخ لخوا ورته د خلافت دستار ور په سر کړل شو.</p>
               </div>
-                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-300">
+                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-150">
                       <h4 className="font-bold text-green-800 mb-3 text-base md:text-lg group-hover:text-green-900 transition-colors">انجینر رحمت الله فضلي</h4>
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed">دحلم او زغم نمونه ده.</p>
                     </div>
-                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group md:col-span-2 lg:col-span-3 transition-all duration-300">
+                    <div className="bg-gradient-to-br from-green-50/60 to-green-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group md:col-span-2 lg:col-span-3 transition-all duration-150">
                       <h4 className="font-bold text-green-800 mb-3 text-base md:text-lg group-hover:text-green-900 transition-colors">جناب قلب المشائخ الحاج خلیفه صاحب محمدشفیق فضلي دام الله حیاته وفیوضاته</h4>
                       <p className="text-sm md:text-base text-gray-700 leading-relaxed">جید عالم او کامل متبع د شریعت چې ده. جناب تاج المشائخ رحمه الله د وفات څخه وروسته د انوار العلوم اسلامي مدرسې مهتمم شیخ الحدیث او دخلیفه صاحب ځاي ناستي ده، اوس مهال د تصوف اوسلوک په ډګر کې یو لا مثال شخصیت ده.</p>
             </div>
@@ -467,7 +468,7 @@ const AboutPage = () => {
                       'جناب نعمت الله خلیفه صاحب د لوګر ولایت',
                       'جناب عثمان غنی خلیفه صاحب اصلا دغزنی ولایت اندړو ولسوالی، فعلاً دپکتیکا ولایت نکه ولسوالی اړوند دی'
                     ].map((khalifa, index) => (
-                      <div key={index} className="bg-gradient-to-br from-purple-50/60 to-purple-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-300">
+                      <div key={index} className="bg-gradient-to-br from-purple-50/60 to-purple-100/40 rounded-xl p-5 md:p-6 hover:scale-105 group transition-all duration-150">
                         <p className="text-sm md:text-base font-semibold text-purple-800 group-hover:text-purple-900 transition-colors leading-relaxed">{khalifa}</p>
                   </div>
                     ))}
@@ -502,7 +503,7 @@ const AboutPage = () => {
                       'جناب خلیفه صاحب رسول محمد حفظه الله',
                       'جناب خلیفه صاحب وزیر حفظه الله'
                     ].map((successor, index) => (
-                      <div key={index} className="bg-gradient-to-br from-blue-50/60 to-blue-100/40 rounded-xl p-4 md:p-5 hover:scale-105 group transition-all duration-300">
+                      <div key={index} className="bg-gradient-to-br from-blue-50/60 to-blue-100/40 rounded-xl p-4 md:p-5 hover:scale-105 group transition-all duration-150">
                         <p className="text-xs md:text-sm font-semibold text-blue-800 text-center group-hover:text-blue-900 transition-colors leading-relaxed">{successor}</p>
                 </div>
               ))}
@@ -597,7 +598,7 @@ const AboutPage = () => {
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
             <Link
               href="/courses"
-              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-amber-600 font-bold rounded-xl hover:bg-amber-50 hover:scale-105 transition-all duration-300 shadow-sm text-base sm:text-lg"
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-amber-600 font-bold rounded-xl hover:bg-amber-50 hover:scale-105 transition-all duration-150 shadow-sm text-base sm:text-lg"
             >
               کورسونو ته وګورئ
               <svg
@@ -618,7 +619,7 @@ const AboutPage = () => {
               href={`https://wa.me/+93796148087?text=${encodeURIComponent('اسلام علیکم ورحمته الله وبرکاتو ولیکه')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-600 transition-all duration-300 shadow-sm hover:scale-105 text-base sm:text-lg"
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-600 transition-all duration-150 shadow-sm hover:scale-105 text-base sm:text-lg"
             >
               اړیکه ونیسئ
             </a>
