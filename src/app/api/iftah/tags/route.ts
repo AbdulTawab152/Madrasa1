@@ -39,30 +39,35 @@ export async function GET(request: NextRequest) {
     }
 
     const data = await response.json();
-    console.log('✅ Iftah tags data received from API');
+    console.log('✅ Iftah tags data received from API:', data);
     
     // Handle different response formats
+    // API returns: {total: number, tags: [{id, name, ...}]}
+    let tagsArray: any[] = [];
+    
     if (Array.isArray(data)) {
-      return NextResponse.json({ data, success: true }, {
-        status: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-      });
-    } else if (data && Array.isArray(data.data)) {
-      return NextResponse.json(data, {
-        status: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        },
-      });
+      tagsArray = data;
+    } else if (data && typeof data === 'object') {
+      // Check for tags property (API format: {total: 1, tags: [...]})
+      if (Array.isArray(data.tags)) {
+        tagsArray = data.tags;
+        console.log('📊 Found tags in data.tags:', tagsArray.length);
+      } else if (Array.isArray(data.data)) {
+        tagsArray = data.data;
+        console.log('📊 Found tags in data.data:', tagsArray.length);
+      } else if (Array.isArray(data)) {
+        tagsArray = data;
+        console.log('📊 Data is direct array:', tagsArray.length);
+      }
     }
-
-    return NextResponse.json({ data: data || [], success: true }, {
+    
+    console.log('📊 Final tags array to return:', tagsArray.length);
+    
+    return NextResponse.json({ 
+      data: tagsArray, 
+      success: true,
+      total: data?.total || tagsArray.length
+    }, {
       status: 200,
       headers: {
         'Access-Control-Allow-Origin': '*',

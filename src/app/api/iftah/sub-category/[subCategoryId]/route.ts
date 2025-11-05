@@ -4,10 +4,10 @@ const API_BASE_URL = 'https://lawngreen-dragonfly-304220.hostingersite.com/api';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { subCategoryId: string } }
+  { params }: { params: Promise<{ subCategoryId: string }> }
 ) {
+  const { subCategoryId } = await params;
   try {
-    const { subCategoryId } = params;
     const { searchParams } = new URL(request.url);
     const queryString = searchParams.toString();
     const apiUrl = `${API_BASE_URL}/darul-ifta/sub-category/${subCategoryId}${queryString ? `?${queryString}` : ''}`;

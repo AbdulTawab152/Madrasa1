@@ -4,10 +4,10 @@ const API_BASE_URL = 'https://lawngreen-dragonfly-304220.hostingersite.com/api';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { tagId: string } }
+  { params }: { params: Promise<{ tagId: string }> }
 ) {
   try {
-    const { tagId } = params;
+    const { tagId } = await params;
     const { searchParams } = new URL(request.url);
     const queryString = searchParams.toString();
     const apiUrl = `${API_BASE_URL}/darul-ifta/tag/${tagId}${queryString ? `?${queryString}` : ''}`;

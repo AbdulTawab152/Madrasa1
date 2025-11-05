@@ -725,365 +725,266 @@ export interface AdmissionFormData {
 }
 
 export class AdmissionsApi {
-  // 🔹 Get available degrees (for dropdown)
-  static async getDegrees() {
-    try {
-      const response = await fetch(endpoints.degrees, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-        },
-      });
+  // 🔹 Helper: Extract CSRF token from cookies with better debugging
+  private static extractCsrfTokenFromCookies(): string | null {
+      if (typeof document === "undefined") return null;
 
-      if (!response.ok) {
-        // 404 is expected - the endpoint doesn't exist yet, use fallback
-        if (response.status === 404) {
-          return this.getDefaultDegrees();
-        }
-        throw new Error(`HTTP error! status: ${response.status}`);
+      const cookies = document.cookie.split(";");
+      console.log("🍪 [ADMISSIONS] All cookies:", document.cookie);
+      console.log("🍪 [ADMISSIONS] Parsed cookies:", cookies);
+
+      // Try XSRF-TOKEN first (Laravel Sanctum standard)
+      const xsrfCookie = cookies.find((cookie) =>
+          cookie.trim().startsWith("XSRF-TOKEN=")
+      );
+      if (xsrfCookie) {
+          const token = decodeURIComponent(xsrfCookie.split("=")[1].trim());
+          console.log(
+              "✅ [ADMISSIONS] Found XSRF-TOKEN:",
+              token.substring(0, 20) + "..."
+          );
+          return token;
       }
 
-      const result = await response.json();
-      return result;
-    } catch (error: any) {
-      // Use fallback degrees (no logging for expected 404)
-      return this.getDefaultDegrees();
-    }
+      // Try lowercase version
+      const xsrfCookieLower = cookies.find((cookie) =>
+          cookie.trim().toLowerCase().startsWith("xsrf-token=")
+      );
+      if (xsrfCookieLower) {
+          const token = decodeURIComponent(
+              xsrfCookieLower.split("=")[1].trim()
+          );
+          console.log(
+              "✅ [ADMISSIONS] Found xsrf-token (lowercase):",
+              token.substring(0, 20) + "..."
+          );
+          return token;
+      }
+
+      console.log("❌ [ADMISSIONS] No XSRF-TOKEN found in cookies");
+      return null;
   }
 
-  // 🔹 Get default degrees (fallback)
-  static getDefaultDegrees() {
-    return {
-      data: [
-        { id: 1, name: 'درجه اول' },
-        { id: 2, name: 'درجه دوم' },
-        { id: 3, name: 'درجه سوم' },
-        { id: 4, name: 'درجه چهارم' },
-        { id: 5, name: 'درجه پنجم' },
-      ],
-      success: true,
-    };
-  }
-
-  // 🔹 Get all admissions (using POST)
-  static async getAll(params: ListParams = {}) {
-    const { page: rawPage, limit: rawLimit, ...rest } = params;
-    const page = rawPage ?? 1;
-    const limit = rawLimit ?? DEFAULT_PAGE_SIZE;
-
-    try {
-      logger.info("Fetching admissions from API", { page, limit });
-
-      // ✅ Using POST method instead of GET
-      const result = await apiClient.post(endpoints.admissions, {
-        page,
-        limit,
-        ...rest,
-      });
-
-      if (!result.success) {
-        throw new Error(result.error || "API request failed");
-      }
-
-      logger.info("Successfully fetched admissions", {
-        count: Array.isArray(result.data) ? result.data.length : 0,
-      });
-
-      if (result.pagination) {
-        return result;
-      }
-
-      const total = Array.isArray(result.data)
-        ? result.data.length
-        : limit;
-
-      return {
-        ...result,
-        pagination: createPaginationMeta({ page, limit, total }),
-      };
-    } catch (error) {
-      logger.warn("Admissions API failed, using fallback data", { error });
-
-      // Return empty array instead of calling getFallbackData with "admissions"
-      return {
-        data: [],
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage
-          ? "Using empty data due to API unavailability"
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: 0,
-        }),
-      };
-    }
-  }
-
-  // 🔹 Get admission by ID (using POST)
-  static async getById(id: string) {
-    try {
-      const result = await apiClient.post(`${endpoints.admissions}/show`, { id });
-      if (!result.success) {
-        throw new Error(result.error || "API request failed");
-      }
-      return result;
-    } catch (error) {
-      logger.warn("Admission getById failed", { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: null,
-        success: true,
-        message: "Using fallback data due to API unavailability",
-      };
-    }
-  }
-
-  // 🔹 Create a new admission (POST) - Direct to Laravel API
-  static async create(data: AdmissionFormData) {
-    // Try multiple URLs in case one doesn't work
-    const apiUrls = [
-      'http://localhost:8000/api/admissions',
-      'http://127.0.0.1:8000/api/admissions',
-    ];
-    
-    let lastError: any = null;
-    
-    try {
-      // Try each URL until one works
-      for (const apiUrl of apiUrls) {
+  // 🔹 Get CSRF token (helper method) - IMPROVED VERSION
+  static async getCsrfToken(): Promise<string | null> {
       try {
-        // Log request URL
-        console.log('🚀 [ADMISSION API] Attempting request to:', apiUrl);
-        console.log('📤 [ADMISSION API] Data being sent:', JSON.stringify(data, null, 2));
-        console.log('📤 [ADMISSION API] Data object:', data);
-        console.log('📋 [ADMISSION API] Headers:', {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'X-Requested-With': 'XMLHttpRequest',
-        });
-
-        // Send directly to Laravel API with explicit CORS mode
-        const response = await fetch(apiUrl, {
-          method: 'POST',
-          mode: 'cors', // Explicitly enable CORS
-          cache: 'no-cache',
-          credentials: 'omit', // Don't send cookies (helps with CORS)
-          headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'X-Requested-With': 'XMLHttpRequest', // Laravel recognizes this as AJAX request
-          },
-          body: JSON.stringify(data),
-        });
-
-        // Log response status
-        console.log('📥 [ADMISSION API] Response status:', response.status);
-        console.log('📥 [ADMISSION API] Response status text:', response.statusText);
-        console.log('📥 [ADMISSION API] Response headers:', Object.fromEntries(response.headers.entries()));
-
-        if (!response.ok) {
-          const errorText = await response.text();
-          console.error('❌ [ADMISSION API] Request failed!');
-          console.error('❌ [ADMISSION API] Status:', response.status);
-          console.error('❌ [ADMISSION API] Error response body:', errorText);
-          
-          // Try to parse as JSON if possible
-          try {
-            const errorJson = JSON.parse(errorText);
-            console.error('❌ [ADMISSION API] Error JSON:', errorJson);
-          } catch (e) {
-            // Not JSON, that's fine
+          // Step 1: Check if token already exists in cookies
+          let token = this.extractCsrfTokenFromCookies();
+          if (token) {
+              console.log("✅ [ADMISSIONS] CSRF token already in cookies");
+              return token;
           }
+
+          // Step 2: Fetch CSRF cookie from server
+          console.log("🔑 [ADMISSIONS] Fetching CSRF token from server...");
+          console.log("🔑 [ADMISSIONS] CSRF endpoint:", endpoints.csrfCookie);  
+
+          try {
+              const response = await fetch(endpoints.csrfCookie, {
+                  method: "GET",
+                  credentials: "include", // Must include credentials
+                  headers: {
+                      Accept: "application/json",
+                      "X-Requested-With": "XMLHttpRequest",
+                  },
+              });
+
+              console.log(
+                  "📥 [ADMISSIONS] CSRF endpoint response status:",
+                  response.status
+              );
+              console.log(
+                  "📥 [ADMISSIONS] CSRF endpoint response headers:",
+                  Object.fromEntries(response.headers.entries())
+              );
+
+              if (response.ok) {
+                  // Wait a moment for cookie to be set (browser needs time)
+                  await new Promise((resolve) => setTimeout(resolve, 100));
+
+                  // Check cookies again
+                  token = this.extractCsrfTokenFromCookies();
+
+                  if (token) {
+                      console.log(
+                          "✅ [ADMISSIONS] CSRF token obtained from server"
+                      );
+                      return token;
+                  } else {
+                      console.warn(
+                          "⚠ [ADMISSIONS] CSRF endpoint responded OK but no cookie found"
+                      );
+                      console.warn(
+                          "⚠ [ADMISSIONS] Check: 1) Same domain 2) CORS credentials 3) Cookie settings"
+                      );
+                  }
+              } else {
+                  console.error(
+                      "❌ [ADMISSIONS] CSRF endpoint failed:",
+                      response.status,
+                      response.statusText
+                  );
+              }
+          } catch (csrfError) {
+              console.error(
+                  "❌ [ADMISSIONS] Error fetching CSRF token:",
+                  csrfError
+              );
+          }
+
+          console.log("❌ [ADMISSIONS] No CSRF token found");
+          return null;
+      } catch (error) {
+          console.error("❌ [ADMISSIONS] Error in getCsrfToken:", error);
+          return null;
+      }
+  }
+
+  // ... other methods stay the same ...
+
+  // 🔹 Create a new admission (POST) - IMPROVED VERSION
+  static async create(data: AdmissionFormData) {
+      try {
+          const apiUrl = endpoints.admissions;
+          console.log("🚀 [ADMISSION API] Starting request to:", apiUrl);
+
+          // ✅ STEP 1: Get CSRF cookie FIRST (CRITICAL!)
+          console.log("🔑 [ADMISSION API] Step 1: Fetching CSRF cookie...");
+          try {
+            const csrfResponse = await fetch(endpoints.csrfCookie, {
+                method: "GET",
+                credentials: "include",
+                headers: {
+                    Accept: "application/json",
+                    "X-Requested-With": "XMLHttpRequest",
+                },
+            });
+
+            console.log("📥 [ADMISSION API] CSRF cookie response:", {
+                status: csrfResponse.status,
+                statusText: csrfResponse.statusText,
+                ok: csrfResponse.ok,
+            });
+
+            if (!csrfResponse.ok) {
+                console.warn("⚠️ [ADMISSION API] CSRF cookie fetch failed, continuing anyway...");
+                console.warn(`⚠️ [ADMISSION API] Status: ${csrfResponse.status} ${csrfResponse.statusText}`);
+            } else {
+                // Wait for cookie to be set
+                await new Promise((resolve) => setTimeout(resolve, 150));
+            }
+          } catch (csrfError: any) {
+              console.warn("⚠️ [ADMISSION API] CSRF cookie fetch error:", csrfError);
+              console.warn("⚠️ [ADMISSION API] Continuing without CSRF cookie - API may still work");
+          }
+
+          // ✅ STEP 2: Get the CSRF token from cookies
+          console.log(
+              "🔑 [ADMISSION API] Step 2: Extracting CSRF token from cookies..."
+          );
+          const csrfToken = await this.getCsrfToken();
+
+          // ✅ STEP 3: Prepare headers
+          const headers: Record<string, string> = {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+              "X-Requested-With": "XMLHttpRequest",
+          };
+
+          // Add CSRF token if available (optional - API routes might not require it)
+          if (csrfToken) {
+              console.log(
+                  "✅ [ADMISSION API] CSRF token obtained:",
+                  csrfToken.substring(0, 30) + "..."
+              );
+              headers["X-XSRF-TOKEN"] = csrfToken; // Laravel Sanctum expects this header name
+          } else {
+              console.warn("⚠️ [ADMISSION API] No CSRF token available (may be due to CORS restrictions)");
+              console.warn("⚠️ [ADMISSION API] Proceeding without CSRF token - API route may not require it");
+          }
+
+          // Prepare request body
+          const requestBody = { ...data };
+
+          console.log("📤 [ADMISSION API] Request URL:", apiUrl);
+          console.log("📤 [ADMISSION API] Request headers:", headers);
+          console.log(
+              "📤 [ADMISSION API] Request body:",
+              JSON.stringify(requestBody, null, 2)
+          );
+
+          // ✅ STEP 4: Send POST request with credentials
+          console.log("🌐 [ADMISSION API] Making POST request to:", apiUrl);
+          console.log("🌐 [ADMISSION API] Full fetch URL will be:", apiUrl);
           
-          throw new Error(`API request failed with status ${response.status}: ${errorText}`);
-        }
+          const response = await fetch(apiUrl, {
+              method: "POST",
+              mode: "cors",
+              cache: "no-cache",
+              credentials: "include", // Must include credentials to send cookies
+              headers,
+              body: JSON.stringify(requestBody),
+          });
 
-        const result = await response.json();
-        console.log('✅ [ADMISSION API] SUCCESS: Data sent to Laravel dashboard!');
-        console.log('✅ [ADMISSION API] Successfully connected to:', apiUrl);
-        console.log('✅ [ADMISSION API] Response data:', JSON.stringify(result, null, 2));
-        console.log('✅ [ADMISSION API] Response object:', result);
+          console.log("📥 [ADMISSION API] Response received!");
+          console.log("📥 [ADMISSION API] Response status:", response.status);
+          console.log(
+              "📥 [ADMISSION API] Response status text:",
+              response.statusText
+          );
 
-        return {
-          data: result,
-          success: true,
-          message: 'Admission submitted successfully',
-        };
+          if (!response.ok) {
+              const errorText = await response.text();
+              console.error("❌ [ADMISSION API] Request failed!");
+              console.error("❌ [ADMISSION API] Status:", response.status);
+              console.error("❌ [ADMISSION API] Error response:", errorText);
+
+              try {
+                  const errorJson = JSON.parse(errorText);
+                  console.error("❌ [ADMISSION API] Error JSON:", errorJson);
+
+                  if (
+                      errorJson.message &&
+                      errorJson.message.includes("CSRF")
+                  ) {
+                      throw new Error(
+                          `CSRF token mismatch (${response.status}). The CSRF token may not have been set correctly. Check browser console for cookie information.`
+                      );
+                  }
+              } catch (e) {
+                  // Not JSON, that's fine
+              }
+
+              throw new Error(
+                  `API request failed with status ${response.status}: ${errorText}`
+              );
+          }
+
+          const result = await response.json();
+          console.log(
+              "✅ [ADMISSION API] SUCCESS: Data sent to Laravel dashboard!"
+          );
+          console.log(
+              "✅ [ADMISSION API] Response data:",
+              JSON.stringify(result, null, 2)
+          );
+
+          return {
+              data: result,
+              success: true,
+              message: "Admission submitted successfully",
+          };
       } catch (error: any) {
-        // If this is a network/CORS error, try the next URL
-        const isNetworkError = 
-          error.message.includes('Failed to fetch') || 
-          error.name === 'TypeError';
-        
-        if (isNetworkError && apiUrls.indexOf(apiUrl) < apiUrls.length - 1) {
-          console.warn(`⚠️ [ADMISSION API] Failed to connect to ${apiUrl}, trying next URL...`);
-          lastError = error;
-          continue; // Try next URL
-        }
-        
-        // If not a network error or it's the last URL, throw the error
-        lastError = error;
-        throw error;
+          console.error("❌ [ADMISSION API] Exception occurred:", error);
+          console.error("❌ [ADMISSION API] Error message:", error.message);
+
+          // Don't wrap CSRF errors - let the server's response speak for itself
+          // If the server requires CSRF and we don't have it, it will return a 419 error
+          throw error;
       }
-    }
-    
-    // If we get here, all URLs failed
-    if (lastError) {
-      throw lastError;
-    }
-    throw new Error('Failed to connect to any API endpoint');
-  } catch (error: any) {
-    console.error('❌ [ADMISSION API] Exception occurred:', error);
-    console.error('❌ [ADMISSION API] Error message:', error.message);
-    console.error('❌ [ADMISSION API] Error name:', error.name);
-    
-    // Extract the actual error from the stack if available
-    const errorStack = error.stack || '';
-    const isConnectionRefused = 
-      errorStack.includes('ERR_CONNECTION_REFUSED') ||
-      errorStack.includes('connection refused') ||
-      errorStack.includes('ECONNREFUSED') ||
-      error.message.includes('connection refused') ||
-      error.message.includes('CONNECTION_REFUSED');
-    
-    // Check if it's a network/CORS error
-    const isNetworkError = 
-      error.message.includes('Failed to fetch') || 
-      error.message.includes('fetch') || 
-      error.message.includes('CORS') || 
-      error.message.includes('network') ||
-      error.name === 'TypeError';
-    
-    if (isConnectionRefused) {
-      // Connection refused - server is not running
-      console.error('');
-      console.error('❌ [ADMISSION API] ============================================');
-      console.error('❌ [ADMISSION API] CONNECTION REFUSED - Server Not Running!');
-      console.error('❌ [ADMISSION API] ============================================');
-      console.error('');
-      console.error('🔴 [ADMISSION API] The Laravel server is NOT running!');
-      console.error('');
-      console.error('📋 [ADMISSION API] To fix this:');
-      console.error('');
-      console.error('1. ✅ START YOUR LARAVEL SERVER:');
-      console.error('   Open a new terminal/command prompt');
-      console.error('   Navigate to your Laravel project: cd path/to/laravel/project');
-      console.error('   Start the server: php artisan serve');
-      console.error('   (Server should start on http://localhost:8000)');
-      console.error('');
-      console.error('2. ✅ Verify server is running:');
-      console.error('   Open in browser: http://localhost:8000');
-      console.error('   You should see the Laravel welcome page or your app');
-      console.error('');
-      console.error('3. ✅ Test the API endpoint:');
-      console.error('   Open: http://localhost:8000/api/admissions');
-      console.error('   (You should see a response, even if it\'s a 405 Method Not Allowed)');
-      console.error('   This confirms the route exists and server is running');
-      console.error('');
-      console.error('4. ✅ Configure CORS (if not already done):');
-      console.error('   Edit: config/cors.php');
-      console.error('   Make sure allowed_origins includes: http://localhost:3002');
-      console.error('   Make sure paths includes: api/*');
-      console.error('');
-      console.error('5. ✅ Once server is running, try submitting the form again');
-      console.error('');
-      
-      const helpfulError = new Error(
-        `Laravel server is not running! ` +
-        `Please start your Laravel server with: php artisan serve ` +
-        `(Should run on http://localhost:8000). ` +
-        `Tried connecting to: ${apiUrls.join(', ')}`
-      );
-      
-      helpfulError.name = error.name;
-      helpfulError.stack = error.stack;
-      
-      throw helpfulError;
-    } else if (isNetworkError) {
-      // Other network/CORS error
-      const lastAttemptedUrl = apiUrls[apiUrls.length - 1];
-      
-      console.error('');
-      console.error('❌ [ADMISSION API] ============================================');
-      console.error('❌ [ADMISSION API] Network/CORS Error Detected!');
-      console.error('❌ [ADMISSION API] ============================================');
-      console.error('');
-      console.error('📋 [ADMISSION API] Troubleshooting Steps:');
-      console.error('');
-      console.error('1. ✅ Verify Laravel server is running:');
-      console.error('   php artisan serve');
-      console.error('   Open: http://localhost:8000/api/admissions');
-      console.error('   (Should see a response, not "can\'t connect")');
-      console.error('');
-      console.error('2. ✅ Check Laravel CORS configuration (config/cors.php):');
-      console.error('   Make sure it includes:');
-      console.error('   - paths: [\'api/*\']');
-      console.error('   - allowed_origins: [\'http://localhost:3002\']');
-      console.error('   - allowed_methods: [\'POST\', \'GET\', \'OPTIONS\']');
-      console.error('   - supports_credentials: false');
-      console.error('');
-      console.error('3. ✅ Verify Laravel route exists:');
-      console.error('   Route should be: POST /api/admissions');
-      console.error('   Check routes/api.php or routes/web.php');
-      console.error('');
-      console.error('4. ✅ If using Laravel Sanctum, make sure CORS is configured');
-      console.error('   before Sanctum middleware');
-      console.error('');
-      console.error('5. ✅ Try accessing the API directly:');
-      console.error(`   curl -X POST ${lastAttemptedUrl} -H "Content-Type: application/json" -d '{"test":"data"}'`);
-      console.error('');
-      
-      const helpfulError = new Error(
-        `Network/CORS Error: Cannot connect to Laravel API. ` +
-        `Tried: ${apiUrls.join(', ')}. ` +
-        `Please check: 1) Laravel server is running (php artisan serve), ` +
-        `2) CORS is configured in config/cors.php to allow requests from http://localhost:3002, ` +
-        `3) The route POST /api/admissions exists.`
-      );
-      
-      helpfulError.name = error.name;
-      helpfulError.stack = error.stack;
-      
-      throw helpfulError;
-    }
-    
-    throw error;
-  }
   }
 
-  // 🔹 Update admission (POST)
-  static async update(id: string, data: Partial<AdmissionFormData>) {
-    try {
-      const result = await apiClient.post(`${endpoints.admissions}/update/${id}`, data);
-      if (!result.success) {
-        throw new Error(result.error || "Admission update failed");
-      }
-      return result;
-    } catch (error) {
-      logger.error("Admission update failed", { id, error });
-      throw error;
-    }
-  }
-
-  // 🔹 Delete admission (POST)
-  static async delete(id: string) {
-    try {
-      const result = await apiClient.post(`${endpoints.admissions}/delete/${id}`);
-      if (!result.success) {
-        throw new Error(result.error || "Admission delete failed");
-      }
-      return result;
-    } catch (error) {
-      logger.error("Admission delete failed", { id, error });
-      throw error;
-    }
-  }
-
-  // 🔹 Submit admission form
+  // 🔹 Submit admission form (wrapper that calls create)
   static async submit(data: AdmissionFormData) {
     console.log('📝 [ADMISSION SUBMIT] Starting form submission...');
     console.log('📝 [ADMISSION SUBMIT] Form data:', data);
@@ -1093,7 +994,6 @@ export class AdmissionsApi {
       console.log('✅ [ADMISSION SUBMIT] Form submission successful!');
       return result;
     } catch (error: any) {
-      // Log the error for debugging
       console.error('❌ [ADMISSION SUBMIT] API submission failed:', error);
       console.error('❌ [ADMISSION SUBMIT] Error details:', {
         message: error.message,
@@ -1101,70 +1001,8 @@ export class AdmissionsApi {
         name: error.name
       });
       
-      // Re-throw the error so the form can handle it properly
-      // The form should show the actual error to the user
       throw error;
-      
-      // Note: The fallback local storage code is removed because
-      // we want to ensure the API request succeeds before showing success
-      // If you want to keep the fallback, uncomment the code below:
-      /*
-      // API failed - save locally and show message
-      console.warn('⚠️ WARNING: Could not send to dashboard. Saving data locally for manual processing.');
-      console.warn('⚠️ Local backup saved successfully. Data can be retrieved from localStorage.');
-      
-      // Store locally as fallback
-      const admissionData = {
-        id: Date.now(),
-        timestamp: new Date().toISOString(),
-        ...data,
-        status: 'pending',
-        source: 'admission-form'
-      };
-      
-      if (typeof window !== 'undefined') {
-        try {
-          const existingAdmissions = JSON.parse(localStorage.getItem('admissions') || '[]');
-          existingAdmissions.unshift(admissionData);
-          localStorage.setItem('admissions', JSON.stringify(existingAdmissions));
-          console.log('💾 Local storage updated successfully');
-        } catch (storageError) {
-          console.error('❌ Failed to save to local storage:', storageError);
-        }
-      }
-      
-      return {
-        data: { 
-          message: 'Admission form submitted successfully! Data has been stored locally for manual processing.',
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
-          stored_locally: true
-        },
-        success: true,
-        error: null,
-      };
-      */
     }
-  }
-
-  // Helper method to get stored submissions
-  static getStoredSubmissions() {
-    if (typeof window === 'undefined') return [];
-    
-    try {
-      const submissions = JSON.parse(localStorage.getItem('admissions') || '[]');
-      return submissions;
-    } catch (error) {
-      console.error('Error retrieving stored admissions:', error);
-      return [];
-    }
-  }
-
-  // Helper method to clear stored submissions
-  static clearStoredSubmissions() {
-    if (typeof window === 'undefined') return;
-    localStorage.removeItem('admissions');
-    console.log('📝 Admission submissions cleared');
   }
 }
 
@@ -2066,386 +1904,225 @@ export class IftahQuestionApi {
     phone?: string;
     whatsapp?: string;
     question: string;
+    tagId?: number; // Changed from tag_id to tagId
+    iftah_sub_category_id?: number;
   }) {
+    logger.info('Submitting Iftah question', { payload });
+    
     try {
-      console.log("📤 Sending Iftah question to server:", payload);
+      const apiUrl = endpoints.IftahQuestionForm;
+      console.log("🚀 [IFTAH QUESTION API] Starting request to:", apiUrl);
 
-      // Get CSRF token
+      // ✅ STEP 1: Get CSRF cookie FIRST (CRITICAL!)
+      console.log("🔑 [IFTAH QUESTION API] Step 1: Fetching CSRF cookie...");
+      try {
+        const csrfResponse = await fetch(endpoints.csrfCookie, {
+          method: "GET",
+          credentials: "include",
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        console.log("📥 [IFTAH QUESTION API] CSRF cookie response:", {
+          status: csrfResponse.status,
+          statusText: csrfResponse.statusText,
+          ok: csrfResponse.ok,
+        });
+
+        if (!csrfResponse.ok) {
+          console.warn("⚠️ [IFTAH QUESTION API] CSRF cookie fetch failed, continuing anyway...");
+        } else {
+          // Wait for cookie to be set
+          await new Promise((resolve) => setTimeout(resolve, 150));
+        }
+      } catch (csrfError: any) {
+        console.warn("⚠️ [IFTAH QUESTION API] CSRF cookie fetch error:", csrfError);
+        console.warn("⚠️ [IFTAH QUESTION API] Continuing without CSRF cookie - API may still work");
+      }
+
+      // ✅ STEP 2: Get the CSRF token from cookies
+      console.log("🔑 [IFTAH QUESTION API] Step 2: Extracting CSRF token from cookies...");
       const csrfToken = await this.getCsrfToken();
 
-      // Prepare headers with CSRF token
+      // ✅ STEP 3: Prepare headers
       const headers: Record<string, string> = {
         "Content-Type": "application/json",
-        "Accept": "application/json",
+        Accept: "application/json",
         "X-Requested-With": "XMLHttpRequest",
       };
 
       // Add CSRF token if available
       if (csrfToken) {
-        headers["X-CSRF-TOKEN"] = csrfToken;
-        console.log("🔑 Using CSRF token:", csrfToken);
+        console.log("✅ [IFTAH QUESTION API] CSRF token obtained:", csrfToken.substring(0, 30) + "...");
+        headers["X-XSRF-TOKEN"] = csrfToken; // Laravel Sanctum expects this header name
       } else {
-        console.log("⚠️ No CSRF token available, proceeding without it");
+        console.warn("⚠️ [IFTAH QUESTION API] No CSRF token available (may be due to CORS restrictions)");
+        console.warn("⚠️ [IFTAH QUESTION API] Proceeding without CSRF token - API route may not require it");
       }
 
-      const response = await fetch(endpoints.IftahQuestionForm, {
-        method: "POST",
-        headers,
-        // Remove credentials to avoid CORS wildcard issue
-        body: JSON.stringify({
-          name: payload.name,
-          email: payload.email,
-          phone: payload.phone,
-          whatsapp: payload.whatsapp,
-          message: `Iftah Question: ${payload.question}`,
-          subject: "Iftah Question Submission",
-          type: "iftah-question"
-        }),
+      // Prepare request body for iftah_questions table
+      // Database columns: name, email, phone, whatsapp, question, tag_id, iftah_sub_category_id, created_at, updated_at
+      
+      const requestBody: Record<string, string | number> = {
+        name: payload.name.trim(),
+        email: payload.email.trim(),
+        question: payload.question.trim(),
+      };
+      
+      // Only include phone if it's provided and not empty
+      if (payload.phone && payload.phone.trim()) {
+        requestBody.phone = payload.phone.trim();
+      }
+      
+      // Only include whatsapp if it's provided and not empty
+      if (payload.whatsapp && payload.whatsapp.trim()) {
+        requestBody.whatsapp = payload.whatsapp.trim();
+      }
+      
+      // Include tagId if provided (send as "tagId" to backend)
+      if (payload.tagId && payload.tagId > 0) {
+        requestBody.tagId = payload.tagId;
+        console.log("🏷️ [IFTAH QUESTION API] Including tagId:", payload.tagId);
+      }
+      
+      // Include iftah_sub_category_id if provided
+      if (payload.iftah_sub_category_id && payload.iftah_sub_category_id > 0) {
+        requestBody.iftah_sub_category_id = payload.iftah_sub_category_id;
+        console.log("📁 [IFTAH QUESTION API] Including iftah_sub_category_id:", payload.iftah_sub_category_id);
+      }
+      
+      const safeRequestBody = requestBody;
+
+      console.log("📤 [IFTAH QUESTION API] Request URL:", apiUrl);
+      console.log("📤 [IFTAH QUESTION API] Request headers:", headers);
+      console.log("📤 [IFTAH QUESTION API] Request body (final):", JSON.stringify(safeRequestBody, null, 2));
+      console.log("📤 [IFTAH QUESTION API] Request body keys:", Object.keys(safeRequestBody));
+      console.log("📤 [IFTAH QUESTION API] Fields included:", {
+        hasTagId: 'tagId' in safeRequestBody,
+        hasSubCategoryId: 'iftah_sub_category_id' in safeRequestBody,
+        tagIdValue: safeRequestBody.tagId || 'not included',
+        subCategoryIdValue: safeRequestBody.iftah_sub_category_id || 'not included',
+        bodyKeys: Object.keys(safeRequestBody)
       });
 
-      console.log("📥 Response status:", response.status);
+      // ✅ STEP 4: Send POST request with credentials
+      // Sending all fields including tag_id and iftah_sub_category_id if provided
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include", // Must include credentials to send cookies
+        headers,
+        body: JSON.stringify(safeRequestBody), // Includes tag_id and iftah_sub_category_id if provided
+      });
+
+      console.log("📥 [IFTAH QUESTION API] Response received!");
+      console.log("📥 [IFTAH QUESTION API] Response status:", response.status);
+      console.log("📥 [IFTAH QUESTION API] Response status text:", response.statusText);
 
       if (!response.ok) {
-        console.log("🔄 Main API failed, trying alternative approaches...");
+        const errorText = await response.text();
+        console.error("❌ [IFTAH QUESTION API] Request failed!");
+        console.error("❌ [IFTAH QUESTION API] Status:", response.status);
+        console.error("❌ [IFTAH QUESTION API] Status Text:", response.statusText);
+        console.error("❌ [IFTAH QUESTION API] Error response (raw):", errorText);
+        console.error("❌ [IFTAH QUESTION API] Request body that was sent:", JSON.stringify(requestBody, null, 2));
+
+        let errorMessage = `API request failed with status ${response.status}`;
+        let errorDetails: any = null;
         
-        // Try FormData approach as fallback
         try {
-          console.log("🔄 Trying FormData approach...");
-          const formData = new FormData();
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-              formData.append(key, String(value));
+          const errorJson = JSON.parse(errorText);
+          console.error("❌ [IFTAH QUESTION API] Error JSON:", JSON.stringify(errorJson, null, 2));
+          errorMessage = errorJson.message || errorJson.error || errorMessage;
+          errorDetails = errorJson;
+          
+          // Show more details for 500 errors
+          if (response.status === 500) {
+            console.error("❌ [IFTAH QUESTION API] 500 Internal Server Error Details:");
+            console.error("   - Message:", errorJson.message);
+            console.error("   - Error:", errorJson.error);
+            console.error("   - File:", errorJson.file);
+            console.error("   - Line:", errorJson.line);
+            console.error("   - Trace:", errorJson.trace);
+            
+            // Get tag/subcategory names from payload for better error messages
+            const tagName = payload.tagId ? `Tag ID: ${payload.tagId}` : 'No tag';
+            const subCategoryName = payload.iftah_sub_category_id ? `Subcategory ID: ${payload.iftah_sub_category_id}` : 'No subcategory';
+            
+            if (errorJson.message?.includes("Column not found") || errorJson.message?.includes("tagId") || errorJson.message?.includes("tag_id")) {
+              errorMessage = `خطای پایگاه داده: ستون tagId در جدول iftah_questions وجود ندارد. ${tagName !== 'No tag' ? `(${tagName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+            } else if (errorJson.message?.includes("iftah_sub_category_id")) {
+              errorMessage = `خطای پایگاه داده: ستون iftah_sub_category_id در جدول iftah_questions وجود ندارد. ${subCategoryName !== 'No subcategory' ? `(${subCategoryName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+            } else {
+              // Generic 500 error with context
+              errorMessage = `خطای سرور (500). ${tagName !== 'No tag' || subCategoryName !== 'No subcategory' ? `${tagName}, ${subCategoryName}. ` : ''}لطفاً بعداً تلاش کنید یا با مدیر سیستم تماس بگیرید.`;
             }
-          });
-
-          const formResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Accept": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-            // Remove credentials to avoid CORS wildcard issue
-            body: formData,
-          });
-
-          console.log("📥 FormData response status:", formResponse.status);
-
-          if (formResponse.ok) {
-            const data = await formResponse.json();
-            console.log("✅ FormData success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
           }
-        } catch (formError) {
-          console.log("❌ FormData approach also failed:", formError);
+          
+          if (errorMessage.includes("CSRF")) {
+            throw new Error(
+              `CSRF token mismatch (${response.status}). The CSRF token may not have been set correctly. Check browser console for cookie information.`
+            );
+          }
+        } catch (e) {
+          // Not JSON, use the text as is
+          const tagName = payload.tagId ? `Tag ID: ${payload.tagId}` : '';
+          if (errorText.includes("Column not found") || errorText.includes("tagId") || errorText.includes("tag_id")) {
+            errorMessage = `خطای پایگاه داده: ستون tagId در جدول iftah_questions وجود ندارد. ${tagName ? `(${tagName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+          } else if (errorText.includes("iftah_sub_category_id")) {
+            const subCategoryName = payload.iftah_sub_category_id ? `Subcategory ID: ${payload.iftah_sub_category_id}` : '';
+            errorMessage = `خطای پایگاه داده: ستون iftah_sub_category_id در جدول iftah_questions وجود ندارد. ${subCategoryName ? `(${subCategoryName})` : ''} لطفاً به مدیر سیستم اطلاع دهید.`;
+          }
         }
 
-        // Try GET request with query parameters as final fallback
-        try {
-          console.log("🔄 Trying GET request with query parameters...");
-          const queryParams = new URLSearchParams();
-          Object.entries(payload).forEach(([key, value]) => {
-            if (value !== null && value !== undefined) {
-              queryParams.append(key, String(value));
-            }
-          });
-
-          const getResponse = await fetch(`${endpoints.IftahQuestionForm}?${queryParams.toString()}`, {
-            method: "GET",
-            headers: {
-              "Accept": "application/json",
-            },
-          });
-
-          console.log("📥 GET response status:", getResponse.status);
-
-          if (getResponse.ok) {
-            const data = await getResponse.json();
-            console.log("✅ GET success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (getError) {
-          console.log("❌ GET approach also failed:", getError);
-        }
-
-        // Try direct server submission without CSRF as final attempt
-        try {
-          console.log("🔄 Trying direct server submission without CSRF...");
-          const directResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-              "X-Requested-With": "XMLHttpRequest",
-            },
-            // No credentials to avoid CORS issues
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              whatsapp: payload.whatsapp,
-              message: `Iftah Question: ${payload.question}`,
-              subject: "Iftah Question Submission",
-              type: "iftah-question",
-              _token: csrfToken || 'bypass-csrf', // Add token in body
-            }),
-          });
-
-          console.log("📥 Direct response status:", directResponse.status);
-
-          if (directResponse.ok) {
-            const data = await directResponse.json();
-            console.log("✅ Direct submission success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (directError) {
-          console.log("❌ Direct submission also failed:", directError);
-        }
-
-        // Try simple POST without any special headers
-        try {
-          console.log("🔄 Trying simple POST without special headers...");
-          const simpleResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              whatsapp: payload.whatsapp,
-              message: `Iftah Question: ${payload.question}`,
-              subject: "Iftah Question Submission",
-              type: "iftah-question"
-            }),
-          });
-
-          console.log("📥 Simple response status:", simpleResponse.status);
-
-          if (simpleResponse.ok) {
-            const data = await simpleResponse.json();
-            console.log("✅ Simple submission success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (simpleError) {
-          console.log("❌ Simple submission also failed:", simpleError);
-        }
-
-        // If all approaches fail, try to send via IftahQuestionForm endpoint as fallback
-        try {
-          console.log("🔄 Trying IftahQuestionForm endpoint as fallback...");
-          const contactResponse = await fetch(endpoints.IftahQuestionForm, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "Accept": "application/json",
-            },
-            body: JSON.stringify({
-              name: payload.name,
-              email: payload.email,
-              phone: payload.phone,
-              whatsapp: payload.whatsapp,
-              message: `Iftah Question: ${payload.question}`,
-              subject: "Iftah Question Submission",
-            }),
-          });
-
-          console.log("📥 IftahQuestionForm response status:", contactResponse.status);
-
-          if (contactResponse.ok) {
-            const data = await contactResponse.json();
-            console.log("✅ IftahQuestionForm fallback success! Response data:", data);
-            return {
-              data,
-              success: true,
-              error: null,
-            };
-          }
-        } catch (contactError) {
-          console.log("❌ IftahQuestionForm fallback also failed:", contactError);
-        }
-
-        // If all API approaches fail, log the data for manual processing
-        console.log("📝 All API approaches failed, but data was captured:");
-        console.log("Name:", payload.name);
-        console.log("Email:", payload.email);
-        console.log("Phone:", payload.phone);
-        console.log("WhatsApp:", payload.whatsapp);
-        console.log("Question:", payload.question);
-
-        return {
-          data: { 
-            message: 'Iftah question submitted successfully (data logged for manual processing)',
-            id: Date.now(),
-            timestamp: new Date().toISOString()
-          },
-          success: true,
-          error: null,
-        };
+        const fullError = new Error(errorMessage);
+        (fullError as any).details = errorDetails;
+        (fullError as any).status = response.status;
+        throw fullError;
       }
 
-      const data = await response.json();
-      console.log("✅ Success! Response data:", data);
+      const result = await response.json();
+      console.log("✅ [IFTAH QUESTION API] SUCCESS: Data sent to Laravel dashboard!");
+      console.log("✅ [IFTAH QUESTION API] Response data:", JSON.stringify(result, null, 2));
 
       return {
-        data,
         success: true,
-        error: null,
+        data: result.data || result,
+        message: result.message || 'Question submitted successfully',
       };
+
     } catch (error: any) {
-      console.error("❌ Failed to submit Iftah question:", error);
+      console.error("❌ [IFTAH QUESTION API] Exception occurred:", error);
+      console.error("❌ [IFTAH QUESTION API] Error message:", error.message);
+      logger.error('Iftah question submission failed', { error, payload });
       
-      // Try simple POST as first fallback
-      try {
-        console.log("🔄 Trying simple POST as fallback...");
-        const simpleResponse = await fetch(endpoints.IftahQuestionForm, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: payload.name,
-            email: payload.email,
-            phone: payload.phone,
-            whatsapp: payload.whatsapp,
-            message: `Iftah Question: ${payload.question}`,
-            subject: "Iftah Question Submission",
-            type: "iftah-question"
-          }),
-        });
-
-        console.log("📥 Simple response status:", simpleResponse.status);
-
-        if (simpleResponse.ok) {
-          const data = await simpleResponse.json();
-          console.log("✅ Simple submission success! Response data:", data);
-          return {
-            data,
-            success: true,
-            error: null,
+      // Try to store in localStorage as fallback (for manual processing)
+      if (typeof window !== 'undefined') {
+        try {
+          const questionData = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            ...payload,
+            status: 'pending',
+            source: 'iftah-form',
+            error: error?.message || 'API submission failed'
           };
+          
+          const existingQuestions = JSON.parse(localStorage.getItem('iftah-questions') || '[]');
+          existingQuestions.unshift(questionData);
+          localStorage.setItem('iftah-questions', JSON.stringify(existingQuestions));
+          
+          console.log('📝 [IFTAH QUESTION] Data stored in localStorage as fallback');
+        } catch (storageError) {
+          console.error('Failed to store in localStorage:', storageError);
         }
-      } catch (simpleError) {
-        console.log("❌ Simple submission also failed:", simpleError);
-      }
-
-      // Try IftahQuestionForm endpoint as final fallback
-      try {
-        console.log("🔄 Trying IftahQuestionForm endpoint as final fallback...");
-        const contactResponse = await fetch(endpoints.IftahQuestionForm, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-          },
-          body: JSON.stringify({
-            name: payload.name,
-            email: payload.email,
-            phone: payload.phone,
-            whatsapp: payload.whatsapp,
-            message: `Iftah Question: ${payload.question}`,
-            subject: "Iftah Question Submission",
-          }),
-        });
-
-        console.log("📥 IftahQuestionForm response status:", contactResponse.status);
-
-        if (contactResponse.ok) {
-          const data = await contactResponse.json();
-          console.log("✅ IftahQuestionForm fallback success! Response data:", data);
-          return {
-            data,
-            success: true,
-            error: null,
-          };
-        }
-      } catch (contactError) {
-        console.log("❌ IftahQuestionForm fallback also failed:", contactError);
       }
       
-      // Even if there's an error, try alternative data delivery methods
-      console.log("📝 All approaches failed, trying alternative data delivery...");
-      
-      // Store data in localStorage for manual processing
-      try {
-        const questionData = {
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
-          ...payload,
-          status: 'pending',
-          source: 'iftah-form'
-        };
-        
-        // Store in localStorage
-        const existingQuestions = JSON.parse(localStorage.getItem('iftah-questions') || '[]');
-        existingQuestions.unshift(questionData);
-        localStorage.setItem('iftah-questions', JSON.stringify(existingQuestions));
-        
-        console.log("💾 Data stored in localStorage for manual processing");
-      } catch (storageError) {
-        console.log("❌ Failed to store in localStorage:", storageError);
-      }
-
-      // Try to send via email using mailto link
-      try {
-        const subject = `Iftah Question from ${payload.name}`;
-        const body = `
-Name: ${payload.name}
-Email: ${payload.email}
-Phone: ${payload.phone || 'Not provided'}
-WhatsApp: ${payload.whatsapp || 'Not provided'}
-
-Question:
-${payload.question}
-
----
-This question was submitted via the Iftah form on ${new Date().toLocaleString()}
-        `.trim();
-        
-        const mailtoLink = `mailto:admin@lawngreen-dragonfly-304220.hostingersite.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        // Open email client
-        window.open(mailtoLink, '_blank');
-        console.log("📧 Email client opened with question data");
-      } catch (emailError) {
-        console.log("❌ Failed to open email client:", emailError);
-      }
-
-      // Log data for manual processing
-      console.log("📝 Data captured for manual processing:");
-      console.log("Name:", payload.name);
-      console.log("Email:", payload.email);
-      console.log("Phone:", payload.phone);
-      console.log("WhatsApp:", payload.whatsapp);
-      console.log("Question:", payload.question);
-      
-      return {
-        data: { 
-          message: 'Iftah question submitted successfully! Data has been stored locally and email client opened for manual processing.',
-          id: Date.now(),
-          timestamp: new Date().toISOString(),
-          stored_locally: true,
-          email_opened: true
-        },
-        success: true,
-        error: null,
-      };
+      // Re-throw the error so the UI can handle it
+      throw error;
     }
   }
 
@@ -2844,13 +2521,177 @@ export class GalleryApi {
   }
 }
 
+export class DegreesApi {
+  static async getAll(params: ListParams = {}) {
+    const { page: rawPage, limit: rawLimit, ...rest } = params;
+    const page = rawPage ?? 1;
+    const limit = rawLimit ?? 100; // Default to 100 for degrees
+
+    try {
+      logger.info('Fetching degrees from API', { page, limit });
+      const result = await apiClient.get(endpoints.degrees, {
+        params: { page, limit, ...rest },
+      });
+
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+
+      logger.info('Successfully fetched degrees', { count: Array.isArray(result.data) ? result.data.length : 0 });
+
+      // Extract array from response
+      const degreesData = extractArray<any>(result.data);
+
+      if (result.pagination) {
+        return {
+          ...result,
+          data: degreesData,
+        } as ApiResponse<any[]>;
+      }
+
+      const total = degreesData.length || limit;
+
+      return {
+        ...result,
+        data: degreesData,
+        pagination: createPaginationMeta({ page, limit, total }),
+      } as ApiResponse<any[]>;
+    } catch (error) {
+      logger.warn('Degrees API failed, using fallback data', { error });
+      
+      // Fallback degrees data
+      const fallbackDegrees = [
+        { id: 1, name: 'درجه اول' },
+        { id: 2, name: 'درجه دوم' },
+        { id: 3, name: 'درجه سوم' },
+        { id: 4, name: 'درجه چهارم' },
+        { id: 5, name: 'درجه پنجم' },
+      ];
+      
+      return {
+        data: fallbackDegrees,
+        success: true,
+        message: apiConfig.fallback.showFallbackMessage 
+          ? "Using cached data due to API unavailability" 
+          : undefined,
+        pagination: createPaginationMeta({
+          page,
+          limit,
+          total: fallbackDegrees.length,
+        }),
+      };
+    }
+  }
+
+  static async getById(id: string | number) {
+    try {
+      const result = await apiClient.get(`${endpoints.degrees}/${id}`);
+      if (!result.success) {
+        throw new Error(result.error || 'API request failed');
+      }
+      return result;
+    } catch (error) {
+      logger.warn('Degree getById failed', { id, error });
+      if (!apiConfig.fallback.useForDetailEndpoints) {
+        throw error;
+      }
+      return {
+        data: { id: 1, name: 'درجه اول' },
+        success: true,
+        message: "Using cached data due to API unavailability",
+      };
+    }
+  }
+}
+
 export class ContactApi {
+  // Helper: Extract CSRF token from cookies
+  private static extractCsrfTokenFromCookies(): string | null {
+    if (typeof document === "undefined") return null;
+
+    const cookies = document.cookie.split(";");
+    console.log("🍪 [CONTACT] All cookies:", document.cookie);
+
+    // Try XSRF-TOKEN first (Laravel Sanctum standard)
+    const xsrfCookie = cookies.find((cookie) =>
+      cookie.trim().startsWith("XSRF-TOKEN=")
+    );
+    if (xsrfCookie) {
+      const token = decodeURIComponent(xsrfCookie.split("=")[1].trim());
+      console.log("✅ [CONTACT] Found XSRF-TOKEN:", token.substring(0, 20) + "...");
+      return token;
+    }
+
+    // Try lowercase version
+    const xsrfCookieLower = cookies.find((cookie) =>
+      cookie.trim().toLowerCase().startsWith("xsrf-token=")
+    );
+    if (xsrfCookieLower) {
+      const token = decodeURIComponent(xsrfCookieLower.split("=")[1].trim());
+      console.log("✅ [CONTACT] Found xsrf-token (lowercase):", token.substring(0, 20) + "...");
+      return token;
+    }
+
+    console.log("❌ [CONTACT] No XSRF-TOKEN found in cookies");
+    return null;
+  }
+
+  // Get CSRF token (similar to AdmissionsApi)
+  private static async getCsrfToken(): Promise<string | null> {
+    try {
+      // Step 1: Check if token already exists in cookies
+      let token = this.extractCsrfTokenFromCookies();
+      if (token) {
+        console.log("✅ [CONTACT] CSRF token already in cookies");
+        return token;
+      }
+
+      // Step 2: Fetch CSRF cookie from server
+      console.log("🔑 [CONTACT] Fetching CSRF token from server...");
+      console.log("🔑 [CONTACT] CSRF endpoint:", endpoints.csrfCookie);
+
+      try {
+        const response = await fetch(endpoints.csrfCookie, {
+          method: "GET",
+          credentials: "include", // Must include credentials
+          headers: {
+            Accept: "application/json",
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        console.log("📥 [CONTACT] CSRF endpoint response status:", response.status);
+
+        if (response.ok) {
+          // Wait a moment for cookie to be set (browser needs time)
+          await new Promise((resolve) => setTimeout(resolve, 100));
+
+          // Check cookies again
+          token = this.extractCsrfTokenFromCookies();
+
+          if (token) {
+            console.log("✅ [CONTACT] CSRF token obtained from server");
+            return token;
+          } else {
+            console.warn("⚠ [CONTACT] CSRF endpoint responded OK but no cookie found");
+          }
+        } else {
+          console.error("❌ [CONTACT] CSRF endpoint failed:", response.status, response.statusText);
+        }
+      } catch (csrfError) {
+        console.error("❌ [CONTACT] Error fetching CSRF token:", csrfError);
+      }
+
+      console.log("❌ [CONTACT] No CSRF token found");
+      return null;
+    } catch (error) {
+      console.error("❌ [CONTACT] Error in getCsrfToken:", error);
+      return null;
+    }
+  }
+
   static async submit(payload: Record<string, unknown>) {
     logger.info('Submitting contact form', { payload });
-    
-    // Since the Laravel backend has CORS and CSRF issues, 
-    // we'll implement a client-side solution that simulates success
-    // and stores the data locally for now
     
     try {
       // Validate the payload
@@ -2862,43 +2703,137 @@ export class ContactApi {
         };
       }
 
-      // Store the contact form data locally (for development)
-      const contactData = {
-        id: Date.now(),
-        timestamp: new Date().toISOString(),
-        ...payload,
-        status: 'pending',
-        source: 'website'
-      };
+      const apiUrl = endpoints.contact;
+      console.log("🚀 [CONTACT API] Starting request to:", apiUrl);
 
-      // Store in localStorage for now (in production, this would go to a database)
-      if (typeof window !== 'undefined') {
-        const existingContacts = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
-        existingContacts.push(contactData);
-        localStorage.setItem('contactSubmissions', JSON.stringify(existingContacts));
-        
-        console.log('📝 Contact form data stored locally:', contactData);
-        console.log('📊 Total submissions:', existingContacts.length);
-        console.log('🔍 localStorage after storage:', localStorage.getItem('contactSubmissions'));
+      // ✅ STEP 1: Get CSRF cookie FIRST (CRITICAL!)
+      console.log("🔑 [CONTACT API] Step 1: Fetching CSRF cookie...");
+      const csrfResponse = await fetch(endpoints.csrfCookie, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+
+      console.log("📥 [CONTACT API] CSRF cookie response:", {
+        status: csrfResponse.status,
+        statusText: csrfResponse.statusText,
+        ok: csrfResponse.ok,
+      });
+
+      if (!csrfResponse.ok) {
+        console.warn("⚠️ [CONTACT API] CSRF cookie fetch failed, continuing anyway...");
       }
 
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Wait for cookie to be set
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
-      // Return success response
+      // ✅ STEP 2: Get the CSRF token from cookies
+      console.log("🔑 [CONTACT API] Step 2: Extracting CSRF token from cookies...");
+      const csrfToken = await this.getCsrfToken();
+
+      // ✅ STEP 3: Prepare headers
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      };
+
+      // Add CSRF token if available
+      if (csrfToken) {
+        console.log("✅ [CONTACT API] CSRF token obtained:", csrfToken.substring(0, 30) + "...");
+        headers["X-XSRF-TOKEN"] = csrfToken; // Laravel Sanctum expects this header name
+      } else {
+        console.warn("⚠️ [CONTACT API] No CSRF token available (may be due to CORS restrictions)");
+        console.warn("⚠️ [CONTACT API] Proceeding without CSRF token - API route may not require it");
+      }
+
+      // Prepare request body
+      const requestBody = { ...payload };
+
+      console.log("📤 [CONTACT API] Request URL:", apiUrl);
+      console.log("📤 [CONTACT API] Request headers:", headers);
+      console.log("📤 [CONTACT API] Request body:", JSON.stringify(requestBody, null, 2));
+
+      // ✅ STEP 4: Send POST request with credentials
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        mode: "cors",
+        cache: "no-cache",
+        credentials: "include", // Must include credentials to send cookies
+        headers,
+        body: JSON.stringify(requestBody),
+      });
+
+      console.log("📥 [CONTACT API] Response status:", response.status);
+      console.log("📥 [CONTACT API] Response status text:", response.statusText);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("❌ [CONTACT API] Request failed!");
+        console.error("❌ [CONTACT API] Status:", response.status);
+        console.error("❌ [CONTACT API] Error response:", errorText);
+
+        let errorMessage = `API request failed with status ${response.status}`;
+        
+        try {
+          const errorJson = JSON.parse(errorText);
+          console.error("❌ [CONTACT API] Error JSON:", errorJson);
+          errorMessage = errorJson.message || errorJson.error || errorMessage;
+          
+          if (errorMessage.includes("CSRF")) {
+            throw new Error(
+              `CSRF token mismatch (${response.status}). The CSRF token may not have been set correctly. Check browser console for cookie information.`
+            );
+          }
+        } catch (e) {
+          // Not JSON, use the text as is
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      const result = await response.json();
+      console.log("✅ [CONTACT API] SUCCESS: Data sent to Laravel dashboard!");
+      console.log("✅ [CONTACT API] Response data:", JSON.stringify(result, null, 2));
+
       return {
         success: true,
-        data: contactData,
-        message: 'Your message has been received! We will get back to you soon.',
+        data: result.data || result,
+        message: result.message || 'Your message has been received! We will get back to you soon.',
       };
 
-    } catch (error) {
-      console.error('❌ Contact form processing failed:', error);
-      return {
-        success: false,
-        data: null,
-        error: 'Failed to process your message. Please try again.',
-      };
+    } catch (error: any) {
+      console.error("❌ [CONTACT API] Exception occurred:", error);
+      console.error("❌ [CONTACT API] Error message:", error.message);
+      logger.error('Contact form submission failed', { error, payload });
+      
+      // Try to store in localStorage as fallback (for manual processing)
+      if (typeof window !== 'undefined') {
+        try {
+          const contactData = {
+            id: Date.now(),
+            timestamp: new Date().toISOString(),
+            ...payload,
+            status: 'pending',
+            source: 'website',
+            error: error?.message || 'API submission failed'
+          };
+          
+          const existingContacts = JSON.parse(localStorage.getItem('contactSubmissions') || '[]');
+          existingContacts.push(contactData);
+          localStorage.setItem('contactSubmissions', JSON.stringify(existingContacts));
+          
+          console.log('📝 [CONTACT] Data stored in localStorage as fallback');
+        } catch (storageError) {
+          console.error('Failed to store in localStorage:', storageError);
+        }
+      }
+      
+      // Re-throw the error so the UI can handle it
+      throw error;
     }
   }
 

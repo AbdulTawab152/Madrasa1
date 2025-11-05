@@ -193,7 +193,7 @@ export default function IftahQuestionFormInline() {
       console.log('📤 API response:', res);
       
       if (!res.success) {
-        throw new Error(res.error || "Failed to submit question");
+        throw new Error(res.message || "Failed to submit question");
       }
       
       console.log('✅ Form submitted successfully');

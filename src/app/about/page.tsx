@@ -614,12 +614,14 @@ const AboutPage = () => {
                 />
               </svg>
             </Link>
-            <Link
-              href="/contact"
+            <a
+              href={`https://wa.me/+93796148087?text=${encodeURIComponent('اسلام علیکم ورحمته الله وبرکاتو ولیکه')}`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-600 transition-all duration-300 shadow-sm hover:scale-105 text-base sm:text-lg"
             >
               اړیکه ونیسئ
-            </Link>
+            </a>
           </div>
         </div>
       </section>

@@ -4,11 +4,28 @@ import { useState, useMemo, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { cleanText } from "@/lib/textUtils";
 import { useTranslation } from "@/hooks/useTranslation";
+import { IftahApi } from "@/lib/api";
 
 interface Author {
-  name: string;
+  name?: string;
+  full_name?: string;
+  father_name?: string;
   bio?: string;
 }
+
+interface Tag {
+  id: number;
+  name: string;
+}
+
+interface IftahSubCategory {
+  id: number;
+  name: string;
+  tag_id?: number;
+  tag?: Tag;
+}
+
+type ViewMode = 'categories' | 'subcategories' | 'questions';
 
 interface IftahItem {
   id: number;

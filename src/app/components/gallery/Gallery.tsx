@@ -228,7 +228,7 @@ export default function Gallery({
         <div className="text-center mb-12">
   {/* Title */}
   <h2 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4">
-    {translate('about.biography.gallerySection.title') || 'مدرسه'}{" "}
+    {translate('about.biography.gallerySection.title') || 'د مدرسی'}{" "}
     <span className="bg-gradient-to-r from-amber-500 to-orange-600 bg-clip-text text-transparent">
       {translate('about.biography.gallerySection.collection') || 'ګالري'}
     </span>
