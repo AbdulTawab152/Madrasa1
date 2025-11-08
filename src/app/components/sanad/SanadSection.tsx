@@ -69,41 +69,54 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
         </div>
       )}
 
-      {/* Beautiful Sanad Display */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="space-y-6">
+      {/* Clean Sanad Display */}
+      <div className="w-full px-4 sm:px-6">
+        <div className="space-y-4">
           {sanads.map((sanad, idx) => (
             <motion.div
               key={sanad.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ 
-                duration: 0.15, 
-                // No delay - instant rendering
+                duration: 0.15,
                 ease: "easeOut"
               }}
               className="group"
             >
               {idx === 0 ? (
-                // First item - bigger and special
-                <div className="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl p-8 border-l-6 border-blue-600 ">
+                // First item - featured style
+                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 sm:p-8 border border-blue-200 shadow-sm">
                   <div className="text-center notranslate">
                     <div className="text-4xl mb-4">📜</div>
-                    <p className="text-gray-800 text-xl leading-relaxed font-semibold rtl">
+                    <p className="text-gray-900 text-lg sm:text-xl leading-relaxed font-semibold rtl w-full">
                       {sanad.name}
                     </p>
                   </div>
                 </div>
               ) : (
-                // Other items - with numbers
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border-l-4 border-blue-50">
-                  <div className="flex items-center justify-between gap-4 notranslate">
-                    <div className="flex-shrink-0 w-8 h-8"></div>
-                    <p className="text-gray-800 text-lg leading-relaxed font-medium rtl flex-1 text-center">
-                      {sanad.name}
-                    </p>
-                    <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                // Other items - clean with responsive number
+                <div className="bg-white rounded-lg p-5 sm:p-6 border border-gray-200 shadow-sm">
+                  {/* Mobile: Number on top right, Desktop: Number on right side */}
+                  <div className="relative notranslate">
+                    {/* Mobile: Number badge on top right */}
+                    <div className="absolute top-0 right-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm sm:hidden">
                       {idx}
+                    </div>
+                    {/* Desktop: Number on right side */}
+                    <div className="hidden sm:flex sm:flex-row sm:items-center sm:gap-4">
+                      <div className="flex-shrink-0 w-8 h-8"></div>
+                      <p className="text-gray-800 text-lg leading-relaxed font-medium rtl flex-1 w-full text-center">
+                        {sanad.name}
+                      </p>
+                      <div className="flex-shrink-0 w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-sm">
+                        {idx}
+                      </div>
+                    </div>
+                    {/* Mobile: Text below number, full width */}
+                    <div className="sm:hidden pt-10">
+                      <p className="text-gray-800 text-base leading-relaxed font-medium rtl w-full text-right">
+                        {sanad.name}
+                      </p>
                     </div>
                   </div>
                 </div>

@@ -8,6 +8,7 @@ import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import VideoPlayer from "@/app/components/VideoPlayer";
 import Breadcrumb from "@/components/Breadcrumb";
+import { Calendar, FileText, ChevronLeft } from "lucide-react";
 
 interface Article {
   title: string;
@@ -32,6 +33,26 @@ interface PageProps {
   params: Promise<{
     slug: string;
   }>;
+}
+
+function stripHtml(value?: string | null) {
+  if (!value) return "";
+  let cleaned = value;
+  cleaned = cleaned.replace(/<[^>]*>/g, " ");
+  cleaned = cleaned.replace(/&nbsp;/g, " ");
+  cleaned = cleaned.replace(/&amp;/g, "&");
+  cleaned = cleaned.replace(/&lt;/g, "<");
+  cleaned = cleaned.replace(/&gt;/g, ">");
+  cleaned = cleaned.replace(/&quot;/g, '"');
+  cleaned = cleaned.replace(/&#39;/g, "'");
+  cleaned = cleaned.replace(/&apos;/g, "'");
+  cleaned = cleaned.replace(/&mdash;/g, "—");
+  cleaned = cleaned.replace(/&ndash;/g, "–");
+  cleaned = cleaned.replace(/&hellip;/g, "...");
+  cleaned = cleaned.replace(/&[#\w]+;/g, " ");
+  cleaned = cleaned.replace(/\s+/g, " ");
+  cleaned = cleaned.trim();
+  return cleaned;
 }
 
 export default async function ArticleDetailsPage({ params }: PageProps) {
@@ -77,38 +98,52 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen mt-32 bg-gradient-to-b from-amber-50/30 to-white">
+    <main className="min-h-screen mt-[180px] md:mt-24 sm:mt-10 bg-gradient-to-b from-amber-50 to-white">
       <Breadcrumb />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Article Content */}
           <div className="flex-1">
-        <article className="mb-16">
-              <div className="bg-white overflow-hidden">
-                {/* Article Meta */}
-                <div className="px-8 pt-8 pb-4">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-4">
-                      {article.category && (
-                        <span className="inline-flex items-center px-4 py-2 rounded-full text-[10px] md:text-sm font-semibold bg-blue-100 text-blue-700 border border-blue-200">
-                          {article.category}
+            <article className="mb-16 relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-lg">
+              <div className="p-6 md:p-8 lg:p-10 space-y-8">
+                {/* Header Section */}
+                <div className="space-y-6">
+                  <div>
+                    {/* Category Badge */}
+                    {article.category && (
+                      <div className="mb-4">
+                        <span className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-[#e0f2f2] text-[#4a8a8a] border border-[#d0e8e8]">
+                          <FileText className="w-4 h-4" />
+                          <span>{article.category}</span>
                         </span>
-                      )}
-                    
-                    </div>
-                  
+                      </div>
+                    )}
+
+                    <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Amiri, serif' }}>
+                      {stripHtml(article.title)}
+                    </h1>
+
+                    {/* Metadata */}
+                    {article.publishedAt && (
+                      <div className="flex items-center gap-2 p-3 rounded-xl bg-gray-50 border border-gray-200 w-fit">
+                        <Calendar className="w-5 h-5 text-[#4a8a8a]" />
+                        <span className="text-sm font-medium text-gray-700">
+                          {new Date(article.publishedAt).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}
+                        </span>
+                      </div>
+                    )}
                   </div>
-                  
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight tracking-tight">
-            {cleanText(article.title)}
-          </h1>
                 </div>
 
                 {/* Media Section */}
                 {article.video_url && (
-                  <div className="px-8 mb-8">
+                  <div className="mb-8">
                     <VideoPlayer
                       videoUrl={article.video_url}
                       posterUrl={article.featuredImage || article.image || ""}
@@ -118,103 +153,66 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
                 )}
 
                 {(article.featuredImage || article.image) && !article.video_url && (
-                  <div className="relative w-full h-64 sm:h-80 md:h-96 mx-8 mb-8 rounded-2xl overflow-hidden  group">
-              <Image
-                src={
-                  getImageUrl(article.featuredImage || article.image, "/placeholder-blog.jpg") ||
-                  "/placeholder-blog.jpg"
-                }
-                alt={article.title}
-                fill
-                sizes="100vw"
-                className="object-cover group-hover:scale-105 transition-transform duration-200"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-            </div>
-          )}
+                  <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-gray-100">
+                    <Image
+                      src={getImageUrl(article.featuredImage || article.image, "/placeholder-blog.jpg") || "/placeholder-blog.jpg"}
+                      alt={article.title}
+                      fill
+                      sizes="100vw"
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                )}
 
                 {/* Article Content */}
-                <div className="px-8 pb-8">
-                  <div className="prose prose-lg max-w-none">
-                    <p className="text-md sm:text-lg text-gray-700 leading-relaxed mb-6">
-                      {cleanText(article.description)}
+                <div className="prose prose-lg max-w-none">
+                  {article.description && (
+                    <p className="text-base md:text-lg text-gray-700 leading-relaxed mb-6" style={{ fontFamily: 'Amiri, serif' }}>
+                      {stripHtml(article.description)}
                     </p>
-                    
-                    {article.content && (
-                      <div 
-                        className="text-gray-800 leading-relaxed"
-                        dangerouslySetInnerHTML={{ __html: article.content }}
-                      />
-                    )}
-                  </div>
+                  )}
+                  
+                  {article.content && (
+                    <div 
+                      className="text-gray-800 leading-relaxed"
+                      style={{ fontFamily: 'Amiri, serif' }}
+                      dangerouslySetInnerHTML={{ __html: article.content }}
+                    />
+                  )}
                 </div>
               </div>
-        </article>
+            </article>
           </div>
 
           {/* Related Articles Sidebar - Desktop Only */}
           {relatedArticles.length > 0 && (
             <div className="hidden lg:block w-80 flex-shrink-0">
               <div className="sticky top-8">
-                <div className="bg-white rounded-xl border border-gray-100 overflow-hidden">
+                <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
                   {/* Sidebar Header */}
-                  <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-                    <h3 className="text-lg font-semibold text-gray-900">Related Articles</h3>
-                   
+                  <div className="px-6 py-5 bg-gradient-to-r from-[#4a8a8a] to-[#5a9a9a]">
+                    <h3 className="text-lg font-bold text-white" style={{ fontFamily: 'Amiri, serif' }}>
+                      Related Articles
+                    </h3>
                   </div>
 
-                  {/* Articles List */}
+                  {/* Articles List - Simple Text Only */}
                   <div className="p-4">
-                    <div className="space-y-4">
+                    <div className="space-y-3">
                       {relatedArticles.map((item, index) => (
                         <Link
                           key={item.slug}
                           href={`/articles/${item.slug}`}
-                          className="group block p-4 bg-gray-50 rounded-xl hover:bg-blue-50  transition-all duration-150 border border-gray-100 hover:border-blue-200"
+                          className="group block p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 border-l-2 border-transparent hover:border-[#4a8a8a]"
                         >
-                          {/* Article Image */}
-                          <div className="relative h-32 rounded-lg overflow-hidden mb-3">
-                            {(() => {
-                              const imageUrl = getImageUrl(item.featuredImage || item.image);
-                              return imageUrl ? (
-                                <Image
-                                  src={imageUrl}
-                                  alt={item.title}
-                                  fill
-                                  sizes="320px"
-                                  className="object-cover group-hover:scale-105 transition-transform duration-150"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100">
-                                  <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-500/20"></div>
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="text-4xl text-blue-400">📄</div>
-                                  </div>
-                                </div>
-                              );
-                            })()}
-                            
-                            {/* Category Badge */}
-                            {item.category && (
-                              <div className="absolute top-2 left-2">
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-blue-700">
-                                  {item.category}
-                                </span>
-                              </div>
-                            )}
-                          </div>
-
-                          {/* Content */}
-                          <div>
-                            <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-700 transition-colors mb-2 line-clamp-2 leading-tight">
-                              {cleanText(item.title)}
-                            </h4>
-                            
-                            <p className="text-xs text-gray-600 line-clamp-2 mb-3">
-                              {cleanText(item.description) || "Continue reading..."}
-                            </p>
-                          </div>
+                          <h4 className="text-sm font-semibold text-gray-900 group-hover:text-[#4a8a8a] transition-colors mb-1.5 line-clamp-2 leading-snug" style={{ fontFamily: 'Amiri, serif' }}>
+                            {stripHtml(item.title)}
+                          </h4>
+                          
+                          <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
+                            {stripHtml(item.description) || "Continue reading..."}
+                          </p>
                         </Link>
                       ))}
                     </div>
@@ -227,68 +225,29 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
 
         {/* Related Articles - Mobile Bottom Section */}
         {relatedArticles.length > 0 && (
-          <div className="lg:hidden mt-8">
-            <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
-              {/* Section Header */}
-              <div className="px-6 py-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-b border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900">Related Articles</h3>
-                <p className="text-sm text-gray-600 mt-1">Continue exploring more content</p>
-              </div>
-
-              {/* Articles Grid - Mobile */}
+          <div className="lg:hidden mt-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6 text-center" style={{ fontFamily: 'Amiri, serif' }}>
+              Related Articles
+            </h2>
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
               <div className="p-4">
-                <div className="grid gap-4">
+                <div className="space-y-3">
                   {relatedArticles.map((item, index) => (
-                <Link
-                  key={item.slug}
-                  href={`/articles/${item.slug}`}
-                      className="group flex gap-4 p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition-all duration-150 border border-gray-100 hover:border-blue-200"
+                    <Link
+                      key={item.slug}
+                      href={`/articles/${item.slug}`}
+                      className="group block p-3 rounded-lg hover:bg-gray-50 transition-all duration-200 border-l-2 border-transparent hover:border-[#4a8a8a]"
                     >
-                      {/* Article Image */}
-                      <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden">
-                        {(() => {
-                          const imageUrl = getImageUrl(item.featuredImage || item.image);
-                          return imageUrl ? (
-                            <Image
-                              src={imageUrl}
-                              alt={item.title}
-                              fill
-                              sizes="96px"
-                              className="object-cover group-hover:scale-105 transition-transform duration-150"
-                            />
-                          ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100">
-                              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-indigo-500/20"></div>
-                              <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="text-2xl text-blue-400">📄</div>
-                              </div>
-                            </div>
-                          );
-                        })()}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        {/* Category Badge */}
-                        {item.category && (
-                          <div className="mb-2">
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                              {item.category}
-                            </span>
-                          </div>
-                        )}
-                        
-                        <h4 className="text-sm font-bold text-gray-900 group-hover:text-blue-700 transition-colors mb-2 line-clamp-2 leading-tight">
-                    {cleanText(item.title)}
-                        </h4>
-                        
-                        <p className="text-xs text-gray-600 line-clamp-2">
-                          {cleanText(item.description) || "Continue reading..."}
-                        </p>
-                      </div>
-                </Link>
-              ))}
-            </div>
+                      <h3 className="text-sm font-semibold text-gray-900 group-hover:text-[#4a8a8a] transition-colors mb-1.5 line-clamp-2 leading-snug" style={{ fontFamily: 'Amiri, serif' }}>
+                        {stripHtml(item.title)}
+                      </h3>
+                      
+                      <p className="text-xs text-gray-500 line-clamp-2 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
+                        {stripHtml(item.description) || "Continue reading..."}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

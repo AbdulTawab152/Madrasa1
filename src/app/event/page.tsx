@@ -45,7 +45,7 @@ export default function EventsPage() {
       <Breadcrumb />
       <div className="pb-16">
         {isLoadingInitial ? (
-          <UnifiedLoader variant="card-grid" count={6} showFilters={false} />
+          <UnifiedLoader variant="grid" count={6} showFilters={false} />
         ) : error ? (
           <ErrorDisplay 
             error={error} 

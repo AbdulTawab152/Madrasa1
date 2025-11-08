@@ -285,21 +285,24 @@ export default function AdmissionPage() {
 
   if (submitSuccess) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-50 py-12 px-4">
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-6 sm:p-8 text-center mt-8 sm:mt-12 md:mt-16">
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+      <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white py-12 px-4">
+        <Breadcrumb />
+        <div className="max-w-2xl mx-auto mt-10">
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8 sm:p-12 text-center">
+            <div className="w-24 h-24 bg-[#e0f2f2] rounded-full flex items-center justify-center mx-auto mb-6">
+              <svg className="w-12 h-12 text-[#4a8a8a]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">نوم لیکنه بریالۍ شوه</h2>
-            <p className="text-gray-600 mb-6 text-sm sm:text-base">
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Amiri, serif' }}>
+              نوم لیکنه بریالۍ شوه
+            </h2>
+            <p className="text-gray-600 mb-8 text-base sm:text-lg leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
               ستاسو د نوم لیکنې لپاره مننه. موږ به ژر سره تاسو سره اړیکه ونیسو.
             </p>
             <button
               onClick={() => setSubmitSuccess(false)}
-              className="px-6 py-3 bg-amber-600 text-white rounded-lg hover:bg-amber-700 transition-colors font-semibold text-sm sm:text-base"
+              className="px-8 py-3 bg-[#4a8a8a] text-white rounded-xl hover:bg-[#5a9a9a] transition-all duration-200 font-semibold text-base shadow-md hover:shadow-lg"
             >
               بل فورم واستوئ
             </button> 
@@ -310,7 +313,7 @@ export default function AdmissionPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100">
+    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       {/* Islamic Hero Header */}
       <IslamicHeader
         title="د محصلینو د نوم لیکنې فورم"
@@ -322,16 +325,16 @@ export default function AdmissionPage() {
       <Breadcrumb />
 
       {/* Form Section */}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-3xl shadow-sm p-6 sm:p-8 lg:p-10 space-y-8 border border-gray-100">
+        <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-gray-200 shadow-lg p-6 sm:p-8 lg:p-10 space-y-10">
           {/* Personal Information */}
           <section className="border-b border-gray-200 pb-8">
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-6 -mx-2">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="bg-amber-600 rounded-lg p-2 text-white">
-                  <FiUser className="w-6 h-6" />
+            <div className="bg-[#e0f2f2] rounded-xl p-5 mb-6 border border-[#d0e8e8]">
+              <h2 className="text-xl md:text-2xl font-bold text-[#4a8a8a] flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                <div className="bg-[#4a8a8a] rounded-lg p-2.5 text-white">
+                  <FiUser className="w-5 h-5" />
                 </div>
                 شخصي معلومات
               </h2>
@@ -339,20 +342,21 @@ export default function AdmissionPage() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ستاسو نوم *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ستاسو نوم *</label>
                 <input
                   type="text"
                   name="first_name"
                   value={formData.first_name}
                   onChange={handleChange}
                   required
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.first_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.first_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
                   placeholder="ستاسو نوم *"
+                  style={{ fontFamily: 'Amiri, serif' }}
                 />
                 {errors.first_name && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.first_name}
                   </p>
@@ -360,20 +364,21 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ستاسو تخلص *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ستاسو تخلص *</label>
                 <input
                   type="text"
                   name="last_name"
                   value={formData.last_name}
                   onChange={handleChange}
                   required
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.last_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.last_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
                   placeholder="ستاسو تخلص *"
+                  style={{ fontFamily: 'Amiri, serif' }}
                 />
                 {errors.last_name && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.last_name}
                   </p>
@@ -381,20 +386,21 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">د پلار نوم *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د پلار نوم *</label>
                 <input
                   type="text"
                   name="father_name"
                   value={formData.father_name}
                   onChange={handleChange}
                   required
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.father_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.father_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
                   placeholder="د پلار نوم *"
+                  style={{ fontFamily: 'Amiri, serif' }}
                 />
                 {errors.father_name && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.father_name}
                   </p>
@@ -402,19 +408,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">د نیکه نوم *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د نیکه نوم *</label>
                 <input
                   type="text"
                   name="grandfather_name"
                   value={formData.grandfather_name}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.grandfather_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.grandfather_name ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
                   placeholder="د نیکه نوم *"
+                  style={{ fontFamily: 'Amiri, serif' }}
                 />
                 {errors.grandfather_name && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.grandfather_name}
                   </p>
@@ -422,18 +429,19 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">د زېږېدو نېټه *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د زېږېدو نېټه *</label>
                 <input
                   type="date"
                   name="dob"
                   value={formData.dob}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.dob ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.dob ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                 />
                 {errors.dob && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.dob}
                   </p>
@@ -441,20 +449,21 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">د وینې ډوله (حداکثر ۵ حرف) *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د وینې ډوله (حداکثر ۵ حرف) *</label>
                 <input
                   type="text"
                   name="blood_type"
                   value={formData.blood_type}
                   onChange={handleChange}
                   maxLength={5}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.blood_type ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.blood_type ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
                   placeholder="د وینې ډوله * (مثال: O+ یا A-)"
+                  style={{ fontFamily: 'Amiri, serif' }}
                 />
                 {errors.blood_type && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.blood_type}
                   </p>
@@ -465,10 +474,10 @@ export default function AdmissionPage() {
 
           {/* Contact Information */}
           <section className="border-b border-gray-200 pb-8">
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-6 -mx-2">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="bg-amber-600 rounded-lg p-2 text-white">
-                  <FiPhone className="w-6 h-6" />
+            <div className="bg-[#e0f2f2] rounded-xl p-5 mb-6 border border-[#d0e8e8]">
+              <h2 className="text-xl md:text-2xl font-bold text-[#4a8a8a] flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                <div className="bg-[#4a8a8a] rounded-lg p-2.5 text-white">
+                  <FiPhone className="w-5 h-5" />
                 </div>
                 د اړیکو معلومات
               </h2>
@@ -476,19 +485,20 @@ export default function AdmissionPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ټیلیفون شمېره *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ټیلیفون شمېره *</label>
                 <input
                   type="tel"
                   name="phone"
                   value={formData.phone}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.phone ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.phone ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="ستاسو ټيليفون شمېره * (07X XXX XXXX)"
                 />
                 {errors.phone && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.phone}
                   </p>
@@ -496,19 +506,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">واتساپ شمېره *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>واتساپ شمېره *</label>
                 <input
                   type="tel"
                   name="whatsapp_no"
                   value={formData.whatsapp_no}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.whatsapp_no ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.whatsapp_no ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="ستاسو واتساپ شمېره * (07X XXX XXXX)"
                 />
                 {errors.whatsapp_no && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.whatsapp_no}
                   </p>
@@ -519,10 +530,10 @@ export default function AdmissionPage() {
 
           {/* Permanent Address */}
           <section className="border-b border-gray-200 pb-8">
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-6 -mx-2">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="bg-amber-600 rounded-lg p-2 text-white">
-                  <FiHome className="w-6 h-6" />
+            <div className="bg-[#e0f2f2] rounded-xl p-5 mb-6 border border-[#d0e8e8]">
+              <h2 className="text-xl md:text-2xl font-bold text-[#4a8a8a] flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                <div className="bg-[#4a8a8a] rounded-lg p-2.5 text-white">
+                  <FiHome className="w-5 h-5" />
                 </div>
                 دایمي پته
               </h2>
@@ -530,19 +541,20 @@ export default function AdmissionPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ولایت *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولایت *</label>
                 <input
                   type="text"
                   name="permanent_province"
                   value={formData.permanent_province}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.permanent_province ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.permanent_province ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="دایمي ولایت *"
                 />
                 {errors.permanent_province && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.permanent_province}
                   </p>
@@ -550,19 +562,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ولسوالۍ *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولسوالۍ *</label>
                 <input
                   type="text"
                   name="permanent_distract"
                   value={formData.permanent_distract}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.permanent_distract ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.permanent_distract ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="دایمي ولسوالۍ *"
                 />
                 {errors.permanent_distract && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.permanent_distract}
                   </p>
@@ -570,19 +583,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">کلي نوم *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>کلي نوم *</label>
                 <input
                   type="text"
                   name="permanent_vilage"
                   value={formData.permanent_vilage}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.permanent_vilage ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.permanent_vilage ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="دایمي کلي نوم *"
                 />
                 {errors.permanent_vilage && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.permanent_vilage}
                   </p>
@@ -593,10 +607,10 @@ export default function AdmissionPage() {
 
           {/* Current Address */}
           <section className="border-b border-gray-200 pb-8">
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-6 -mx-2">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="bg-amber-600 rounded-lg p-2 text-white">
-                  <FiGlobe className="w-6 h-6" />
+            <div className="bg-[#e0f2f2] rounded-xl p-5 mb-6 border border-[#d0e8e8]">
+              <h2 className="text-xl md:text-2xl font-bold text-[#4a8a8a] flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                <div className="bg-[#4a8a8a] rounded-lg p-2.5 text-white">
+                  <FiGlobe className="w-5 h-5" />
                 </div>
                 اوسنۍ پته
               </h2>
@@ -604,19 +618,20 @@ export default function AdmissionPage() {
 
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ولایت *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولایت *</label>
                 <input
                   type="text"
                   name="current_province"
                   value={formData.current_province}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.current_province ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.current_province ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="اوسنۍ ولایت *"
                 />
                 {errors.current_province && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.current_province}
                   </p>
@@ -624,19 +639,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">ولسوالۍ *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولسوالۍ *</label>
                 <input
                   type="text"
                   name="current_distract"
                   value={formData.current_distract}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.current_distract ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.current_distract ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="اوسنۍ ولسوالۍ *"
                 />
                 {errors.current_distract && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.current_distract}
                   </p>
@@ -644,19 +660,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">کلي نوم *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>کلي نوم *</label>
                 <input
                   type="text"
                   name="current_vilage"
                   value={formData.current_vilage}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.current_vilage ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.current_vilage ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="اوسنۍ کلي نوم *"
                 />
                 {errors.current_vilage && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.current_vilage}
                   </p>
@@ -667,10 +684,10 @@ export default function AdmissionPage() {
 
           {/* Educational Information */}
           <section className="border-b border-gray-200 pb-8">
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-4 mb-6 -mx-2">
-              <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="bg-amber-600 rounded-lg p-2 text-white">
-                  <FiBook className="w-6 h-6" />
+            <div className="bg-[#e0f2f2] rounded-xl p-5 mb-6 border border-[#d0e8e8]">
+              <h2 className="text-xl md:text-2xl font-bold text-[#4a8a8a] flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                <div className="bg-[#4a8a8a] rounded-lg p-2.5 text-white">
+                  <FiBook className="w-5 h-5" />
                 </div>
                 د زده کړو معلومات
               </h2>
@@ -678,7 +695,7 @@ export default function AdmissionPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>
                   درجه *
                   {loadingDegrees && (
                     <span className="text-xs text-gray-500 mr-2">(د پورته کولو په حال کې...)</span>
@@ -689,9 +706,10 @@ export default function AdmissionPage() {
                   value={formData.degree_id || (degrees.length > 0 ? degrees[0].id : 1)}
                   onChange={handleChange}
                   disabled={loadingDegrees}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.degree_id ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.degree_id ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   } ${loadingDegrees ? "opacity-50 cursor-not-allowed" : ""}`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   required
                 >
                   {degrees.map((degree) => (
@@ -701,7 +719,7 @@ export default function AdmissionPage() {
                   ))}
                 </select>
                 {errors.degree_id && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.degree_id}
                   </p>
@@ -709,19 +727,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">تیر سند *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>تیر سند *</label>
                 <input
                   type="text"
                   name="previous_degree"
                   value={formData.previous_degree}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.previous_degree ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.previous_degree ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="تیر سند * (مثال: فارغ‌التحصیلی)"
                 />
                 {errors.previous_degree && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.previous_degree}
                   </p>
@@ -729,19 +748,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">تیر مدرسه نوم *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>تیر مدرسه نوم *</label>
                 <input
                   type="text"
                   name="previous_madrasa"
                   value={formData.previous_madrasa}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.previous_madrasa ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.previous_madrasa ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="تیر مدرسه نوم *"
                 />
                 {errors.previous_madrasa && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.previous_madrasa}
                   </p>
@@ -749,19 +769,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">د مدرسې موقعیت *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د مدرسې موقعیت *</label>
                 <input
                   type="text"
                   name="location_madrasa"
                   value={formData.location_madrasa}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.location_madrasa ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.location_madrasa ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="د مدرسې موقعیت *"
                 />
                 {errors.location_madrasa && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.location_madrasa}
                   </p>
@@ -769,19 +790,20 @@ export default function AdmissionPage() {
               </div>
 
               <div className="w-full md:col-span-2">
-                <label className="block text-xs sm:text-sm font-bold text-gray-800 mb-2 sm:mb-3 w-full">موقعیت *</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>موقعیت *</label>
                 <input
                   type="text"
                   name="location"
                   value={formData.location}
                   onChange={handleChange}
-                  className={`w-full px-2 sm:px-4 py-2 sm:py-3 border-2 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-all duration-200 text-sm ${
-                    errors.location ? "border-red-400 bg-red-50" : "border-gray-300 bg-gray-50 hover:border-amber-400"
+                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-[#4a8a8a] focus:border-[#4a8a8a] transition-all duration-200 text-sm ${
+                    errors.location ? "border-red-400 bg-red-50" : "border-gray-300 bg-white hover:border-[#4a8a8a]"
                   }`}
+                  style={{ fontFamily: 'Amiri, serif' }}
                   placeholder="اوسنی موقعیت *"
                 />
                 {errors.location && (
-                  <p className="bg-amber-100 text-amber-800 text-sm mt-1 p-2 rounded-lg flex items-center gap-2 border border-amber-300">
+                  <p className="bg-red-50 text-red-700 text-sm mt-2 p-2.5 rounded-lg flex items-center gap-2 border border-red-200" style={{ fontFamily: 'Amiri, serif' }}>
                     <span>⚠️</span>
                     {errors.location}
                   </p>
@@ -791,13 +813,14 @@ export default function AdmissionPage() {
           </section>
 
           {/* Submit Button */}
-          <div className="pt-8">
+          <div className="pt-6">
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white py-5 rounded-xl font-bold text-lg hover:shadow-2xl hover:scale-[1.02] transition-all duration-150 transform disabled:opacity-70 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center gap-3 shadow-xl relative overflow-hidden group"
+              className="w-full bg-[#4a8a8a] hover:bg-[#5a9a9a] text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-[1.01] disabled:opacity-70 disabled:transform-none disabled:cursor-not-allowed flex items-center justify-center gap-3 relative overflow-hidden group"
+              style={{ fontFamily: 'Amiri, serif' }}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-amber-700 to-orange-700 opacity-0 group-hover:opacity-100 transition-opacity duration-150"></span>
+              <span className="absolute inset-0 bg-[#5a9a9a] opacity-0 group-hover:opacity-100 transition-opacity duration-200"></span>
               <span className="relative z-10 flex items-center gap-3">
               {loading ? (
                 <>
@@ -810,7 +833,7 @@ export default function AdmissionPage() {
               ) : (
                 <>
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                   </svg>
                     فورم واستوئ
                 </>

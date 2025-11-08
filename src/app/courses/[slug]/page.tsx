@@ -167,10 +167,9 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <Breadcrumb />
-      <div className="max-w-7xl z-50 mx-auto px-4 py-6">
-
-      {/* Hero Section - Modern & Clean Design */}
-      <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[560px] lg:min-h-[600px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">0
+      
+      {/* Hero Section - Modern & Clean Design - Full Width */}
+      <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 w-full">
         {/* Background Image Layer */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -185,10 +184,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           {/* Gradient Overlays */}
           <div className="absolute inset-0 bg-gradient-to-br from-slate-900/90 via-slate-800/80 to-slate-900/90"></div>
           <div className="absolute inset-0 bg-gradient-to-t from-slate-900/95 via-transparent to-transparent"></div>
-          
-          {/* Subtle Light Effects */}
-          <div className="absolute top-20 right-0 w-96 h-96 bg-amber-500/10 rounded-full"></div>
-          <div className="absolute bottom-20 left-0 w-96 h-96 bg-emerald-500/10 rounded-full"></div>
         </div>
 
         {/* Hero Content */}
@@ -216,10 +211,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   </p>
                 </div>
               )}
-
-              {/* Decorative Elements */}
-              <div className="absolute top-24 -left-24 w-72 h-72 bg-amber-400/15 rounded-full pointer-events-none"></div>
-              <div className="absolute bottom-24 -right-24 w-72 h-72 bg-emerald-400/15 rounded-full pointer-events-none"></div>
             </div>
           </div>
         </div>
@@ -228,53 +219,44 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
 
+      <div className="max-w-7xl z-50 mx-auto px-4 py-6">
       {/* Video Section - Enhanced Design */}
     
       {course.short_video && (
-        <section className="relative w-full py-12 sm:py-16 bg-gradient-to-br from-slate-50 via-white to-emerald-50 overflow-hidden">
-          {/* Background Pattern */}
-          <div className="absolute inset-0 opacity-5">
-            <div
-              className="absolute inset-0"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23059669' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-              }}
-            />
-          </div>
-
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="relative w-full py-12 sm:py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Section Header */}
-            <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 bg-emerald-100 text-emerald-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+            <div className="text-center mb-10">
+              <div className="inline-flex items-center gap-2 bg-[#e0f2f2] text-[#4a8a8a] px-5 py-2 rounded-full text-sm font-semibold mb-6 border border-[#d0e8e8]">
                 <FaVideo className="w-4 h-4" />
                 {t('courses.coursePreview')}
               </div>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Amiri, serif' }}>
                 {t('courses.watchAndLearn')}
               </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto" style={{ fontFamily: 'Amiri, serif' }}>
                 {t('courses.previewDescription')}
               </p>
             </div>
-            
-            {/* Debug Output: Show video URL */}
           
             {/* Video Player Container */}
-            <div className="max-w-4xl mx-auto">
-              <VideoPlayer
-                videoUrl={course.short_video}
-                posterUrl={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
-                title={course.title}
-              />
+            <div className="max-w-5xl mx-auto">
+              <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-2">
+                <VideoPlayer
+                  videoUrl={course.short_video}
+                  posterUrl={course.image ? getImageUrl(course.image, "/placeholder-course.jpg") : "/placeholder-course.jpg"}
+                  title={course.title}
+                />
+              </div>
             </div>
           </div>
         </section>
       )}
 
-      <div className="max-w-7xl mx-auto px-4 py- lg:py-0 lg:mt relative flex flex-col lg:flex-row gap-10 items-start">
+      <div className="max-w-7xl mx-auto px-4 py-8 lg:py-0 lg:mt-8 relative flex flex-col lg:flex-row gap-10 items-start">
 
         {/* Main Info Section */}
-        <div className="flex-1 rounded-3xl bg-white/95  p- space-y-10 border border-amber-50">
+        <div className="flex-1 rounded-3xl bg-white/95 p-8 space-y-10 border border-amber-50">
 
           {/* Mobile Get Course Info (only visible on mobile, before Book and Recorder Card) */}
           <div className="block lg:hidden mb-8">
@@ -474,6 +456,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             </ul>
           </div>
         </aside>
+      </div>
       </div>
     </div>
   );

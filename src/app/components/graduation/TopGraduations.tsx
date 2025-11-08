@@ -3,10 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { GraduationsApi } from "../../../lib/api";
-import { FaCalendarAlt, FaStar } from "react-icons/fa";
-import RTLArrowIcon from "@/components/RTLArrowIcon";
+import { Calendar, Star, ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
 import { getImageUrl } from "@/lib/utils";
 import PaginationControls from "@/components/PaginationControls";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -75,8 +73,28 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
     fetchData();
   }, [showAll, page]);
 
+  const stripHtml = (value?: string | null) => {
+    if (!value) return "";
+    let cleaned = value;
+    cleaned = cleaned.replace(/<[^>]*>/g, " ");
+    cleaned = cleaned.replace(/&nbsp;/g, " ");
+    cleaned = cleaned.replace(/&amp;/g, "&");
+    cleaned = cleaned.replace(/&lt;/g, "<");
+    cleaned = cleaned.replace(/&gt;/g, ">");
+    cleaned = cleaned.replace(/&quot;/g, '"');
+    cleaned = cleaned.replace(/&#39;/g, "'");
+    cleaned = cleaned.replace(/&apos;/g, "'");
+    cleaned = cleaned.replace(/&mdash;/g, "—");
+    cleaned = cleaned.replace(/&ndash;/g, "–");
+    cleaned = cleaned.replace(/&hellip;/g, "...");
+    cleaned = cleaned.replace(/&[#\w]+;/g, " ");
+    cleaned = cleaned.replace(/\s+/g, " ");
+    cleaned = cleaned.trim();
+    return cleaned;
+  };
+
   if (loading) {
-    return <UnifiedLoader variant="card-grid" count={8} showFilters={false} />;
+    return <UnifiedLoader variant="grid" count={8} showFilters={false} />;
   }
 
   if (error) {
@@ -101,99 +119,106 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
 
   return (
     <div className="w-full">
-      {/* Enhanced Graduations Grid */}
-        <div className="relative">
-          {/* Simpler, friendlier background */}
-          <div className="pointer-events-none absolute inset-0 -z-10">
-            <div className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-amber-50 via-yellow-50 to-transparent opacity-70 rounded-t-3xl" />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {graduations.slice(0, PAGE_SIZE).map((grad, idx) => (
-              <motion.div
-                key={grad.id}
-                className="group"
-                initial={{ opacity: 0, y: 28, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{
-                  duration: 0.15,
-                  // No delay - instant rendering
-                  ease: "easeOut",
-                }}
-                whileHover={{
-                  scale: 1.027,
-                  boxShadow: "0 4px 24px 0 rgba(255,190,80,0.12)",
-                  transition: { duration: 0.17, ease: "easeOut" },
-                }}
-              >
-                <div className="flex flex-col bg-white rounded-2xl shadow-sm hover:shadow-xl border border-amber-100/70 hover:border-amber-200 hover:ring-1 hover:ring-amber-200 transition-all duration-150 overflow-hidden h-full">
-                  {/* Profile/Main image */}
-                  <div className="relative">
-                    <Image
-                      src={
-                        getImageUrl(grad.main_image, "/placeholder-graduation.jpg")
-                        || "/placeholder-graduation.jpg"
-                      }
-                      alt={grad.title}
-                      width={420}
-                      height={230}
-                      className="w-full h-48 object-cover will-change-transform"
-                    />
+      {/* Graduations Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {graduations.slice(0, PAGE_SIZE).map((grad, idx) => {
+          const coverImage = getImageUrl(grad.main_image, "/placeholder-graduation.jpg") || "/placeholder-graduation.jpg";
+          
+          return (
+            <Link
+              key={grad.id}
+              href={`/graduated-students/${grad.slug}`}
+              className="group relative flex h-full flex-col bg-[#e0f2f2] rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-[#d0e8e8]"
+              dir="rtl"
+            >
+              {/* Top Section - Full Size Image */}
+              <div className="relative h-52 bg-[#e0f2f2] flex-shrink-0 overflow-hidden group-hover:opacity-95 transition-opacity duration-300">
+                <Image
+                  src={coverImage}
+                  alt={grad.title}
+                  fill
+                  sizes="(min-width: 1280px) 400px, (min-width: 768px) 50vw, 100vw"
+                  className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                
+                {/* Year Badge */}
+                <div className="absolute top-4 right-4 z-10">
+                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/98 backdrop-blur-md text-[#4a8a8a] border border-white/50 shadow-lg">
+                    <Calendar className="w-4 h-4 text-[#4a8a8a]" />
+                    <span>{grad.graduation_year || "N/A"}</span>
+                  </span>
+                </div>
+                
+                {/* Top Graduate Badge */}
+                {grad.is_top && (
+                  <div className="absolute top-4 left-4 z-10">
+                    <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 text-white shadow-lg">
+                      <Star className="w-4 h-4 fill-white" />
+                      <span>{t('graduationDetail.top')}</span>
+                    </span>
+                  </div>
+                )}
+              </div>
 
-                    {/* Year badge */}
-                    <div className="absolute top-3 right-3 rounded-lg px-3 py-1 bg-white/90 flex items-center gap-2 text-[11px] font-semibold text-amber-700 border border-amber-200 shadow-sm">
-                      <FaCalendarAlt className="text-amber-400" />
-                      <span>{grad.graduation_year || "N/A"}</span>
+              {/* Bottom Section - White Background with Crescent Pattern */}
+              <div className="relative h-44 flex-1 bg-white p-6 flex flex-col justify-between">
+                {/* Crescent Moon Pattern Background */}
+                <div 
+                  className="absolute inset-0 opacity-[0.03]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 5c-8 0-15 3-20 8-5 5-8 12-8 20 0 8 3 15 8 20 5 5 12 8 20 8s15-3 20-8c5-5 8-12 8-20 0-8-3-15-8-20-5-5-12-8-20-8zm0 5c6 0 11 2 15 6 4 4 6 9 6 15 0 6-2 11-6 15-4 4-9 6-15 6s-11-2-15-6c-4-4-6-9-6-15 0-6 2-11 6-15 4-4 9-6 15-6z' fill='%234a8a8a'/%3E%3C/svg%3E")`,
+                    backgroundSize: '50px 50px',
+                    backgroundPosition: '0 0'
+                  }}
+                ></div>
+
+                {/* Content */}
+                <div className="relative z-10 space-y-3">
+                  {/* Title - Large and Bold */}
+                  <h3 className="text-xl md:text-2xl font-bold text-[#4a8a8a] leading-tight line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
+                    {stripHtml(grad.title)}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-sm text-[#4a8a8a] leading-relaxed line-clamp-3" style={{ fontFamily: 'Amiri, serif' }}>
+                    {stripHtml(grad.description) || t('graduationDetail.noDescriptionAvailable')}
+                  </p>
+
+                  {/* Metadata - Small Text */}
+                  <div className="flex items-center gap-4 text-xs text-[#4a8a8a] pt-2">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5" />
+                      <span>{grad.graduation_year || 'N/A'}</span>
                     </div>
-                    
-                    {/* Top Graduate badge */}
                     {grad.is_top && (
-                      <div className="absolute top-3 left-3 rounded-lg px-3 py-1 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold flex items-center gap-1 text-[11px] shadow">
-                        <FaStar className="text-white" /> Top Graduate
+                      <div className="flex items-center gap-1.5">
+                        <Star className="w-3.5 h-3.5" />
+                        <span>{t('graduationDetail.top')}</span>
                       </div>
                     )}
                   </div>
+                </div>
 
-                  <div className="flex-1 flex flex-col px-5 py-5">
-                    {/* Title */}
-                    <h3 className="text-lg font-extrabold tracking-tight mb-1 text-gray-900 group-hover:text-amber-800 transition-colors duration-200 line-clamp-2">
-                      {grad.title}
-                    </h3>
-                    {/* Description */}
-                     <p className="text-gray-600 text-[13px] leading-6 mb-2 line-clamp-3 group-hover:line-clamp-6 transition-[line-clamp] duration-200">
-                       {grad.description?.replace(/<[^>]*>/g, "") || t('graduationDetail.noDescriptionAvailable')}
-                     </p>
-                   
+                {/* Separator */}
+                <div className="relative z-10 my-4 border-t border-gray-200"></div>
 
-                    {/* Card chips */}
-                    <div className="flex flex-wrap items-center gap-2 mb-4">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-yellow-50/80 border border-yellow-200 text-yellow-700 text-[11px] font-medium">
-                        <FaCalendarAlt className="text-yellow-400" />
-                        <span>{grad.graduation_year || "N/A"}</span>
-                      </span>
-                      {grad.is_top && (
-                        <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-50 border border-amber-200 text-amber-700 text-[11px] font-medium">
-                          <FaStar className="text-yellow-400" /> {t('graduationDetail.top')}
-                        </span>
-                      )}
-                    </div>
-
-                    <div className="mt-auto border-t border-amber-100/70 pt-4"></div>
-                    {/* Action */}
-                     <Link href={`/graduated-students/${grad.slug}`} className="w-full" aria-label="View graduation details">
-                      <button
-                        type="button"
-                        className={`w-full py-2.5 rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-semibold text-sm transition-all shadow-sm hover:shadow focus:outline-none mt-2 flex justify-center items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}
-                      >
-                        <span>{t('graduationDetail.viewDetails')}</span>
-                        {/* <RTLArrowIcon /> */}
-                      </button>
-                    </Link>
+                {/* Footer with Navigation */}
+                <div className="relative z-10 flex items-center justify-between">
+                  <span className="text-xs text-[#4a8a8a] font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                    {t('graduationDetail.viewDetails')}
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-[#e0f2f2] flex items-center justify-center group-hover:bg-[#d0e8e8] transition-colors">
+                    <ChevronLeft className="w-4 h-4 text-[#4a8a8a]" />
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
 
         {/* Pagination - Only show on dedicated graduations page */}
         {showAll && graduations.length > 0 && (

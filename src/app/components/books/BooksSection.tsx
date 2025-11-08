@@ -7,8 +7,7 @@ import { getImageUrl } from "../../../lib/utils";
 import { BooksApi } from "../../../lib/api";
 import { Book } from "../../../lib/types";
 import PaginationControls from "@/components/PaginationControls";
-import { FaBook, FaCalendar, FaEye, FaHeart } from 'react-icons/fa';
-import { Button } from "@/components/ui/button";
+import { BookOpen, Calendar, UserRound, ChevronLeft } from "lucide-react";
 import { cleanText } from "../../../lib/textUtils";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
@@ -60,8 +59,14 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   const hasNextPage = !showAll && (typeof totalPages === 'number' ? (page < totalPages) : (displayBooks.length === PAGE_SIZE));
   const hasPrevPage = !showAll && page > 1;
 
+  const getAuthorName = (book: Book) => {
+    if (!book.author) return "Unknown Author";
+    const parts = [book.author.first_name, book.author.last_name].filter(Boolean);
+    return parts.length > 0 ? parts.join(" ") : "Unknown Author";
+  };
+
   if (loading) {
-    return <UnifiedLoader variant="card-grid" count={8} showFilters={false} />;
+    return <UnifiedLoader variant="grid" count={8} showFilters={false} />;
   }
 
   if (displayBooks.length === 0) {
@@ -77,99 +82,101 @@ export default function BooksSection({ showAll = false, showHero = false }: Book
   return (
     <div className="w-full">
       {/* Books Grid with proper margins */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {displayBooks.map((book) => (
-          <div
-            key={book.id}
-            className="group relative h-[420px]"
-            onMouseEnter={() => setHoveredBook(book.id)}
-            onMouseLeave={() => setHoveredBook(null)}
-          >
-            <div className="block h-full">
-              <div className="bg-white rounded-2xl shadow-sm hover:shadow-md  transition-all duration-200 transform hover:-translate-y-3 border border-amber-100 overflow-hidden relative h-full flex flex-col group-hover:border-amber-200">
-                {/* Book Image Container */}
-                
-                <div className="relative h-64 overflow-hidden flex-shrink-0">
-                  {book.image ? (
-                    <Image
-                      src={getImageUrl(book.image) || ""}
-                      alt={book.title}
-                      width={400}
-                      height={400}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-200"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="text-6xl mb-2">📚</div>
-                        <div className="text-amber-600 text-sm font-medium bg-white/80 px-3 py-1 rounded-full">
-                          Book Cover
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* Enhanced Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-amber-900/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
-                  
-                  {/* Book Badge */}
-                  <div className="absolute top-4 left-4 bg-gradient-to-r from-amber-600 to-amber-700 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg">
-                    <FaBook className="inline mr-1" />
-                    Book
-                  </div>
-                  
-                  {/* Quick Actions */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-150 transform translate-y-2 group-hover:translate-y-0">
-                    <Button variant="ghost" size="icon" className="bg-white/90 hover:bg-white text-amber-600 rounded-full shadow-lg hover:scale-110">
-                      <FaHeart className="w-4 h-4" />
-                    </Button>
-                  </div>
-                  
-                  {/* View Details Button */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-150 translate-y-4 group-hover:translate-y-0">
-                    <Link
-                      href={`/book/${book.id}`}
-                      className="bg-amber-900/60 text-white hover:text-amber-100 px-4 py-2 rounded-full text-[12px] font-medium shadow-sm flex items-center gap-2 outline-none focus:outline-none focus:ring-0"
-                    >
-                      <FaEye className="w-4 h-4" />
-                      View Details
-                    </Link>
-                  </div>
-                </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {displayBooks.map((book) => {
+          const coverImage = getImageUrl(book.image) || "";
+          const authorName = getAuthorName(book);
 
-                {/* Book Info */}
-                <div className="p-6 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-amber-700 transition-colors leading-tight">
-                      {cleanText(book.title)}
-                    </h3>
-                    {book.description && (
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-3">
-                        {cleanText(book.description)}
-                      </p>
+          return (
+            <Link
+              key={book.id}
+              href={`/book/${book.id}`}
+              className="group relative flex h-full flex-col bg-[#e0f2f2] rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-[#d0e8e8]"
+              dir="rtl"
+            >
+              {/* Top Section - Full Size Book Image */}
+              <div className="relative h-48 bg-[#e0f2f2] flex-shrink-0 overflow-hidden">
+                {coverImage ? (
+                  <Image
+                    src={coverImage}
+                    alt={book.title}
+                    fill
+                    sizes="(min-width: 1280px) 300px, (min-width: 768px) 50vw, 100vw"
+                    className="object-cover w-full h-full"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-[#b8d8d8] flex items-center justify-center">
+                    <BookOpen className="w-16 h-16 text-[#4a8a8a]" />
+                  </div>
+                )}
+              </div>
+
+              {/* Bottom Section - White Background with Crescent Pattern */}
+              <div className="relative h-44 flex-1 bg-white p-6 flex flex-col justify-between">
+                {/* Crescent Moon Pattern Background */}
+                <div 
+                  className="absolute inset-0 opacity-[0.03]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 5c-8 0-15 3-20 8-5 5-8 12-8 20 0 8 3 15 8 20 5 5 12 8 20 8s15-3 20-8c5-5 8-12 8-20 0-8-3-15-8-20-5-5-12-8-20-8zm0 5c6 0 11 2 15 6 4 4 6 9 6 15 0 6-2 11-6 15-4 4-9 6-15 6s-11-2-15-6c-4-4-6-9-6-15 0-6 2-11 6-15 4-4 9-6 15-6z' fill='%234a8a8a'/%3E%3C/svg%3E")`,
+                    backgroundSize: '50px 50px',
+                    backgroundPosition: '0 0'
+                  }}
+                ></div>
+
+                {/* Content */}
+                <div className="relative z-10 space-y-3">
+                  {/* Title - Large and Bold */}
+                  <h3 className="text-xl md:text-2xl font-bold text-[#4a8a8a] leading-tight line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
+                    {cleanText(book.title)}
+                  </h3>
+
+                  {/* Author/Subtitle */}
+                  {/* {authorName && (
+                    <p className="text-sm text-[#4a8a8a] font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                      {authorName}
+                    </p>
+                  )} */}
+
+                  {/* Description */}
+                  {book.description && (
+                    <p className="text-sm text-[#4a8a8a] leading-relaxed line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
+                      {cleanText(book.description)}
+                    </p>
+                  )}
+
+                  {/* Book Metadata - Small Text */}
+                  <div className="flex items-center gap-4 text-xs text-[#4a8a8a] pt-2">
+                    {book.pages && (
+                      <div className="flex items-center gap-1.5">
+                        <BookOpen className="w-3.5 h-3.5" />
+                        <span>{book.pages} پاڼې</span>
+                      </div>
+                    )}
+                    {book.written_year && (
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{book.written_year}</span>
+                      </div>
                     )}
                   </div>
+                </div>
 
-                  {/* Book Stats */}
-                  <div className="flex items-center justify-between text-sm text-gray-600 pt-4 border-t border-gray-100">
-                    <div className="flex items-center gap-2">
-                      <FaBook className="w-4 h-4 text-amber-500" />
-                      <span className="font-medium">{book.pages || 'N/A'} pages</span>
-                    </div>
-                    
-                    <div className="flex items-center gap-2">
-                      <FaCalendar className="w-4 h-4 text-amber-500" />
-                      <span className="font-medium">{book.written_year || 'N/A'}</span>
-                    </div>
+                {/* Separator */}
+                <div className="relative z-10 my-4 border-t border-gray-200"></div>
+
+                {/* Footer with Navigation */}
+                <div className="relative z-10 flex items-center justify-between">
+                  <span className="text-xs text-[#4a8a8a] font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                    د کتاب کتل
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-[#e0f2f2] flex items-center justify-center group-hover:bg-[#d0e8e8] transition-colors">
+                    <ChevronLeft className="w-4 h-4 text-[#4a8a8a]" />
                   </div>
                 </div>
-                
-                {/* Hover Glow Effect */}
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-amber-400/0 via-amber-400/10 to-amber-400/0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none"></div>
               </div>
-            </div>
-          </div>
-        ))}
+            </Link>
+          );
+        })}
       </div>
       {/* Pagination */}
       {!showAll && displayBooks.length > 0 && (hasNextPage || hasPrevPage || (typeof totalPages === 'number' && totalPages > 1)) && (

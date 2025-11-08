@@ -93,6 +93,15 @@ const Navbar = memo(function Navbar() {
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
       
+      // Check if click is on a toggle button - if so, don't close (let toggle handle it)
+      const isToggleButton = target.closest('button[aria-haspopup="true"]') || 
+                             target.closest('button[aria-expanded]');
+      
+      // If clicking on toggle button, skip closing (toggle function will handle it)
+      if (isToggleButton) {
+        return;
+      }
+      
       // Close search if clicking outside
       if (searchRef.current && !searchRef.current.contains(target as Node)) {
         setSearchOpen(false);
@@ -118,12 +127,12 @@ const Navbar = memo(function Navbar() {
     };
 
     if (isSearchOpen || isCoursesMenuOpen || isMoreMenuOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
+      document.addEventListener('click', handleClickOutside);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+      return () => {
+        document.removeEventListener('click', handleClickOutside);
+      };
+    }
   }, [isSearchOpen, isCoursesMenuOpen, isMoreMenuOpen]);
 
 
@@ -194,15 +203,37 @@ const Navbar = memo(function Navbar() {
   }, []);
 
   const toggleMoreMenu = useCallback(() => {
-    setMoreMenuOpen((previous) => !previous);
+    setMoreMenuOpen((previous) => {
+      const newState = !previous;
+      // Close courses menu when opening more menu
+      if (newState) {
+        setCoursesMenuOpen(false);
+      }
+      return newState;
+    });
   }, []);
 
   const toggleCoursesMenu = useCallback(() => {
-    setCoursesMenuOpen((previous) => !previous);
+    setCoursesMenuOpen((previous) => {
+      const newState = !previous;
+      // Close more menu when opening courses menu
+      if (newState) {
+        setMoreMenuOpen(false);
+      }
+      return newState;
+    });
   }, []);
 
   const toggleSearch = useCallback(() => {
-    setSearchOpen((previous) => !previous);
+    setSearchOpen((previous) => {
+      const newState = !previous;
+      // Close other menus when opening search
+      if (newState) {
+        setCoursesMenuOpen(false);
+        setMoreMenuOpen(false);
+      }
+      return newState;
+    });
   }, []);
 
   const handleSearch = useCallback((e: React.FormEvent) => {
@@ -733,6 +764,37 @@ const Navbar = memo(function Navbar() {
                 </div>
               </div>
             )}
+            
+            {/* Contact Link */}
+            <div className="pt-5 mt-6 border-t border-primary-100/60">
+              <Link
+                href="/contact"
+                onClick={closeMobileMenu}
+                className={`flex items-center justify-between rounded-xl p-4 text-base font-bold transition-all duration-200 shadow-sm ${
+                  pathname === '/contact'
+                    ? 'border-r-4 border-primary-600 bg-gradient-to-r from-primary-400/30 to-primary-300/30 text-primary-900'
+                    : "text-primary-800/90 hover:bg-primary-100/40"
+                }`}
+              >
+                <span className="flex items-center gap-3">
+                  <svg
+                    className="h-5 w-5 text-primary-600"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                    />
+                  </svg>
+                  {NAV_LABELS['contact']}
+                </span>
+              </Link>
+            </div>
             
             {/* Donation Button at Bottom */}
             <div className="pt-6 mt-8 border-t border-primary-100/60 flex justify-center">

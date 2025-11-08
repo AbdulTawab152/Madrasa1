@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { getImageUrl } from "@/lib/utils";
 import { getTranslation } from "@/lib/translations";
 import Breadcrumb from "@/components/Breadcrumb";
+import { Calendar, Star, ChevronLeft, Hash } from "lucide-react";
 
 interface Blog {
   name: string;
@@ -30,6 +31,25 @@ interface Params {
   params: Promise<{ slug: string }>;
 }
 
+function stripHtml(value?: string | null) {
+  if (!value) return "";
+  let cleaned = value;
+  cleaned = cleaned.replace(/<[^>]*>/g, " ");
+  cleaned = cleaned.replace(/&nbsp;/g, " ");
+  cleaned = cleaned.replace(/&amp;/g, "&");
+  cleaned = cleaned.replace(/&lt;/g, "<");
+  cleaned = cleaned.replace(/&gt;/g, ">");
+  cleaned = cleaned.replace(/&quot;/g, '"');
+  cleaned = cleaned.replace(/&#39;/g, "'");
+  cleaned = cleaned.replace(/&apos;/g, "'");
+  cleaned = cleaned.replace(/&mdash;/g, "—");
+  cleaned = cleaned.replace(/&ndash;/g, "–");
+  cleaned = cleaned.replace(/&hellip;/g, "...");
+  cleaned = cleaned.replace(/&[#\w]+;/g, " ");
+  cleaned = cleaned.replace(/\s+/g, " ");
+  cleaned = cleaned.trim();
+  return cleaned;
+}
 
 export default async function BlogDetailsPage({ params }: Params) {
   const { slug } = await params;
@@ -62,182 +82,175 @@ export default async function BlogDetailsPage({ params }: Params) {
   }
 
   return (
-    <main className="min-h-screen mt-24 bg-gray-50 font-sans">
-      {/* Header with orange gradient */}
+    <main className="min-h-screen mt-[180px] md:mt-24 sm:mt-10 bg-gradient-to-b from-amber-50 to-white font-sans">
       <Breadcrumb />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        {/* Hero Section - Clean and Modern */}
+        <article className="mb-16 relative overflow-hidden rounded-2xl bg-white border border-gray-200">
+          <div className="p-6 md:p-8 lg:p-10 space-y-8">
+            {/* Header Section */}
+            <div className="space-y-6">
+              <div>
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 leading-tight" style={{ fontFamily: 'Amiri, serif' }}>
+                  {stripHtml(blog.title)}
+                </h1>
 
-        {/* Article Header */}
-        <article className="mt-24">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-5 leading-tight tracking-tight drop-shadow-sm">
-            {blog.title}
-          </h1>
-
-          {/* Metadata */}
-          <div className="flex flex-wrap items-center gap-4 mb-8 text-sm text-gray-500">
-          
-            <div className="h-5 w-px bg-gray-300"></div>
-            <div className="flex items-center">
-              <svg
-                className="w-4 h-4 mr-1 text-gray-400"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>
-                {new Date(blog.publishedAt || blog.date).toLocaleDateString()}
-              </span>
+                {/* Metadata */}
+                <div className="flex flex-wrap items-center gap-4">
+                  <div className="flex items-center gap-2 p-3 rounded-xl bg-gray-50 border border-gray-200">
+                    <Calendar className="w-5 h-5 text-[#4a8a8a]" />
+                    <span className="text-sm font-medium text-gray-700">
+                      {new Date(blog.publishedAt || blog.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </div>
+                  
+                  {blog.is_top && (
+                    <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-amber-100 to-amber-200 border border-amber-300">
+                      <Star className="w-4 h-4 text-amber-800 fill-amber-800" />
+                      <span className="text-xs font-semibold text-amber-800">
+                        {t('blog.featuredPost')}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="h-5 w-px bg-gray-300"></div>
-            {/* <div className="flex items-center">
-              <svg className="w-4 h-4 mr-1 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              <span>{blog.readTime ? `${blog.readTime} min read` : "5 min read"}</span>
-            </div> */}
-            {blog.is_top && (
-              <div className="ml-auto flex items-center bg-gradient-to-r from-amber-100 to-amber-200 text-amber-800 px-3 py-1.5 rounded-full text-xs font-medium shadow-sm">
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                {t('blog.featuredPost')}
+
+            {/* Featured Image */}
+            {(blog.featuredImage || blog.image) && (
+              <div className="relative w-full aspect-[16/9] rounded-xl overflow-hidden bg-gray-100">
+                <Image
+                  src={getImageUrl(blog.featuredImage || blog.image, "/placeholder-blog.jpg") || "/placeholder-blog.jpg"}
+                  alt={blog.title}
+                  fill
+                  sizes="100vw"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+            )}
+
+            {/* Description/Excerpt */}
+            {(blog.excerpt || blog.description) && (
+              <div className="prose prose-lg max-w-none">
+                <div
+                  className="text-base md:text-lg text-gray-700 leading-relaxed"
+                  style={{ fontFamily: 'Amiri, serif' }}
+                  dangerouslySetInnerHTML={{ __html: blog.description }}
+                />
               </div>
             )}
           </div>
+        </article>
 
-          {/* Featured Image */}
-          {(blog.featuredImage || blog.image) && (
-            <div className="relative w-full h-64 sm:h-80 md:h-96 rounded-2xl overflow-hidden shadow-lg mb-10 group">
-              <Image
-                src={
-                  getImageUrl(blog.featuredImage || blog.image, "/placeholder-blog.jpg") ||
-                  "/placeholder-blog.jpg"
-                }
-                alt={blog.title}
-                fill
-                sizes="100vw"
-                className="object-cover group-hover:scale-103 transition-transform duration-200"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-black/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
-            </div>
-          )}
-
-          {/* Excerpt */}
-          {(blog.excerpt || blog.description) && (
-            <div className="relative mb-10">
-              <div className="absolute -left-4 top-0 h-full w-1 bg-gradient-to-b from-orange-400 to-yellow-500 rounded-full"></div>
-              <div
-                className="prose prose-lg prose-red pl-6"
-                dangerouslySetInnerHTML={{ __html: blog.description }}
-              />
-            </div>
-          )}
-
-       
-
-          {/* Tags */}
-          {blog.tags && blog.tags.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                {t('blog.articleTags')}
+        {/* Tags Section */}
+        {blog.tags && blog.tags.length > 0 && (
+          <section className="mb-16">
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-6 flex items-center gap-2" style={{ fontFamily: 'Amiri, serif' }}>
+                <Hash className="w-5 h-5 text-[#4a8a8a]" />
+                <span>{t('blog.articleTags')}</span>
               </h3>
               <div className="flex flex-wrap gap-3">
                 {blog.tags.map((tag) => (
                   <Link
                     key={tag}
                     href={`/blogs/tag/${tag}`}
-                    className="px-4 py-2 bg-amber-50 hover:bg-gradient-to-r hover:from-orange-500 hover:to-yellow-500 text-amber-800 hover:text-white rounded-full text-sm font-medium transition-all duration-150 shadow-md hover:shadow-lg"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-[#e0f2f2] hover:bg-[#d0e8e8] text-[#4a8a8a] rounded-xl text-sm font-semibold transition-all duration-200 border border-[#d0e8e8] hover:border-[#4a8a8a]"
                   >
-                    #{tag}
+                    <Hash className="w-3.5 h-3.5" />
+                    <span>{tag}</span>
                   </Link>
                 ))}
               </div>
             </div>
-          )}
-
-  
-        </article>
-
-        {/* Author Bio (if available) */}
-   
+          </section>
+        )}
 
         {/* Related Blogs */}
         {relatedBlogs.length > 0 && (
           <section className="mb-16">
-            <h2 className="text-3xl font-extrabold text-gray-800 mb-8 flex items-center relative">
-              <span className="relative inline-block">
-                <svg
-                  className="w-7 h-7 mr-3 text-amber-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                  />
-                </svg>
-                {t('blog.moreArticlesYouMightLike')}
-                <span className="absolute inset-x-0 bottom-[-10px] h-1 bg-gradient-to-r from-orange-400 to-yellow-500 rounded-full w-1/3 mx-auto"></span>
-              </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-12 text-center" style={{ fontFamily: 'Amiri, serif' }}>
+              {t('blog.moreArticlesYouMightLike')}
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {relatedBlogs.map((rb) => (
                 <Link
                   key={rb.slug}
                   href={`/blogs/${rb.slug}`}
-                  className="group rounded-2xl overflow-hidden border border-gray-200 hover:border-orange-300 transition-all duration-150 hover:shadow-xl flex flex-col h-full bg-white outline-none focus:outline-none focus:ring-0"
+                  className="group relative flex h-full flex-col bg-[#e0f2f2] rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-[#d0e8e8]"
+                  dir="rtl"
                 >
-                  <div className="relative w-full h-48 overflow-hidden">
+                  {/* Top Section - Full Size Image */}
+                  <div className="relative h-48 bg-[#e0f2f2] flex-shrink-0 overflow-hidden">
                     <Image
-                      src={
-                        getImageUrl(rb.featuredImage || rb.image, "/placeholder-blog.jpg") ||
-                        "/placeholder-blog.jpg"
-                      }
+                      src={getImageUrl(rb.featuredImage || rb.image, "/placeholder-blog.jpg") || "/placeholder-blog.jpg"}
                       alt={rb.title}
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-200"
-                      priority={false}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    {/* Featured Badge */}
                     {rb.is_top && (
-                      <span className="absolute top-3 left-3 bg-gradient-to-r from-orange-500 to-yellow-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">
-                        {t('blog.featured')}
-                      </span>
+                      <div className="absolute top-4 right-4 z-10">
+                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold bg-gradient-to-r from-amber-500 via-amber-600 to-orange-500 text-white shadow-lg">
+                          <Star className="w-3.5 h-3.5 fill-white" />
+                          <span>{t('blog.featured')}</span>
+                        </span>
+                      </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   </div>
-                  <div className="p-6 flex-1 flex flex-col">
-                    <h3 className="font-bold text-xl text-gray-900 group-hover:text-amber-600 transition-colors line-clamp-2 mb-3">
-                      {rb.title}
-                    </h3>
-                    <p className="text-gray-700 text-sm line-clamp-3 mb-4 flex-1">
-                      { rb.description ?.replace(/<[^>]*>/g, "")}
-                    </p>
 
+                  {/* Bottom Section - White Background with Crescent Pattern */}
+                  <div className="relative flex-1 bg-white p-6 flex flex-col justify-between">
+                    {/* Crescent Moon Pattern Background */}
+                    <div 
+                      className="absolute inset-0 opacity-[0.03]"
+                      style={{
+                        backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 5c-8 0-15 3-20 8-5 5-8 12-8 20 0 8 3 15 8 20 5 5 12 8 20 8s15-3 20-8c5-5 8-12 8-20 0-8-3-15-8-20-5-5-12-8-20-8zm0 5c6 0 11 2 15 6 4 4 6 9 6 15 0 6-2 11-6 15-4 4-9 6-15 6s-11-2-15-6c-4-4-6-9-6-15 0-6 2-11 6-15 4-4 9-6 15-6z' fill='%234a8a8a'/%3E%3C/svg%3E")`,
+                        backgroundSize: '50px 50px',
+                        backgroundPosition: '0 0'
+                      }}
+                    ></div>
 
-                    {/* <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                  {item.description?.replace(/<[^>]*>/g, "")}
-                </p>   */}
-                    <div className="flex items-center text-xs text-gray-500 mt-auto">
-                      <span>
-                        {new Date(
-                          rb.publishedAt || rb.date
-                        ).toLocaleDateString()}
+                    {/* Content */}
+                    <div className="relative z-10 space-y-4 flex-1">
+                      {/* Title - Large and Bold */}
+                      <h3 className="text-xl md:text-2xl font-bold text-[#4a8a8a] leading-tight line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
+                        {stripHtml(rb.title)}
+                      </h3>
+
+                      {/* Description */}
+                      <p className="text-sm text-[#4a8a8a] leading-relaxed line-clamp-3" style={{ fontFamily: 'Amiri, serif' }}>
+                        {stripHtml(rb.description)}
+                      </p>
+
+                      {/* Date - Small Text */}
+                      <div className="flex items-center gap-2 text-xs text-[#4a8a8a] pt-2">
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span>{new Date(rb.publishedAt || rb.date).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+
+                    {/* Separator */}
+                    <div className="relative z-10 my-4 border-t border-gray-200"></div>
+
+                    {/* Footer with Navigation */}
+                    <div className="relative z-10 flex items-center justify-between">
+                      <span className="text-xs text-[#4a8a8a] font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                        {t('blog.readMore')}
                       </span>
-                      <span className="mx-2">•</span>
+                      <div className="w-8 h-8 rounded-full bg-[#e0f2f2] flex items-center justify-center group-hover:bg-[#d0e8e8] transition-colors">
+                        <ChevronLeft className="w-4 h-4 text-[#4a8a8a]" />
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -245,8 +258,6 @@ export default async function BlogDetailsPage({ params }: Params) {
             </div>
           </section>
         )}
-
- 
       </div>
     </main>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import ShajaraSection from "../components/sanad/SanadSection";
+import SanadSection from "../components/sanad/SanadSection";
 import IslamicHeader from "../components/IslamicHeader";
 import { useTranslation } from "@/hooks/useTranslation";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -24,7 +24,7 @@ export default function SanadPage() {
       />
       <Breadcrumb />
       <div className="max-w-7xl mx-auto px-6 py-12">
-        <ShajaraSection showAll={true} showHero={false} />
+        <SanadSection showAll={true} showHero={false} />
       </div>
     </main>
   );

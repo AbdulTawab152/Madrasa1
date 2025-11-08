@@ -83,7 +83,7 @@ export default function GalleryPage() {
   }, []);
 
   if (loading) {
-    return <UnifiedLoader variant="card-grid" count={8} showFilters={false} />;
+    return <UnifiedLoader variant="grid" count={8} showFilters={false} />;
   }
 
   if (error) {

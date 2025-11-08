@@ -1,12 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { GraduationsApi } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { useTranslation } from "@/hooks/useTranslation";
 import Breadcrumb from "@/components/Breadcrumb";
+import { Calendar, Clock, Star, ChevronLeft, ChevronRight, User, MapPin, Phone, X } from "lucide-react";
 
 async function getGraduation(slug: string): Promise<any> {
   const result = await GraduationsApi.getBySlug(slug);
@@ -101,208 +102,223 @@ export default function GraduationDetailPage({
     }
   };
 
+  const stripHtml = (value?: string | null) => {
+    if (!value) return "";
+    let cleaned = value;
+    cleaned = cleaned.replace(/<[^>]*>/g, " ");
+    cleaned = cleaned.replace(/&nbsp;/g, " ");
+    cleaned = cleaned.replace(/&amp;/g, "&");
+    cleaned = cleaned.replace(/&lt;/g, "<");
+    cleaned = cleaned.replace(/&gt;/g, ">");
+    cleaned = cleaned.replace(/&quot;/g, '"');
+    cleaned = cleaned.replace(/&#39;/g, "'");
+    cleaned = cleaned.replace(/&apos;/g, "'");
+    cleaned = cleaned.replace(/&mdash;/g, "—");
+    cleaned = cleaned.replace(/&ndash;/g, "–");
+    cleaned = cleaned.replace(/&hellip;/g, "...");
+    cleaned = cleaned.replace(/&[#\w]+;/g, " ");
+    cleaned = cleaned.replace(/\s+/g, " ");
+    cleaned = cleaned.trim();
+    return cleaned;
+  };
+
   if (loading) return <Loading />;
   if (error) return <ErrorMessage message={error} />;
   if (!graduation) return <ErrorMessage message={t('graduationDetail.graduationNotFound')} />;
 
   return (
-    <main className="mx-auto  mt-[180px] md:mt-24 sm:mt-10 max-w-7xl px-4 font-sans">
+    <main className="mx-auto mt-[180px] md:mt-24 sm:mt-10 max-w-7xl px-4 sm:px-6 lg:px-8 font-sans">
       <Breadcrumb />
-      {/* Hero Section */}
+      
+      {/* Hero Section - Clean and Modern */}
       <motion.div
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.15 }}
-        className="mb-24 relative overflow-hidden rounded-3xl p-6 md:p-8 lg:p-12 flex flex-col lg:flex-row gap-8 bg-gradient-to-r from-white to-gray-50"
+        className="mb-16 relative overflow-hidden rounded-2xl bg-white border border-gray-200"
       >
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-tr from-orange-50 via-transparent to-yellow-50 opacity-30 pointer-events-none"
-          animate={{ opacity: [0.2, 0.35, 0.2] }}
-          transition={{ duration: 6, repeat: Infinity, repeatType: "mirror" }}
-        />
+        <div className="flex flex-col lg:flex-row gap-8 p-6 md:p-8 lg:p-10">
+          {/* Left Column - Main Image + Thumbnails */}
+          <div className="lg:w-1/2 flex flex-col gap-4">
+            <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+              {currentImageUrl && (
+                <Image
+                  src={currentImageUrl}
+                  alt="Main Graduation Image"
+                  fill
+                  sizes="(min-width: 1024px) 50vw, 100vw"
+                  className="object-cover rounded-xl"
+                />
+              )}
 
-        {/* Left Column - Main Image + Thumbnails */}
-        <div className="lg:w-1/2 flex flex-col gap-4 relative">
-          <motion.div
-            className="relative w-full aspect-[16/9] md:aspect-[4/3] overflow-hidden rounded-2xl cursor-pointer"
-            layout
-          >
-            {currentImageUrl && (
-              <motion.img
-                src={currentImageUrl}
-                alt="Main Graduation Image"
-                className="w-full h-full object-cover rounded-2xl"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.15 }}
-              />
-            )}
-
-            {graduation.graduation_images?.length > 1 && (
-              <>
-                <motion.button
-                  onClick={goToPreviousImage}
-                  className="absolute left-2 md:left-4 top-1/2 -translate-y-1/2 rounded-full bg-primary-900/40 p-2 md:p-3 text-white hover:bg-primary-900/60 focus:outline-none"
-                >
-                  &lt;
-                </motion.button>
-                <motion.button
-                  onClick={goToNextImage}
-                  className="absolute right-2 md:right-4 top-1/2 -translate-y-1/2 rounded-full bg-primary-900/40 p-2 md:p-3 text-white hover:bg-primary-900/60 focus:outline-none"
-                >
-                  &gt;
-                </motion.button>
-              </>
-            )}
-          </motion.div>
-
-          {/* Thumbnails */}
-          {graduation.graduation_images?.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4">
-              {graduation.graduation_images.map((img: any, index: number) => (
-                <motion.div
-                  key={img.id}
-                  className={`relative h-20 w-full cursor-pointer overflow-hidden rounded-lg shadow-md duration-150 ${
-                    selectedImageIndex === index ? "ring-2 ring-orange-100" : ""
-                  }`}
-                  onClick={() => setSelectedImageIndex(index)}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.15 }}
-                  layout
-                >
-                  <img
-                    src={
-                      getImageUrl(img.image, "/placeholder-graduation.jpg") ||
-                      "/placeholder-graduation.jpg"
-                    }
-                    alt="Thumbnail"
-                    className="h-full w-full object-cover rounded-lg"
-                  />
-                </motion.div>
-              ))}
+              {graduation.graduation_images?.length > 1 && (
+                <>
+                  <button
+                    onClick={goToPreviousImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 backdrop-blur-sm p-2 text-gray-700 hover:bg-white shadow-lg transition-all hover:scale-110"
+                    aria-label="Previous image"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={goToNextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/90 backdrop-blur-sm p-2 text-gray-700 hover:bg-white shadow-lg transition-all hover:scale-110"
+                    aria-label="Next image"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* Right Column - Info */}
-        <div className="lg:w-1/2 flex flex-col items-start justify-center px-2 md:px-6 py-6 md:py-12 text-left">
-          <motion.h1
-            className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-black drop-shadow-xl mb-4 md:mb-6"
-            initial={{ opacity: 0, x: -40, scale: 0.95 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ duration: 0.15 }}
-          >
-            {graduation.title}
-            <span className="mt-3 block h-1 w-16 sm:w-28 rounded-full bg-gradient-to-r from-orange-600 to-yellow-500 shadow-lg"></span>
-          </motion.h1>
+            {/* Thumbnails */}
+            {graduation.graduation_images?.length > 0 && (
+              <div className="grid grid-cols-4 gap-3">
+                {graduation.graduation_images.map((img: any, index: number) => (
+                  <div
+                    key={img.id}
+                    className={`relative h-20 w-full cursor-pointer overflow-hidden rounded-lg border-2 transition-all ${
+                      selectedImageIndex === index 
+                        ? "border-[#4a8a8a] ring-2 ring-[#4a8a8a]/20" 
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                    onClick={() => setSelectedImageIndex(index)}
+                  >
+                    <Image
+                      src={getImageUrl(img.image, "/placeholder-graduation.jpg") || "/placeholder-graduation.jpg"}
+                      alt="Thumbnail"
+                      fill
+                      sizes="(min-width: 1024px) 12.5vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
 
-          <motion.p
-            className="text-gray-700 text-sm sm:text-base md:text-md leading-relaxed mb-6 md:mb-8"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.15 }}
-          >
-            {graduation.description  ?.replace(/<[^>]*>/g, "")}
-          </motion.p>
+          {/* Right Column - Info */}
+          <div className="lg:w-1/2 flex flex-col justify-center space-y-6">
+            <div>
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight" style={{ fontFamily: 'Amiri, serif' }}>
+                {stripHtml(graduation.title)}
+              </h1>
+              <p className="text-base md:text-lg text-gray-600 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
+                {stripHtml(graduation.description)}
+              </p>
+            </div>
 
-          <motion.div
-            className="grid grid-cols-1 gap-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.15 }}
-          >
-            <InfoCard
-              label={t('graduationDetail.date')}
-              value={new Date(graduation.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            />
-            <InfoCard
-              label={t('graduationDetail.time')}
-              value={`${new Date(graduation.start_time).toLocaleTimeString(
-                "en-US",
-                {
+            {/* Info Cards */}
+            <div className="space-y-3 pt-4">
+              <InfoCard
+                icon={<Calendar className="w-5 h-5" />}
+                label={t('graduationDetail.date')}
+                value={new Date(graduation.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              />
+              <InfoCard
+                icon={<Clock className="w-5 h-5" />}
+                label={t('graduationDetail.time')}
+                value={`${new Date(graduation.start_time).toLocaleTimeString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
                   hour12: true,
-                }
-              )} – ${new Date(graduation.end_time).toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              })}`}
-            />
-            {graduation.graduation_year && (
-              <InfoCard
-                label={t('graduationDetail.graduationYear')}
-                value={graduation.graduation_year}
+                })} – ${new Date(graduation.end_time).toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}`}
               />
-            )}
-          </motion.div>
+              {graduation.graduation_year && (
+                <InfoCard
+                  icon={<Star className="w-5 h-5" />}
+                  label={t('graduationDetail.graduationYear')}
+                  value={graduation.graduation_year}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </motion.div>
 
       {/* Graduates Section */}
-      <section className=" px-4 mb-20 sm:px-6 md:px-8 lg:px-12">
+      <section className="mb-20">
         <motion.h2
-          className="text-3xl sm:text-4xl font-extrabold mb-12 text-center text-gray-800"
+          className="text-3xl md:text-4xl font-bold mb-12 text-center text-gray-900"
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.15 }}
+          style={{ fontFamily: 'Amiri, serif' }}
         >
           {t('graduationDetail.esteemedGraduates')}
-          <span className="block h-1.5 w-24 sm:w-28 bg-gradient-to-r from-orange-400 to-yellow-500 mt-3 mx-auto rounded-full"></span>
         </motion.h2>
 
         {graduation.graduated_students?.length > 0 ? (
-          <div className="grid gap-6 sm:gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {graduation.graduated_students.map((s: any, index: number) => {
-              const imageUrl =
-                getImageUrl(s.image, "/placeholder-graduation.jpg") ||
-                "/placeholder-graduation.jpg";
+              const imageUrl = getImageUrl(s.image, "/placeholder-graduation.jpg") || "/placeholder-graduation.jpg";
               return (
                 <motion.div
                   key={s.id}
-                  className="group relative overflow-hidden rounded-3xl shadow-md transition-transform duration-150 hover:scale-105 cursor-pointer"
+                  className="group relative flex h-full flex-col bg-[#e0f2f2] rounded-xl sm:rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-[#d0e8e8] cursor-pointer"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.15 }}
                   onClick={() => openModal(s)}
+                  dir="rtl"
                 >
-                  <div className="relative h-72 md:h-80 w-full rounded-3xl overflow-hidden">
+                  {/* Top Section - Full Size Image */}
+                  <div className="relative h-32 sm:h-52 bg-[#e0f2f2] flex-shrink-0 overflow-hidden">
                     <Image
                       src={imageUrl}
                       alt={`${s.first_name} ${s.last_name}`}
                       fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
                       onError={(e) => {
-                        (e.currentTarget as HTMLImageElement).src =
-                          "/placeholder-graduation.jpg";
+                        (e.currentTarget as HTMLImageElement).src = "/placeholder-graduation.jpg";
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent rounded-3xl" />
+                    
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    
+                    {/* Graduation Type Badge */}
                     {s.graduation_type?.name && (
-                    <span className="absolute top-4 right-4 px-3 py-1 text-xs md:text-sm font-semibold rounded-full bg-primary-900/40 text-white shadow-md">
-                        {s.graduation_type.name}
-                      </span>
+                      <div className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10">
+                        <span className="inline-flex items-center gap-1 px-1.5 py-0.5 sm:gap-1.5 sm:px-3 sm:py-1.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-semibold bg-white/95 backdrop-blur-md text-[#4a8a8a] border border-white/50 shadow-lg">
+                          {s.graduation_type.name}
+                        </span>
+                      </div>
                     )}
-                    <div className="absolute bottom-4 left-4 text-left text-gray-200">
-                      <h3 className="text-lg sm:text-xl md:text-2xl font-bold">
-                        <span className="text-white">{s.first_name}</span>{" "}
-                        <span className="text-gray-200">{s.last_name}</span>
+                  </div>
+
+                  {/* Bottom Section - White Background */}
+                  <div className="relative flex-1 bg-white p-2.5 sm:p-5 flex flex-col justify-between">
+                    {/* Content */}
+                    <div className="space-y-1 sm:space-y-2 mb-2 sm:mb-4">
+                      <h3 className="text-xs sm:text-lg md:text-xl font-bold text-[#4a8a8a] leading-tight line-clamp-2" style={{ fontFamily: 'Amiri, serif' }}>
+                        {s.first_name} {s.last_name}
                       </h3>
-                      <p className="text-xs text-gray-200 sm:text-sm">
-                        <span className="font-medium">{t('graduationDetail.father')}:</span>{" "}
-                        {s.father_name}
+                      <p className="text-[10px] sm:text-sm text-[#4a8a8a] line-clamp-1">
+                        <span className="font-medium">{t('graduationDetail.father')}:</span> <span className="truncate">{s.father_name}</span>
                       </p>
-                      {/* <p className="text-xs text-gray-200 sm:text-sm">
-                        <span className="font-medium">{t('graduationDetail.grandfather')}:</span>{" "}
-                        {s.grandfather_name}
-                      </p> */}
+                    </div>
+
+                    {/* Separator */}
+                    <div className="my-1.5 sm:my-3 border-t border-gray-200"></div>
+
+                    {/* Footer */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-[9px] sm:text-xs text-[#4a8a8a] font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                        {t('graduationDetail.viewDetails')}
+                      </span>
+                      <div className="w-5 h-5 sm:w-7 sm:h-7 rounded-full bg-[#e0f2f2] flex items-center justify-center group-hover:bg-[#d0e8e8] transition-colors">
+                        <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4 text-[#4a8a8a]" />
+                      </div>
                     </div>
                   </div>
                 </motion.div>
@@ -319,209 +335,139 @@ export default function GraduationDetailPage({
       {/* Student Modal */}
       {isModalOpen && selectedStudent && (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-primary-900/70 backdrop-blur-sm p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           onClick={closeModal}
         >
           <motion.div
-            className="bg-white rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden shadow-2xl"
-            initial={{ scale: 0.9, opacity: 0 }}
+            className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-hidden shadow-2xl"
+            initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header with orange gradient background */}
-            <div className="bg-gradient-to-r from-orange-500 to-yellow-500 p-6 text-white relative">
-                <button
-                className="absolute top-2 right-2 text-white hover:text-primary-100 bg-primary-900/30 rounded-full p-1 w-8 h-8 flex items-center justify-center transition-all hover:scale-110"
+            {/* Header - Clean Design */}
+            <div className="bg-gradient-to-r from-[#4a8a8a] to-[#5a9a9a] p-4 sm:p-6 text-white relative">
+              <button
+                className="absolute top-2 right-2 sm:top-4 sm:right-4 text-white hover:text-gray-200 bg-white/20 rounded-full p-2 w-9 h-9 flex items-center justify-center transition-all hover:bg-white/30 hover:scale-110"
                 onClick={closeModal}
                 aria-label="Close modal"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-5 w-5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
+                <X className="w-5 h-5" />
               </button>
 
-                <div className="flex flex-col sm:flex-row items-center gap-10">
-                {/* Text info left, image right on large screens */}
-                <div className="order-2 sm:order-1 flex-1 flex flex-col items-start">
-                  <h2 className="text-2xl text-white md:text-3xl font-bold">
-                    {selectedStudent.first_name} {selectedStudent.last_name}
-                  </h2>
-                  <p className="text-orange-100 mt-1 text-base md:text-lg">
-                    {selectedStudent.father_name &&
-                      `${t('graduationDetail.sonOf')} ${selectedStudent.father_name}`}
-                    {selectedStudent.grandfather_name &&
-                      selectedStudent.father_name &&
-                      `, ${t('graduationDetail.grandsonOf')} ${selectedStudent.grandfather_name}`}
-                  </p>
-                </div>
-                <div className="order-1 sm:order-2 relative flex-shrink-0">
-                  <div className="w-36 h-36 rounded-full border-4 border-white/30 bg-white/10 flex items-center justify-center overflow-hidden">
+              <div className="flex flex-col sm:flex-row items-center justify-center sm:justify-start gap-4 sm:gap-6 pr-0 sm:pr-10">
+                <div className="relative flex-shrink-0">
+                  <div className="w-24 h-24 sm:w-28 sm:h-28 rounded-full border-4 border-white/40 bg-white/20 flex items-center justify-center overflow-hidden shadow-lg">
                     <Image
-                      src={
-                        getImageUrl(selectedStudent.image, "/placeholder-graduation.jpg") ||
-                        "/placeholder-graduation.jpg"
-                      }
+                      src={getImageUrl(selectedStudent.image, "/placeholder-graduation.jpg") || "/placeholder-graduation.jpg"}
                       alt={`${selectedStudent.first_name} ${selectedStudent.last_name}`}
-                      width={96}
-                      height={96}
+                      width={112}
+                      height={112}
                       className="object-cover w-full h-full"
                     />
                   </div>
+                </div>
+                <div className="flex-1 flex flex-col items-center sm:items-start text-center sm:text-left w-full sm:w-auto">
+                  <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2" style={{ fontFamily: 'Amiri, serif' }}>
+                    {selectedStudent.first_name} {selectedStudent.last_name}
+                  </h2>
+                  <p className="text-white/90 text-sm sm:text-base md:text-lg" style={{ fontFamily: 'Amiri, serif' }}>
+                    {selectedStudent.father_name && `${t('graduationDetail.sonOf')} ${selectedStudent.father_name}`}
+                    {selectedStudent.grandfather_name && selectedStudent.father_name && `, ${t('graduationDetail.grandsonOf')} ${selectedStudent.grandfather_name}`}
+                  </p>
                 </div>
               </div>
             </div>
 
             {/* Content with scrollable area */}
-            <div className="p-6 max-h-[calc(90vh-180px)] overflow-y-auto">
+            <div className="p-6 md:p-8 max-h-[calc(90vh-240px)] overflow-y-auto">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Personal Details */}
-                <div className="space-y-4">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 border-b pb-2 flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                      />
-                    </svg>
-                    {t('graduationDetail.personalDetails')}
+                <div className="space-y-5">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 border-b-2 border-[#4a8a8a] pb-3 flex items-center gap-2">
+                    <User className="h-5 w-5 text-[#4a8a8a]" />
+                    <span>{t('graduationDetail.personalDetails')}</span>
                   </h3>
-                  <div className="space-y-3">
-                    <div className="flex items-start">
-                      <span className="text-gray-500 font-medium min-w-[120px] text-sm md:text-base">
-                        {t('graduationDetail.dateOfBirth')}:
-                      </span>
-                      <span className="text-sm md:text-base">
-                        {new Date(selectedStudent.dob).toLocaleDateString(
-                          "en-US",
-                          { year: "numeric", month: "long", day: "numeric" }
-                        )}
-                      </span>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                      <Calendar className="w-5 h-5 text-[#4a8a8a] flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <span className="text-xs text-gray-500 font-medium block mb-1">
+                          {t('graduationDetail.dateOfBirth')}
+                        </span>
+                        <span className="text-sm md:text-base text-gray-900 font-medium">
+                          {new Date(selectedStudent.dob).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric"
+                          })}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="flex items-start">
-                      <span className="text-gray-500 font-medium min-w-[120px] text-sm md:text-base">
-                        {t('graduationDetail.contact')}:
-                      </span>
-                      <span className="flex items-center gap-1 text-sm md:text-base">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-4 w-4 text-gray-400"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                          />
-                        </svg>
-                        {selectedStudent.contact_no || t('graduationDetail.notProvided')}
-                      </span>
+                    <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                      <Phone className="w-5 h-5 text-[#4a8a8a] flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <span className="text-xs text-gray-500 font-medium block mb-1">
+                          {t('graduationDetail.contact')}
+                        </span>
+                        <span className="text-sm md:text-base text-gray-900 font-medium">
+                          {selectedStudent.contact_no || t('graduationDetail.notProvided')}
+                        </span>
+                      </div>
                     </div>
 
-                    <div className="flex items-start">
-                      <span className="text-gray-500 font-medium min-w-[120px] text-sm md:text-base">
-                        {t('graduationDetail.graduation')}:
-                      </span>
-                      <span className="bg-orange-100 text-orange-800 text-xs md:text-sm font-medium px-2.5 py-0.5 rounded">
-                        {selectedStudent.graduation_type?.name ||
-                          t('graduationDetail.notSpecified')}
-                      </span>
+                    <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                      <Star className="w-5 h-5 text-[#4a8a8a] flex-shrink-0 mt-0.5" />
+                      <div className="flex-1">
+                        <span className="text-xs text-gray-500 font-medium block mb-1">
+                          {t('graduationDetail.graduation')}
+                        </span>
+                        <span className="inline-block bg-[#e0f2f2] text-[#4a8a8a] text-xs md:text-sm font-semibold px-3 py-1.5 rounded-lg">
+                          {selectedStudent.graduation_type?.name || t('graduationDetail.notSpecified')}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 {/* Address Information */}
-                <div className="space-y-4">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 border-b pb-2 flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                      />
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
-                    {t('graduationDetail.addressInformation')}
+                <div className="space-y-5">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 border-b-2 border-[#4a8a8a] pb-3 flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-[#4a8a8a]" />
+                    <span>{t('graduationDetail.addressInformation')}</span>
                   </h3>
 
-                  <div className="flex items-start">
-                    <span className="text-gray-500 font-medium min-w-[120px] text-sm md:text-base">
-                      {t('graduationDetail.fullAddress')}:
-                    </span>
-                    <span className="text-sm md:text-base">
-                      {selectedStudent.full_address || t('graduationDetail.notProvided')}
-                    </span>
+                  <div className="flex items-start gap-3 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <MapPin className="w-5 h-5 text-[#4a8a8a] flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <span className="text-xs text-gray-500 font-medium block mb-1">
+                        {t('graduationDetail.fullAddress')}
+                      </span>
+                      <span className="text-sm md:text-base text-gray-900 leading-relaxed">
+                        {selectedStudent.full_address || t('graduationDetail.notProvided')}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Description */}
               {selectedStudent.description && (
-                <div className="mt-6 pt-4 border-t pb-20">
-                  <h3 className="text-lg md:text-xl font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 text-orange-500"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4v-5z"
-                      />
-                    </svg>
-                    {t('graduationDetail.description')}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                    <span>{t('graduationDetail.description')}</span>
                   </h3>
-                  <p className="text-gray-700 bg-gray-50 p-4 rounded-lg text-sm md:text-base">
-                    {selectedStudent.description  ?.replace(/<[^>]*>/g, "")}
-                  </p>
+                  <div className="bg-gray-50 rounded-xl p-5 border border-gray-200">
+                    <p className="text-sm md:text-base text-gray-700 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
+                      {stripHtml(selectedStudent.description)}
+                    </p>
+                  </div>
                 </div>
               )}
-
-              {/* Full-size Image */}
             </div>
-
-            {/* Footer */}
           </motion.div>
         </motion.div>
       )}
@@ -532,9 +478,43 @@ export default function GraduationDetailPage({
 // Helper Components
 function Loading() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-8">
-      <div className="p-10 text-center text-gray-700 font-medium bg-white rounded-2xl shadow-lg">
-        Loading graduation details...
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#e0f2f2] via-white to-[#f0f9f9] p-8">
+      <div className="bg-white rounded-2xl shadow-2xl p-8 sm:p-12 max-w-md w-full border border-[#d0e8e8]">
+        <div className="flex flex-col items-center justify-center space-y-6">
+          {/* Animated Spinner */}
+          <div className="relative">
+            <div className="w-16 h-16 sm:w-20 sm:h-20 border-4 border-[#e0f2f2] border-t-[#4a8a8a] rounded-full animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-[#4a8a8a] rounded-full opacity-20 animate-pulse"></div>
+            </div>
+          </div>
+          
+          {/* Loading Text */}
+          <div className="text-center space-y-2">
+            <h3 className="text-lg sm:text-xl font-semibold text-[#4a8a8a]" style={{ fontFamily: 'Amiri, serif' }}>
+              Loading graduation details...
+            </h3>
+            <p className="text-sm text-gray-500">
+              Please wait while we fetch the information
+            </p>
+          </div>
+          
+          {/* Animated Dots */}
+          <div className="flex space-x-2">
+            <div 
+              className="w-2 h-2 bg-[#4a8a8a] rounded-full animate-bounce" 
+              style={{ animationDelay: '0ms' }}
+            ></div>
+            <div 
+              className="w-2 h-2 bg-[#4a8a8a] rounded-full animate-bounce" 
+              style={{ animationDelay: '150ms' }}
+            ></div>
+            <div 
+              className="w-2 h-2 bg-[#4a8a8a] rounded-full animate-bounce" 
+              style={{ animationDelay: '300ms' }}
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -550,12 +530,24 @@ function ErrorMessage({ message }: { message: string }) {
   );
 }
 
-function InfoCard({ label, value }: { label: string; value: string }) {
+function InfoCard({ icon, label, value }: { icon?: React.ReactNode; label: string; value: string }) {
   return (
-    <div className="flex items-center gap-2 text-black text-sm">
-      <span title={label} className="font-medium">
-        {value}
-      </span>
+    <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 border border-gray-200 hover:bg-gray-100 transition-colors">
+      {icon && (
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-[#e0f2f2] flex items-center justify-center">
+          <div className="text-[#4a8a8a]">
+            {icon}
+          </div>
+        </div>
+      )}
+      <div className="flex-1 min-w-0">
+        <span className="text-xs text-gray-500 font-medium block mb-1">
+          {label}
+        </span>
+        <span className="text-base text-gray-900 font-semibold block">
+          {value}
+        </span>
+      </div>
     </div>
   );
 }

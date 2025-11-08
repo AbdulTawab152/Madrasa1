@@ -29,7 +29,7 @@ export default function AuthorsPage() {
   });
 
   if (isLoadingInitial) {
-    return <UnifiedLoader variant="card-grid" count={6} showFilters={false} />;
+    return <UnifiedLoader variant="grid" count={6} showFilters={false} />;
   }
 
   if (error) {
@@ -60,7 +60,7 @@ export default function AuthorsPage() {
             className="max-w-2xl mx-auto"
           />
         ) : (
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-10 mt-10 sm:grid-cols-2 lg:grid-cols-3">
             {authors
               .filter(isPublishedAndAlive)
               .map((author) => (
@@ -87,9 +87,7 @@ export default function AuthorsPage() {
                   </div>
 
                   <div className="text-center space-y-4">
-                    <span className="inline-flex items-center rounded-full bg-primary-100 px-3 py-1 text-xs font-semibold text-primary-700">
-                      Active
-                    </span>
+                    
                     <h2 className="text-xl font-semibold text-primary-900">
                       {author.first_name || "Unknown"} {author.last_name || ""}
                     </h2>

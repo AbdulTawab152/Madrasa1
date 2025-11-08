@@ -82,171 +82,172 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white mt-32">
-      <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-amber-50 via-white to-blue-50 relative overflow-hidden">
-        {/* Decorative background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-amber-400 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+    <div className="bg-white mt-32">
+      <Breadcrumb />
+      <section className="py-12 sm:py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
           {/* Header Section */}
           <div className="text-center mb-16">
-            <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-amber-300 to-amber-400 text-white rounded-full text-sm font-semibold mb-6">
-              <BookOpen className="h-5 w-5 ml-2" />
+            <div className="inline-flex items-center px-5 py-2 bg-[#e0f2f2] text-[#4a8a8a] rounded-full text-sm font-semibold mb-6 border border-[#d0e8e8]">
+              <BookOpen className="h-4 w-4 ml-2" />
               د مدرسې پېژندنه
             </div>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-gray-900 via-amber-800 to-gray-900 bg-clip-text text-transparent mb-6 leading-tight text-center">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight text-center" style={{ fontFamily: 'Amiri, serif' }}>
               د انوارالعلوم اسلامي مدرسې لنډه پېژندنه
             </h1>
-            <div className="w-40 h-1.5 bg-gradient-to-r from-amber-200 via-amber-300 to-amber-400 mx-auto rounded-full mb-8"></div>
+            <div className="w-24 h-1 bg-[#4a8a8a] mx-auto rounded-full"></div>
           </div>
 
           {/* Main Content */}
-          <div className="prose prose-lg max-w-none">
+          <div className="max-w-none">
             {/* Founder Biography Section */}
-            <div className="bg-gradient-to-br from-amber-50/50 via-amber-100/30 to-white rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden">
-              {/* Decorative corner elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-amber-200/20 rounded-bl-full blur-2xl"></div>
-              <div className="absolute bottom-0 left-0 w-40 h-40 bg-amber-300/20 rounded-tr-full blur-2xl"></div>
-              <div className="text-center mb-10 relative z-10">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 mb-12 border border-gray-200 shadow-sm">
+              <div className="text-center mb-10">
                 <div className="relative w-40 h-40 sm:w-48 sm:h-48 mx-auto mb-8">
-                    <Image
-                      src="/about111.jpg"
+                  <Image
+                    src="/about111.jpg"
                     alt="شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)"
                     width={192}
                     height={192}
-                    className="object-cover w-full h-full rounded-full relative z-10 hover:scale-105 transition-transform duration-150"
-                      priority
-                    />
-                  <div className="absolute -bottom-2 -right-2 w-12 h-12 bg-gradient-to-r from-amber-300 to-amber-400 rounded-full flex items-center justify-center hover:rotate-12 transition-transform duration-150 z-20">
-                    <BookOpen className="h-5 w-5 text-white" />
-                  </div>
+                    className="object-cover w-full h-full rounded-full border-4 border-[#e0f2f2] shadow-lg"
+                    priority
+                  />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold text-amber-900 mb-2">
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Amiri, serif' }}>
                   شیخ القران والحدیث أنوار المشائخ الحاج خلیفه صاحب فضل الدین (رح)
                 </h2>
-                <p className="text-lg text-amber-800 font-medium mb-4">
+                <p className="text-lg text-[#4a8a8a] font-medium mb-4" style={{ fontFamily: 'Amiri, serif' }}>
                   مشهور (په ارغندي خلیفه صاحب) قدس الله سره
                 </p>
-                <div className="w-24 h-1 bg-gradient-to-r from-amber-300 to-amber-400 mx-auto rounded-full"></div>
+                <div className="w-24 h-1 bg-[#4a8a8a] mx-auto rounded-full"></div>
               </div>
 
-              <div className="space-y-8 text-gray-700 leading-relaxed relative z-10">
-                <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100">
-                  <h3 className="text-2xl font-bold bg-gradient-to-r from-amber-700 to-amber-900 bg-clip-text text-transparent mb-6 text-center flex items-center justify-center gap-3">
-                    <Sparkles className="h-6 w-6 text-amber-600" />
+              <div className="space-y-8 text-gray-700 leading-relaxed">
+                <div className="bg-[#e0f2f2] rounded-2xl p-6 md:p-8 border border-[#d0e8e8]">
+                  <h3 className="text-2xl font-bold text-[#4a8a8a] mb-6 text-center flex items-center justify-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                    <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                      <Sparkles className="h-5 w-5" />
+                    </div>
                     د ژوند لنډه پېژندنه
                   </h3>
-                  <p className="text-base md:text-lg leading-relaxed text-center text-gray-700">
+                  <p className="text-base md:text-lg leading-relaxed text-center text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                     انوار المشایخ جناب حضرت مولانا مؤید الدین خلیفه صاحب فضل الدین مشهور په خلیفه صاحب د ارغندی رحمه الله د افغانستان له نومياليو عالمانو او لویو عارفانو څخه ؤ. پلار یې محمد زرين نومېده چې یو نیک خویه او متقی انسان و.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100 hover:border-amber-300 group transition-all duration-150">
-                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                      <div className="w-3 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
-                      <GraduationCap className="h-6 w-6 text-amber-600" />
+                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200 hover:border-[#4a8a8a] transition-all duration-200">
+                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                      <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                        <GraduationCap className="h-5 w-5" />
+                      </div>
                       د تعلیم سفر
                     </h4>
-                    <p className="text-sm md:text-base leading-relaxed text-gray-700">
+                    <p className="text-sm md:text-base leading-relaxed text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                       نوموړي تقريبا (۶) کاله د خپل کلي په ښوونځي کې ليک لوست زده کړه. بیا ېې د افغانستان په مختلفو ديني مدارسو کې مروجه دينـي عـلـوم سـرته ورسول د تفسیر د زده کړې دپاره د جناب شیخ الحدیث حضرت مولانا عبدالغفار ننگرهاری نوموړي د شیخ الحدیث حضرت مولانـا نـصـير الـدين غرغشتوی قدس سره شاګرد او د غزني په نورالمدارس مدرسه کې شیخ الحديث ؤ.
                     </p>
                   </div>
 
-                  <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-sm border border-amber-100 hover:border-amber-300 group transition-all duration-150">
-                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                      <div className="w-3 h-8 bg-gradient-to-b from-amber-500 to-amber-600 rounded-full"></div>
-                      <BookOpen className="h-6 w-6 text-amber-600" />
+                  <div className="bg-white rounded-2xl p-6 md:p-8 shadow-sm border border-gray-200 hover:border-[#4a8a8a] transition-all duration-200">
+                    <h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                      <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                        <BookOpen className="h-5 w-5" />
+                      </div>
                       د حدیثو زده کړه
-                  </h4>
-                    <p className="text-sm md:text-base leading-relaxed text-gray-700">
+                    </h4>
+                    <p className="text-sm md:text-base leading-relaxed text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                       ده ته ورغی او د تفسیر علم یې ترېنه حاصل کړ بیا د حديثو د زده کړې لپاره کابل ته راغی او د شیخ الحدیث حضرت مولانا سلطان جان صاحب نه يي سند او اجازه د حدیثو واخیسته او په ۱۳۳۶هـ.ش کال د قلعـه جـواد کې د حضرت صاحب د مدرسې نه فارغ شو.
-                  </p>
+                    </p>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-amber-50/50 to-white rounded-2xl p-6 md:p-8">
-                  <h4 className="text-xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-3">
-                    <Heart className="h-6 w-6 text-amber-600" />
+                <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200">
+                  <h4 className="text-xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                    <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                      <Heart className="h-5 w-5" />
+                    </div>
                     د طریقت سفر
                   </h4>
-                  <p className="text-base md:text-lg leading-relaxed text-center text-gray-700">
+                  <p className="text-base md:text-lg leading-relaxed text-center text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                     خليفـه صـاحب قدس الله سره د طـالـب علمـی پـه دوران کی د حضرت نورالمشايخ فضل عمر مجددي قدس الله سره سره بيعت وکړ بیا چی کله حضرت نورالمشایخ صاحب نور الله مرقده وفات شو نو د بیعت تجديد يې له حضرت ضياء المشايخ محمد ابراهیم جان مجددی قدس الله سره وکړ او په ۱۳۴۹هـ.ش کال د علم باطن نه فارغ اود سلوک منازل يې سرته ورسول اود جناب حضرت ضياء المشايخ صاحب په مبارکو لاسونو ورته د خلافت دستار وتړل شـو.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                  <div className="order-2 lg:order-1 relative group">
+                  <div className="order-2 lg:order-1">
                     <Image
                       src="/hero1.jpg"
                       alt="د ارغندی د مدرسې بنسټ"
                       width={600}
                       height={400}
-                      className="rounded-2xl w-full h-64 md:h-80 object-cover relative z-10 group-hover:scale-105 transition-transform duration-150"
+                      className="rounded-2xl w-full h-64 md:h-80 object-cover border border-gray-200"
                     />
                   </div>
                   <div className="order-1 lg:order-2">
-                    <h4 className="text-2xl font-bold bg-gradient-to-r from-amber-700 to-amber-900 bg-clip-text text-transparent mb-6 text-center flex items-center justify-center gap-3">
-                      <Target className="h-7 w-7 text-amber-600" />
+                    <h4 className="text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                      <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                        <Target className="h-5 w-5" />
+                      </div>
                       د ارغندی د مدرسې بنسټ
                     </h4>
-                    <p className="text-base md:text-lg leading-relaxed mb-6 text-gray-700">
+                    <p className="text-base md:text-lg leading-relaxed mb-6 text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                       كلـه چې حضرت خلیفه صاحب قدس سره د ظاهري او باطنی علومو څخه فارغ شو نو په تدريس يې شروع وکړه د میدان ولایت د چارکی په مدرسه کې يې څه موده تیره کړه بیاله هغه ځایه د کابل ولایت پغمان ولسوالی برې ارغندۍ د بازید خيلو ته لاړهلته یې په لومړی ځل مدرسه تأسیس کړه
                     </p>
-                    <div className="bg-gradient-to-br from-amber-50/70 to-amber-100/50 rounded-xl p-6 text-center">
-                      <p className="text-xl font-bold text-amber-800 mb-3 flex items-center justify-center gap-2">
+                    <div className="bg-[#e0f2f2] rounded-xl p-6 text-center border border-[#d0e8e8]">
+                      <p className="text-lg font-bold text-[#4a8a8a] mb-3 flex items-center justify-center gap-2" style={{ fontFamily: 'Amiri, serif' }}>
                         <Clock className="h-5 w-5" />
                         ارغندی اول ځل:
                       </p>
                       <div className="space-y-1">
-                        <p className="text-base font-semibold text-amber-700">٦ / ١ / ١٣٨٣ هـ ق</p>
-                        <p className="text-base font-semibold text-amber-700">٨ / ٣ / ١٣٤٢ هـ ش</p>
-                        <p className="text-base font-semibold text-amber-700">٢٩ / ٥ / ١٩٦٣ م</p>
+                        <p className="text-base font-semibold text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>٦ / ١ / ١٣٨٣ هـ ق</p>
+                        <p className="text-base font-semibold text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>٨ / ٣ / ١٣٤٢ هـ ش</p>
+                        <p className="text-base font-semibold text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>٢٩ / ٥ / ١٩٦٣ م</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-gradient-to-br from-blue-50/50 to-white rounded-2xl p-6 md:p-8">
-                  <h4 className="text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-3">
-                    <Star className="h-7 w-7 text-blue-600" />
+                <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200">
+                  <h4 className="text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                    <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                      <Star className="h-5 w-5" />
+                    </div>
                     د هجرت دوره
                   </h4>
-                  <p className="text-base md:text-lg leading-relaxed text-center mb-6 text-gray-700">
+                  <p className="text-base md:text-lg leading-relaxed text-center mb-6 text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                     نوموړي د تره کي د حکومت په دوره کې له خپل ګران هیواد څخه هجرت وکړ او د پاکستان په شمالی وزیرستان میرانشاه کې يې استوګنه غوره کړه د هجرت په ټاټوبي کې يې یوه ستره ديني مدرسه د انوار العلوم الاسلامیة په نامه دوهم ځل په میرانشاه کې جوړه کړه چې په سلګونو طالبانو به په کې ديني علوم زده کول.
                   </p>
-                  <div className="bg-gradient-to-br from-blue-50/70 to-blue-100/50 rounded-xl p-6 text-center">
-                    <p className="text-xl font-bold text-blue-800 mb-3 flex items-center justify-center gap-2">
+                  <div className="bg-[#e0f2f2] rounded-xl p-6 text-center border border-[#d0e8e8]">
+                    <p className="text-lg font-bold text-[#4a8a8a] mb-3 flex items-center justify-center gap-2" style={{ fontFamily: 'Amiri, serif' }}>
                       <Clock className="h-5 w-5" />
                       میرانشاه د مدرسې بنسټ:
                     </p>
                     <div className="space-y-1">
-                      <p className="text-base font-semibold text-blue-700">٦ / ٩ / ١٤٠٥ هـ ق</p>
-                      <p className="text-base font-semibold text-blue-700">۴ / ۳ / ۱۳۶۴ هـ ش</p>
+                      <p className="text-base font-semibold text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>٦ / ٩ / ١٤٠٥ هـ ق</p>
+                      <p className="text-base font-semibold text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>۴ / ۳ / ۱۳۶۴ هـ ش</p>
                     </div>
                   </div>
-                    </div>
+                </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                   <div>
-                    <h4 className="text-2xl font-bold bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent mb-6 text-center flex items-center justify-center gap-3">
-                      <Heart className="h-7 w-7 text-red-500" />
+                    <h4 className="text-2xl font-bold text-gray-900 mb-6 text-center flex items-center justify-center gap-3" style={{ fontFamily: 'Amiri, serif' }}>
+                      <div className="bg-[#4a8a8a] rounded-lg p-2 text-white">
+                        <Heart className="h-5 w-5" />
+                      </div>
                       د وفات او میراث
                     </h4>
-                    <p className="text-base md:text-lg leading-relaxed mb-6 text-gray-700">
+                    <p className="text-base md:text-lg leading-relaxed mb-6 text-gray-700" style={{ fontFamily: 'Amiri, serif' }}>
                       حضرت انوار المشائخ خلیفه صاحب ارغندي قدس الله سره، ته په وروستيو کالو کې سخته مريضي ور پېښه شوه او د هماغې مريضي نـه پـه ۱۹۹۵م كـال وفـات شـو او د میرانشاه د شهیدانو په هدیره کې خاورو ته وسپارل شو. وايي چې د ده په جنازه کې په زرګونو مسلمانانو شرکت کړی ؤ چې زياتره يـې عالمان او دينې طالبان ؤ.
                     </p>
                   </div>
-                  <div className="relative group">
+                  <div>
                     <Image
                       src="/about2.jpg"
                       alt="د خلیفه صاحب میراث"
                       width={600}
                       height={400}
-                      className="rounded-2xl w-full h-64 md:h-80 object-cover relative z-10 group-hover:scale-105 transition-transform duration-150"
+                      className="rounded-2xl w-full h-64 md:h-80 object-cover border border-gray-200"
                     />
                   </div>
                 </div>
@@ -254,35 +255,28 @@ const AboutPage = () => {
             </div>
 
             {/* Introduction */}
-            <div className="bg-gradient-to-br from-white via-gray-50/50 to-white rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden">
-              <div className="absolute top-0 left-0 w-40 h-40 bg-blue-200/20 rounded-br-full blur-2xl"></div>
-              <div className="absolute bottom-0 right-0 w-40 h-40 bg-amber-200/20 rounded-tl-full blur-2xl"></div>
-              <div className="relative z-10">
-              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center mb-6">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 mb-12 border border-gray-200 shadow-sm">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed text-center mb-6" style={{ fontFamily: 'Amiri, serif' }}>
                 د انوارالعلوم اسلامي مدرسه د جناب شیخ القرآن والحدیث حضرت انوارالمشائخ خلیفه صاحب فضل‌الدین ارغندی رحمة‌الله علیه په مبارک لاس د ۱۳۸۳ هـ ق / ۱۳۴۲ هـ ش / ۱۹۶۳ م کال د جوزا په اتمه نېټه د کابل ولایت د پغمان ولسوالۍ د ارغندي علیا په سیمه کې تأسیس شوه.
               </p>
-              <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed text-center">
+              <p className="text-base sm:text-lg md:text-xl text-gray-700 leading-relaxed text-center" style={{ fontFamily: 'Amiri, serif' }}>
                 له نوموړي د وفات وروسته، د مدرسې د اهتمام چارې د هغه ورور حضرت تاج‌المشائخ خلیفه صاحب سدوزی غریقي رحمة‌الله علیه ته وسپارل شوې. ورپسې، د تاج‌المشائخ رح له وفات وروسته د مدرسې اداره د حضرت ارغندی خلیفه صاحب د کشر زوی او د تاج‌المشائخ رح وراره حضرت قلب‌المشائخ خلیفه صاحب محمد شفیق فضلي حفظه‌الله تعالی ته وسپارل شوه. نوموړی تر ننه د دې جامعې د علمي او روحاني چارو څارنه کوي او د تصوف څانګه یې په ځانګړي ډول د پام وړ وده کړې ده.
               </p>
-              </div>
             </div>
 
             {/* Academic Services */}
-            <div className="bg-gradient-to-br from-blue-50/50 via-blue-100/30 to-white rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-blue-300/20 rounded-bl-full blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-blue-400/20 rounded-tr-full blur-3xl"></div>
-              <div className="relative z-10">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 mb-12 border border-gray-200 shadow-sm">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-3xl mb-6">
-                  <BookOpen className="h-10 w-10 text-white" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#4a8a8a] rounded-2xl mb-6">
+                  <BookOpen className="h-8 w-8 text-white" />
                 </div>
-                <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-gray-900 bg-clip-text text-transparent mb-4">
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Amiri, serif' }}>
                   د جامعې علمي خدمتونه
                 </h2>
-                <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto">
+                <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto" style={{ fontFamily: 'Amiri, serif' }}>
                   په نوموړې مدرسه کې د ديني او عصري علومو تدریس په منظم ډول تر سره کېږي، چې مهمې څانګې یې دا دي:
-                  </p>
-                </div>
+                </p>
+              </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4 md:gap-6 mt-8">
                 {[
@@ -302,34 +296,30 @@ const AboutPage = () => {
                   { name: 'عربي', icon: '🕌' },
                   { name: 'فن بیان', icon: '🎤' }
                 ].map((subject, index) => (
-                  <div key={index} className="text-center p-4 md:p-6 bg-white/90 backdrop-blur-sm rounded-2xl hover:bg-blue-50 hover:scale-105 transition-all duration-150 shadow-sm border-2 border-transparent hover:border-blue-200 group">
-                    <div className="text-4xl md:text-5xl mb-3 group-hover:scale-110 transition-transform duration-150">{subject.icon}</div>
-                    <p className="text-sm md:text-base font-semibold text-gray-800 group-hover:text-blue-700 transition-colors">{subject.name}</p>
+                  <div key={index} className="text-center p-4 md:p-6 bg-white rounded-xl hover:bg-[#e0f2f2] hover:border-[#4a8a8a] transition-all duration-200 shadow-sm border border-gray-200">
+                    <div className="text-4xl md:text-5xl mb-3">{subject.icon}</div>
+                    <p className="text-sm md:text-base font-semibold text-gray-800" style={{ fontFamily: 'Amiri, serif' }}>{subject.name}</p>
                   </div>
                 ))}
-                </div>
+              </div>
 
               <div className="mt-8 text-center">
-                <p className="text-base md:text-lg text-gray-600 italic bg-white/50 rounded-xl p-4 inline-block shadow-sm">
+                <p className="text-base md:text-lg text-gray-600 bg-[#e0f2f2] rounded-xl p-4 inline-block border border-[#d0e8e8]" style={{ fontFamily: 'Amiri, serif' }}>
                   دغه علوم په درجوي (صنفي) او متفرقه ډول تدریس کېږي.
-                    </p>
-                  </div>
+                </p>
               </div>
-                </div>
+            </div>
 
             {/* Teachers Section */}
-            <div className="bg-gradient-to-br from-green-50/50 via-green-100/30 to-white rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-48 h-48 bg-green-300/20 rounded-bl-full blur-3xl"></div>
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-green-400/20 rounded-tr-full blur-3xl"></div>
-              <div className="relative z-10">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-10 mb-12 border border-gray-200 shadow-sm">
               <div className="text-center mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-green-500 to-green-600 rounded-3xl mb-6">
-                  <Users className="h-10 w-10 text-white" />
-                  </div>
-                <h2 className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-gray-900 via-green-800 to-gray-900 bg-clip-text text-transparent mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-[#4a8a8a] rounded-2xl mb-6">
+                  <Users className="h-8 w-8 text-white" />
+                </div>
+                <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Amiri, serif' }}>
                   د جامعې مشایخ او استادان
                 </h2>
-                </div>
+              </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
                 {[
@@ -351,46 +341,39 @@ const AboutPage = () => {
                   'حافظ صاحب رحمن‌الله قائد',
                   'حافظ صاحب صدیق‌الله'
                 ].map((teacher, index) => (
-                  <div key={index} className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 md:p-6 hover:bg-green-50 hover:scale-105 transition-all duration-150 shadow-sm border-2 border-transparent hover:border-green-200 group">
-                    <p className="text-sm md:text-base font-semibold text-gray-800 text-center group-hover:text-green-700 transition-colors">{teacher}</p>
-                      </div>
-                    ))}
+                  <div key={index} className="bg-white rounded-xl p-4 md:p-6 hover:bg-[#e0f2f2] hover:border-[#4a8a8a] transition-all duration-200 shadow-sm border border-gray-200">
+                    <p className="text-sm md:text-base font-semibold text-gray-800 text-center" style={{ fontFamily: 'Amiri, serif' }}>{teacher}</p>
                   </div>
+                ))}
               </div>
-                </div>
+            </div>
 
             {/* Stats Section */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
-              <div className="bg-gradient-to-br from-amber-50/50 via-amber-100/30 to-white rounded-3xl p-6 md:p-8 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-amber-300/20 rounded-bl-full blur-2xl"></div>
-                <div className="relative z-10">
+              <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-amber-500 to-amber-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-150">
-                  <Users className="h-8 w-8 text-white" />
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#4a8a8a] rounded-2xl mb-4">
+                    <Users className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Amiri, serif' }}>د شاګردانو داخله</h3>
                 </div>
-                  <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-amber-700 to-amber-900 bg-clip-text text-transparent mb-3">د شاګردانو داخله</h3>
-                </div>
-                <p className="text-base md:text-lg text-gray-700 text-center leading-relaxed">
+                <p className="text-base md:text-lg text-gray-700 text-center leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
                   هر کال شاوخوا ۵۰۰ تر ۷۰۰ پورې لیلي شاګردانو ته داخله ورکول کېږي.
-              </p>
+                </p>
               </div>
-            </div>
 
-              <div className="bg-gradient-to-br from-green-50/50 via-green-100/30 to-white rounded-3xl p-6 md:p-8 relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-green-300/20 rounded-bl-full blur-2xl"></div>
-                <div className="relative z-10">
+              <div className="bg-white rounded-2xl p-6 md:p-8 border border-gray-200 shadow-sm">
                 <div className="text-center mb-6">
-                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-150">
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-[#4a8a8a] rounded-2xl mb-4">
                     <GraduationCap className="h-8 w-8 text-white" />
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3" style={{ fontFamily: 'Amiri, serif' }}>فارغین</h3>
                 </div>
-                  <h3 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent mb-3">فارغین</h3>
-              </div>
-                <p className="text-base md:text-lg text-gray-700 text-center leading-relaxed">
+                <p className="text-base md:text-lg text-gray-700 text-center leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
                   د تېرو پنځلسو کلونو په ترڅ کې شاوخوا ۷۰۰ تنه فارغین یې د علمي پړاوونو څخه فارغ شوي او ټولنې ته وړاندې شوي دي.
-              </p>
+                </p>
               </div>
             </div>
-          </div>
 
             {/* Family and Successors Section */}
             <div className="bg-gradient-to-br from-indigo-50/50 via-indigo-100/30 to-white rounded-3xl p-6 sm:p-8 md:p-10 mb-12 relative overflow-hidden">
@@ -557,24 +540,20 @@ const AboutPage = () => {
       </section>
 
       {/* Prayer Section */}
-      <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-green-600 via-green-700 to-green-800 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-64 h-64 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-80 h-80 bg-white rounded-full blur-3xl"></div>
-        </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <div className="bg-white/10 backdrop-blur-md rounded-3xl p-8 sm:p-12 md:p-16 border border-white/20">
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 rounded-3xl mb-8">
-              <Heart className="h-10 w-10 text-white" />
+      <section className="py-16 sm:py-20 md:py-24 bg-[#4a8a8a]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <div className="bg-white rounded-2xl p-8 sm:p-12 md:p-16 border border-gray-200 shadow-lg">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-[#4a8a8a] rounded-2xl mb-8">
+              <Heart className="h-8 w-8 text-white" />
             </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-8">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-8" style={{ fontFamily: 'Amiri, serif' }}>
               دعا او امید
             </h2>
-            <p className="text-lg sm:text-xl md:text-2xl text-green-100 mb-10 max-w-4xl mx-auto leading-relaxed font-medium">
+            <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-10 max-w-4xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'Amiri, serif' }}>
               الله ج دې ترقیامته پورې دا پور نوره روانه بېړی روانه لری
             </p>
-            <div className="bg-white/15 backdrop-blur-sm rounded-2xl p-8 md:p-10 border border-white/20 shadow-sm">
-              <p className="text-base md:text-lg text-white italic leading-relaxed">
+            <div className="bg-[#e0f2f2] rounded-2xl p-8 md:p-10 border border-[#d0e8e8]">
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>
                 &ldquo;د ده روح دې تر قيـامـتـه ښـاد وي او د ده فيض دې جـاري وي&rdquo;
               </p>
             </div>
@@ -583,22 +562,19 @@ const AboutPage = () => {
       </section>
 
       {/* Call to Action */}
-      <section className="py-16 sm:py-20 md:py-24 bg-gradient-to-br from-amber-600 via-amber-700 to-amber-800 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 w-72 h-72 bg-white rounded-full blur-3xl"></div>
-          <div className="absolute bottom-10 right-10 w-96 h-96 bg-white rounded-full blur-3xl"></div>
-        </div>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 sm:mb-8">
-            زموږ <span className="text-amber-200">ټولنې</span> سره یوځای شئ
+      <section className="py-16 sm:py-20 md:py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 text-center">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 sm:mb-8" style={{ fontFamily: 'Amiri, serif' }}>
+            زموږ <span className="text-[#4a8a8a]">ټولنې</span> سره یوځای شئ
           </h2>
-          <p className="text-lg sm:text-xl md:text-2xl text-amber-100 mb-10 sm:mb-12 max-w-3xl mx-auto leading-relaxed font-medium">
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-700 mb-10 sm:mb-12 max-w-3xl mx-auto leading-relaxed font-medium" style={{ fontFamily: 'Amiri, serif' }}>
             زموږ د اسلامي تعلیماتو او روحاني ودې د میراث برخه شئ.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center">
             <Link
               href="/courses"
-              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-white text-amber-600 font-bold rounded-xl hover:bg-amber-50 hover:scale-105 transition-all duration-150 shadow-sm text-base sm:text-lg"
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 bg-[#4a8a8a] text-white font-bold rounded-xl hover:bg-[#5a9a9a] hover:scale-105 transition-all duration-200 shadow-lg text-base sm:text-lg"
+              style={{ fontFamily: 'Amiri, serif' }}
             >
               کورسونو ته وګورئ
               <svg
@@ -619,7 +595,8 @@ const AboutPage = () => {
               href={`https://wa.me/+93796148087?text=${encodeURIComponent('اسلام علیکم ورحمته الله وبرکاتو ولیکه')}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-white text-white font-bold rounded-xl hover:bg-white hover:text-amber-600 transition-all duration-150 shadow-sm hover:scale-105 text-base sm:text-lg"
+              className="inline-flex items-center justify-center px-6 sm:px-8 py-3 sm:py-4 border-2 border-[#4a8a8a] text-[#4a8a8a] font-bold rounded-xl hover:bg-[#e0f2f2] transition-all duration-200 shadow-lg hover:scale-105 text-base sm:text-lg"
+              style={{ fontFamily: 'Amiri, serif' }}
             >
               اړیکه ونیسئ
             </a>

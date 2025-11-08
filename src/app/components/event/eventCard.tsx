@@ -22,11 +22,33 @@ interface EventsSectionProps {
 
 const fallbackEventImage = "/placeholder-event.jpg";
 
-const stripHtml = (value?: string | null) =>
-  (value || "")
-    .replace(/<[^>]*>/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
+const stripHtml = (value?: string | null) => {
+  if (!value) return "";
+  
+  let cleaned = value;
+  
+  // Remove HTML tags
+  cleaned = cleaned.replace(/<[^>]*>/g, " ");
+  
+  // Remove HTML entities including &nbsp;
+  cleaned = cleaned.replace(/&nbsp;/g, " ");
+  cleaned = cleaned.replace(/&amp;/g, "&");
+  cleaned = cleaned.replace(/&lt;/g, "<");
+  cleaned = cleaned.replace(/&gt;/g, ">");
+  cleaned = cleaned.replace(/&quot;/g, '"');
+  cleaned = cleaned.replace(/&#39;/g, "'");
+  cleaned = cleaned.replace(/&apos;/g, "'");
+  cleaned = cleaned.replace(/&mdash;/g, "—");
+  cleaned = cleaned.replace(/&ndash;/g, "–");
+  cleaned = cleaned.replace(/&hellip;/g, "...");
+  cleaned = cleaned.replace(/&[#\w]+;/g, " "); // Remove any remaining entities
+  
+  // Clean up whitespace
+  cleaned = cleaned.replace(/\s+/g, " ");
+  cleaned = cleaned.trim();
+  
+  return cleaned;
+};
 
 const formatEventDate = (value?: string | null) => {
   if (!value) return "Recently updated";
@@ -108,8 +130,9 @@ export default function EventsSection({
             const coverImage =
               getImageUrl(event.image, fallbackEventImage) ?? fallbackEventImage;
             const eventDate = formatEventDate(event.created_at);
-            const location =
-              event.address || event.branch_name || event.country || t('events.locationComingSoon');
+            const location = stripHtml(
+              event.address || event.branch_name || event.country || t('events.locationComingSoon')
+            );
 
             const liveLabel = (() => {
               switch (event.live_link_type) {
@@ -137,96 +160,121 @@ export default function EventsSection({
                 {idx < displayEvents.length - 1 ? (
                   <span className="pointer-events-none absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100" />
                 ) : null}
-                <div className="relative flex w-full flex-col overflow-hidden bg-white/95 md:flex-row  shadow-none hover:shadow-none">
+                <div className="relative flex w-full flex-col overflow-hidden bg-white rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:flex-row group/card">
 
-                    <div className="aspect-[4/3] w-full rounded-none border-0 md:w-1/2 md:aspect-[4/3] relative">
+                    {/* Image Section */}
+                    <div className="aspect-[4/3] w-full md:w-1/2 relative overflow-hidden bg-gray-100">
                       <Image
                         src={coverImage}
-                        alt={event.title}
+                        alt={event.title || 'Event image'}
                         fill
                         sizes="(min-width: 1280px) 480px, (min-width: 768px) 50vw, 100vw"
-                              className="h-full w-full object-cover"
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover/card:scale-105"
                       />
+                      
+                      {/* Gradient overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover/card:opacity-100 transition-opacity duration-300"></div>
 
-                      <span className="absolute top-4 left-4 inline-flex items-center gap-2 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-primary-700 shadow-sm">
-                        {t('events.communityEvent')}
-                      </span>
-                      {event.branch_name ? (
-                        <span className="absolute bottom-4 right-4 inline-flex items-center gap-2 rounded-full bg-primary-600 px-3 py-1 text-xs font-semibold text-white shadow-sm">
-                          {event.branch_name}
+                      {/* Badges */}
+                      <div className="absolute top-4 left-4 z-10">
+                        <span className="inline-flex items-center gap-2 rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-xs font-semibold text-primary-700 shadow-lg border border-primary-100">
+                          {t('events.communityEvent')}
                         </span>
+                      </div>
+                      {event.branch_name ? (
+                        <div className="absolute bottom-4 right-4 z-10">
+                          <span className="inline-flex items-center gap-2 rounded-full bg-primary-600 px-3 py-1.5 text-xs font-semibold text-white shadow-lg">
+                            {stripHtml(event.branch_name)}
+                          </span>
+                        </div>
                       ) : null}
                     </div>
 
-                    <div className="w-full gap-6 p-6 md:w-1/2">
-                      <div className="space-y-4">
-                        <div className="flex flex-wrap items-center gap-3 text-xs font-semibold uppercase tracking-[0.3em] text-primary-500">
-                          <Calendar className="h-4 w-4 text-primary-500" />
+                    {/* Content Section */}
+                    <div className="w-full flex flex-col gap-6 p-6 md:w-1/2 md:p-8">
+                      {/* Header Section */}
+                      <div className="space-y-4 flex-1">
+                        {/* Date Badge */}
+                        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary-50 to-primary-100 border border-primary-200 text-xs font-semibold uppercase tracking-wider text-primary-700 w-fit shadow-sm">
+                          <Calendar className="h-3.5 w-3.5 text-primary-600" />
                           <span>{eventDate}</span>
                         </div>
 
-                        <h3 className="text-2xl font-semibold leading-tight text-primary-900">
-                          {event.title}
+                        {/* Title */}
+                        <h3 className="text-2xl md:text-3xl font-bold leading-tight text-gray-900 tracking-tight group-hover/card:text-primary-700 transition-colors">
+                          {stripHtml(event.title)}
                         </h3>
 
-                        <p className="text-sm leading-relaxed text-primary-600 line-clamp-4">
+                        {/* Description */}
+                        <p className="text-sm md:text-base leading-relaxed text-gray-600 line-clamp-4">
                           {stripHtml(event.description)}
                         </p>
                       </div>
 
-                      <div className="grid gap-3 text-sm text-primary-700 md:grid-cols-2">
-                        <span className="inline-flex items-center gap-2">
-                          <MapPin className="h-4 w-4 text-primary-500" />
-                          <span className="line-clamp-1">{location}</span>
-                        </span>
+                      {/* Event Details Grid */}
+                      <div className="grid gap-3 text-sm md:grid-cols-2 border-t border-gray-200 pt-5">
+                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200">
+                          <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
+                            <MapPin className="h-4 w-4 text-primary-600" />
+                          </div>
+                          <span className="font-medium text-gray-800 line-clamp-1">{location}</span>
+                        </div>
 
-                        <span className="inline-flex items-center gap-2">
-                          <Clock className="h-4 w-4 text-primary-500" />
-                          <span>{event.duration || t('events.flexible')}</span>
-                        </span>
+                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200">
+                          <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
+                            <Clock className="h-4 w-4 text-primary-600" />
+                          </div>
+                          <span className="font-medium text-gray-800">{stripHtml(event.duration) || t('events.flexible')}</span>
+                        </div>
 
                         {event.contact ? (
-                          <span className="inline-flex items-center gap-2">
-                            <Users className="h-4 w-4 text-primary-500" />
-                            <span className="line-clamp-1">{event.contact}</span>
-                          </span>
+                          <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200 md:col-span-2">
+                            <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
+                              <Users className="h-4 w-4 text-primary-600" />
+                            </div>
+                            <span className="font-medium text-gray-800 line-clamp-1">{stripHtml(event.contact)}</span>
+                          </div>
                         ) : null}
 
-                        {event.live_link ? (
-                          <span className="inline-flex items-center gap-2 text-primary-600">
-                            <RTLArrowIcon className="h-4 w-4" />
-                            <span>{liveLabel}</span>
-                          </span>
-                        ) : null}
+                        {/* {event.live_link ? (
+                          <div className="flex items-center gap-3 p-3 rounded-xl bg-primary-50 hover:bg-primary-100 border border-primary-200 transition-all duration-200 md:col-span-2">
+                            <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
+                              <RTLArrowIcon className="h-4 w-4 text-primary-600" />
+                            </div>
+                            <span className="font-medium text-primary-700">{liveLabel}</span>
+                          </div>
+                        ) : null} */}
                       </div>
 
-                      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-primary-100/70 pt-4">
-                        <span className="inline-flex items-center gap-2 text-sm font-medium text-primary-700">
-                          <Users className="h-4 w-4 text-primary-500" />
-                          {t('events.organizedBy')}
-                        </span>
+                      {/* Footer Section */}
+                      <div className="mt-auto pt-6 border-t border-gray-200">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                          {/* <div className="inline-flex items-center gap-2 text-sm font-medium text-gray-600">
+                            <Users className="h-4 w-4 text-primary-500" />
+                            <span>{t('events.organizedBy')}</span>
+                          </div> */}
 
-                        <div className="flex flex-wrap items-center gap-2">
-                          {event.live_link ? (
-                            <a
-                              href={event.live_link}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="inline-flex items-center gap-2 rounded-full bg-primary-50 px-4 py-2 text-sm font-semibold text-primary-600"
+                          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                            {event.live_link ? (
+                              <a
+                                href={event.live_link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-50 border border-primary-200 px-5 py-2.5 text-sm font-semibold text-primary-700 hover:bg-primary-100 hover:border-primary-300 hover:shadow-sm transition-all duration-200 flex-1 sm:flex-initial"
+                              >
+                                {t('events.joinLive')}
+                                <RTLArrowIcon className="h-4 w-4" />
+                              </a>
+                            ) : null}
+
+                            <Link
+                              href={`/event/${event.slug}`}
+                              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-xl hover:scale-105 hover:from-primary-700 hover:to-amber-500 transition-all duration-200 flex-1 sm:flex-initial"
                             >
-                              {t('events.joinLive')}
-                              <RTLArrowIcon size="h-4 w-4" />
-                            </a>
-                          ) : null}
-
-                          <Link
-                            href={`/event/${event.slug}`}
-                            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-5 py-2 text-sm font-semibold text-white shadow-md hover:from-primary-700 hover:to-amber-500 hover:scale-105 transition-all duration-200 border border-primary-600 focus:outline-none focus:ring-2 focus:ring-primary-400"
-                            style={{ minWidth: 0 }}
-                          >
-                            <span className="whitespace-nowrap">{t('events.eventDetails')}</span>
-                            <RTLArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                          </Link>
+                              <span className="whitespace-nowrap">{t('events.eventDetails')}</span>
+                              <RTLArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                            </Link>
+                          </div>
                         </div>
                       </div>
                     </div>

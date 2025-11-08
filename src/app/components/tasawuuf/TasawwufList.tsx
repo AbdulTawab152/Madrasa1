@@ -113,9 +113,9 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
     <section className="space-y-16">
       {/* Category Pills */}
       <div className="flex flex-wrap justify-center gap-2">
-        {categories.map((cat) => (
+        {categories.map((cat, index) => (
           <button
-            key={cat}
+            key={`category-${cat}-${index}`}
             onClick={() => setActiveCategory(cat)}
             className={`px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 outline-none focus:outline-none focus:ring-0 ${
               activeCategory === cat
@@ -132,9 +132,9 @@ export default function TasawwufList({ homePage = false, limit }: Props) {
 
       {/* Vertical List */}
       <div className="grid gap-8 max-w-5xl mx-auto">
-  {filteredPosts.map((post) => (
+  {filteredPosts.map((post, index) => (
     <div
-      key={post.id}
+      key={post.id || `post-${index}`}
       className="flex flex-col md:flex-row gap-6 p-6 rounded-xl border border-gray-100 bg-white hover:shadow-md transition-all duration-150"
     >
       {/* Image */}

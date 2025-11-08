@@ -174,7 +174,7 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
   };
 
   return (
-    <div ref={containerRef} className="relative w-full aspect-video bg-black rounded-2xl overflow-hidden group">
+    <div ref={containerRef} className="relative w-full aspect-video bg-gray-900 rounded-xl overflow-hidden group shadow-2xl">
       <video
         ref={videoRef}
         className="w-full h-full object-contain"
@@ -194,38 +194,38 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
         Your browser does not support the video tag.
       </video>
 
-      {/* Custom Controls */}
-      <div className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none">
+      {/* Custom Controls - Always visible when playing, show on hover when paused */}
+      <div className={`absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-black/95 via-black/60 to-transparent transition-opacity duration-300 pointer-events-none ${isPlaying ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>
         {/* Progress Bar */}
-        <div className="w-full px-4 py-2 pointer-events-auto">
+        <div className="w-full px-4 py-3 pointer-events-auto">
           <input
             type="range"
             min="0"
             max={duration || 0}
             value={currentTime}
             onChange={handleSeek}
-            className="w-full h-2 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+            className="w-full h-1.5 bg-white/20 rounded-full appearance-none cursor-pointer"
             style={{
-              background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${(currentTime / duration) * 100}%, rgba(255,255,255,0.3) ${(currentTime / duration) * 100}%, rgba(255,255,255,0.3) 100%)`
+              background: `linear-gradient(to right, #4a8a8a 0%, #4a8a8a ${duration ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.2) ${duration ? (currentTime / duration) * 100 : 0}%, rgba(255,255,255,0.2) 100%)`
             }}
           />
         </div>
 
         {/* Control Buttons */}
-        <div className="flex items-center justify-between px-4 py-3 pointer-events-auto">
+        <div className="flex items-center justify-between px-4 py-3 bg-black/40 backdrop-blur-md pointer-events-auto">
           {/* Left Controls */}
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {/* Play/Pause Button */}
             <button
               onClick={(e) => { e.stopPropagation(); handleVideoClick(); }}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors backdrop-blur-sm"
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 backdrop-blur-sm border border-white/20"
             >
               {isLoading ? (
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
               ) : isPlaying ? (
-                <FaPause className="w-5 h-5 text-white" />
+                <FaPause className="w-4 h-4 text-white" />
               ) : (
-                <FaPlay className="w-5 h-5 text-white ml-0.5" />
+                <FaPlay className="w-4 h-4 text-white ml-0.5" />
               )}
             </button>
 
@@ -233,7 +233,7 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
             <div className="flex items-center gap-2">
               <button
                 onClick={(e) => { e.stopPropagation(); toggleMute(); }}
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+                className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20"
               >
                 {isMuted ? (
                   <FaVolumeMute className="w-4 h-4 text-white" />
@@ -248,15 +248,15 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
                 step="0.01"
                 value={volume}
                 onChange={(e) => { e.stopPropagation(); handleVolumeChange(e); }}
-                className="w-24 h-1 bg-white/30 rounded-lg appearance-none cursor-pointer"
+                className="w-20 h-1 bg-white/20 rounded-full appearance-none cursor-pointer"
                 style={{
-                  background: `linear-gradient(to right, #f59e0b 0%, #f59e0b ${volume * 100}%, rgba(255,255,255,0.3) ${volume * 100}%, rgba(255,255,255,0.3) 100%)`
+                  background: `linear-gradient(to right, #4a8a8a 0%, #4a8a8a ${volume * 100}%, rgba(255,255,255,0.2) ${volume * 100}%, rgba(255,255,255,0.2) 100%)`
                 }}
               />
             </div>
 
             {/* Time Display */}
-            <div className="text-white text-sm font-medium px-2">
+            <div className="text-white text-sm font-medium px-3 py-1.5 bg-black/30 rounded-lg border border-white/10">
               {formatTime(currentTime)} / {formatTime(duration)}
             </div>
           </div>
@@ -266,7 +266,7 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
             {/* Fullscreen Button */}
             <button
               onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+              className="flex items-center justify-center w-10 h-10 rounded-lg bg-white/10 hover:bg-white/20 transition-all duration-200 border border-white/20"
             >
               {isFullscreen ? (
                 <FaCompress className="w-4 h-4 text-white" />
@@ -283,7 +283,7 @@ export default function VideoPlayer({ videoUrl, posterUrl, title }: VideoPlayerP
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
           <button
             onClick={handleVideoClick}
-            className="pointer-events-auto w-20 h-20 bg-black/70 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-black/80 transition-all duration-150 hover:scale-110"
+            className="pointer-events-auto w-20 h-20 bg-[#4a8a8a]/90 backdrop-blur-md rounded-full flex items-center justify-center hover:bg-[#5a9a9a] transition-all duration-200 hover:scale-110 shadow-2xl border-2 border-white/20"
           >
             {isLoading ? (
               <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
