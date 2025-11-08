@@ -62,7 +62,7 @@ const typeLabels: Record<string, string> = {
 export default function SearchPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const query = searchParams.get('q') || '';
+  const query = searchParams?.get('q') || '';
   const [searchQuery, setSearchQuery] = useState(query);
   const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
@@ -89,7 +89,7 @@ export default function SearchPage() {
         setResults(data.results || []);
         setSearchStats(data.types || null);
       } else {
-        setError(data.error || 'د پلټنې پرمهال ستونزې رامنځته شوې');
+        setError('د پلټنې پرمهال ستونزې رامنځته شوې');
         setResults([]);
       }
     } catch (err) {
@@ -211,7 +211,7 @@ export default function SearchPage() {
         {/* Error State */}
         {error && !loading && (
           <div className="mb-8">
-            <ErrorDisplay message={error} />
+            <ErrorDisplay error={error} />
           </div>
         )}
 
