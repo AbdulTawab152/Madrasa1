@@ -98,9 +98,15 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
   }
 
   return (
+<<<<<<< Updated upstream
     <main className="min-h-screen mt-[180px] md:mt-24 sm:mt-10 bg-gradient-to-b from-amber-50 to-white">
       <Breadcrumb />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+=======
+    <main className="min-h-screen mt-16 sm:mt-24 md:mt-32 bg-gradient-to-b from-amber-50/30 to-white">
+      <Breadcrumb />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
+>>>>>>> Stashed changes
 
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-8">

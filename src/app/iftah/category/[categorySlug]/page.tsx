@@ -211,7 +211,11 @@ export default async function IftahCategoryPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      <IslamicHeader pageType="iftah" title={decodeURIComponent(categorySlug)} />
+      <IslamicHeader 
+        pageType="iftah" 
+        title={decodeURIComponent(categorySlug)} 
+        subtitle={t('header.iftah.subtitle')}
+      />
       <Breadcrumb />
       <IftahQuestionButton variant="floating" />
 

@@ -7,6 +7,7 @@ import { Search } from "lucide-react";
 import Breadcrumb from "@/components/Breadcrumb";
 import IftahQuestionButton from "../../../components/iftah/IftahQuestionButton";
 import IslamicHeader from "../../../components/IslamicHeader";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export interface Iftah {
   id: number;
@@ -47,6 +48,12 @@ export default function IftahSubCategoryPage({
 }: { 
   params: Promise<{ subCategoryId: string }> 
 }) {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  const t = (key: string): string => {
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
+  };
+  
   const [subCategoryId, setSubCategoryId] = useState<string>('');
   const [subCategoryIftahs, setSubCategoryIftahs] = useState<Iftah[]>([]);
   const [subCategoryInfo, setSubCategoryInfo] = useState<any>(null);
@@ -174,7 +181,11 @@ export default function IftahSubCategoryPage({
 
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
-      <IslamicHeader pageType="iftah" title={getSubCategoryName()} />
+      <IslamicHeader 
+        pageType="iftah" 
+        title={getSubCategoryName()} 
+        subtitle={t('header.iftah.subtitle')}
+      />
       <Breadcrumb />
       <IftahQuestionButton variant="floating" />
 

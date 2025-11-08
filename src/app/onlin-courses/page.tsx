@@ -17,7 +17,11 @@ import {
   Users,
   Video,
   Heart,
-  Share2
+  Share2,
+  MapPin,
+  Phone,
+  Mail,
+  Building
 } from 'lucide-react';
 import IslamicHeader from '../components/IslamicHeader';
 import { useDirection } from '@/hooks/useDirection';
@@ -159,7 +163,7 @@ export default function OnlineCoursesPage() {
       <Breadcrumb />
 
       {/* Courses Section */}
-      <section className="w-full mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <section className="w-full mx-auto py-6 sm:py-12 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           {/* Section Header */}
           <motion.div
@@ -461,6 +465,105 @@ export default function OnlineCoursesPage() {
                   <ExternalLink className="h-4 w-4 text-white/70 group-hover:text-white transition-colors" />
                 </motion.a>
               ))}
+            </div>
+          </motion.div>
+
+          {/* Office Information */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.15, delay: 0.2 }}
+            className="mt-16 pt-12 border-t border-white/10"
+          >
+            <h3 className="text-2xl font-bold text-white mb-8 text-center">
+              د دفتر معلومات
+            </h3>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {/* Address */}
+              <motion.div
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="flex items-start gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-150"
+              >
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <MapPin className="text-white text-xl" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-white font-semibold mb-2">پته</h4>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    کابل، پغمان ولسوالی، ارغندی علیا، د انوار العلوم اسلامي مدرسه
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Phone */}
+              <motion.div
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="flex items-start gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-150"
+              >
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Phone className="text-white text-xl" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-white font-semibold mb-2">تلیفون</h4>
+                  <a 
+                    href="tel:+93796148087" 
+                    className="text-white/80 text-sm hover:text-white transition-colors block"
+                  >
+                     796 148 087 93+
+                  </a>
+                </div>
+              </motion.div>
+
+              {/* Email */}
+              <motion.div
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="flex items-start gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-150"
+              >
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Mail className="text-white text-xl" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-white font-semibold mb-2">بریښنالیک</h4>
+                  <a 
+                    href="mailto:info@anwaraluloom.af" 
+                    className="text-white/80 text-sm hover:text-white transition-colors block break-all"
+                  >
+                    info@anwaraluloom.af
+                  </a>
+                </div>
+              </motion.div>
+
+              {/* Office Hours */}
+              <motion.div
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="flex items-start gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-150 sm:col-span-2 lg:col-span-1"
+              >
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Clock className="text-white text-xl" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-white font-semibold mb-2">د کار وخت</h4>
+                  <p className="text-white/80 text-sm">
+                    شنبه - جمعې: 6:۰۰ بجو - 10:۰۰ بجو
+                  </p>
+                </div>
+              </motion.div>
+
+              {/* Building/Office Name */}
+              <motion.div
+                whileHover={{ scale: 1.02, y: -3 }}
+                className="flex items-start gap-4 p-6 bg-white/5 backdrop-blur-sm rounded-xl border border-white/10 hover:bg-white/10 transition-all duration-150 sm:col-span-2 lg:col-span-2"
+              >
+                <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center flex-shrink-0">
+                  <Building className="text-white text-xl" />
+                </div>
+                <div className="flex-1">
+                  <h4 className="text-white font-semibold mb-2">د انوارالمشائخ رحمه الله خپرندویه اداره</h4>
+                  <p className="text-white/80 text-sm leading-relaxed">
+                    د انوار العلوم اسلامي مدرسه د علم، دعوت او خیر خپرولو په برخه کې دنده ترسره کوي
+                  </p>
+                </div>
+              </motion.div>
             </div>
           </motion.div>
         </div>

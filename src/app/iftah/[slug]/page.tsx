@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Breadcrumb from "@/components/Breadcrumb";
 import IftahQuestionButton from "../../components/iftah/IftahQuestionButton";
 import IslamicHeader from "../../components/IslamicHeader";
+import { getTranslation } from "@/lib/translations";
 
 interface Mufti {
   id: number;
@@ -71,11 +72,17 @@ export default async function IftahDetailsPage({ params }: PageProps) {
     notFound();
   }
 
+  const t = (key: string): string => {
+    const translation = getTranslation(key, 'ps');
+    return typeof translation === 'string' ? translation : key;
+  };
+
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       <IslamicHeader 
         pageType="iftah" 
         title={cleanText(iftah.iftah_sub_category?.name)} 
+        subtitle={t('header.iftah.subtitle')}
       />
       <Breadcrumb />
       <IftahQuestionButton variant="floating" />

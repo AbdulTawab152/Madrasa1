@@ -82,10 +82,22 @@ const AboutPage = () => {
   ];
 
   return (
+<<<<<<< Updated upstream
     <div className="bg-white mt-32">
       <Breadcrumb />
       <section className="py-12 sm:py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+=======
+    <div className="bg-gradient-to-b from-gray-50 to-white mt-16 sm:mt-24 md:mt-32">
+      <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-amber-50 via-white to-blue-50 relative overflow-hidden">
+        {/* Decorative background elements */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute top-20 left-10 w-72 h-72 bg-amber-400 rounded-full blur-3xl"></div>
+          <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-400 rounded-full blur-3xl"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 relative z-10">
+>>>>>>> Stashed changes
           {/* Header Section */}
           <div className="text-center mb-16">
             <div className="inline-flex items-center px-5 py-2 bg-[#e0f2f2] text-[#4a8a8a] rounded-full text-sm font-semibold mb-6 border border-[#d0e8e8]">

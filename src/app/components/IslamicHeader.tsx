@@ -63,19 +63,16 @@ export default function IslamicHeader({
   className = "",
   cta,
 }: IslamicHeaderProps) {
-  const { t: tRaw, i18n } = useTranslation('common', { useSuspense: false });
-  
-  // Create a wrapper that always returns a string
-  const t = (key: string): string => {
-    const result = tRaw(key);
-    return typeof result === 'string' ? result : key;
-  };
-
-  // Always RTL since website only has RTL languages
-  const isRTL = true;
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
 
   // Get defaults based on page type using useMemo for optimization
   const pageDefaults = useMemo(() => {
+    // Create a wrapper that always returns a string
+    const t = (key: string): string => {
+      const result = tRaw(key);
+      return typeof result === 'string' ? result : key;
+    };
+
     const defaults = {
       courses: {
         title: t('header.courses.title'),
@@ -165,7 +162,7 @@ export default function IslamicHeader({
     };
     
     return defaults[pageType] || defaults.default;
-  }, [pageType, i18n.language]);
+  }, [pageType, tRaw]);
   
   // Use provided props or fall back to page defaults
   const finalTitle = title || pageDefaults.title;
@@ -180,7 +177,7 @@ export default function IslamicHeader({
 
   return (
     <section
-      className={`relative overflow-hidden ${themeCfg.backgroundImage} bg-cover bg-center bg-no-repeat pt-32 pb-8 px-6 sm:pt-36 sm:pb-12 mb-8 ${className}`}
+      className={`relative overflow-hidden ${themeCfg.backgroundImage} bg-cover bg-center bg-no-repeat pt-20 pb-6 px-6 sm:pt-24 md:pt-36 sm:pb-12 mb-4 sm:mb-8 ${className}`}
       dir="rtl"
     >
       <div className="absolute inset-0">
@@ -188,7 +185,7 @@ export default function IslamicHeader({
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
-        <div className={`flex flex-col gap-4 mt-10 sm:mt-20 ${alignmentClasses}`}>
+        <div className={`flex flex-col gap-4 mt-4 sm:mt-8 md:mt-20 ${alignmentClasses}`}>
           <div className="flex flex-col gap-3">
             {subcategory && (
               <p className="text-sm font-medium text-white/80 opacity-90">
@@ -198,6 +195,11 @@ export default function IslamicHeader({
             <h1 className="text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
               {finalTitle}
             </h1>
+            {finalSubtitle && (
+              <p className={`text-base sm:text-lg text-white/90 max-w-3xl mt-4 ${alignment === "center" ? "mx-auto text-center" : "text-right"}`}>
+                {finalSubtitle}
+              </p>
+            )}
           </div>
 
           {cta ? (
@@ -221,4 +223,3 @@ export default function IslamicHeader({
     </section>
   );
 }
-
