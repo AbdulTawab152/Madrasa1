@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AdmissionsApi, DegreesApi } from "@/lib/api";
 import { useToast } from "@/components/Toast";
 import { FiUser, FiPhone, FiMail, FiCalendar, FiMapPin, FiBook, FiHome, FiGlobe } from "react-icons/fi";
@@ -16,6 +16,9 @@ export default function AdmissionPage() {
     // Fallback degrees while loading
    
   ]);
+
+  // Refs for form fields to enable scrolling to errors
+  const fieldRefs = useRef<Record<string, HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement | null>>({});
 
   const [formData, setFormData] = useState({
     unique_id: "",
@@ -189,6 +192,25 @@ export default function AdmissionPage() {
         const errorCount = Object.keys(newErrors).length;
         toast.error(`مهرباني وکړئ ${errorCount} خالي ساحې ډکه کړئ`);
         setLoading(false);
+        
+        // Scroll to the first error field
+        const firstErrorField = Object.keys(newErrors)[0];
+        const errorElement = fieldRefs.current[firstErrorField];
+        
+        if (errorElement) {
+          // Scroll to the element with smooth behavior
+          errorElement.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center',
+            inline: 'nearest'
+          });
+          
+          // Focus the field after a short delay to ensure scroll completes
+          setTimeout(() => {
+            errorElement.focus();
+          }, 300);
+        }
+        
         return;
       }
       
@@ -344,6 +366,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ستاسو نوم *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.first_name = el; }}
                   type="text"
                   name="first_name"
                   value={formData.first_name}
@@ -366,6 +389,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ستاسو تخلص *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.last_name = el; }}
                   type="text"
                   name="last_name"
                   value={formData.last_name}
@@ -388,6 +412,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د پلار نوم *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.father_name = el; }}
                   type="text"
                   name="father_name"
                   value={formData.father_name}
@@ -410,6 +435,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د نیکه نوم *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.grandfather_name = el; }}
                   type="text"
                   name="grandfather_name"
                   value={formData.grandfather_name}
@@ -431,6 +457,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د زېږېدو نېټه *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.dob = el; }}
                   type="date"
                   name="dob"
                   value={formData.dob}
@@ -451,6 +478,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د وینې ډوله (حداکثر ۵ حرف) *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.blood_type = el; }}
                   type="text"
                   name="blood_type"
                   value={formData.blood_type}
@@ -487,6 +515,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ټیلیفون شمېره *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.phone = el; }}
                   type="tel"
                   name="phone"
                   value={formData.phone}
@@ -508,6 +537,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>واتساپ شمېره *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.whatsapp_no = el; }}
                   type="tel"
                   name="whatsapp_no"
                   value={formData.whatsapp_no}
@@ -543,6 +573,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولایت *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.permanent_province = el; }}
                   type="text"
                   name="permanent_province"
                   value={formData.permanent_province}
@@ -564,6 +595,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولسوالۍ *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.permanent_distract = el; }}
                   type="text"
                   name="permanent_distract"
                   value={formData.permanent_distract}
@@ -585,6 +617,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>کلي نوم *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.permanent_vilage = el; }}
                   type="text"
                   name="permanent_vilage"
                   value={formData.permanent_vilage}
@@ -620,6 +653,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولایت *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.current_province = el; }}
                   type="text"
                   name="current_province"
                   value={formData.current_province}
@@ -641,6 +675,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>ولسوالۍ *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.current_distract = el; }}
                   type="text"
                   name="current_distract"
                   value={formData.current_distract}
@@ -662,6 +697,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>کلي نوم *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.current_vilage = el; }}
                   type="text"
                   name="current_vilage"
                   value={formData.current_vilage}
@@ -702,6 +738,7 @@ export default function AdmissionPage() {
                   )}
                 </label>
                 <select
+                  ref={(el) => { fieldRefs.current.degree_id = el; }}
                   name="degree_id"
                   value={formData.degree_id || (degrees.length > 0 ? degrees[0].id : 1)}
                   onChange={handleChange}
@@ -729,6 +766,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>تیر سند *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.previous_degree = el; }}
                   type="text"
                   name="previous_degree"
                   value={formData.previous_degree}
@@ -750,6 +788,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>تیر مدرسه نوم *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.previous_madrasa = el; }}
                   type="text"
                   name="previous_madrasa"
                   value={formData.previous_madrasa}
@@ -771,6 +810,7 @@ export default function AdmissionPage() {
               <div className="w-full">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>د مدرسې موقعیت *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.location_madrasa = el; }}
                   type="text"
                   name="location_madrasa"
                   value={formData.location_madrasa}
@@ -792,6 +832,7 @@ export default function AdmissionPage() {
               <div className="w-full md:col-span-2">
                 <label className="block text-sm font-semibold text-gray-700 mb-2 w-full" style={{ fontFamily: 'Amiri, serif' }}>موقعیت *</label>
                 <input
+                  ref={(el) => { fieldRefs.current.location = el; }}
                   type="text"
                   name="location"
                   value={formData.location}

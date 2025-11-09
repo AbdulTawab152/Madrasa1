@@ -93,7 +93,7 @@ export default function EventsSection({
     
 
       {/* Events Section */}
-      <section className="w-full px-4 md:px-8 md:pt-10 max-w-7xl mx-auto">
+      <section className="w-full  md:px-8 md:pt-10 max-w-7xl mx-auto">
         <div className="relative text-center mb-10">
           {/* Subtle background accent */}
        
@@ -254,25 +254,28 @@ export default function EventsSection({
                             <span>{t('events.organizedBy')}</span>
                           </div> */}
 
-                          <div className="flex flex-wrap items-center gap-3 w-full sm:w-auto">
+                          <div className="flex flex-col sm:flex-row flex-nowrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
                             {event.live_link ? (
+                              
                               <a
                                 href={event.live_link}
                                 target="_blank"
                                 rel="noreferrer"
-                                className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary-50 border border-primary-200 px-5 py-2.5 text-sm font-semibold text-primary-700 hover:bg-primary-100 hover:border-primary-300 hover:shadow-sm transition-all duration-200 flex-1 sm:flex-initial"
+                                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-primary-50 border border-primary-200 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold text-primary-700 hover:bg-primary-100 hover:border-primary-300 hover:shadow-sm transition-all duration-200 flex-1 w-full sm:flex-initial sm:w-auto min-w-0"
                               >
-                                {t('events.joinLive')}
-                                <RTLArrowIcon className="h-4 w-4" />
+                                 <RTLArrowIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                                <span className="truncate">{t('events.joinLive')}</span>
+                               
                               </a>
                             ) : null}
 
                             <Link
                               href={`/event/${event.slug}`}
-                              className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-6 py-2.5 text-sm font-bold text-white shadow-lg hover:shadow-xl hover:scale-105 hover:from-primary-700 hover:to-amber-500 transition-all duration-200 flex-1 sm:flex-initial"
+                              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:shadow-xl hover:scale-105 hover:from-primary-700 hover:to-amber-500 transition-all duration-200 flex-1 w-full sm:flex-initial sm:w-auto min-w-0"
                             >
-                              <span className="whitespace-nowrap">{t('events.eventDetails')}</span>
-                              <RTLArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                                <RTLArrowIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1 flex-shrink-0" />
+                              <span className="truncate whitespace-nowrap">{t('events.eventDetails')}</span>
+                            
                             </Link>
                           </div>
                         </div>

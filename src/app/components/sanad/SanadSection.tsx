@@ -70,7 +70,7 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
       )}
 
       {/* Clean Sanad Display */}
-      <div className="w-full px-4 sm:px-6">
+      <div className="w-full px- sm:px-6">
         <div className="space-y-4">
           {sanads.map((sanad, idx) => (
             <motion.div

@@ -45,13 +45,13 @@ const ScrollingRow = ({
   delay?: number;
 }) => {
   const repeatedImages = [...images, ...images];
-  const imageWidth = 320;
-  const gap = 8;
+  const imageWidth = 400;
+  const gap = 12;
   const totalWidth = (imageWidth + gap) * images.length;
 
   return (
     <motion.div
-      className="flex gap-2 w-max"
+      className="flex gap-3 w-max"
       animate={{
         x: direction === "left" ? [-totalWidth, 0] : [0, -totalWidth],
       }}
@@ -72,9 +72,9 @@ const ScrollingRow = ({
           key={`${img}-${index}`}
           src={img}
           alt={`scrolling-${index}`}
-          width={320}
-          height={210}
-          className="w-[220px] h-[140px] sm:w-[250px] sm:h-[180px] lg:w-[320px] lg:h-[210px] rounded-lg object-cover shadow-2xl drop-shadow-[8px_8px_16px_rgba(0,0,0,0.8)] hover:shadow-3xl transition-shadow duration-300 flex-shrink-0"
+          width={400}
+          height={260}
+          className="w-[270px] h-[160px] sm:w-[320px] sm:h-[180px] lg:w-[400px] lg:h-[260px] rounded-lg object-cover shadow-2xl drop-shadow-[8px_8px_16px_rgba(0,0,0,0.8)] hover:shadow-3xl transition-shadow duration-300 flex-shrink-0"
         />
       ))}
     </motion.div>
@@ -87,7 +87,7 @@ const Hero = () => {
 
   return (
     <section
-      className="relative bg-green-800 overflow-hidden mt-32 flex flex-col justify-center"
+      className="relative bg-green-800 overflow-hidden mt-40 md:mt-20 flex flex-col justify-center"
       dir="ltr"
     >
       {/* Background Ship */}
@@ -129,7 +129,7 @@ const Hero = () => {
       </div>
 
       {/* Scrolling Rows */}
-      <div className="relative z-30 flex flex-col space-y-2 py-30">
+      <div className="relative z-30  flex flex-col space-y-2 py-30">
         <div className="overflow-hidden">
           <ScrollingRow direction="left" delay={0} />
         </div>
@@ -142,14 +142,18 @@ const Hero = () => {
         <div className="overflow-hidden">
           <ScrollingRow direction="right" delay={3} />
         </div>
+        <div className="overflow-hidden">
+          <ScrollingRow direction="left" delay={3} />
+        </div>
+    
       </div>
 
       {/* Center Text */}
-      <div className="absolute inset-0 z-40 flex items-center justify-center px-4">
+      <div className="absolute inset-0 z-40 flex items-start justify-center px-4 pt-16 md:pt-60">
   {/* 🔥 Dark overlay behind text for better contrast */}
   <div className="absolute inset-0 bg-black/15 rounded-2xl"></div>
 
-  <div className="relative text-white max-w-4xl mx-auto text-center space-y-6">
+  <div className="relative text-white max-w-4xl mx-auto text-center space-y-4 md:space-y-6 pt-2 md:pt-0">
     {/* Tagline */}
     <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-sky-200 font-bold px-4 py-2 rounded-full bg-sky-500/40 inline-block shadow-xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">
       {t("hero.tagline")}
