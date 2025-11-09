@@ -7,7 +7,7 @@
      · optimizePackageImports
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 19.0s
+ ✓ Compiled successfully in 15.0s
    Skipping linting
    Checking validity of types ...
 Failed to compile.

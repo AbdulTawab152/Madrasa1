@@ -16,12 +16,13 @@ export default function Breadcrumb() {
   };
 
   // Don't show breadcrumb on home page
-  if (pathname === '/') {
+  if (!pathname || pathname === '/') {
     return null;
   }
 
   // Get breadcrumb items based on pathname
   const getBreadcrumbItems = () => {
+    if (!pathname) return [];
     const segments = pathname.split('/').filter(Boolean);
     const items: { label: string; href: string }[] = [];
 
@@ -167,7 +168,7 @@ export default function Breadcrumb() {
             // Fallback: show current pathname if no mapping found
             <li className="flex items-center gap-2">
               <span className="text-primary-600 font-medium">
-                {pathname.split('/').filter(Boolean).pop() || 'Page'}
+                {pathname ? pathname.split('/').filter(Boolean).pop() || 'Page' : 'Page'}
               </span>
             </li>
           )}

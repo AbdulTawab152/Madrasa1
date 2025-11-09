@@ -14,24 +14,24 @@ const images = [
   "/hero2.jpg",
   "/hero3.jpg",
   "/hero4.jpg",
-  // "/hero5.jpg",
+ "/hero5.jpg",
   "/hero6.jpg",
   "/hero7.jpg",
-  // "/hero8.jpg",
+  "/hero8.jpg",
   "/hero9.jpg",
   "/hero10.jpg",
   "/hero11.jpg",
   "/hero12.jpg",
-  // "/hero13.jpg",
+  "/hero13.jpg",
   "/hero14.jpg",
   "/hero15.jpg",
   "/hero16.jpg",
   "/hero17.jpg",
-  // "/hero18.jpg",
+  "/hero18.jpg",
   "/hero19.jpg",
   "/hero20.jpg",
   "/hero21.jpg",
-  // "/hero22.jpg",
+  "/hero22.jpg",
 ];
 
 const Ship = "/ship.png";
@@ -100,13 +100,13 @@ const Hero = () => {
       />
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/30 z-20" />
+      <div className="absolute inset-0 bg-black/50 z-20" />
 
       {/* Gradient Overlay */}
-      <div className="absolute inset-0 " />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/80 z-[21]" />
 
       {/* Custom Gradient Overlay */}
-      <div className="w-full h-full bg-gradient-to-tr from-black/40 via-transparent to-transparent absolute inset-0 z-[22]" />
+      <div className="w-full h-full bg-gradient-to-tr from-black/60 via-transparent to-transparent absolute inset-0 z-[22]" />
 
       {/* 🌑 Enhanced Center Blur Shadow */}
       <div className="absolute inset-0 z-[25] flex items-center justify-center pointer-events-none">
@@ -116,14 +116,14 @@ const Hero = () => {
             background: `
               radial-gradient(
                 circle at center,
-                rgba(0,0,0,0.85) 0%,
-                rgba(0,0,0,0.65) 35%,
-                rgba(0,0,0,0.45) 60%,
-                rgba(0,0,0,0.25) 80%,
+                rgba(0,0,0,0.95) 0%,
+                rgba(0,0,0,0.85) 35%,
+                rgba(0,0,0,0.75) 60%,
+                rgba(0,0,0,0.55) 80%,
                 transparent 100%
               )
             `,
-            boxShadow: "0 0 80px 60px rgba(0,0,0,0.8)",
+            boxShadow: "0 0 100px 80px rgba(0,0,0,0.9)",
           }}
         ></div>
       </div>
@@ -147,11 +147,11 @@ const Hero = () => {
       {/* Center Text */}
       <div className="absolute inset-0 z-40 flex items-center justify-center px-4">
   {/* 🔥 Dark overlay behind text for better contrast */}
-  <div className="absolute inset-0 bg-black/40 rounded-2xl"></div>
+  <div className="absolute inset-0 bg-black/15 rounded-2xl"></div>
 
   <div className="relative text-white max-w-4xl mx-auto text-center space-y-6">
     {/* Tagline */}
-    <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-sky-200 font-bold px-4 py-2 rounded-full bg-sky-500/20 inline-block shadow-xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">
+    <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-sky-200 font-bold px-4 py-2 rounded-full bg-sky-500/40 inline-block shadow-xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">
       {t("hero.tagline")}
     </p>
 

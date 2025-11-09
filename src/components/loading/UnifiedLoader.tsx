@@ -3,6 +3,8 @@
  * Only skeleton loading with 3 variants: grid, list, detail
  */
 
+import IslamicLoader from './IslamicLoader';
+
 interface UnifiedLoaderProps {
   variant?: 'grid' | 'list' | 'detail';
   count?: number;
@@ -22,7 +24,7 @@ export default function UnifiedLoader({
     case 'list':
       return <ListLoader count={count} showFilters={showFilters} className={className} />;
     case 'detail':
-      return <DetailLoader className={className} />;
+      return <IslamicLoader />;
     default:
       return <GridLoader count={count} showFilters={showFilters} className={className} />;
   }

@@ -167,16 +167,10 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
   return (
     <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
       <Breadcrumb />
-<<<<<<< Updated upstream
-      
-      {/* Hero Section - Modern & Clean Design - Full Width */}
-      <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 w-full">
-=======
       <div className="max-w-7xl z-50 mx-auto px-4 py-6">
 
       {/* Hero Section - Modern & Clean Design */}
       <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[560px] lg:min-h-[600px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
->>>>>>> Stashed changes
         {/* Background Image Layer */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -261,17 +255,10 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-<<<<<<< Updated upstream
-      <div className="max-w-7xl mx-auto px-4 py-8 lg:py-0 lg:mt-8 relative flex flex-col lg:flex-row gap-10 items-start">
-
-        {/* Main Info Section */}
-        <div className="flex-1 rounded-3xl bg-white/95 p-8 space-y-10 border border-amber-50">
-=======
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-0 lg:-mt-8 relative flex flex-col lg:flex-row gap-10 items-start">
 
         {/* Main Info Section */}
         <div className="flex-1 rounded-3xl bg-white/95 p-6 space-y-10 border border-amber-50">
->>>>>>> Stashed changes
 
           {/* Mobile Get Course Info (only visible on mobile, before Book and Recorder Card) */}
           <div className="block lg:hidden mb-8">
