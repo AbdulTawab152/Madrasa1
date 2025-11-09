@@ -169,7 +169,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
       <Breadcrumb />
       
       {/* Hero Section - Modern & Clean Design - Full Width */}
-      <section className="relative min-h-[300px] sm:min-h-[400px] md:min-h-[480px] lg:min-h-[500px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 w-full">
+      <section className="relative min-h-[400px] sm:min-h-[480px] md:min-h-[400px] lg:min-h-[500px] overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 w-full">
         {/* Background Image Layer */}
         <div className="absolute inset-0 z-0">
           <Image
@@ -218,6 +218,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         {/* Bottom Wave Decoration */}
         <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
+      </div>
 
       <div className="max-w-7xl z-50 mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6">
       {/* Video Section - Enhanced Design */}
@@ -253,10 +254,10 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         </section>
       )}
 
-      <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6 md:py-8 lg:py-0 lg:mt-8 relative flex flex-col lg:flex-row gap-4 sm:gap-6 md:gap-8 lg:gap-10 items-start">
+      <div className="max-w-7xl mx-auto px-4 py-8 lg:py-0 lg:mt-8 relative flex flex-col lg:flex-row gap-10 items-start">
 
         {/* Main Info Section */}
-        <div className="flex-1 rounded-2xl sm:rounded-3xl bg-white/95 p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 md:space-y-10 border border-amber-50">
+        <div className="flex-1 rounded-3xl bg-white/95 p-8 space-y-10 border border-amber-50">
 
           {/* Mobile Get Course Info (only visible on mobile, before Book and Recorder Card) */}
           <div className="block lg:hidden mb-6 sm:mb-8">

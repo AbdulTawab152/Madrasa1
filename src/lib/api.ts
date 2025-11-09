@@ -72,7 +72,7 @@ export function createPaginationMeta({
 class ApiClient {
   private baseUrl: string;
   private defaultHeaders: HeadersInit;
-  private defaultTimeout = 15000;
+  private defaultTimeout = 30000; // Increased to 30 seconds for slow networks
 
   constructor() {
     this.baseUrl = apiConfig.baseUrl;
@@ -144,26 +144,43 @@ class ApiClient {
       return undefined;
     }
 
+    // Try using AbortSignal.timeout() if available (modern browsers)
     if (typeof AbortSignal !== "undefined" && "timeout" in AbortSignal) {
       try {
         return AbortSignal.timeout(this.defaultTimeout);
-      } catch {
-        // Fall back to manual controller below
+      } catch (error) {
+        // Fall back to manual controller if timeout() fails
+        logger.debug('AbortSignal.timeout() not supported, using manual controller', { error });
       }
     }
 
+    // Fallback: Use manual AbortController
     const controller = new AbortController();
-    setTimeout(() => controller.abort(), this.defaultTimeout);
+    setTimeout(() => {
+      controller.abort();
+    }, this.defaultTimeout);
+    
     return controller.signal;
   }
 
   private parseError(error: unknown): string {
+    // Check for timeout/abort errors
     if (
       typeof DOMException !== "undefined" &&
       error instanceof DOMException &&
       error.name === "AbortError"
     ) {
-      return "The request timed out. Please try again.";
+      return `Request timed out after ${this.defaultTimeout}ms. Please try again.`;
+    }
+
+    // Check for timeout in error message
+    if (error instanceof Error) {
+      if (error.name === 'AbortError' || 
+          error.message.includes('timeout') || 
+          error.message.includes('timed out') ||
+          error.message.includes('signal timed out')) {
+        return `Request timed out after ${this.defaultTimeout}ms. Please try again.`;
+      }
     }
 
     if (error instanceof TypeError && /fetch failed/i.test(error.message)) {
@@ -292,19 +309,37 @@ class ApiClient {
           error instanceof Error ? error : new Error(this.parseError(error));
         lastError = normalized;
 
-        // Don't retry on certain errors
+        // Check if it's a timeout error
+        const isTimeoutError = 
+          normalized.name === 'AbortError' ||
+          normalized.message.includes('timeout') ||
+          normalized.message.includes('timed out') ||
+          (normalized instanceof DOMException && normalized.name === 'AbortError');
+
+        // Don't retry on certain errors (auth errors, timeout on last attempt)
         if (
           error instanceof Error &&
           (error.message.includes("401") ||
-            error.message.includes("403"))
+            error.message.includes("403") ||
+            (isTimeoutError && attempt === maxRetries))
         ) {
-          logger.apiError(endpoint, error);
+          if (isTimeoutError) {
+            logger.apiError(endpoint, new Error(`Request timed out after ${this.defaultTimeout}ms`));
+          } else {
+            logger.apiError(endpoint, error);
+          }
           break;
         }
 
-        // Wait before retry (exponential backoff)
+        // For timeout errors, wait a bit longer before retry
         if (attempt < maxRetries) {
-          const delay = apiConfig.errorHandling.retryDelay * attempt;
+          const delay = isTimeoutError 
+            ? apiConfig.errorHandling.retryDelay * attempt * 2 // Longer delay for timeout
+            : apiConfig.errorHandling.retryDelay * attempt;
+          
+          if (isTimeoutError) {
+            logger.debug(`Timeout error on ${endpoint}, retrying in ${delay}ms (attempt ${attempt}/${maxRetries})`);
+          }
           await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }

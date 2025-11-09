@@ -30,9 +30,9 @@ const Footer = () => {
     
     <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 pt-12 pb-8">
       {/* Main Footer Content */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+      <div className="flex flex-col md:grid md:grid-cols-3 gap-8 mb-8">
         {/* Navigation */}
-        <div className="space-y-4">
+        <div className="space-y-4 order-2 md:order-1">
           <h3 className="text-lg font-bold text-white mb-4 border-b border-amber-500 pb-2">
             {t('footer.quickLinks')}
           </h3>
@@ -66,7 +66,7 @@ const Footer = () => {
 
 
         {/* Contact & Social */}
-        <div className="space-y-4">
+        <div className="space-y-4 order-3 md:order-2">
           <h3 className="text-lg font-bold text-white mb-4 border-b border-amber-500 pb-2">
             {t('footer.contactInfo')}
           </h3>
@@ -89,7 +89,7 @@ const Footer = () => {
         </div>
 
         {/* Logo & Social Media */}
-        <div className="space-y-4">
+        <div className="space-y-4 order-1 md:order-3">
           <div className="flex flex-col items-center md:items-start">
             {/* Logo */}
             <div className="flex items-center gap-4 mb-6">

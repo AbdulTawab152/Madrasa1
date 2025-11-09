@@ -47,7 +47,7 @@ const About = () => {
     { icon: Clock, value: "63+", label: t('about.stats.years') },
     { icon: GraduationCap, value: "500+", label: t('about.stats.graduates') },
     { icon: Sparkles, value: "800", label: t('about.stats.students') },
-    { icon: Award, value: "18+", label: t('about.stats.scholars') }
+    { icon: Award, value: "23+", label: t('about.stats.scholars') }
   ];
 
   return (
@@ -68,7 +68,7 @@ const About = () => {
     </div>
 
     {/* Stats */}
-    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mb-20">
+    <div className="grid grid-cols-2 sm:grid-cols-3  md:grid-cols-4 gap-8 mb-20">
       {stats.map((stat, index) => (
         <div
           key={index}

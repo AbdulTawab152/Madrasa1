@@ -127,7 +127,7 @@ export default function GraduationDetailPage({
   if (!graduation) return <ErrorMessage message={t('graduationDetail.graduationNotFound')} />;
 
   return (
-    <main className="mx-auto mt-[180px] md:mt-24 sm:mt-10 max-w-7xl px-4 sm:px-6 lg:px-8 font-sans">
+    <main className="mx-auto mt-16 sm:mt-20 md:mt-24 max-w-7xl px-4 font-sans">
       <Breadcrumb />
       
       {/* Hero Section - Clean and Modern */}

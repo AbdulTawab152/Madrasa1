@@ -118,7 +118,7 @@ export default function Breadcrumb() {
       dir="rtl"
       aria-label="Breadcrumb"
     >
-      <div className="rounded-lg border border-primary-100/60 bg-white/95 shadow-sm px-4 py-3">
+      <div className="rounded-lg border bg-white/95 shadow-sm px-4 py-3">
         <ol className="flex items-center gap-2 text-sm" dir="rtl">
           {/* Home link - appears first (on the right in RTL) */}
           <li>
