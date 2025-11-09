@@ -82,9 +82,9 @@ export default async function BlogDetailsPage({ params }: Params) {
   }
 
   return (
-    <main className="min-h-screen mt-[180px] md:mt-24 sm:mt-10 bg-gradient-to-b from-amber-50 to-white font-sans">
+    <main className="min-h-screen mt-16 sm:mt-12 md:mt-24 bg-gradient-to-b from-amber-50 to-white font-sans">
       <Breadcrumb />
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8 lg:py-10">
         {/* Hero Section - Clean and Modern */}
         <article className="mb-16 relative overflow-hidden rounded-2xl bg-white border border-gray-200">
           <div className="p-6 md:p-8 lg:p-10 space-y-8">

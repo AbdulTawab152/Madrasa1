@@ -90,7 +90,7 @@ const Footer = () => {
 
         {/* Logo & Social Media */}
         <div className="space-y-4 order-1 md:order-3">
-          <div className="flex flex-col items-center md:items-start">
+          <div className="flex flex-col items-start">
             {/* Logo */}
             <div className="flex items-center gap-4 mb-6">
               <div className="relative w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-full flex items-center justify-center shadow-xl border-4 border-amber-400/30 flex-shrink-0 overflow-hidden">
