@@ -252,6 +252,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           </div>
         </section>
       )}
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-0 lg:mt-8 relative flex flex-col lg:flex-row gap-10 items-start">
 
@@ -458,7 +459,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             </ul>
           </div>
         </aside>
-      </div>
       </div>
     </div>
   );
