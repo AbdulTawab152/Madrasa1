@@ -69,9 +69,17 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
         </div>
       )}
 
+      {/* Title Section */}
+      <div className="w-full px-4 sm:px-6 mb-8">
+       
+      </div>
+
       {/* Clean Sanad Display */}
       <div className="w-full px- sm:px-6">
         <div className="space-y-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6 rtl" style={{ fontFamily: 'Amiri, serif' }}>
+          شجرهٔ حضرات کابل
+        </h2>
           {sanads.map((sanad, idx) => (
             <motion.div
               key={sanad.id}
