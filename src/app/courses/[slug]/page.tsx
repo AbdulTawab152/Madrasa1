@@ -218,7 +218,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
         {/* Bottom Wave Decoration */}
         <div className="absolute bottom-0 left-0 right-0 h-12 sm:h-16 bg-gradient-to-t from-white to-transparent"></div>
       </section>
-      </div>
 
       <div className="max-w-7xl z-50 mx-auto px-2 sm:px-4 md:px-6 py-4 sm:py-6">
       {/* Video Section - Enhanced Design */}
@@ -253,6 +252,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
           </div>
         </section>
       )}
+      </div>
 
       <div className="max-w-7xl mx-auto px-4 py-8 lg:py-0 lg:mt-8 relative flex flex-col lg:flex-row gap-10 items-start">
 
@@ -459,7 +459,6 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
             </ul>
           </div>
         </aside>
-      </div>
       </div>
     </div>
   );
