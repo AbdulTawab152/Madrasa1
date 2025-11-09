@@ -486,44 +486,53 @@ const Navbar = memo(function Navbar() {
                   <FaSearch size={18} className="text-primary-700" />
                 </button>
                 
-                {/* Search Overlay */}
+                {/* Search Overlay - Mobile Optimized */}
                 {isSearchOpen && (
-                  <div className="absolute top-full mt-4 z-50 right-0">
-                    <form onSubmit={handleSearch} className="relative">
-                      <div className="bg-white rounded-xl shadow-xl border border-primary-200 p-4">
-                        <div className="flex items-center gap-2">
-                          <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="پلټنه..."
-                            className={`h-10 px-4 rounded-lg bg-primary-50 border border-primary-200 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 ${
-                              searchQuery.length > 20 ? 'w-96' : 'w-80'
-                            }`}
-                            autoFocus
-                          />
-                          {searchQuery && (
+                  <>
+                    {/* Mobile Full Screen Overlay */}
+                    <div 
+                      className="fixed inset-0 bg-black/50 z-40 md:hidden"
+                      onClick={() => setSearchOpen(false)}
+                      aria-hidden="true"
+                    />
+                    
+                    {/* Search Form - Centered on Mobile */}
+                    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 md:absolute md:inset-auto md:top-full md:mt-4 md:right-0 md:pt-0">
+                      <form onSubmit={handleSearch} className="relative w-full max-w-sm mx-4 md:mx-0" onClick={(e) => e.stopPropagation()}>
+                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl border border-primary-200 p-4 md:p-4">
+                          <div className="flex items-center gap-2 sm:gap-3">
+                            <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              placeholder="پلټنه..."
+                              className="flex-1 h-11 sm:h-12 px-4 rounded-lg sm:rounded-xl bg-primary-50 border-2 border-primary-200 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-base sm:text-lg text-right"
+                              dir="rtl"
+                              autoFocus
+                            />
+                            {searchQuery && (
+                              <button
+                                type="button"
+                                onClick={() => setSearchQuery("")}
+                                className="text-primary-400 hover:text-primary-600 transition-colors p-1.5 flex-shrink-0"
+                                aria-label="Clear search"
+                              >
+                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            )}
                             <button
-                              type="button"
-                              onClick={() => setSearchQuery("")}
-                              className="text-primary-400 hover:text-primary-600 transition-colors p-1"
-                              aria-label="Clear search"
+                              type="submit"
+                              className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg sm:rounded-xl hover:from-primary-700 hover:to-primary-800 active:scale-95 transition-all duration-200 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex-shrink-0"
                             >
-                              <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                              </svg>
+                              پلټنه
                             </button>
-                          )}
-                          <button
-                            type="submit"
-                            className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-medium"
-                          >
-                            پلټنه
-                          </button>
+                          </div>
                         </div>
-                      </div>
-                    </form>
-                  </div>
+                      </form>
+                    </div>
+                  </>
                 )}
               </div>
               

@@ -201,7 +201,7 @@ export default function BlogsPreview({ limit, homePage }: BlogsPreviewProps) {
 
   return (
     <section id="blogs" className="bg-background-primary py-16">
-        <div className="max-w-7xl mx-auto px-6 space-y-10">
+        <div className="max-w-7xl mx-auto px- space-y-10">
           {!homePage && categories.length > 1 && (
             <div className="flex flex-wrap items-center justify-center gap-3">
               {categories.map((category) => (

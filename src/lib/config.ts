@@ -81,6 +81,7 @@ export const endpoints = {
   admissions: `${apiConfig.baseUrl}/admissions`,
   degrees: `${apiConfig.baseUrl}/degrees`, // Not implemented yet - uses fallback
   search: `${apiConfig.baseUrl}/search`, // Search endpoint
+  searchGlobal: `${apiConfig.baseUrl}/search/global`, // Global search endpoint
 
   awlyaaCharts: `${apiConfig.baseUrl}/awlyaa-charts-hierarchy`,
   shajara: `${apiConfig.baseUrl}/awlyaa-sanads`,
