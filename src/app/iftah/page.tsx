@@ -2,7 +2,6 @@
 import { IftahApi } from "../../lib/api";
 import Link from "next/link";
 import IftahQuestionButton from "../components/iftah/IftahQuestionButton";
-import Breadcrumb from "@/components/Breadcrumb";
 import IslamicHeader from "../components/IslamicHeader";
 
 interface IftahCategory {
@@ -106,7 +105,6 @@ export default async function IftahPage() {
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       <IslamicHeader pageType="iftah" />
-      <Breadcrumb />
       <IftahQuestionButton variant="floating" />
 
       {/* Categories Grid Section */}

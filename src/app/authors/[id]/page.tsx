@@ -63,7 +63,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-amber-50/30 via-white to-gray-50 font-sans" dir="rtl">
+    <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
       <Breadcrumb />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Navigation Button */}

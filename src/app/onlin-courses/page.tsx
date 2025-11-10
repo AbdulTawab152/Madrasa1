@@ -25,7 +25,6 @@ import {
 } from 'lucide-react';
 import IslamicHeader from '../components/IslamicHeader';
 import { useDirection } from '@/hooks/useDirection';
-import Breadcrumb from '@/components/Breadcrumb';
 
 // Static Course Data
 const onlineCourses = [
@@ -160,7 +159,6 @@ export default function OnlineCoursesPage() {
         pageType="courses"
         alignment="center"
       />
-      <Breadcrumb />
 
       {/* Courses Section */}
       <section className="w-full mx-auto py-6 sm:py-12 px-4 sm:px-6 lg:px-8">

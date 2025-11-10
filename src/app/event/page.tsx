@@ -11,7 +11,6 @@ import { usePaginatedResource } from "@/hooks/usePaginatedResource";
 import { EventsApi } from "@/lib/api";
 import type { Event } from "@/lib/types";
 import ErrorDisplay from "@/components/ErrorDisplay";
-import Breadcrumb from "@/components/Breadcrumb";
 
 export default function EventsPage() {
   const {
@@ -42,7 +41,6 @@ export default function EventsPage() {
   return (
     <main className="w-full min-h-screen ">
       <IslamicHeader pageType="events" title="علمی مجالس " />
-      <Breadcrumb />
       <div className="pb-16">
         {isLoadingInitial ? (
           <UnifiedLoader variant="grid" count={6} showFilters={false} />

@@ -11,7 +11,6 @@ import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
 import { NoDataEmptyState } from "@/components/EmptyState";
 import { useTranslation } from "@/hooks/useTranslation";
-import Breadcrumb from "@/components/Breadcrumb";
 import { Search } from "lucide-react";
 
 export default function AwlyaaListPage() {
@@ -81,7 +80,6 @@ export default function AwlyaaListPage() {
     return (
       <div className="min-h-screen bg-gray-50" dir="rtl">
         <IslamicHeader pageType="awlayaa" />
-        <Breadcrumb />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16" dir="rtl">
           <ErrorDisplay 
             error={error} 
@@ -96,7 +94,6 @@ export default function AwlyaaListPage() {
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       <IslamicHeader pageType="awlayaa" />
-      <Breadcrumb />
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 relative z-20" dir="rtl">
         {/* Search Bar */}

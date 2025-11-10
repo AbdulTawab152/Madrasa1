@@ -372,13 +372,11 @@ export default function IftahQuestionForm({ isOpen, onClose }: IftahQuestionForm
               <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
                 <FiMessageSquare className="w-5 h-5" />
               </div>
-              <h2 className="text-xl sm:text-2xl font-bold">د پوښتنې استول</h2>
+              
             </div>
             <div className="flex-1 flex justify-center items-center px-4">
               <div className="flex items-center gap-2" style={{ marginLeft: 'auto', marginRight: '0' }}>
-                <div className="w-8 h-8 sm:w-9 sm:h-9 bg-white/20 rounded-lg flex items-center justify-center">
-                  <FiBook className="w-4 h-4 sm:w-5 sm:h-5" />
-                </div>
+             
                 <p 
                   className="text-base sm:text-lg md:text-xl font-bold text-white/95 leading-tight" 
                   dir="rtl"
@@ -484,11 +482,11 @@ export default function IftahQuestionForm({ isOpen, onClose }: IftahQuestionForm
                 errors.tagId ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-gray-300"
               } ${loadingTags ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}`}
             >
-              <option value="">د کټګورۍ غوره کول (اختیاري)</option>
+              <option value="" disabled>کټګوري غوره کړئ</option>
               {tags.length > 0 ? (
                 tags.map((tag) => (
                   <option key={tag.id} value={tag.id}>
-                    {tag.name} {tag.subcategories && tag.subcategories.length > 0 ? `(${tag.subcategories.length} فرعي کټګوري)` : ''}
+                    {tag.name}
                   </option>
                 ))
               ) : (
@@ -524,7 +522,7 @@ export default function IftahQuestionForm({ isOpen, onClose }: IftahQuestionForm
                     errors.iftah_sub_category_id ? "border-red-400 bg-red-50" : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
-                  <option value="">د فرعي کټګورۍ غوره کول (اختیاري)</option>
+                  <option value="" disabled>فرعي کټګوري غوره کړئ</option>
                   {selectedTag.subcategories?.map((subcat) => (
                     <option key={subcat.id} value={subcat.id}>
                       {subcat.name}

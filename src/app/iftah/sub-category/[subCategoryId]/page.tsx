@@ -189,55 +189,55 @@ export default function IftahSubCategoryPage({
       <Breadcrumb />
       <IftahQuestionButton variant="floating" />
 
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-12" dir="rtl">
+      <main className="max-w-6xl mx-auto px-3 sm:px-4 md:px-6 py-6 sm:py-8 md:py-12" dir="rtl">
 
           {/* Search Bar */}
-          <div className="mb-8">
+          <div className="mb-4 sm:mb-6 md:mb-8">
             <div className="relative">
-              <div className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <Search className="w-5 h-5" />
+              <div className="absolute right-3 sm:right-4 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <Search className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <input
                 type="text"
                 placeholder="د پوښتنو لټون..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-4 pr-12 py-4 border border-gray-300 rounded-xl focus:outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition-colors bg-white shadow-sm"
+                className="w-full pl-3 sm:pl-4 pr-10 sm:pr-12 py-2.5 sm:py-3 md:py-4 text-sm sm:text-base border border-gray-300 rounded-lg sm:rounded-xl focus:outline-none focus:border-gray-400 focus:ring-2 focus:ring-gray-100 transition-colors bg-white shadow-sm"
                 dir="rtl"
               />
             </div>
           </div>
 
           {/* Questions List */}
-          <div className="space-y-4 md:space-y-5">
+          <div className="space-y-3 sm:space-y-4 md:space-y-5">
             {isLoading ? (
-              <div className="px-8 py-16 text-center">
-                <div className="relative w-16 h-16 mx-auto mb-6">
-                  <div className="absolute inset-0 border-4 border-gray-200 rounded-full"></div>
-                  <div className="absolute inset-0 border-4 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
+              <div className="px-4 sm:px-6 md:px-8 py-12 sm:py-14 md:py-16 text-center">
+                <div className="relative w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 mx-auto mb-4 sm:mb-5 md:mb-6">
+                  <div className="absolute inset-0 border-2 sm:border-[3px] md:border-4 border-gray-200 rounded-full"></div>
+                  <div className="absolute inset-0 border-2 sm:border-[3px] md:border-4 border-gray-600 border-t-transparent rounded-full animate-spin"></div>
                 </div>
-                <p className="text-gray-700 font-medium" style={{ fontFamily: 'Amiri, serif' }}>د پوښتنو بار کول...</p>
+                <p className="text-sm sm:text-base text-gray-700 font-medium" style={{ fontFamily: 'Amiri, serif' }}>د پوښتنو بار کول...</p>
               </div>
             ) : filteredIftahs.length === 0 ? (
-              <div className="px-8 py-16 text-center">
-                <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <svg className="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="px-4 sm:px-6 md:px-8 py-12 sm:py-14 md:py-16 text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 md:w-20 md:h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-5 md:mb-6">
+                  <svg className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Amiri, serif' }}>پوښتنې ونه موندل شوې</h3>
-                <p className="text-gray-600" style={{ fontFamily: 'Amiri, serif' }}>{searchTerm ? 'د لټون اصطلاح بدل کړئ' : 'په دې فرعي کټګورۍ کې لا تراوسه پوښتنې نشته.'}</p>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2" style={{ fontFamily: 'Amiri, serif' }}>پوښتنې ونه موندل شوې</h3>
+                <p className="text-sm sm:text-base text-gray-600 px-2" style={{ fontFamily: 'Amiri, serif' }}>{searchTerm ? 'د لټون اصطلاح بدل کړئ' : 'په دې فرعي کټګورۍ کې لا تراوسه پوښتنې نشته.'}</p>
               </div>
             ) : (
               filteredIftahs.map((item, index) => (
                 <Link
                   key={item.id}
                   href={`/iftah/${item.slug}`}
-                  className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 block"
+                  className="group relative bg-white rounded-lg sm:rounded-xl border border-gray-200 overflow-hidden hover:border-gray-300 hover:shadow-lg sm:hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5 sm:hover:-translate-y-1 block"
                   dir="rtl"
                 >
                   {/* Decorative right border accent */}
-                  <div className="absolute right-0 top-0 bottom-0 w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200 group-hover:from-gray-500 group-hover:via-gray-400 group-hover:to-gray-300 transition-colors"></div>
+                  <div className="absolute right-0 top-0 bottom-0 w-1 sm:w-1.5 bg-gradient-to-b from-gray-400 via-gray-300 to-gray-200 group-hover:from-gray-500 group-hover:via-gray-400 group-hover:to-gray-300 transition-colors"></div>
                   
                   {/* Subtle pattern overlay */}
                   <div className="absolute inset-0 opacity-[0.03] group-hover:opacity-[0.05] transition-opacity" style={{
@@ -245,30 +245,30 @@ export default function IftahSubCategoryPage({
                   }}></div>
                   
                   {/* Decorative corner element */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-gray-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div className="absolute top-0 right-0 w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-bl from-gray-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   
-                  <div className="p-6 sm:p-8 relative z-10">
-                    <div className="flex items-start justify-between gap-4">
+                  <div className="p-3 sm:p-5 md:p-6 lg:p-8 relative z-10">
+                    <div className="flex items-start justify-between gap-2 sm:gap-3 md:gap-4">
                       <div className="flex-1 min-w-0">
                         {/* Question Preview */}
                         {item.question && (
-                          <div className="bg-gray-50 rounded-lg p-5 border-r-4 border-gray-300">
-                            <p className="text-lg text-gray-900 leading-relaxed font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                          <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border-r-2 sm:border-r-4 border-gray-300">
+                            <p className="text-base sm:text-lg text-gray-900 leading-relaxed font-medium" style={{ fontFamily: 'Amiri, serif' }}>
                               {cleanText(item.question)}
                             </p>
                           </div>
                         )}
                         {!item.question && item.title && (
-                          <p className="text-lg text-gray-900 leading-relaxed font-medium" style={{ fontFamily: 'Amiri, serif' }}>
+                          <p className="text-base sm:text-lg text-gray-900 leading-relaxed font-medium" style={{ fontFamily: 'Amiri, serif' }}>
                             {cleanText(item.title)}
                           </p>
                         )}
                       </div>
                       
                       {/* Book Icon */}
-                      <div className="flex-shrink-0 mr-4 mt-1">
-                        <div className="w-10 h-10 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
-                          <svg className="w-5 h-5 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <div className="flex-shrink-0 mr-2 sm:mr-3 md:mr-4 mt-0.5 sm:mt-1">
+                        <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gray-100 group-hover:bg-gray-200 flex items-center justify-center transition-colors">
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500 group-hover:text-gray-700 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 19.5A2.5 2.5 0 016.5 17H20m-16 2.5V6.5A2.5 2.5 0 016.5 4h13A2.5 2.5 0 0122 6.5v13A2.5 2.5 0 0119.5 22h-13a2.5 2.5 0 01-2.5-2.5z" />
                           </svg>
                         </div>

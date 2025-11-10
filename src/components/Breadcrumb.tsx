@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useTranslation } from "@/hooks/useTranslation";
-import { Home } from "lucide-react";
+import { Home, ArrowLeft } from "lucide-react";
 
 export default function Breadcrumb() {
   const pathname = usePathname();
+  const router = useRouter();
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
   
   // Create a string-safe wrapper function
@@ -109,27 +110,67 @@ export default function Breadcrumb() {
   const breadcrumbItems = getBreadcrumbItems();
   const homeLabel = t('navbar.home');
 
+  // Check if current page is a detail page (has dynamic segment like ID or slug)
+  const isDetailPage = () => {
+    if (!pathname) return false;
+    const segments = pathname.split('/').filter(Boolean);
+    
+    // Detail pages have more than one segment
+    if (segments.length <= 1) return false;
+    
+    // Get the last segment (the detail identifier)
+    const lastSegment = segments[segments.length - 1];
+    
+    // Check if it's numeric (ID) or looks like a slug (alphanumeric with dashes/underscores)
+    const isNumeric = /^\d+$/.test(lastSegment);
+    const isSlug = /^[a-zA-Z0-9-_]+$/.test(lastSegment) && lastSegment.length > 1;
+    
+    // Exclude known route names that are not detail pages
+    const knownRoutes = ['category', 'sub-category', 'tag', 'search'];
+    const isKnownRoute = knownRoutes.includes(lastSegment);
+    
+    return (isNumeric || isSlug) && !isKnownRoute;
+  };
+
+  const showBackButton = isDetailPage();
+
   // Always show breadcrumb if not on home page, even if we can't map the route
   // This ensures it appears on all pages
 
+  const handleBack = () => {
+    router.back();
+  };
+
   return (
     <nav 
-      className="w-full px-4 sm:px-6 lg:px-8 py-4"
+      className="w-full px-4 -mt-8 sm:px-6 lg:px-8 py-4 lg:mt-0 "
       dir="rtl"
       aria-label="Breadcrumb"
     >
       <div className="rounded-lg border bg-white/95 shadow-sm px-4 py-3">
-        <ol className="flex items-center gap-2 text-sm" dir="rtl">
-          {/* Home link - appears first (on the right in RTL) */}
-          <li>
-            <Link
-              href="/"
-              className="flex items-center gap-1.5 text-primary-600 hover:text-primary-700 transition-colors"
-            >
-              <Home className="w-4 h-4" />
-              <span className="font-medium">{homeLabel}</span>
-            </Link>
-          </li>
+        <div className="flex items-center justify-between gap-4 flex-row-reverse" dir="rtl">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-primary-600 hover:text-primary-700 hover:bg-primary-50 transition-all duration-200 border border-transparent hover:border-primary-200"
+            aria-label="Go back"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            <span className="text-sm font-medium hidden sm:inline">بیرته</span>
+          </button>
+
+          {/* Breadcrumb Items */}
+          <ol className="flex items-center gap-2 text-sm flex-1" dir="rtl">
+            {/* Home link - appears first (on the right in RTL) */}
+            <li>
+              <Link
+                href="/"
+                className="flex items-center gap-1.5 text-primary-600 hover:text-primary-700 transition-colors"
+              >
+                <Home className="w-4 h-4" />
+                <span className="font-medium">{homeLabel}</span>
+              </Link>
+            </li>
           
           {/* Separator after home */}
           <li className="flex items-center">
@@ -172,7 +213,8 @@ export default function Breadcrumb() {
               </span>
             </li>
           )}
-        </ol>
+          </ol>
+        </div>
       </div>
     </nav>
   );

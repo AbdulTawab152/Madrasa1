@@ -26,7 +26,6 @@ import {
 import { useState, useEffect } from "react";
 import {DonationApi} from "../../lib/api";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
-import Breadcrumb from "@/components/Breadcrumb";
 
 interface DonationInfo {
   id: number;
@@ -113,7 +112,6 @@ export default function DonationPage() {
   return (
     <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
       <IslamicHeader pageType="donation" />
-      <Breadcrumb />
       
    
 

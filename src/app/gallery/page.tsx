@@ -6,7 +6,6 @@ import Gallery from "./../components/gallery/Gallery";
 import IslamicHeader from "../components/IslamicHeader";
 import UnifiedLoader from "@/components/loading/UnifiedLoader";
 import ErrorDisplay from "@/components/ErrorDisplay";
-import Breadcrumb from "@/components/Breadcrumb";
 
 interface GalleryItem {
   id: number;
@@ -90,7 +89,6 @@ export default function GalleryPage() {
     return (
       <div>
         <IslamicHeader pageType="gallery" />
-        <Breadcrumb />
         <div className="pb-16">
           <ErrorDisplay 
             error={error} 
@@ -105,7 +103,6 @@ export default function GalleryPage() {
   return (
     <div>
       <IslamicHeader pageType="gallery" />
-      <Breadcrumb />
       <div className="pb-16">
         <Gallery initialImages={images} />
       </div>

@@ -1,7 +1,6 @@
 // app/books/page.tsx
 import BooksSection from "../components/books/BooksSection";
 import IslamicHeader from "../components/IslamicHeader";
-import Breadcrumb from "@/components/Breadcrumb";
 
 export default function BooksPage() {
   return (
@@ -14,7 +13,6 @@ export default function BooksPage() {
         //   href: "/book"
         // }}
       />
-      <Breadcrumb />
       <div className="max-w-7xl mx-auto px-6 py-12">
         <BooksSection showAll={true} />
       </div>

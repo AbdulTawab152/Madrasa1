@@ -475,38 +475,35 @@ const Navbar = memo(function Navbar() {
 
             {/* Left side - Search, Mobile Menu, Donation for RTL */}
             <div className="flex items-center gap-2 flex-row-reverse">
-              {/* Search Button */}
+              {/* Search Button - Improved Design */}
               <div ref={searchRef} className="relative">
                 <button
                   type="button"
                   onClick={toggleSearch}
-                  className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-primary-50 hover:bg-primary-100 border border-primary-200 shadow-sm transition-colors duration-200"
+                  className={`inline-flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full transition-all duration-300 ${
+                    isSearchOpen 
+                      ? 'bg-primary-600 text-white shadow-lg scale-105' 
+                      : 'bg-primary-50 hover:bg-primary-100 border border-primary-200 shadow-sm hover:shadow-md hover:scale-105'
+                  }`}
                   aria-label="Toggle search"
                 >
-                  <FaSearch size={18} className="text-primary-700" />
+                  <FaSearch size={18} className={isSearchOpen ? "text-white" : "text-primary-700"} />
                 </button>
                 
-                {/* Search Overlay - Mobile Optimized */}
+                {/* Search Overlay - Mobile Optimized (No Dark Shadow) */}
                 {isSearchOpen && (
                   <>
-                    {/* Mobile Full Screen Overlay */}
-                    <div 
-                      className="fixed inset-0 bg-black/50 z-40 md:hidden"
-                      onClick={() => setSearchOpen(false)}
-                      aria-hidden="true"
-                    />
-                    
-                    {/* Search Form - Centered on Mobile */}
-                    <div className="fixed inset-0 z-50 flex items-start justify-center pt-20 md:absolute md:inset-auto md:top-full md:mt-4 md:right-0 md:pt-0">
-                      <form onSubmit={handleSearch} className="relative w-full max-w-sm mx-4 md:mx-0" onClick={(e) => e.stopPropagation()}>
-                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl border border-primary-200 p-4 md:p-4">
+                    {/* Search Form - Centered on Mobile, Dropdown on Desktop */}
+                    <div className="fixed inset-x-0 top-16 z-50 flex items-start justify-center pt-4 md:absolute md:inset-x-auto md:top-full md:mt-3 md:right-0 md:pt-0 md:w-96">
+                      <form onSubmit={handleSearch} className="relative w-full max-w-[90%] sm:max-w-md md:max-w-full mx-auto md:mx-0" onClick={(e) => e.stopPropagation()}>
+                        <div className="bg-white rounded-xl sm:rounded-2xl shadow-2xl border-2 border-primary-200 p-3 sm:p-4 md:p-5">
                           <div className="flex items-center gap-2 sm:gap-3">
                             <input
                               type="text"
                               value={searchQuery}
                               onChange={(e) => setSearchQuery(e.target.value)}
                               placeholder="پلټنه..."
-                              className="flex-1 h-11 sm:h-12 px-4 rounded-lg sm:rounded-xl bg-primary-50 border-2 border-primary-200 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-base sm:text-lg text-right"
+                              className="flex-1 h-10 sm:h-11 md:h-12 px-3 sm:px-4 rounded-lg sm:rounded-xl bg-primary-50 border-2 border-primary-200 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-sm sm:text-base md:text-lg text-right"
                               dir="rtl"
                               autoFocus
                             />
@@ -514,19 +511,20 @@ const Navbar = memo(function Navbar() {
                               <button
                                 type="button"
                                 onClick={() => setSearchQuery("")}
-                                className="text-primary-400 hover:text-primary-600 transition-colors p-1.5 flex-shrink-0"
+                                className="text-primary-400 hover:text-primary-600 transition-colors p-1.5 flex-shrink-0 rounded-full hover:bg-primary-100"
                                 aria-label="Clear search"
                               >
-                                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg className="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                               </button>
                             )}
                             <button
                               type="submit"
-                              className="px-4 sm:px-5 py-2.5 sm:py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg sm:rounded-xl hover:from-primary-700 hover:to-primary-800 active:scale-95 transition-all duration-200 text-sm sm:text-base font-semibold shadow-md hover:shadow-lg flex-shrink-0"
+                              className="px-3 sm:px-4 md:px-5 py-2 sm:py-2.5 md:py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white rounded-lg sm:rounded-xl hover:from-primary-700 hover:to-primary-800 active:scale-95 transition-all duration-200 text-xs sm:text-sm md:text-base font-semibold shadow-md hover:shadow-lg flex-shrink-0 flex items-center justify-center gap-1.5"
                             >
-                              پلټنه
+                              <FaSearch className="h-3 w-3 sm:h-4 sm:w-4" />
+                              <span className="hidden sm:inline">پلټنه</span>
                             </button>
                           </div>
                         </div>
@@ -536,16 +534,23 @@ const Navbar = memo(function Navbar() {
                 )}
               </div>
               
-              {/* Donation Button */}
+              {/* Donation Button - Improved Design */}
               <Link href="/donation" className="hidden md:block">
                 <button
-                  className="group relative inline-flex items-center justify-center gap-2 px-2 py-1 rounded-lg bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-medium text-sm shadow-md hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-out hover:scale-105 active:scale-100 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 overflow-hidden"
+                  className="group relative inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold text-sm shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300 ease-out hover:scale-105 active:scale-100 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 overflow-hidden border border-primary-500/30"
                 >
                   {/* Subtle shine effect */}
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
                   
-                  <span className="text-lg inline-block animate-bounce group-hover:animate-none group-hover:scale-125 group-hover:rotate-12 transition-all duration-300 ease-out">🎁</span>
-                  <span className="whitespace-nowrap relative z-10">مرسته وکړئ</span>
+                  {/* Ripple effect on hover */}
+                  <span className="absolute inset-0 rounded-xl bg-white/0 group-hover:bg-white/10 transition-all duration-300"></span>
+                  
+                  <span className="whitespace-nowrap relative z-10 tracking-wide">مرسته وکړئ</span>
+                  
+                  {/* Arrow icon */}
+                  <svg className="w-4 h-4 relative z-10 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
                 </button>
               </Link>
               
@@ -577,12 +582,12 @@ const Navbar = memo(function Navbar() {
       />
 
       <aside
-        className={`lg:hidden fixed inset-y-0 z-50 w-4/5 max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ease-in-out ${
+        className={`lg:hidden fixed inset-y-0 z-50 w-4/5 max-w-sm transform bg-white shadow-2xl transition-transform duration-300 ease-in-out flex flex-col ${
           isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
         } right-0`}
         aria-label="Mobile navigation"
       >
-        <div className="flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100 flex-row-reverse">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-primary-100/60 bg-gradient-to-r from-primary-50 to-primary-100 flex-row-reverse flex-shrink-0">
           <div className="flex items-center gap-3 flex-row-reverse">
             <div className="relative w-10 h-10">
               <Image
@@ -622,7 +627,7 @@ const Navbar = memo(function Navbar() {
           </div>
         </div>
 
-        <nav className="h-full overflow-y-auto px-6 py-6" aria-label="Mobile">
+        <nav className="flex-1 overflow-y-auto px-6 py-6 overscroll-contain" aria-label="Mobile" style={{ WebkitOverflowScrolling: 'touch' }}>
           <div className="space-y-3">
             {primaryLinks.map(({ href, name }) => {
               const isActive = pathname === href;
@@ -805,23 +810,24 @@ const Navbar = memo(function Navbar() {
               </Link>
             </div>
             
-            {/* Donation Button at Bottom */}
+            {/* Donation Button at Bottom - Improved Design */}
             <div className="pt-6 mt-8 border-t border-primary-100/60 flex justify-center">
               <Link href="/donation" onClick={closeMobileMenu} className="w-full">
                 <button
-                  className="group relative w-full flex items-center justify-center gap-3 px-7 py-4 rounded-xl bg-gradient-to-br from-yellow-300 via-primary-600 to-primary-700 hover:from-yellow-400 hover:to-primary-800 text-white font-bold text-base shadow-2xl hover:shadow-yellow-200/60 transition-all duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-yellow-200 focus:ring-offset-2"
-                  style={{
-                    boxShadow: '0 6px 24px 0 rgba(255, 205, 86, 0.15), 0 1.5px 6px 0 rgba(13, 148, 136, 0.11)'
-                  }}
+                  className="group relative w-full flex items-center justify-center gap-3 px-6 py-4 rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-bold text-base shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-[1.02] active:scale-100 focus:outline-none focus:ring-4 focus:ring-primary-300 focus:ring-offset-2 overflow-hidden border border-primary-500/30"
                 >
-                  <span className="absolute left-0 top-0 w-full h-full rounded-xl bg-gradient-to-br from-yellow-200 via-transparent to-transparent opacity-0 group-hover:opacity-30 blur-sm pointer-events-none transition-opacity duration-300"></span>
-                  <span className="relative inline-flex items-center gap-3 z-10">
-                    <span className="text-2xl animate-bounce drop-shadow-md">🎁</span>
-                    <span className="whitespace-nowrap text-lg tracking-wide  drop-shadow">مرسته وکړئ</span>
-                  </span>
-                  <span className="absolute right-6 top-1/2 -translate-y-1/2 z-10 opacity-70 group-hover:translate-x-1 transition-transform duration-300">
-                    <svg width="22" height="22" fill="none" viewBox="0 0 22 22" className="text-yellow-300 group-hover:text-yellow-400"><path d="M17.5 10.43l-10.167 7.173a1 1 0 01-1.55-.833V5.217a1 1 0 011.55-.833L17.5 11.557a1 1 0 010 1.606z" fill="currentColor"/></svg>
-                  </span>
+                  {/* Subtle shine effect */}
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
+                  <svg className="w-5 h-5 relative z-10 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                  </svg>
+                  {/* Ripple effect on hover */}
+                  <span className="absolute inset-0 rounded-xl bg-white/0 group-hover:bg-white/10 transition-all duration-300"></span>
+                  
+                  <span className="relative z-10 whitespace-nowrap text-lg tracking-wide">مرسته وکړئ</span>
+                  
+                  {/* Arrow icon */}
+                
                 </button>
               </Link>
             </div>

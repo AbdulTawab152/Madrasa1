@@ -1,6 +1,5 @@
 import IslamicHeader from "../components/IslamicHeader";
 import AwlyaaChartsSection from "../components/awlyaa/AwlyaaChartsSection";
-import Breadcrumb from "@/components/Breadcrumb";
 
 export default function AwlyaaChartsPage() {
   return (
@@ -8,14 +7,13 @@ export default function AwlyaaChartsPage() {
       <IslamicHeader 
         pageType="awlayaa" 
         title="تشجیر اولیاء"
-        subtitle="  د نقشبندیه طریقه مشایخو روحاني سلسله، له رسول الله ﷺ تر مشایخو پورې په برکتي تسلسل کې "
+        subtitle="  د نقشبندیه طریقه مشایخو روحاني سلسله، له رسول الله ﷺ تر مشایخو پورې په برکتي تسلسل کې "
         alignment="center"
         cta={{
           label: "View Charts",
           href: "#charts-section"
         }}
       />
-      <Breadcrumb />
       <div id="charts-section" className="w-full">
         <AwlyaaChartsSection />
       </div>

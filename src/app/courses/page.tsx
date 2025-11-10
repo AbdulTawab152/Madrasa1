@@ -12,7 +12,6 @@ import { CoursesApi } from "@/lib/api";
 import type { Course as CourseType } from "@/lib/types";
 import { useTranslation } from "@/hooks/useTranslation";
 import ErrorDisplay from "@/components/ErrorDisplay";
-import Breadcrumb from "@/components/Breadcrumb";
 
 export default function CoursesPage() {
   const { t: tRaw } = useTranslation('common', { useSuspense: false });
@@ -54,7 +53,6 @@ export default function CoursesPage() {
         alignment="center"
       />
 
-      <Breadcrumb />
       <div className="w-full mx-auto py-8 px-4 sm:px-6 lg:px-8" dir="rtl">
         {isLoadingInitial ? (
           <UnifiedLoader variant="grid" count={6} showFilters={false} />
