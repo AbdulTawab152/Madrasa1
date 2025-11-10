@@ -49,7 +49,7 @@ export default async function BookDetailsPage({ params }: Params) {
                 href="/book" 
                 className="group inline-flex items-center gap-3 text-amber-700 hover:text-amber-800 transition-all duration-150 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 px-4 py-2 rounded-lg font-semibold border border-amber-200/50"
               >
-                <FaArrowLeft className="w-4 h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
+                <FaArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                 <span className="text-sm">بیرته تلل کتابتون ته</span>
               </Link>
             </div>

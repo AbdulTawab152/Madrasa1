@@ -12,7 +12,7 @@ import {
   FaCheckCircle, 
   FaStar,
   FaClock,
-  FaArrowRight,
+  FaArrowLeft,
   FaGlobe
 } from "react-icons/fa";
 
@@ -564,7 +564,7 @@ export default function IftahQuestionFormInline() {
                     <>
                       <FaQuestionCircle className="text-sm relative z-10 group-hover:rotate-12 transition-transform duration-150" />
                       <span className="relative z-10">{t('iftah.form.submitQuestion')}</span>
-                      <FaArrowRight className="text-xs relative z-10 rotate-180 group-hover:-translate-x-1 transition-transform duration-200" />
+                      <FaArrowLeft className="text-xs relative z-10 group-hover:-translate-x-1 transition-transform duration-200" />
                     </>
                   )}
                 </button>
@@ -616,7 +616,7 @@ export default function IftahQuestionFormInline() {
                 className="w-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:via-orange-600 hover:to-amber-700 text-white font-bold py-2.5 px-4 rounded-xl transition-all duration-150 transform hover:-translate-y-0.5 shadow-lg hover:shadow-xl flex items-center justify-center gap-2 text-sm"
               >
                 <span>{t('iftah.form.continue')}</span>
-                <FaArrowRight className="text-xs rotate-180" />
+                <FaArrowLeft className="text-xs" />
               </button>
             </div>
           </div>

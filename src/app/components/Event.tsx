@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { CalendarDays, MapPin, ArrowRight } from "lucide-react";
+import { CalendarDays, MapPin, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Event {
@@ -181,7 +181,7 @@ export default function EventSection({ limit = events.length }: EventSectionProp
                     className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold shadow-md transition-transform duration-150 transform hover:-translate-y-0.5"
                   >
                     View live
-                    <ArrowRight size={18} />
+                    <ArrowLeft size={18} />
                   </Button>
                 </Link>
               </div>

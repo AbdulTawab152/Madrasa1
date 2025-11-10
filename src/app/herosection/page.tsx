@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowLeft } from "react-icons/fa6";
 import { useTranslation } from "@/hooks/useTranslation";
 import { getLanguageDirection } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -182,7 +182,7 @@ const Hero = () => {
           size="lg"
           className="rounded-full shadow-2xl drop-shadow-[0_6px_16px_rgba(0,0,0,1)] hover:scale-105 transition-transform duration-200"
         >
-          {t("hero.aboutUs")} <FaArrowRight className="ml-2" />
+          {t("hero.aboutUs")} <FaArrowLeft className="ml-2" />
         </Button>
       </Link>
 

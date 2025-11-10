@@ -72,7 +72,7 @@ export function createPaginationMeta({
 class ApiClient {
   private baseUrl: string;
   private defaultHeaders: HeadersInit;
-  private defaultTimeout = 30000; // Increased to 30 seconds for slow networks
+  private defaultTimeout = 45000; // Increased to 45 seconds for slow networks and large data requests
 
   constructor() {
     this.baseUrl = apiConfig.baseUrl;
@@ -347,11 +347,25 @@ class ApiClient {
 
     // Log final error (suppress for endpoints with fallback data)
     if (lastError) {
+      const isTimeoutError = 
+        lastError.message.includes('timeout') || 
+        lastError.message.includes('timed out') ||
+        lastError.name === 'AbortError';
+      
+      const hasFallback = 
+        endpoint.includes('/iftah') ||
+        endpoint.includes('/authors') ||
+        endpoint.includes('/courses') ||
+        endpoint.includes('/books') ||
+        endpoint.includes('/events') ||
+        endpoint.includes('/blogs') ||
+        endpoint.includes('/articles');
+      
       const shouldSuppress = 
         (lastError.message.includes('404') && 
          apiConfig.errorHandling.suppressedStatusCodes.includes(404)) ||
-        // Suppress errors for endpoints that have graceful fallback handling
-        endpoint.includes('/iftah');
+        // Suppress timeout errors for endpoints that have graceful fallback handling
+        (isTimeoutError && hasFallback);
       
       if (!shouldSuppress) {
         logger.apiError(endpoint, lastError);

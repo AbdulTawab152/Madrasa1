@@ -174,14 +174,13 @@ function DetailLoader({ className }: { className?: string }) {
 // Reusable Card Skeleton - Professional Design
 function CardSkeleton() {
   return (
-    <div className="group overflow-hidden rounded-3xl border border-primary-100/60 bg-white/95 shadow-soft transition-all duration-150">
+    <div className="group overflow-hidden rounded-3xl border border-gray-200 bg-white transition-all duration-150">
       {/* Image Placeholder */}
       <div className="relative h-52 w-full overflow-hidden">
-        <div className="h-full w-full bg-gradient-to-br from-primary-100/80 via-primary-50/60 to-amber-100/40 animate-pulse"></div>
-        <div className="absolute inset-0 bg-gradient-to-t from-primary-900/20 via-transparent to-transparent"></div>
+        <div className="h-full w-full bg-gray-200 "></div>
         {/* Category Badge Placeholder */}
         <div className="absolute top-4 left-4">
-          <div className="h-6 w-20 bg-white/90 rounded-full animate-pulse"></div>
+          <div className="h-6 w-20 bg-gray-300 rounded-full "></div>
         </div>
       </div>
       
@@ -189,24 +188,24 @@ function CardSkeleton() {
       <div className="flex h-full flex-col gap-5 p-6">
         <div className="space-y-3">
           {/* Title */}
-          <div className="h-6 w-full bg-primary-100/80 rounded animate-pulse"></div>
-          <div className="h-5 w-4/5 bg-primary-50/80 rounded animate-pulse"></div>
+          <div className="h-6 w-full bg-gray-200 rounded"></div>
+          <div className="h-5 w-4/5 bg-gray-200 rounded"></div>
           
           {/* Description */}
           <div className="space-y-2">
-            <div className="h-3 w-full bg-primary-50/60 rounded animate-pulse"></div>
-            <div className="h-3 w-full bg-primary-50/60 rounded animate-pulse"></div>
-            <div className="h-3 w-3/4 bg-primary-50/60 rounded animate-pulse"></div>
+            <div className="h-3 w-full bg-gray-200 rounded"></div>
+            <div className="h-3 w-full bg-gray-200 rounded"></div>
+            <div className="h-3 w-3/4 bg-gray-200 rounded"></div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="mt-auto flex items-center justify-between border-t border-primary-100/60 pt-4">
+        <div className="mt-auto flex items-center justify-between border-t border-gray-200 pt-4">
           <div className="flex items-center gap-2">
-            <div className="h-4 w-4 bg-primary-100/80 rounded animate-pulse"></div>
-            <div className="h-4 w-20 bg-primary-100/80 rounded animate-pulse"></div>
+            <div className="h-4 w-4 bg-gray-200 rounded"></div>
+            <div className="h-4 w-20 bg-gray-200 rounded"></div>
           </div>
-          <div className="h-9 w-24 bg-primary-100/80 rounded-full animate-pulse"></div>
+          <div className="h-9 w-24 bg-gray-200 rounded-full"></div>
         </div>
       </div>
     </div>
@@ -218,15 +217,15 @@ function ListItemSkeleton() {
   return (
     <div className="bg-white rounded-2xl shadow-lg border border-amber-100 p-6">
       <div className="flex items-start space-x-4">
-        <div className="w-16 h-16 bg-gray-200 rounded-lg animate-pulse flex-shrink-0"></div>
+        <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0"></div>
         <div className="flex-1 space-y-3">
-          <div className="h-4 w-1/4 bg-gray-200 rounded animate-pulse"></div>
-          <div className="h-6 w-full bg-gray-200 rounded animate-pulse"></div>
+          <div className="h-4 w-1/4 bg-gray-200 rounded"></div>
+          <div className="h-6 w-full bg-gray-200 rounded"></div>
           <div className="space-y-2">
-            <div className="h-3 w-full bg-gray-200 rounded animate-pulse"></div>
-            <div className="h-3 w-3/4 bg-gray-200 rounded animate-pulse"></div>
+            <div className="h-3 w-full bg-gray-200 rounded"></div>
+            <div className="h-3 w-3/4 bg-gray-200 rounded"></div>
           </div>
-          <div className="h-4 w-24 bg-gray-200 rounded animate-pulse"></div>
+          <div className="h-4 w-24 bg-gray-200 rounded"></div>
         </div>
       </div>
     </div>

@@ -69,17 +69,9 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
         </div>
       )}
 
-      {/* Title Section */}
-      <div className="w-full px-4 sm:px-6 mb-8">
-       
-      </div>
-
       {/* Clean Sanad Display */}
       <div className="w-full px-4 sm:px-6">
         <div className="space-y-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 text-center mb-6 rtl" style={{ fontFamily: 'Amiri, serif' }}>
-          شجرهٔ حضرات کابل
-        </h2>
           {sanads.map((sanad, idx) => (
             <motion.div
               key={sanad.id}
@@ -93,12 +85,22 @@ export default function SanadSection({ showAll = false, showHero = false }: Sana
             >
               {idx === 0 ? (
                 // First item - featured style
-                <div className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 sm:p-8 border border-blue-200 shadow-sm">
+                <div>
                   <div className="text-center notranslate">
-                    <div className="text-4xl mb-4">📜</div>
-                    <p className="text-gray-900 text-lg sm:text-xl leading-relaxed font-semibold rtl w-full">
-                      {sanad.name}
-                    </p>
+                   
+                  <div className="mb-8 max-w-4xl mx-auto">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 md:p-8 border border-green-200/50 shadow-sm">
+                <div className="text-center">
+                  <div className="text-4xl mb-4">📜</div>
+                  <h2 className="text-2xl md:text-3xl font-bold text-black mb-3 rtl" style={{ fontFamily: 'Amiri, serif' }}>
+                    شجرهٔ حضرات کابل
+                  </h2>
+                  <p className="font-bold md:text-lg text-black  leading-relaxed rtl" style={{ fontFamily: 'Amiri, serif' }}>
+                    شجره عالیه حضرتات عالي درجات نقشبندیه مجددیه عمریه (قدسنا الله باسرارهم العاليه) خانقاه عالیه مجددیه عمریه ارغندی، پغمان، کابل
+                  </p>
+                </div>
+              </div>
+            </div>
                   </div>
                 </div>
               ) : (

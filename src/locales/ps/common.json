@@ -748,7 +748,9 @@
     "children": "اولاد",
     "booksWritten": "لیکل شوي کتابونه",
     "birthDetails": "د زیږیدو جزئیات",
+    "birthDate": "د زیږیدو نیټه",
     "deathDetails": "د وفات جزئیات",
+    "deathDate": "د وفات نیټه",
     "education": "زده کړې",
     "famousWorksContributions": "مشهور کارونه او مرسته",
     "noFamousWorks": "مشهور کارونه شتون نلري",
@@ -795,5 +797,25 @@
       "validEmailAddress": "مهرباني وکړئ د بریښنالیک ښه پته ولیکئ",
       "pleaseEnterMessage": "مهرباني وکړئ خپل پیغام ولیکئ"
     }
+  },
+  "authorDetail": {
+    "backToAuthors": "بیرته تلل لیکوالانو ته",
+    "alive": "ژوندی",
+    "deceased": "وفات شوی",
+    "book": "کتاب",
+    "books": "کتابونه",
+    "biography": "ژوندلیک",
+    "personalInformation": "شخصي معلومات",
+    "fathersName": "د پلار نوم",
+    "grandfathersName": "د نیکه نوم",
+    "dateOfBirth": "د زیږیدو نیټه",
+    "contactInformation": "د اړیکو معلومات",
+    "address": "پته",
+    "contactNumber": "د اړیکو شمیره",
+    "notAvailable": "شتون نلري",
+    "status": "حالت",
+    "published": "خپور شوی",
+    "yes": "هو",
+    "no": "نه"
   }
 }

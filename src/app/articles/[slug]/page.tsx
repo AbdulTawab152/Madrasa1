@@ -8,7 +8,7 @@ import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
 import VideoPlayer from "@/app/components/VideoPlayer";
 import Breadcrumb from "@/components/Breadcrumb";
-import { Calendar, FileText, ChevronLeft } from "lucide-react";
+import { Calendar, FileText } from "lucide-react";
 
 interface Article {
   title: string;
