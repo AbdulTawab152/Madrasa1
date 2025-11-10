@@ -98,15 +98,15 @@ export default async function ArticleDetailsPage({ params }: PageProps) {
   }
 
   return (
-    <main className="min-h-screen mt-16 sm:mt-24 md:mt-32 bg-gradient-to-b from-amber-50/30 to-white">
-      <Breadcrumb />
+    <main className="min-h-screen mt-20 sm:mt-24 md:mt-32 bg-gradient-to-b from-amber-50/30 to-white">
+     
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-8">
 
         {/* Main Content */}
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Main Article Content */}
           <div className="flex-1">
-            <article className="mb-16 relative overflow-hidden rounded-2xl bg-white border border-gray-200 shadow-lg">
+            <article className="mb-16 relative overflow-hidden rounded-2xl bg-white border border-gray-200 ">
               <div className="p-6 md:p-8 lg:p-10 space-y-8">
                 {/* Header Section */}
                 <div className="space-y-6">

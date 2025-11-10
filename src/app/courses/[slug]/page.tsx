@@ -385,15 +385,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
                   <span className="font-semibold text-amber-900 text-right">{translateCourseValue(course.space, 'size')}</span>
                 </li>
               )}
-              {course.short_video && (
-                <li className="flex justify-between items-center text-sm sm:text-base">
-                  <span className="text-gray-600 flex items-center gap-1 sm:gap-2">
-                    <FaVideo className="text-amber-600 text-sm sm:text-base" />
-                    {t('courses.introVideo')}
-                  </span>
-                  <span className="font-semibold text-emerald-600 animate-pulse text-xs sm:text-sm">{t('courses.available')}</span>
-                </li>
-              )}
+            
             </ul>
           </div>
         </aside>

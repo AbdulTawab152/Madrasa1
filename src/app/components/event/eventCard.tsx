@@ -93,7 +93,7 @@ export default function EventsSection({
     
 
       {/* Events Section */}
-      <section className="w-full  md:px-8 md:pt-10 max-w-7xl mx-auto">
+      <section className="w-full px-4 md:px-8 md:pt-10 max-w-7xl mx-auto overflow-x-hidden">
         <div className="relative text-center mb-10">
           {/* Subtle background accent */}
        
@@ -123,8 +123,8 @@ export default function EventsSection({
           )}
         </div>
 
-        <div className="relative">
-          <div className="absolute -left-4 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full" />
+        <div className="relative overflow-x-hidden">
+          <div className="absolute left-0 md:left-6 top-0 bottom-0 w-1 bg-gradient-to-b from-orange-400 via-orange-200 to-orange-100 rounded-full hidden md:block" />
 
           {displayEvents.map((event, idx) => {
             const coverImage =
@@ -154,13 +154,13 @@ export default function EventsSection({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.15 }}
-                className="group relative mb-12 pl-4 md:pl-24"
+                className="group relative mb-12 pl-0 md:pl-24"
               >
-                <div className="pointer-events-none absolute -left-4 md:left-6 top-5 h-5 w-5 rounded-full border-4 border-white bg-primary-500" />
+                <div className="pointer-events-none absolute left-0 md:left-6 top-5 h-5 w-5 rounded-full border-4 border-white bg-primary-500 hidden md:block" />
                 {idx < displayEvents.length - 1 ? (
-                  <span className="pointer-events-none absolute -left-4 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100" />
+                  <span className="pointer-events-none absolute left-0 md:left-6 top-12 bottom-[-4rem] w-1 bg-gradient-to-b from-primary-500 via-primary-300 to-primary-100 hidden md:block" />
                 ) : null}
-                <div className="relative flex w-full flex-col overflow-hidden bg-white rounded-2xl border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-300 md:flex-row group/card">
+                <div className="relative flex w-full max-w-full flex-col overflow-hidden bg-white rounded-2xl border border-gray-200  hover:shadow-md transition-all duration-300 md:flex-row group/card">
 
                     {/* Image Section */}
                     <div className="aspect-[4/3] w-full md:w-1/2 relative overflow-hidden bg-gray-100">
@@ -191,48 +191,48 @@ export default function EventsSection({
                     </div>
 
                     {/* Content Section */}
-                    <div className="w-full flex flex-col gap-6 p-6 md:w-1/2 md:p-8">
+                    <div className="w-full min-w-0 flex flex-col gap-6 p-6 md:w-1/2 md:p-8">
                       {/* Header Section */}
-                      <div className="space-y-4 flex-1">
+                      <div className="space-y-4 flex-1 min-w-0">
                         {/* Date Badge */}
                         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-primary-50 to-primary-100 border border-primary-200 text-xs font-semibold uppercase tracking-wider text-primary-700 w-fit shadow-sm">
-                          <Calendar className="h-3.5 w-3.5 text-primary-600" />
-                          <span>{eventDate}</span>
+                          <Calendar className="h-3.5 w-3.5 text-primary-600 flex-shrink-0" />
+                          <span className="whitespace-nowrap">{eventDate}</span>
                         </div>
 
                         {/* Title */}
-                        <h3 className="text-2xl md:text-3xl font-bold leading-tight text-gray-900 tracking-tight group-hover/card:text-primary-700 transition-colors">
+                        <h3 className="text-2xl md:text-3xl font-bold leading-tight text-gray-900 tracking-tight group-hover/card:text-primary-700 transition-colors break-words">
                           {stripHtml(event.title)}
                         </h3>
 
                         {/* Description */}
-                        <p className="text-sm md:text-base leading-relaxed text-gray-600 line-clamp-4">
+                        <p className="text-sm md:text-base leading-relaxed text-gray-600 line-clamp-4 break-words">
                           {stripHtml(event.description)}
                         </p>
                       </div>
 
                       {/* Event Details Grid */}
-                      <div className="grid gap-3 text-sm md:grid-cols-2 border-t border-gray-200 pt-5">
-                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200">
+                      <div className="grid gap-3 text-sm md:grid-cols-2 border-t border-gray-200 pt-5 min-w-0">
+                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200 min-w-0">
                           <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
                             <MapPin className="h-4 w-4 text-primary-600" />
                           </div>
-                          <span className="font-medium text-gray-800 line-clamp-1">{location}</span>
+                          <span className="font-medium text-gray-800 line-clamp-1 min-w-0 break-words">{location}</span>
                         </div>
 
-                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200">
+                        <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200 min-w-0">
                           <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
                             <Clock className="h-4 w-4 text-primary-600" />
                           </div>
-                          <span className="font-medium text-gray-800">{stripHtml(event.duration) || t('events.flexible')}</span>
+                          <span className="font-medium text-gray-800 min-w-0 break-words">{stripHtml(event.duration) || t('events.flexible')}</span>
                         </div>
 
                         {event.contact ? (
-                          <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200 md:col-span-2">
+                          <div className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-primary-50 border border-gray-200 hover:border-primary-200 transition-all duration-200 md:col-span-2 min-w-0">
                             <div className="flex-shrink-0 p-2 rounded-lg bg-white shadow-sm">
                               <Users className="h-4 w-4 text-primary-600" />
                             </div>
-                            <span className="font-medium text-gray-800 line-clamp-1">{stripHtml(event.contact)}</span>
+                            <span className="font-medium text-gray-800 line-clamp-1 min-w-0 break-words">{stripHtml(event.contact)}</span>
                           </div>
                         ) : null}
 
@@ -247,14 +247,14 @@ export default function EventsSection({
                       </div>
 
                       {/* Footer Section */}
-                      <div className="mt-auto pt-6 border-t border-gray-200">
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div className="mt-auto pt-6 border-t border-gray-200 min-w-0">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 min-w-0">
                           {/* <div className="inline-flex items-center gap-2 text-sm font-medium text-gray-600">
                             <Users className="h-4 w-4 text-primary-500" />
                             <span>{t('events.organizedBy')}</span>
                           </div> */}
 
-                          <div className="flex flex-col sm:flex-row flex-nowrap items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-3 w-full sm:w-auto min-w-0">
                             {event.live_link ? (
                               
                               <a
@@ -263,7 +263,7 @@ export default function EventsSection({
                                 rel="noreferrer"
                                 className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-primary-50 border border-primary-200 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-semibold text-primary-700 hover:bg-primary-100 hover:border-primary-300 hover:shadow-sm transition-all duration-200 flex-1 w-full sm:flex-initial sm:w-auto min-w-0"
                               >
-                                 <RTLArrowIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 flex-shrink-0" />
+                                
                                 <span className="truncate">{t('events.joinLive')}</span>
                                
                               </a>
@@ -273,8 +273,8 @@ export default function EventsSection({
                               href={`/event/${event.slug}`}
                               className="inline-flex items-center justify-center gap-1.5 sm:gap-2 rounded-xl bg-gradient-to-r from-amber-500 via-primary-600 to-primary-700 px-3 sm:px-4 py-2.5 text-xs sm:text-sm font-bold text-white shadow-lg hover:shadow-xl hover:scale-105 hover:from-primary-700 hover:to-amber-500 transition-all duration-200 flex-1 w-full sm:flex-initial sm:w-auto min-w-0"
                             >
-                                <RTLArrowIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1 flex-shrink-0" />
-                              <span className="truncate whitespace-nowrap">{t('events.eventDetails')}</span>
+                               
+                              <span className="truncate">{t('events.eventDetails')}</span>
                             
                             </Link>
                           </div>

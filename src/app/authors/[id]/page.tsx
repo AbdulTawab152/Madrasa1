@@ -65,28 +65,17 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   return (
     <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
       <Breadcrumb />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+      <div className="max-w-6xl mx-auto px- sm:px-6 lg:px-8 py-8 sm:py-12">
         {/* Navigation Button */}
-        <div className="mb-6">
-          <div className="flex items-center justify-start gap-2 px-4 py-2.5 rounded-lg bg-white border border-[#d0e8e8] text-[#4a8a8a] w-full">
-            <Link href="/" className="flex items-center gap-2 hover:text-[#5a9a9a] transition-colors">
-              <Home className="w-4 h-4" />
-              <span className="text-sm font-medium">{t("navbar.home")}</span>
-            </Link>
-            <span className="text-[#4a8a8a] mx-1">،</span>
-            <Link href="/authors" className="text-sm font-medium hover:text-[#5a9a9a] transition-colors">
-              {t("navbar.author")}
-            </Link>
-          </div>
-        </div>
+       
         {/* Hero Section */}
         <div className="bg-gradient-to-br from-amber-50 via-white to-amber-50/50 rounded-3xl border border-amber-100/50 overflow-hidden mb-8">
-          <div className="p-8 md:p-12">
+          <div className="p-2 md:p-12">
             {/* Profile Header */}
             <div className="flex flex-col items-center text-center mb-8">
               {/* Profile Image with Enhanced Styling */}
               <div className="relative mb-6">
-                <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-amber-400 shadow-2xl ring-4 ring-amber-100/50">
+                <div className="relative w- h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-4 border-amber-400 shadow-2xl ring-4 ring-amber-100/50">
                   {author.image ? (
                     <Image
                       src={
@@ -151,9 +140,9 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
             {/* Biography Section */}
             {author.bio && (
               <div className="mt-8 pt-8 border-t border-amber-200/50">
-                <div className="max-w-4xl mx-auto">
+                <div className="max-w-6xl ">
                   <h2 className="text-2xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                    <BookText className="w-6 h-6 text-amber-600" />
+                    <BookText className="w-10 h-6 text-amber-600" />
                     {t("authorDetail.biography")}
                   </h2>
                   <div
@@ -167,20 +156,20 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
         </div>
 
         {/* Information Cards Section */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div className="grid grid-cols-1  md:grid-cols-2 gap-6 mb-8">
           {/* Personal Information Card */}
-          <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
+          <div className="bg-white rounded-2xl w-full md:w-[90%] lg:w-[85%] xl:w-[80%] max-w-3xl border border-gray-200 py-2 md:py-8 mx-auto">
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
               <User className="w-5 h-5 text-amber-600" />
               {t("authorDetail.personalInformation")}
             </h3>
-            <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100 hover:shadow-md transition-shadow">
+            <div className="space-y-4 px-2">
+              <div className="flex items-start gap-4 p-2 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100">
                 <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                   <User className="w-5 h-5 text-amber-700" />
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                <div className="flex-1 min-w-0 px-2">
+                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1 px-2">
                     {t("authorDetail.fathersName")}
                   </p>
                   <p className="text-base font-medium text-gray-900">
@@ -189,7 +178,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100">
                 <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                   <User className="w-5 h-5 text-amber-700" />
                 </div>
@@ -203,7 +192,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
                 </div>
               </div>
 
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100">
                 <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-amber-700" />
                 </div>
@@ -226,7 +215,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
               {t("authorDetail.contactInformation")}
             </h3>
             <div className="space-y-4">
-              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100 hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100 px-2">
                 <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                   <MapPin className="w-5 h-5 text-amber-700" />
                 </div>
@@ -241,7 +230,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
               </div>
 
               {author.contact_no && (
-                <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100 hover:shadow-md transition-shadow">
+                <div className="flex items-start gap-4 p-4 rounded-xl bg-gradient-to-r from-gray-50 to-amber-50/30 border border-gray-100">
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-amber-100 flex items-center justify-center">
                     <Phone className="w-5 h-5 text-amber-700" />
                   </div>
@@ -263,43 +252,64 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
         </div>
 
         {/* Additional Stats Section */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-6">
-          <div className="bg-gradient-to-br from-amber-50 to-amber-100 rounded-2xl p-6 border border-amber-200">
-            <div className="flex items-center gap-3 mb-2">
-              <BookOpen className="w-6 h-6 text-amber-700" />
-              <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+        <div className="flex flex-col md:flex-row md:items-stretch gap-6 mt-8">
+          {/* Books Card */}
+          <div className="flex-1 bg-white rounded-2xl shadow-lg border border-amber-200 px-7 py-7 flex flex-col items-center justify-center relative overflow-hidden">
+            {/* Decorative icon bg */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-amber-100/60 w-20 h-20 rounded-full z-0 blur-md"></div>
+            <div className="z-10 flex flex-col items-center">
+              <div className="mb-2">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-50 border border-amber-200 shadow">
+                  <BookOpen className="w-7 h-7 text-amber-600" />
+                </span>
+              </div>
+              <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">
                 {t("authorDetail.books")}
               </h4>
+              <p className="text-4xl font-bold text-gray-900 mt-1">{author.book_count || 0}</p>
             </div>
-            <p className="text-3xl font-bold text-gray-900">{author.book_count || 0}</p>
           </div>
 
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 border border-green-200">
-            <div className="flex items-center gap-3 mb-2">
-              {author.is_alive ? (
-                <CheckCircle2 className="w-6 h-6 text-green-700" />
-              ) : (
-                <XCircle className="w-6 h-6 text-red-700" />
-              )}
-              <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+          {/* Status Card */}
+          <div className="flex-1 bg-white rounded-2xl shadow-lg border border-green-200 px-7 py-7 flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-green-100/70 w-20 h-20 rounded-full z-0 blur-md"></div>
+            <div className="z-10 flex flex-col items-center">
+              <div className="mb-2">
+                <span className={`inline-flex items-center justify-center w-12 h-12 rounded-full ${
+                  author.is_alive ? "bg-green-50 border border-green-200" : "bg-red-50 border border-red-200"
+                } shadow`}>
+                  {author.is_alive ? (
+                    <CheckCircle2 className="w-7 h-7 text-green-700" />
+                  ) : (
+                    <XCircle className="w-7 h-7 text-red-600" />
+                  )}
+                </span>
+              </div>
+              <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">
                 {t("authorDetail.status")}
               </h4>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {author.is_alive ? t("authorDetail.alive") : t("authorDetail.deceased")}
+              </p>
             </div>
-            <p className="text-3xl font-bold text-gray-900">
-              {author.is_alive ? t("authorDetail.alive") : t("authorDetail.deceased")}
-            </p>
           </div>
 
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 border border-blue-200">
-            <div className="flex items-center gap-3 mb-2">
-              <Award className="w-6 h-6 text-blue-700" />
-              <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
+          {/* Published Status Card */}
+          <div className="flex-1 bg-white rounded-2xl shadow-lg border border-blue-200 px-7 py-7 flex flex-col items-center justify-center relative overflow-hidden">
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-blue-100/50 w-20 h-20 rounded-full z-0 blur-md"></div>
+            <div className="z-10 flex flex-col items-center">
+              <div className="mb-2">
+                <span className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 border border-blue-200 shadow">
+                  <Award className="w-7 h-7 text-blue-700" />
+                </span>
+              </div>
+              <h4 className="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">
                 {t("authorDetail.published")}
               </h4>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {author.is_published ? t("authorDetail.yes") : t("authorDetail.no")}
+              </p>
             </div>
-            <p className="text-3xl font-bold text-gray-900">
-              {author.is_published ? t("authorDetail.yes") : t("authorDetail.no")}
-            </p>
           </div>
         </div>
       </div>
