@@ -818,16 +818,17 @@ const Navbar = memo(function Navbar() {
                 >
                   {/* Subtle shine effect */}
                   <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-in-out"></span>
-                  <svg className="w-5 h-5 relative z-10 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                  </svg>
+                  
                   {/* Ripple effect on hover */}
+                  <svg className="w-5 h-5 relative z-10 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   
+                  </svg>
                   <span className="absolute inset-0 rounded-xl bg-white/0 group-hover:bg-white/10 transition-all duration-300"></span>
                   
                   <span className="relative z-10 whitespace-nowrap text-lg tracking-wide">مرسته وکړئ</span>
                   
                   {/* Arrow icon */}
-                
+                 
                 </button>
               </Link>
             </div>
