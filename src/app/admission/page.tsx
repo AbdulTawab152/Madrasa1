@@ -5,7 +5,6 @@ import { AdmissionsApi, DegreesApi } from "@/lib/api";
 import { useToast } from "@/components/Toast";
 import { FiUser, FiPhone, FiMail, FiCalendar, FiMapPin, FiBook, FiHome, FiGlobe } from "react-icons/fi";
 import IslamicHeader from "@/app/components/IslamicHeader";
-import Breadcrumb from "@/components/Breadcrumb";
 
 export default function AdmissionPage() {
   const toast = useToast();
@@ -308,7 +307,6 @@ export default function AdmissionPage() {
   if (submitSuccess) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white py-12 px-4">
-        <Breadcrumb />
         <div className="max-w-2xl mx-auto mt-10">
           <div className="bg-white rounded-2xl border border-gray-200 shadow-lg p-8 sm:p-12 text-center">
             <div className="w-24 h-24 bg-[#e0f2f2] rounded-full flex items-center justify-center mx-auto mb-6">
@@ -344,7 +342,6 @@ export default function AdmissionPage() {
         alignment="center"
         pageType="registration"
       />
-      <Breadcrumb />
 
       {/* Form Section */}
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

@@ -42,7 +42,7 @@ export default async function AuthorDetailPage({ params }: AuthorPageProps) {
   const author = await fetchAuthor(id);
 
   return (
-    <main className="max-w-4xl mt-32 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
+    <main className="max-w-4xl mt-24 mx-auto py-12 px-6 bg-gray-50 min-h-screen font-sans">
       <Breadcrumb />
       <div className="bg-white rounded-3xl overflow-hidden p-8">
         {/* Profile Image */}

@@ -142,7 +142,7 @@ const Hero = () => {
         <div className="overflow-hidden">
           <ScrollingRow direction="right" delay={3} />
         </div>
-        <div className="overflow-hidden">
+        <div className="overflow-hidden md:hidden">
           <ScrollingRow direction="left" delay={3} />
         </div>
     
@@ -153,7 +153,7 @@ const Hero = () => {
   {/* 🔥 Dark overlay behind text for better contrast */}
   <div className="absolute inset-0 bg-black/15 rounded-2xl"></div>
 
-  <div className="relative text-white max-w-4xl mx-auto text-center space-y-4 md:space-y-6 pt-2 md:pt-0">
+  <div className="relative text-white max-w-4xl mx-auto text-center space-y-4 md:space-y-6 pt-20 md:pt-0">
     {/* Tagline */}
     <p className="text-sm sm:text-base md:text-xl lg:text-2xl text-sky-200 font-bold px-4 py-2 rounded-full bg-sky-500/40 inline-block shadow-xl drop-shadow-[0_4px_10px_rgba(0,0,0,0.9)]">
       {t("hero.tagline")}

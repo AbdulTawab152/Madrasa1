@@ -262,19 +262,19 @@ export default function SearchPage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="دلته پلټنه وکړئ..."
-                  className="flex-1 h-12 sm:h-14 px-4 sm:px-5 md:px-6 pr-12 sm:pr-14 rounded-lg sm:rounded-xl border-2 border-primary-200 bg-primary-50/80 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200 text-base sm:text-lg text-right"
+                  placeholder="پلټنه..."
+                  className="flex-1 h-11 sm:h-12 md:h-14 px-3 sm:px-4 md:px-6 pr-10 sm:pr-12 md:pr-14 rounded-lg sm:rounded-xl border-2 border-primary-200 bg-primary-50/80 text-primary-900 placeholder-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-sm sm:text-base md:text-lg text-right"
                   dir="rtl"
                   autoFocus
                 />
                 <button
                   type="submit"
                   disabled={loading}
-                  className="h-12 sm:h-14 px-4 sm:px-5 md:px-6 flex items-center justify-center gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold hover:from-primary-700 hover:to-primary-800 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                  className="h-11 sm:h-12 md:h-14 px-3 sm:px-4 md:px-6 flex items-center justify-center gap-1.5 sm:gap-2 rounded-lg sm:rounded-xl bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold hover:from-primary-700 hover:to-primary-800 active:scale-95 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
                   aria-label="پلټنه"
                 >
-                  <FaSearch className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline text-sm sm:text-base">پلټنه</span>
+                  <FaSearch className="h-3.5 w-3.5 sm:h-4 sm:w-4 md:h-5 md:w-5" />
+                  <span className="hidden sm:inline text-xs sm:text-sm md:text-base">پلټنه</span>
                 </button>
               </div>
             </form>
@@ -363,10 +363,10 @@ export default function SearchPage() {
                       href={result.url}
                       className="block p-3 sm:p-4 md:p-6 hover:bg-primary-50/50 active:bg-primary-100 transition-colors duration-200 text-right"
                     >
-                      <div className="flex gap-3 sm:gap-4 flex-row-reverse">
-                        {/* Image - Mobile Optimized */}
+                      <div className={`flex gap-3 sm:gap-4 ${result.image ? 'flex-row-reverse' : ''}`}>
+                        {/* Image - Only show if image exists */}
                         {result.image && (
-                          <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-lg overflow-hidden bg-primary-100 shadow-sm">
+                          <div className="flex-shrink-0 w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 rounded-lg overflow-hidden shadow-sm">
                             <Image
                               src={getImageUrl(result.image)}
                               alt={result.title}
@@ -378,7 +378,7 @@ export default function SearchPage() {
                         )}
 
                         {/* Content - Mobile Optimized */}
-                        <div className="flex-1 min-w-0">
+                        <div className={`flex-1 min-w-0 ${result.image ? '' : 'text-right'}`}>
                           <h3 className="text-base sm:text-lg md:text-xl font-bold text-primary-900 mb-1.5 sm:mb-2 line-clamp-2 leading-tight">
                             {cleanHtml(result.title)}
                           </h3>

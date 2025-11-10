@@ -12,7 +12,6 @@ import { AuthorsApi } from "../../lib/api";
 import { Author } from "../../lib/types";
 import { getImageUrl } from "@/lib/utils";
 import { usePaginatedResource } from "@/hooks/usePaginatedResource";
-import Breadcrumb from "@/components/Breadcrumb";
 
 const isPublishedAndAlive = (author: Author): boolean => {
   return Boolean(author.is_published && author.is_alive);
@@ -36,7 +35,6 @@ export default function AuthorsPage() {
     return (
       <main className="min-h-screen bg-background-primary">
         <IslamicHeader pageType="authors" />
-        <Breadcrumb />
         <div className="max-w-7xl mx-auto px-6 py-16">
           <ErrorDisplay 
             error={error} 
@@ -51,7 +49,6 @@ export default function AuthorsPage() {
   return (
     <main className="min-h-screen bg-background-primary">
       <IslamicHeader pageType="authors" />
-      <Breadcrumb />
       <div className="max-w-7xl mx-auto px-6 space-y-12 pb-16">
         {authors.filter(isPublishedAndAlive).length === 0 ? (
           <ComingSoonEmptyState
@@ -60,7 +57,7 @@ export default function AuthorsPage() {
             className="max-w-2xl mx-auto"
           />
         ) : (
-          <div className="grid gap-10 mt-10 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-20 mt-10 sm:grid-cols-2 lg:grid-cols-3">
             {authors
               .filter(isPublishedAndAlive)
               .map((author) => (

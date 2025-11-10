@@ -9,7 +9,6 @@ import img from "../../../public/1.jpg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Breadcrumb from "@/components/Breadcrumb";
 
 // Custom Arrow Components - RTL version (swapped for RTL)
 const CustomNextArrow = ({ onClick }: { onClick?: () => void }) => (
@@ -83,7 +82,6 @@ const AboutPage = () => {
 
   return (
     <div className="bg-gradient-to-b from-gray-50 to-white mt-16 sm:mt-24 md:mt-32">
-      <Breadcrumb />
       <section className="py-12 sm:py-16 md:py-24 bg-gradient-to-br from-amber-50 via-white to-blue-50 relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute inset-0 opacity-5">

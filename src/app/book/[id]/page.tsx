@@ -39,27 +39,16 @@ export default async function BookDetailsPage({ params }: Params) {
 
     return (
       <div className="min-h-screen mt-36 md:mt-[100px] bg-gradient-to-br from-slate-50 via-amber-50/20 to-white" dir="rtl">
-        <Breadcrumb />
+        <Breadcrumb  />
         {/* Compact Header Section */}
         <div className="relative bg-white border-b border-gray-200/60">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
             {/* Navigation */}
-            <div className="mt-5">
-              <Link 
-                href="/book" 
-                className="group inline-flex items-center gap-3 text-amber-700 hover:text-amber-800 transition-all duration-150 bg-gradient-to-r from-amber-50 to-orange-50 hover:from-amber-100 hover:to-orange-100 px-4 py-2 rounded-lg font-semibold border border-amber-200/50"
-              >
-                <FaArrowLeft className="w-4 h-4 rotate-180 group-hover:translate-x-1 transition-transform" />
-                <span className="text-sm">بیرته تلل کتابتون ته</span>
-              </Link>
-            </div>
+           
             
             {/* Title Section */}
             <div className="text-center space-y-3">
-              <div className="inline-flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-amber-100 to-orange-100 text-amber-800 rounded-full text-xs font-bold border border-amber-300/50">
-                <FaBook className="w-3.5 h-3.5 text-amber-600" />
-                <span>علمی آثار</span>
-              </div>
+           
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight text-gray-900 tracking-tight">
                 {cleanText(book.title)}
               </h1>

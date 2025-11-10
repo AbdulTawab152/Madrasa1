@@ -30,9 +30,11 @@ export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-32 pb-20" dir="rtl">
-      <Breadcrumb />
+    <main className="min-h-screen bg-gray-50 pt-20 pb-20" dir="rtl">
       <div className="max-w-6xl mx-auto px-4 sm:px-6" dir="rtl">
+        <div className="mt-12">
+          <Breadcrumb />
+        </div>
         {/* Header Section */}
         <div className="relative bg-white rounded-xl overflow-hidden mb-8 border border-gray-200 shadow-sm">
           {/* Decorative right border accent */}
