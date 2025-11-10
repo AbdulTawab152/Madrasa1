@@ -25,13 +25,14 @@ const images = [
   "/hero13.jpg",
   "/hero14.jpg",
   "/hero15.jpg",
+  "/hero22.jpg",
   "/hero16.jpg",
   "/hero17.jpg",
   "/hero18.jpg",
   "/hero19.jpg",
   "/hero20.jpg",
   "/hero21.jpg",
-  "/hero22.jpg",
+  
 ];
 
 const Ship = "/ship.png";

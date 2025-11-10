@@ -186,7 +186,7 @@ export default function IslamicHeader({
 
       <div className="relative z-10 mx-auto max-w-6xl px-4 sm:px-6">
         <div className={`flex flex-col gap-4 mt-4 sm:mt-8 md:mt-20 ${alignmentClasses}`}>
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 mt-10 lg:-mt-12 ">
             {subcategory && (
               <p className="text-sm font-medium text-white/80 opacity-90">
                 {subcategory}
