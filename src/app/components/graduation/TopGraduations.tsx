@@ -144,14 +144,6 @@ export default function GraduationsSection({ showAll = false }: GraduationsSecti
                 {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 
-                {/* Year Badge */}
-                <div className="absolute top-4 right-4 z-10">
-                  <span className="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white/98 backdrop-blur-md text-[#4a8a8a] border border-white/50 shadow-lg">
-                    <Calendar className="w-4 h-4 text-[#4a8a8a]" />
-                    <span>{grad.graduation_year || "N/A"}</span>
-                  </span>
-                </div>
-                
                 {/* Top Graduate Badge */}
                 {grad.is_top && (
                   <div className="absolute top-4 left-4 z-10">

@@ -333,6 +333,20 @@
     animation: bounce 2s infinite;
   }
   
+  /* Bounce vertical animation for help icon */
+  .animate-bounce-vertical {
+    animation: bounce-vertical 2s ease-in-out infinite;
+  }
+  
+  @keyframes bounce-vertical {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-4px);
+    }
+  }
+  
   /* Shimmer effect */
   .shimmer {
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
@@ -369,6 +383,16 @@
   
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background-color: var(--color-gray-400);
+  }
+  
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;  /* Chrome, Safari and Opera */
   }
   
   /* Text truncation */

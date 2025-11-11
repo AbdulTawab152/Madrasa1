@@ -229,7 +229,12 @@ export default function IftahSubCategoryPage({
                 <p className="text-sm sm:text-base text-gray-600 px-2" style={{ fontFamily: 'Amiri, serif' }}>{searchTerm ? 'د لټون اصطلاح بدل کړئ' : 'په دې فرعي کټګورۍ کې لا تراوسه پوښتنې نشته.'}</p>
               </div>
             ) : (
-              filteredIftahs.map((item, index) => (
+              filteredIftahs.map((item) => {
+                // Find the original index in subCategoryIftahs to get the correct question number
+                const originalIndex = subCategoryIftahs.findIndex((iftah) => iftah.id === item.id);
+                const questionNumber = originalIndex !== -1 ? originalIndex + 1 : 0;
+                
+                return (
                 <Link
                   key={item.id}
                   href={`/iftah/${item.slug}`}
@@ -250,6 +255,14 @@ export default function IftahSubCategoryPage({
                   <div className="p-3 sm:p-5 md:p-6 lg:p-8 relative z-10">
                     <div className="flex items-start justify-between gap-2 sm:gap-3 md:gap-4">
                       <div className="flex-1 min-w-0">
+                        {/* Question Number Badge */}
+                        {questionNumber > 0 && (
+                          <div className="mb-2 sm:mb-3">
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-md text-xs sm:text-sm font-semibold bg-primary-100 text-primary-700 border border-primary-200">
+                              سوال نمبر: {questionNumber}
+                            </span>
+                          </div>
+                        )}
                         {/* Question Preview */}
                         {item.question && (
                           <div className="bg-gray-50 rounded-lg sm:rounded-xl p-3 sm:p-4 md:p-5 border-r-2 sm:border-r-4 border-gray-300">
@@ -276,7 +289,8 @@ export default function IftahSubCategoryPage({
                     </div>
                   </div>
                 </Link>
-              ))
+                );
+              })
             )}
           </div>
       </main>

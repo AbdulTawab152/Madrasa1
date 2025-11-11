@@ -8,11 +8,10 @@ interface RTLArrowIconProps {
 }
 
 export default function RTLArrowIcon({ className = "", size = "text-sm" }: RTLArrowIconProps) {
-  // Since we're hardcoded to Pashto (RTL), always flip the arrow to point left
+  // Since we're hardcoded to Pashto (RTL), arrow points left
   return (
     <FaArrowLeft 
       className={`${size} ${className}`}
-      style={{ transform: 'scaleX(-1)' }}
     />
   );
 }

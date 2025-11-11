@@ -4,7 +4,7 @@ import Image from "next/image";
 import { Awlyaa } from "../../../lib/types";
 import { getImageUrl } from "@/lib/utils";
 import { cleanText } from "@/lib/textUtils";
-import { getTranslation } from "@/lib/translations";
+import { useTranslation } from "@/hooks/useTranslation";
 import Breadcrumb from "@/components/Breadcrumb";
 import { User } from "lucide-react";
 
@@ -13,9 +13,11 @@ interface AwlyaaContentProps {
 }
 
 export default function AwlyaaContent({ awlyaa }: AwlyaaContentProps) {
+  const { t: tRaw } = useTranslation('common', { useSuspense: false });
+  
   const t = (key: string): string => {
-    const translation = getTranslation(key, 'ps');
-    return typeof translation === 'string' ? translation : key;
+    const result = tRaw(key);
+    return typeof result === 'string' ? result : key;
   };
 
   // Format date for display
