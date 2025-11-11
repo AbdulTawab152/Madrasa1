@@ -101,8 +101,8 @@ export default function DonationPage() {
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <FaInfoCircle className="text-red-600 text-2xl" />
             </div>
-            <h2 className="text-xl font-bold text-red-800 mb-2">Error Loading Donation Information</h2>
-            <p className="text-red-600">{error}</p>
+            <h2 className="text-lg sm:text-xl font-bold text-red-800 mb-2" style={{ fontFamily: 'Amiri, serif' }}>Error Loading Donation Information</h2>
+            <p className="text-sm sm:text-base text-red-600" style={{ fontFamily: 'Amiri, serif' }}>{error}</p>
           </div>
         </div>
       </main>
@@ -110,22 +110,20 @@ export default function DonationPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+    <main className="min-h-screen bg-gradient-to-b from-[#e0f2f2] via-white to-[#f0f9f9]">
       <IslamicHeader pageType="donation" />
       
-   
-
       {/* Donation Methods Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-        <div className="text-center mb-20">
+      <section className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 py-8 sm:py-12 md:py-16 lg:py-20">
+        <div className="text-center mb-12 sm:mb-16 md:mb-20">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.15 }}
             viewport={{ once: true }}
-            className="inline-block mb-6"
+            className="inline-block mb-4 sm:mb-6"
           >
-            <span className="bg-gradient-to-r from-orange-500 to-amber-500 text-white px-6 py-2 rounded-full text-sm font-semibold">
+            <span className="bg-[#e0f2f2] text-[#4a8a8a] px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold border border-[#d0e8e8]">
               {t('donation.chooseMethod')}
             </span>
           </motion.div>
@@ -134,7 +132,8 @@ export default function DonationPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.15 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6"
+            className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6 px-2"
+            style={{ fontFamily: 'Amiri, serif' }}
           >
             {t('donation.chooseMethod')}
           </motion.h2>
@@ -143,7 +142,8 @@ export default function DonationPage() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.15 }}
             viewport={{ once: true }}
-            className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-4"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2"
+            style={{ fontFamily: 'Amiri, serif' }}
           >
             {t('donation.chooseMethodDesc')}
           </motion.p>
@@ -154,74 +154,73 @@ export default function DonationPage() {
           initial="initial"
           whileInView="animate"
           viewport={{ once: true }}
-          className="space-y-6"
+          className="space-y-4 sm:space-y-6"
         >
           {donations.map((donation, index) => {
-            const gradientColors = [
-              'from-blue-500 to-blue-600',
-              'from-green-500 to-green-600', 
-              'from-yellow-500 to-orange-500',
-              'from-purple-500 to-indigo-500',
-              'from-red-500 to-pink-500',
-              'from-teal-500 to-cyan-500'
-            ];
-            const currentGradient = gradientColors[index % gradientColors.length];
-            
             return (
               <motion.div
                 key={donation.id}
                 variants={fadeIn}
-                className="bg-white rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-200 group border border-gray-100 hover:border-gray-200 transform hover:-translate-y-1"
+                className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-[#d0e8e8] hover:border-[#4a8a8a] hover:shadow-lg transition-all duration-300 group shadow-sm"
               >
-                <div className="flex flex-col lg:flex-row min-h-[300px]">
-                  {/* Header Section */}
-                  <div className={`bg-gradient-to-br ${currentGradient} text-white p-6 sm:p-8 lg:w-1/3 flex-shrink-0 relative overflow-hidden`}>
-                    <div className="absolute inset-0 bg-black/10"></div>
-                    <div className="relative z-10">
-                      <div className="mb-6">
-                        <h3 className="text-2xl font-bold mb-2">{donation.branch_name}</h3>
-                        <p className="text-white/90 text-sm font-medium">{donation.country}</p>
+                <div className="flex flex-col lg:flex-row">
+                  {/* Header Section - Enhanced */}
+                  <div className="bg-gradient-to-br from-[#4a8a8a] to-[#3a7a7a] text-white p-6 sm:p-8 md:p-10 lg:w-2/5 flex-shrink-0 relative overflow-hidden">
+                    {/* Decorative Pattern */}
+                    <div className="absolute inset-0 opacity-5">
+                      <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -mr-16 -mt-16"></div>
+                      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full -ml-12 -mb-12"></div>
+                    </div>
+                    <div className="relative z-10 h-full flex flex-col justify-between">
+                      <div>
+                        <div className="mb-6">
+                          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 leading-tight" style={{ fontFamily: 'Amiri, serif' }}>{donation.branch_name}</h3>
+                          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full">
+                            <FaGlobe className="text-white text-xs" />
+                            <p className="text-white/95 text-xs sm:text-sm font-medium">{donation.country}</p>
+                          </div>
+                        </div>
+                        <p className="text-white/95 text-sm sm:text-base leading-relaxed line-clamp-4" style={{ fontFamily: 'Amiri, serif' }}>
+                          {donation.description.replace(/<[^>]*>/g, '')}
+                        </p>
                       </div>
-                      <p className="text-white/95 text-sm leading-relaxed">
-                        {donation.description.replace(/<[^>]*>/g, '')}
-                      </p>
                     </div>
                   </div>
 
-                  {/* Content Section */}
-                  <div className="p-6 sm:p-8 lg:w-2/3 bg-gray-50/50">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+                  {/* Content Section - Enhanced */}
+                  <div className="p-6 sm:p-8 md:p-10 lg:w-3/5 bg-white">
+                    <div className="space-y-4 mb-6 sm:mb-8">
                       {donation.whatsapp && (
-                        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-green-500 to-green-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-150">
-                          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                            <FaWhatsapp className="text-white text-lg" />
+                        <div className="flex items-center gap-4 p-4 sm:p-5 bg-[#e0f2f2] rounded-xl border border-[#d0e8e8] hover:border-[#4a8a8a] hover:bg-[#d5f5f5] transition-all duration-200 group/item">
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#4a8a8a] rounded-full flex items-center justify-center flex-shrink-0 shadow-md group-hover/item:scale-110 transition-transform duration-200">
+                            <FaWhatsapp className="text-white text-lg sm:text-xl" />
                           </div>
-                          <div className="flex-1">
-                            <p className="font-semibold text-white text-sm mb-1">{t('donation.whatsapp')}</p>
-                            <p className="text-xs text-white/90">{donation.whatsapp}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-[#4a8a8a] text-sm sm:text-base mb-1.5" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.whatsapp')}</p>
+                            <p className="text-sm sm:text-base text-gray-800 font-medium truncate">{donation.whatsapp}</p>
                           </div>
                         </div>
                       )}
 
                       {donation.email && (
-                        <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-150">
-                          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                            <FaEnvelope className="text-white text-lg" />
+                        <div className="flex items-center gap-4 p-4 sm:p-5 bg-[#e0f2f2] rounded-xl border border-[#d0e8e8] hover:border-[#4a8a8a] hover:bg-[#d5f5f5] transition-all duration-200 group/item">
+                          <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#4a8a8a] rounded-full flex items-center justify-center flex-shrink-0 shadow-md group-hover/item:scale-110 transition-transform duration-200">
+                            <FaEnvelope className="text-white text-lg sm:text-xl" />
                           </div>
-                          <div className="flex-1">
-                            <p className="font-semibold text-white text-sm mb-1">{t('donation.email')}</p>
-                            <p className="text-xs text-white/90">{donation.email}</p>
+                          <div className="flex-1 min-w-0">
+                            <p className="font-bold text-[#4a8a8a] text-sm sm:text-base mb-1.5" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.email')}</p>
+                            <p className="text-sm sm:text-base text-gray-800 font-medium truncate">{donation.email}</p>
                           </div>
                         </div>
                       )}
 
-                      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl shadow-md hover:shadow-lg transition-all duration-150 sm:col-span-2">
-                        <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                          <FaMapMarkerAlt className="text-white text-lg" />
+                      <div className="flex items-start gap-4 p-4 sm:p-5 bg-[#e0f2f2] rounded-xl border border-[#d0e8e8] hover:border-[#4a8a8a] hover:bg-[#d5f5f5] transition-all duration-200 group/item">
+                        <div className="w-12 h-12 sm:w-14 sm:h-14 bg-[#4a8a8a] rounded-full flex items-center justify-center flex-shrink-0 shadow-md group-hover/item:scale-110 transition-transform duration-200 mt-0.5">
+                          <FaMapMarkerAlt className="text-white text-lg sm:text-xl" />
                         </div>
-                        <div className="flex-1">
-                          <p className="font-semibold text-white text-sm mb-1">{t('donation.location')}</p>
-                          <p className="text-xs text-white/90">{donation.address.replace(/<[^>]*>/g, '')}</p>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-bold text-[#4a8a8a] text-sm sm:text-base mb-1.5" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.location')}</p>
+                          <p className="text-sm sm:text-base text-gray-800 font-medium leading-relaxed">{donation.address.replace(/<[^>]*>/g, '')}</p>
                         </div>
                       </div>
                     </div>
@@ -231,22 +230,24 @@ export default function DonationPage() {
                         href={`https://wa.me/${donation.whatsapp?.replace(/[^\d]/g, '')}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        whileHover={{ scale: 1.02, y: -2 }}
-                        whileTap={{ scale: 0.98 }}
-                        className={`flex-1 bg-gradient-to-r ${currentGradient} text-white py-4 px-6 rounded-xl font-semibold text-center hover:shadow-xl transition-all duration-150 flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20`}
+                        whileHover={{ scale: 1.03, y: -2 }}
+                        whileTap={{ scale: 0.97 }}
+                        className="flex-1 bg-[#4a8a8a] hover:bg-[#3a7a7a] text-white py-4 sm:py-5 px-6 sm:px-8 rounded-xl font-bold text-center transition-all duration-200 flex items-center justify-center gap-3 shadow-md hover:shadow-lg text-base sm:text-lg"
+                        style={{ fontFamily: 'Amiri, serif' }}
                       >
-                        <FaWhatsapp className="text-xl" />
+                        <FaWhatsapp className="text-xl sm:text-2xl" />
                         <span>{t('donation.contactWhatsapp')}</span>
                       </motion.a>
                       
                       {donation.email && (
                         <motion.a
                           href={`mailto:${donation.email}`}
-                          whileHover={{ scale: 1.02, y: -2 }}
-                          whileTap={{ scale: 0.98 }}
-                          className="flex-1 bg-gradient-to-r from-slate-500 to-slate-600 text-white py-4 px-6 rounded-xl font-semibold text-center hover:shadow-xl transition-all duration-150 flex items-center justify-center gap-3 border-2 border-transparent hover:border-white/20"
+                          whileHover={{ scale: 1.03, y: -2 }}
+                          whileTap={{ scale: 0.97 }}
+                          className="flex-1 bg-gray-700 hover:bg-gray-800 text-white py-4 sm:py-5 px-6 sm:px-8 rounded-xl font-bold text-center transition-all duration-200 flex items-center justify-center gap-3 shadow-md hover:shadow-lg text-base sm:text-lg"
+                          style={{ fontFamily: 'Amiri, serif' }}
                         >
-                          <FaEnvelope className="text-xl" />
+                          <FaEnvelope className="text-xl sm:text-2xl" />
                           <span>{t('donation.sendEmail')}</span>
                         </motion.a>
                       )}
@@ -260,60 +261,78 @@ export default function DonationPage() {
       </section>
 
       {/* Donation Instructions */}
-      <section className="py-20 sm:py-24 bg-gradient-to-br from-gray-50 to-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-20">
-            <div className="inline-flex items-center gap-2 bg-primary-600 text-white px-6 py-2 rounded-full text-sm font-semibold mb-6">
+      <section className="py-12 sm:py-16 md:py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6">
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <div className="inline-flex items-center gap-2 bg-[#e0f2f2] text-[#4a8a8a] px-4 sm:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold mb-4 sm:mb-6 border border-[#d0e8e8]">
               <span>📋</span>
               <span>{t('donation.instructionTitle')}</span>
             </div>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-3 sm:mb-4 md:mb-6 px-2" style={{ fontFamily: 'Amiri, serif' }}>
               {t('donation.howToDonateTitle')}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed px-2" style={{ fontFamily: 'Amiri, serif' }}>
               {t('donation.howToDonateDescription')}
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            <div className="group text-center">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-10">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              viewport={{ once: true }}
+              className="group text-center bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 border border-[#d0e8e8] hover:border-[#4a8a8a] hover:shadow-lg transition-all duration-300"
+            >
               <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
-                  <span className="text-3xl font-bold">1</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-[#4a8a8a] to-[#3a7a7a] text-white rounded-2xl flex items-center justify-center mx-auto transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl shadow-lg">
+                  <span className="text-3xl sm:text-4xl font-bold">1</span>
                 </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-yellow-900">✓</span>
+                <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 w-7 h-7 sm:w-8 sm:h-8 bg-yellow-400 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-xs sm:text-sm font-bold text-yellow-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-150">{t('donation.contactStep')}</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">{t('donation.contactStepDesc')}</p>
-            </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-[#4a8a8a] transition-colors duration-300" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.contactStep')}</h3>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.contactStepDesc')}</p>
+            </motion.div>
 
-            <div className="group text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.1 }}
+              viewport={{ once: true }}
+              className="group text-center bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 border border-[#d0e8e8] hover:border-[#4a8a8a] hover:shadow-lg transition-all duration-300"
+            >
               <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
-                  <span className="text-3xl font-bold">2</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-[#4a8a8a] to-[#3a7a7a] text-white rounded-2xl flex items-center justify-center mx-auto transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl shadow-lg">
+                  <span className="text-3xl sm:text-4xl font-bold">2</span>
                 </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-blue-400 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-blue-900">✓</span>
+                <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 w-7 h-7 sm:w-8 sm:h-8 bg-blue-400 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-xs sm:text-sm font-bold text-blue-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-150">{t('donation.donateStep')}</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">{t('donation.donateStepDesc')}</p>
-            </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-[#4a8a8a] transition-colors duration-300" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.donateStep')}</h3>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>{t('donation.donateStepDesc')}</p>
+            </motion.div>
 
-            <div className="group text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="group text-center bg-white rounded-2xl sm:rounded-3xl p-8 sm:p-10 border border-[#d0e8e8] hover:border-[#4a8a8a] hover:shadow-lg transition-all duration-300"
+            >
               <div className="relative mb-8">
-                <div className="w-20 h-20 bg-gradient-to-br from-primary-600 to-primary-700 text-white rounded-2xl flex items-center justify-center mx-auto shadow-lg group-hover:shadow-xl transition-all duration-150 group-hover:scale-105">
-                  <span className="text-3xl font-bold">3</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-[#4a8a8a] to-[#3a7a7a] text-white rounded-2xl flex items-center justify-center mx-auto transition-all duration-300 group-hover:scale-110 group-hover:shadow-xl shadow-lg">
+                  <span className="text-3xl sm:text-4xl font-bold">3</span>
                 </div>
-                <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center">
-                  <span className="text-xs font-bold text-green-900">✓</span>
+                <div className="absolute -top-2 -right-2 sm:-top-3 sm:-right-3 w-7 h-7 sm:w-8 sm:h-8 bg-green-400 rounded-full flex items-center justify-center shadow-md">
+                  <span className="text-xs sm:text-sm font-bold text-green-900">✓</span>
                 </div>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-primary-600 transition-colors duration-150">د مرستې تصدیق</h3>
-              <p className="text-gray-600 leading-relaxed text-lg">د خپلو مرستو د رسیدلو تصدیق تر لاسه کړئ</p>
-            </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-5 group-hover:text-[#4a8a8a] transition-colors duration-300" style={{ fontFamily: 'Amiri, serif' }}>د مرستې تصدیق</h3>
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed" style={{ fontFamily: 'Amiri, serif' }}>د خپلو مرستو د رسیدلو تصدیق تر لاسه کړئ</p>
+            </motion.div>
           </div>
         </div>
       </section>
