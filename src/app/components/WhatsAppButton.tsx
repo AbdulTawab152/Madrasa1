@@ -15,7 +15,7 @@ const WhatsAppButton = () => {
     <div className="fixed bottom-4 right-4 lg:bottom-7 lg:right-6 z-50 flex items-center justify-center">
       <div className="loader">
         <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="w-full h-full flex items-center justify-center">
-          <FaWhatsapp className="text-2xl text-white" />
+          <FaWhatsapp className="text-xl lg:text-2xl text-white" />
         </a>
       </div>
     </div>

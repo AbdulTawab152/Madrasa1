@@ -72,6 +72,48 @@ export default async function IftahDetailsPage({ params }: PageProps) {
     notFound();
   }
 
+  // Calculate fatwa number based on subcategory
+  let fatwaNumber: number | null = null;
+  if (iftah.iftah_sub_category?.id && iftah.answer) {
+    try {
+      const subCategoryResult = await IftahApi.getSubCategoryById(iftah.iftah_sub_category.id);
+      if (subCategoryResult.success && subCategoryResult.data) {
+        const responseData = subCategoryResult.data as { data?: Iftah[] | { data?: Iftah[] } } | Iftah[];
+        let allIftahs: Iftah[] = [];
+        
+        // Extract iftahs array from response
+        if (Array.isArray(responseData)) {
+          allIftahs = responseData;
+        } else if (Array.isArray(responseData.data)) {
+          allIftahs = responseData.data;
+        } else if (responseData.data && Array.isArray(responseData.data.data)) {
+          allIftahs = responseData.data.data;
+        }
+        
+        // Filter iftahs that have answers and sort by date/id
+        const iftahsWithAnswers = allIftahs
+          .filter((item: Iftah) => item.answer && item.answer.trim().length > 0)
+          .sort((a: Iftah, b: Iftah) => {
+            // Sort by date if available, otherwise by id
+            const dateA = a.date || '';
+            const dateB = b.date || '';
+            if (dateA && dateB) {
+              return new Date(dateA).getTime() - new Date(dateB).getTime();
+            }
+            return (a.id || 0) - (b.id || 0);
+          });
+        
+        // Find the index of current iftah
+        const currentIndex = iftahsWithAnswers.findIndex((item: Iftah) => item.id === iftah.id || item.slug === slug);
+        if (currentIndex !== -1) {
+          fatwaNumber = currentIndex + 1;
+        }
+      }
+    } catch (error) {
+      console.error('Error calculating fatwa number:', error);
+    }
+  }
+
   const t = (key: string): string => {
     const translation = getTranslation(key, 'ps');
     return typeof translation === 'string' ? translation : key;
@@ -116,7 +158,14 @@ export default async function IftahDetailsPage({ params }: PageProps) {
 
             {/* Answer Section */}
             <div className="mb-8">
-              <h2 className="text-lg font-bold text-gray-900 mb-3">جواب</h2>
+              <div className="flex items-center justify-between mb-3">
+                <h2 className="text-lg font-bold text-gray-900">جواب</h2>
+                {fatwaNumber && (
+                  <span className="text-sm font-semibold text-gray-600 bg-gray-100 px-3 py-1 rounded-full">
+                    فتویٰ نمبر: {fatwaNumber}
+                  </span>
+                )}
+              </div>
               <div className="bg-gray-50 p-5 rounded-lg border-r-4 border-gray-300">
                 <p className="text-gray-800 leading-relaxed text-base sm:text-lg" style={{ fontFamily: 'Amiri, serif' }}>
                   {cleanText(iftah.answer)}
@@ -127,7 +176,7 @@ export default async function IftahDetailsPage({ params }: PageProps) {
             {/* Note Section - If Available */}
             {iftah.note && (
               <div className="mb-8 mt-6">
-                <h2 className="text-sm font-bold text-gray-900 mb-3">نوٹ</h2>
+                <h2 className="text-sm font-bold text-gray-900 mb-3">نوټ</h2>
                   <p className="text-gray-800 leading-relaxed text-base sm:text-lg" style={{ fontFamily: 'Amiri, serif' }}>
                     {cleanText(iftah.note)}
                   </p>
