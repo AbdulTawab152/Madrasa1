@@ -2,7 +2,7 @@ import { promises as fs } from 'fs';
 import { join } from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://lawngreen-dragonfly-304220.hostingersite.com';
+const API_BASE_URL = 'https://website.anwarululoom.com/';
 const PLACEHOLDER_IMAGE = '/placeholder-gallery.jpg';
 
 const toArrayBuffer = (data: Uint8Array): ArrayBuffer => {

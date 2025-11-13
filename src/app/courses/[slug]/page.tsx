@@ -123,7 +123,7 @@ export default async function CourseDetailsPage({ params }: { params: Promise<{ 
   let book: Book | undefined = (course as any)?.book;
   if (!book && (course as any)?.book_id) {
     try {
-      const bookRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lawngreen-dragonfly-304220.hostingersite.com/api'}/book/${(course as any).book_id}`);
+      const bookRes = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL || 'https://website.anwarululoom.com/api'}/book/${(course as any).book_id}`);
       if (bookRes.ok) {
         const bookData = await bookRes.json();
         book = Array.isArray(bookData) ? bookData[0] : bookData;

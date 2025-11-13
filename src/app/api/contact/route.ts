@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const API_BASE_URL = 'https://lawngreen-dragonfly-304220.hostingersite.com/api';
+const API_BASE_URL = 'https://website.anwarululoom.com/api';
 
 export async function POST(request: NextRequest) {
   try {
