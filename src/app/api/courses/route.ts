@@ -40,54 +40,21 @@ export async function GET(request: NextRequest) {
     });
   } catch (error) {
     console.error('API Proxy Error:', error);
-    
-    // Return fallback data instead of error
-    const fallbackData = {
-      success: true,
-      data: [
-        {
-          id: 1,
-          title: "Introduction to Islamic Studies",
-          slug: "introduction-islamic-studies",
-          description: "A comprehensive introduction to the fundamentals of Islamic knowledge and practice.",
-          image: "/placeholder-course.jpg",
-          is_published: 1,
-          duration: "4 weeks",
-          video_quantity: 12,
-          publish_date: new Date().toISOString(),
-          created_at: new Date().toISOString(),
-          recorded_by: {
-            first_name: "Dr. Ahmad",
-            last_name: "Hassan"
-          }
-        },
-        {
-          id: 2,
-          title: "Quranic Arabic for Beginners",
-          slug: "quranic-arabic-beginners",
-          description: "Learn the basics of Arabic language to better understand the Quran.",
-          image: "/placeholder-course.jpg",
-          is_published: 1,
-          duration: "6 weeks",
-          video_quantity: 18,
-          publish_date: new Date().toISOString(),
-          created_at: new Date().toISOString(),
-          recorded_by: {
-            first_name: "Sheikh",
-            last_name: "Omar"
-          }
-        }
-      ]
-    };
-    
-    return NextResponse.json(fallbackData, {
-      status: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    return NextResponse.json(
+      { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'Failed to fetch courses',
+        data: []
       },
-    });
+      { 
+        status: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        },
+      }
+    );
   }
 }
 

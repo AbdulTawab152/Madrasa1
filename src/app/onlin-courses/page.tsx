@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { 
@@ -25,82 +25,11 @@ import {
 } from 'lucide-react';
 import IslamicHeader from '../components/IslamicHeader';
 import { useDirection } from '@/hooks/useDirection';
-
-// Static Course Data
-const onlineCourses = [
-  {
-    id: 1,
-    title: 'تفسیر القرآن الکریم',
-    description: 'د قرآن کریم تفسیر د محترم استاذ په لاس',
-    image: '/placeholder-course.jpg',
-    duration: '۶ میاشتې',
-    lessons: 120,
-    instructor: 'محترم استاذ',
-    level: 'ټول کچه',
-    students: 1500,
-    language: 'پښتو'
-  },
-  {
-    id: 2,
-    title: 'عربي ژبې کورس',
-    description: 'د عربي ژبې اساسي او پرمختللي کورس',
-    image: '/placeholder-course.jpg',
-    duration: '۴ میاشتې',
-    lessons: 80,
-    instructor: 'محترم استاذ',
-    level: 'پیلونکي',
-    students: 2200,
-    language: 'پښتو'
-  },
-  {
-    id: 3,
-    title: 'فقه اسلامی',
-    description: 'د فقه الاسلامي اساسات او جزئیات',
-    image: '/placeholder-course.jpg',
-    duration: '۸ میاشتې',
-    lessons: 150,
-    instructor: 'محترم استاذ',
-    level: 'ټول کچه',
-    students: 1800,
-    language: 'پښتو'
-  },
-  {
-    id: 4,
-    title: 'حدیث شریف',
-    description: 'د احادیث شریفه او د هغوی شرح',
-    image: '/placeholder-course.jpg',
-    duration: '۵ میاشتې',
-    lessons: 100,
-    instructor: 'محترم استاذ',
-    level: 'منځنۍ کچه',
-    students: 1300,
-    language: 'پښتو'
-  },
-  {
-    id: 5,
-    title: 'سیره النبی',
-    description: 'د پیغمبر اکرم صلی الله علیه وسلم ژوند او تاریخ',
-    image: '/placeholder-course.jpg',
-    duration: '۳ میاشتې',
-    lessons: 60,
-    instructor: 'محترم استاذ',
-    level: 'ټول کچه',
-    students: 2000,
-    language: 'پښتو'
-  },
-  {
-    id: 6,
-    title: 'تصوف او اخلاق',
-    description: 'د تصوف اساسات او د اخلاقو زیاتوالی',
-    image: '/placeholder-course.jpg',
-    duration: '۶ میاشتې',
-    lessons: 110,
-    instructor: 'محترم استاذ',
-    level: 'منځنۍ کچه',
-    students: 1600,
-    language: 'پښتو'
-  },
-];
+import { CoursesApi } from '@/lib/api';
+import type { Course } from '@/lib/types';
+import UnifiedLoader from '@/components/loading/UnifiedLoader';
+import ErrorDisplay from '@/components/ErrorDisplay';
+import { getImageUrl } from '@/lib/utils';
 
 // Social Media Links - د انوارالمشائخ رحمه الله خپرندویه ادارې
 const socialMediaLinks = {
@@ -128,6 +57,30 @@ export default function OnlineCoursesPage() {
   const direction = useDirection();
   const [liked, setLiked] = React.useState(false);
   const [likesCount, setLikesCount] = React.useState(0);
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchCourses() {
+      try {
+        setLoading(true);
+        const result = await CoursesApi.getAll({ limit: 100 });
+        if (result.success && Array.isArray(result.data)) {
+          setCourses(result.data.filter(c => Number(c.is_published) === 1));
+        } else {
+          setCourses([]);
+        }
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+        setError(err instanceof Error ? err.message : 'Failed to fetch courses');
+        setCourses([]);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCourses();
+  }, []);
 
   const handleLike = () => {
     setLiked(!liked);
@@ -178,14 +131,44 @@ export default function OnlineCoursesPage() {
             </p>
           </motion.div>
 
+          {/* Loading State */}
+          {loading && (
+            <div className="py-12">
+              <UnifiedLoader variant="grid" count={6} showFilters={false} />
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !loading && (
+            <div className="py-12">
+              <ErrorDisplay 
+                error={error} 
+                variant="inline" 
+                onRetry={() => window.location.reload()}
+              />
+            </div>
+          )}
+
           {/* Courses Grid */}
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            transition={{ duration: 0.15 }}
-            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {onlineCourses.map((course) => (
+          {!loading && !error && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              transition={{ duration: 0.15 }}
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {courses.length === 0 ? (
+                <div className="col-span-full text-center py-12">
+                  <p className="text-gray-500">هیڅ کورس نشته</p>
+                </div>
+              ) : (
+                courses.map((course) => {
+                  const courseImage = getImageUrl(course.image, "/placeholder-course.jpg") || "/placeholder-course.jpg";
+                  const instructorName = course.recorded_by 
+                    ? `${course.recorded_by.first_name || ''} ${course.recorded_by.last_name || ''}`.trim() || 'محترم استاذ'
+                    : 'محترم استاذ';
+                  
+                  return (
               <motion.article
                 key={course.id}
                 variants={cardVariants}
@@ -194,18 +177,13 @@ export default function OnlineCoursesPage() {
                 {/* Course Image */}
                 <div className="aspect-[4/3] overflow-hidden rounded-t-3xl relative">
                   <Image
-                    src={course.image}
+                    src={courseImage}
                     alt={course.title}
                     fill
                     sizes="(min-width: 1280px) 360px, (min-width: 768px) 45vw, 90vw"
                     className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-200"></div>
-                  <div className="absolute top-4 left-4">
-                    <span className="inline-flex items-center gap-1 text-xs font-medium uppercase tracking-wide text-white bg-amber-600/90 px-3 py-1 rounded-full backdrop-blur-sm">
-                      {course.level}
-                    </span>
-                  </div>
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-y-2 group-hover:translate-y-0">
                     <div className="bg-white/90 backdrop-blur-sm rounded-full p-2 shadow-lg">
                       <ExternalLink className="h-4 w-4 text-amber-600" />
@@ -220,7 +198,7 @@ export default function OnlineCoursesPage() {
                       {course.title}
                     </h3>
                     <p className="text-gray-600 leading-relaxed text-sm line-clamp-2">
-                      {course.description}
+                      {course.description ? course.description.replace(/<[^>]*>/g, ' ').trim() : ''}
                     </p>
                   </div>
 
@@ -230,27 +208,25 @@ export default function OnlineCoursesPage() {
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600">
                         <Clock className="h-3.5 w-3.5" />
                       </span>
-                      <span className="text-xs font-medium text-gray-700 truncate">{course.duration}</span>
+                      <span className="text-xs font-medium text-gray-700 truncate">{course.duration || 'د پرمختګ سره'}</span>
                     </div>
                     <div className="flex items-center gap-2 rounded-md bg-gray-50/50 px-2 py-1.5">
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-gradient-to-br from-amber-100 to-orange-100 text-amber-600">
                         <Video className="h-3.5 w-3.5" />
                       </span>
-                      <span className="text-xs font-medium text-gray-700 truncate">انلاین</span>
+                      <span className="text-xs font-medium text-gray-700 truncate">
+                        {course.video_quantity ? `${course.video_quantity} درسي` : 'انلاین'}
+                      </span>
                     </div>
                   </div>
 
-                  {/* Instructor & Students */}
+                  {/* Instructor */}
                   <div className="flex items-center gap-3 mt-2 p-2 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg border border-amber-100">
                     <div className="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-br from-amber-500 to-orange-500 text-white shadow-md">
                       <UserRound className="h-4 w-4" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-gray-900 truncate">{course.instructor}</p>
-                      <div className="flex items-center gap-2 mt-0.5">
-                        <Users className="h-3 w-3 text-gray-500" />
-                        <span className="text-xs text-gray-600">{course.students.toLocaleString()} شاګردان</span>
-                      </div>
+                      <p className="text-sm font-semibold text-gray-900 truncate">{instructorName}</p>
                     </div>
                   </div>
 
@@ -270,8 +246,11 @@ export default function OnlineCoursesPage() {
                   </div>
                 </div>
               </motion.article>
-            ))}
-          </motion.div>
+                  );
+                })
+              )}
+            </motion.div>
+          )}
 
           {/* Like and Share Buttons */}
           <motion.div

@@ -1,6 +1,5 @@
 
 import { apiConfig, endpoints } from "./config";
-import { getFallbackData } from "./fallbackData";
 import { logger } from "./logger";
 
 // API Response Types
@@ -490,25 +489,8 @@ export class BlogsApi {
         }),
       };
     } catch (error) {
-      logger.warn('Blogs API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("blogs");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      
-      logger.debug('Using fallback data', { count: data.length });
-      
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Blogs API failed', { error });
+      throw error;
     }
   }
 
@@ -520,20 +502,8 @@ export class BlogsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Blog getById failed', { id, error });
-      
-      // For detail endpoints, throw error to be caught by ErrorBoundary
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      
-      // Otherwise return fallback
-      const fallback = getFallbackData("blogs");
-      return {
-        data: fallback[0] || null,
-        success: true,
-        pagination: null,
-      };
+      logger.error('Blog getById failed', { id, error });
+      throw error;
     }
   }
 
@@ -559,17 +529,8 @@ export class BlogsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Blog getBySlug failed', { slug, error });
-      
-      // Return fallback data instead of throwing error
-      const fallbackData = getFallbackData("blogs");
-      const blog = fallbackData.find((b: any) => b.slug === slug) || fallbackData[0];
-      
-      return {
-        data: blog,
-        success: true,
-        message: "Using fallback data - blog not found in API",
-      };
+      logger.error('Blog getBySlug failed', { slug, error });
+      throw error;
     }
   }
 }
@@ -586,16 +547,14 @@ export class DonationApi {
     });
 
     if (!result.success) {
-      const fallback = getFallbackData("blogs");
-      const data = fallback.slice(0, limit) as typeof fallback;
       return {
-        data,
-        success: true,
-        message: "Using fallback data due to API unavailability",
+        data: [],
+        success: false,
+        error: result.error || "Failed to fetch donations",
         pagination: createPaginationMeta({
           page,
           limit,
-          total: fallback.length,
+          total: 0,
         }),
       };
     }
@@ -672,22 +631,8 @@ export class CoursesApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Courses API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("courses");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Courses API failed', { error });
+      throw error;
     }
   }
 
@@ -699,15 +644,8 @@ export class CoursesApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Course getById failed', { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("courses")[0],
-        success: true,
-        message: "Using fallback data due to API unavailability",
-      };
+      logger.error('Course getById failed', { id, error });
+      throw error;
     }
   }
 
@@ -733,17 +671,8 @@ export class CoursesApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Course getBySlug failed', { slug, error });
-      
-      // Return fallback data instead of throwing error
-      const fallbackData = getFallbackData("courses");
-      const course = fallbackData.find((c: any) => c.slug === slug) || fallbackData[0];
-      
-      return {
-        data: course,
-        success: true,
-        message: "Using fallback data - course not found in API",
-      };
+      logger.error('Course getBySlug failed', { slug, error });
+      throw error;
     }
   }
 }
@@ -1102,22 +1031,8 @@ export class AuthorsApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Authors API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("authors");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Authors API failed', { error });
+      throw error;
     }
   }
 
@@ -1129,15 +1044,8 @@ export class AuthorsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Author getById failed', { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("authors")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Author getById failed', { id, error });
+      throw error;
     }
   }
 }
@@ -1173,22 +1081,8 @@ export class BooksApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Books API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("books");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Books API failed', { error });
+      throw error;
     }
   }
 
@@ -1200,15 +1094,8 @@ export class BooksApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Book getById failed', { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("books")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Book getById failed', { id, error });
+      throw error;
     }
   }
 }
@@ -1248,21 +1135,8 @@ export class EventsApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Events API failed, using fallback data', { error });
-      const fallback = getFallbackData("events");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Events API failed', { error });
+      throw error;
     }
   }
 
@@ -1274,15 +1148,8 @@ export class EventsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Event getById failed', { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("events")[0],
-        success: true,
-        message: "Using fallback data due to API unavailability",
-      };
+      logger.error('Event getById failed', { id, error });
+      throw error;
     }
   }
 
@@ -1294,15 +1161,8 @@ export class EventsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Event getBySlug failed', { slug, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("events")[0],
-        success: true,
-        message: "Using fallback data due to API unavailability",
-      };
+      logger.error('Event getBySlug failed', { slug, error });
+      throw error;
     }
   }
 }
@@ -1345,22 +1205,8 @@ export class IftahApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Iftah API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("iftah");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Iftah API failed', { error });
+      throw error;
     }
   }
 
@@ -1372,15 +1218,8 @@ export class IftahApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Iftah getById failed', { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("iftah")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Iftah getById failed', { id, error });
+      throw error;
     }
   }
 
@@ -1392,15 +1231,8 @@ export class IftahApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Iftah getBySlug failed', { slug, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("iftah")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Iftah getBySlug failed', { slug, error });
+      throw error;
     }
   }
 
@@ -1412,15 +1244,8 @@ export class IftahApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Iftah getIftah failed', { slug, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("iftah")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Iftah getIftah failed', { slug, error });
+      throw error;
     }
   }
 
@@ -2231,23 +2056,8 @@ export class ArticlesApi {
       logger.info('Successfully fetched articles', { count: Array.isArray(result.data) ? result.data.length : 0 });
       return result;
     } catch (error) {
-      logger.warn('Articles API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("articles") || [];
-      const data = fallback.slice(0, limit) as typeof fallback;
-      
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Articles API failed', { error });
+      throw error;
     }
   }
 
@@ -2367,22 +2177,8 @@ export class GraduationsApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Graduations API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("graduations");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Graduations API failed', { error });
+      throw error;
     }
   }
 
@@ -2394,15 +2190,8 @@ export class GraduationsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Graduation getById failed', { id, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("graduations")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Graduation getById failed', { id, error });
+      throw error;
     }
   }
 
@@ -2414,15 +2203,8 @@ export class GraduationsApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Graduation getBySlug failed', { slug, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("graduations")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Graduation getBySlug failed', { slug, error });
+      throw error;
     }
   }
 }
@@ -2470,22 +2252,8 @@ export class TasawwufApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Tasawwuf API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("tasawwuf");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Tasawwuf API failed', { error });
+      throw error;
     }
   }
 
@@ -2499,15 +2267,8 @@ export class TasawwufApi {
       }
       return result;
     } catch (error) {
-      logger.warn('Tasawwuf getBySlug failed', { slug, error });
-      if (!apiConfig.fallback.useForDetailEndpoints) {
-        throw error;
-      }
-      return {
-        data: getFallbackData("tasawwuf")[0] ?? null,
-        success: true,
-        message: "Using cached data due to API unavailability",
-      };
+      logger.error('Tasawwuf getBySlug failed', { slug, error });
+      throw error;
     }
   }
 }
@@ -2550,22 +2311,8 @@ export class GalleryApi {
         pagination: createPaginationMeta({ page, limit, total }),
       };
     } catch (error) {
-      logger.warn('Gallery API failed, using fallback data', { error });
-      
-      const fallback = getFallbackData("gallery");
-      const data = fallback.slice(0, limit) as typeof fallback;
-      return {
-        data,
-        success: true,
-        message: apiConfig.fallback.showFallbackMessage 
-          ? "Using cached data due to API unavailability" 
-          : undefined,
-        pagination: createPaginationMeta({
-          page,
-          limit,
-          total: fallback.length,
-        }),
-      };
+      logger.error('Gallery API failed', { error });
+      throw error;
     }
   }
 }

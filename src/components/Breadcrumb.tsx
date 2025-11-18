@@ -143,11 +143,11 @@ export default function Breadcrumb() {
 
   return (
     <nav 
-      className="w-full px-4 -mt-6 sm:px-6 lg:px-8 py-4 lg:mt-0 "
+      className="w-full px-4 -mt-6 sm:px-6 lg:px-8 py-4 lg:mt-0"
       dir="rtl"
       aria-label="Breadcrumb"
     >
-      <div className="rounded-lg border bg-white/95 shadow-sm px-4 py-3">
+      <div className="rounded-lg border bg-white/95 px-4 py-3">
         <div className="flex items-center justify-between gap-4 flex-row-reverse" dir="rtl">
           {/* Back Button */}
           <button
