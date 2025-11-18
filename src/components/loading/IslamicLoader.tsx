@@ -1,14 +1,21 @@
 "use client";
 
+import { useEffect } from 'react';
+
 /**
  * IslamicLoader - A beautiful, simple Islamic-themed loader
  * Used for all detail pages across the website
  */
 
 export default function IslamicLoader() {
+  useEffect(() => {
+    // Scroll to top when loader appears
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, []);
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#e0f2f2] via-white to-[#f0f9f9] p-4">
-      <div className="bg-white rounded-xl shadow-md p-6 sm:p-8 max-w-[280px] w-full border border-[#d0e8e8]">
+    <div className="fixed inset-0 top-0 left-0 right-0 flex items-center justify-center bg-gradient-to-br from-[#e0f2f2] via-white to-[#f0f9f9] p-4" style={{ zIndex: 9999 }}>
+      <div className="bg-white rounded-xl p-6 sm:p-8 max-w-[280px] w-full border border-[#d0e8e8]">
         <div className="flex flex-col items-center justify-center space-y-5">
           {/* Islamic Crescent Moon Loader */}
           <div className="relative">

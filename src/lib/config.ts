@@ -9,7 +9,7 @@ export const appConfig = {
 } as const;
 
 // API Configuration
-const defaultApiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://lawngreen-dragonfly-304220.hostingersite.com/api';
+const defaultApiBase = process.env.NEXT_PUBLIC_API_BASE_URL || 'https://website.anwarululoom.com/api';
 
 const inferStorageBase = () => {
   if (process.env.NEXT_PUBLIC_API_STORAGE_URL) {

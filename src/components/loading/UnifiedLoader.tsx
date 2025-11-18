@@ -1,8 +1,12 @@
 /**
  * UnifiedLoader - Single source of truth for all loading states
  * Only skeleton loading with 3 variants: grid, list, detail
+ * Auto-hides after 2 seconds maximum
  */
 
+"use client";
+
+import { useState, useEffect } from 'react';
 import IslamicLoader from './IslamicLoader';
 
 interface UnifiedLoaderProps {
@@ -10,6 +14,7 @@ interface UnifiedLoaderProps {
   count?: number;
   showFilters?: boolean;
   className?: string;
+  maxDuration?: number; // Maximum time to show loader in milliseconds
 }
 
 export default function UnifiedLoader({
@@ -17,7 +22,25 @@ export default function UnifiedLoader({
   count = 6,
   showFilters = false,
   className = '',
+  maxDuration = 2000, // 2 seconds default
 }: UnifiedLoaderProps) {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    // Scroll to top when loader appears
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, maxDuration);
+
+    return () => clearTimeout(timer);
+  }, [maxDuration]);
+
+  if (!isVisible) {
+    return null;
+  }
+
   switch (variant) {
     case 'grid':
       return <GridLoader count={count} showFilters={showFilters} className={className} />;
@@ -33,12 +56,12 @@ export default function UnifiedLoader({
 // Grid Loader (for blogs, articles, courses, books, authors, events, etc.)
 function GridLoader({ count, showFilters, className }: { count: number; showFilters: boolean; className?: string }) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 pt-[140px] md:pt-[160px] ${className}`}>
+    <div className={`fixed inset-0 top-0 left-0 right-0 bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-y-auto ${className}`} style={{ paddingTop: '140px', zIndex: 9999 }}>
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="space-y-8">
           {/* Filter Section */}
           {showFilters && (
-            <div className="bg-white rounded-2xl shadow-lg border border-amber-100 p-6">
+            <div className="bg-white rounded-2xl border border-amber-100 p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                   <div className="h-12 bg-gray-200 rounded-xl animate-pulse"></div>
@@ -65,12 +88,12 @@ function GridLoader({ count, showFilters, className }: { count: number; showFilt
 // List Loader (for table-like views)
 function ListLoader({ count, showFilters, className }: { count: number; showFilters: boolean; className?: string }) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 pt-[140px] md:pt-[160px] ${className}`}>
+    <div className={`fixed inset-0 top-0 left-0 right-0 bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-y-auto ${className}`} style={{ paddingTop: '140px', zIndex: 9999 }}>
       <div className="max-w-7xl mx-auto px-6 py-8">
         <div className="space-y-6">
           {/* Filter Section */}
           {showFilters && (
-            <div className="bg-white rounded-2xl shadow-lg border border-amber-100 p-6">
+            <div className="bg-white rounded-2xl border border-amber-100 p-6">
               <div className="h-12 bg-gray-200 rounded-xl animate-pulse"></div>
             </div>
           )}
@@ -88,7 +111,7 @@ function ListLoader({ count, showFilters, className }: { count: number; showFilt
 // Detail Page Loader
 function DetailLoader({ className }: { className?: string }) {
   return (
-    <div className={`min-h-screen bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 pt-[140px] md:pt-[160px] ${className}`}>
+    <div className={`fixed inset-0 top-0 left-0 right-0 bg-gradient-to-br from-slate-50 via-amber-50 to-orange-50 overflow-y-auto ${className}`} style={{ paddingTop: '140px', zIndex: 9999 }}>
       {/* Hero Section */}
       <div className="bg-gradient-to-br from-amber-50 to-orange-100 py-16">
         <div className="max-w-7xl mx-auto px-6">
@@ -141,7 +164,7 @@ function DetailLoader({ className }: { className?: string }) {
           {/* Sidebar */}
           <div className="space-y-8">
             {/* Author Card */}
-            <div className="bg-white rounded-2xl shadow-lg border border-amber-100 p-6">
+            <div className="bg-white rounded-2xl border border-amber-100 p-6">
               <div className="text-center">
                 <div className="w-20 h-20 bg-gray-200 rounded-full animate-pulse mx-auto mb-4"></div>
                 <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mx-auto mb-2"></div>
@@ -150,7 +173,7 @@ function DetailLoader({ className }: { className?: string }) {
             </div>
             
             {/* Related Content */}
-            <div className="bg-white rounded-2xl shadow-lg border border-amber-100 p-6">
+            <div className="bg-white rounded-2xl border border-amber-100 p-6">
               <div className="h-6 w-32 bg-gray-200 rounded animate-pulse mb-4"></div>
               <div className="space-y-4">
                 {Array.from({ length: 3 }).map((_, index) => (
@@ -215,7 +238,7 @@ function CardSkeleton() {
 // Reusable List Item Skeleton
 function ListItemSkeleton() {
   return (
-    <div className="bg-white rounded-2xl shadow-lg border border-amber-100 p-6">
+    <div className="bg-white rounded-2xl border border-amber-100 p-6">
       <div className="flex items-start space-x-4">
         <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0"></div>
         <div className="flex-1 space-y-3">

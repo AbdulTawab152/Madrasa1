@@ -8,9 +8,12 @@ import DocumentAttributes from "@/components/DocumentAttributes";
 import Breadcrumb from "@/components/Breadcrumb";
 
 export const metadata: Metadata = {
-  title: "Madsreqa - Islamic Learning Platform",
+  title: "Anwar ul-Uloom al-Islamiyyah - Islamic Learning Platform",
   description: "Discover authentic Islamic teachings, connect with scholars, and strengthen your faith",
   generator: "Next.js",
+  verification: {
+    google: "xHlujaXdwIQvRWIiCX6Yw12-P1Ol7iekJvWcGdFKEZM",
+  },
 };
 
 export default function RootLayout({

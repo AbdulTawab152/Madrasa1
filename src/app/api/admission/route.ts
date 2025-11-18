@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     
     // Simulate database save
     // In production, replace this with actual API call to your Laravel backend
-    // const response = await fetch('https://lawngreen-dragonfly-304220.hostingersite.com/api/admissions', {
+    // const response = await fetch('https://website.anwarululoom.com/api/admissions', {
     //   method: 'POST',
     //   headers: { 'Content-Type': 'application/json' },
     //   body: JSON.stringify(body)
@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
     
     // Simulate fetching admissions from database
     // In production, replace this with actual API call to your Laravel backend
-    // const response = await fetch(`https://lawngreen-dragonfly-304220.hostingersite.com/api/admissions?page=${page}&limit=${limit}`);
+    // const response = await fetch(`https://website.anwarululoom.com/api/admissions?page=${page}&limit=${limit}`);
     // const data = await response.json();
     
     // Mock data for now

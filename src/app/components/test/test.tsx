@@ -32,7 +32,7 @@
 
 //   const getImageUrl = (img?: string) => {
 //     if (img && img.startsWith("http")) return img;
-//     return `https://lawngreen-dragonfly-304220.hostingersite.com/storage/${img}`;
+//     return `https://website.anwarululoom.com/storage/${img}`;
 //   };
 
 //   return (

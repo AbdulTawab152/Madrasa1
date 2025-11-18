@@ -59,7 +59,7 @@ const ScrollingRow = ({
       transition={{
         repeat: Infinity,
         repeatType: "loop",
-        duration: 120,
+        duration: 400,
         ease: "linear",
         delay,
       }}
